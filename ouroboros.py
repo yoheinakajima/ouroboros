@@ -105,12 +105,53 @@ from activegraph import (
     tool,
 )
 from activegraph.core.event import Event
-from activegraph.llm import AnthropicProvider
+from activegraph.llm import AnthropicProvider, OpenAIProvider
 
 try:  # resource limits are POSIX-only; the engine degrades gracefully.
     import resource
 except ImportError:  # pragma: no cover - non-POSIX platform
     resource = None  # type: ignore[assignment]
+
+
+# ---------------------------------------------------------------------------
+# Cost-cap-safe Anthropic provider
+# ---------------------------------------------------------------------------
+
+
+class CostSafeAnthropicProvider(AnthropicProvider):
+    """AnthropicProvider whose token counting tolerates tool-role messages.
+
+    activegraph 1.10.0's ``AnthropicProvider.count_tokens`` serializes messages
+    with ``LLMMessage.to_dict()``, which emits ``role="tool"`` — a role the
+    Anthropic ``count_tokens`` API rejects (HTTP 400, 'Unexpected role "tool"').
+    The *send* path (``complete``) already rewrites tool results into
+    ``role="user"`` / ``tool_result`` blocks via ``_message_to_anthropic``; the
+    count path skips that conversion. The runtime only calls ``count_tokens``
+    when a cost limit is set (the pre-call cost gate), so any run started with
+    ``--max-cost-usd`` crashes on the first builder turn that echoes a tool
+    result. We override the count path to reuse the same converter, and never
+    raise: a failure falls back to a conservative local estimate so the cost
+    gate keeps working instead of killing the run.
+    """
+
+    def count_tokens(self, *, system: str, messages: list[Any], model: str) -> int:
+        try:
+            from activegraph.llm.anthropic import _message_to_anthropic
+
+            client = self._client()
+            kwargs: dict[str, Any] = {
+                "model": model,
+                "messages": [_message_to_anthropic(m) for m in messages],
+            }
+            if system:
+                kwargs["system"] = system
+            result = client.messages.count_tokens(**kwargs)
+            return int(getattr(result, "input_tokens", 0) or 0)
+        except Exception:  # noqa: BLE001 - count must never fail the behavior
+            approx = len(system or "")
+            for message in messages:
+                approx += len(getattr(message, "content", "") or "")
+            return approx // 4 + 8
 
 
 # ---------------------------------------------------------------------------
@@ -748,6 +789,7 @@ class EngineConfig:
     allow_network: bool = False
     allow_pip: bool = False
     seed_dir: Optional[Path] = None
+    provider: str = "anthropic"
     model: Optional[str] = None
     run_root: Path = DEFAULT_RUN_ROOT
     run_id: str = ""
@@ -1046,6 +1088,48 @@ def _remap_python(argv: list[str]) -> list[str]:
     return argv
 
 
+def _maybe_sandbox_wrap(
+    argv: list[str], cwd: Path, *, allow_network: bool
+) -> tuple[list[str], str]:
+    """Wrap a command in the strongest locally available OS sandbox.
+
+    On macOS, Seatbelt (``sandbox-exec``) hides the real home directory
+    (including any API-key dotfiles), makes the filesystem read-only except for
+    the candidate workspace, and denies networking when the run did not opt in.
+    This is defense-in-depth layered on the portable resource-limit / scrubbed
+    environment / path-guard controls. On Linux and other hosts there is no
+    equivalent one-shot wrapper, so the command runs with the portable controls
+    only — untrusted evolution should still run inside a disposable container.
+    """
+    if sys.platform != "darwin" or not Path("/usr/bin/sandbox-exec").exists():
+        return list(argv), "portable-rlimit-scrubbedenv-pathguard"
+    workspace = str(Path(cwd).resolve())
+    home = str(Path.home().resolve())
+    rules = [
+        "(version 1)",
+        "(allow default)",
+        f"(deny file-read* (subpath {json.dumps(home)}))",
+        "(deny file-write*)",
+        f"(allow file-read* (subpath {json.dumps(workspace)}))",
+        f"(allow file-write* (subpath {json.dumps(workspace)}))",
+    ]
+    for prefix in {str(Path(sys.prefix).resolve()), str(Path(sys.base_prefix).resolve())}:
+        if prefix.startswith(home + os.sep):
+            rules.append(f"(allow file-read* (subpath {json.dumps(prefix)}))")
+    metadata: set[str] = set()
+    for base in (Path(workspace), Path(sys.prefix).resolve()):
+        for parent in (base, *base.parents):
+            metadata.add(str(parent))
+    for path in sorted(metadata):
+        rules.append(f"(allow file-read-metadata (literal {json.dumps(path)}))")
+    if not allow_network:
+        rules.append("(deny network*)")
+    label = "seatbelt-home-hidden+workspace-write" + (
+        "+network-allow" if allow_network else "+network-deny"
+    )
+    return ["/usr/bin/sandbox-exec", "-p", " ".join(rules), *argv], label
+
+
 def sandboxed_run(
     argv: list[str],
     *,
@@ -1061,16 +1145,18 @@ def sandboxed_run(
     if allow_network is None:
         allow_network = configuration.allow_network
     argv = _remap_python(argv)
+    launch_argv, isolation = _maybe_sandbox_wrap(argv, cwd, allow_network=allow_network)
     started = time.monotonic()
     record: dict[str, Any] = {
         "argv": argv,
         "cwd": str(cwd),
         "timeout_seconds": timeout,
+        "isolation": isolation,
         "started_at": now_iso(),
     }
     try:
         process = subprocess.Popen(
-            argv,
+            launch_argv,
             cwd=str(cwd),
             env=_sandbox_env(cwd, manifest_env or {}, allow_network=allow_network),
             stdin=subprocess.PIPE,
@@ -2044,8 +2130,11 @@ def run_test_case(
         env["PORT"] = str(port)
         server = None
         try:
+            server_argv, _ = _maybe_sandbox_wrap(
+                _remap_python(manifest.entrypoint), root, allow_network=False
+            )
             server = subprocess.Popen(
-                _remap_python(manifest.entrypoint),
+                server_argv,
                 cwd=str(root),
                 env=_sandbox_env(root, env, allow_network=False),
                 stdin=subprocess.DEVNULL,
@@ -3095,6 +3184,7 @@ def ouro_start(event, graph, ctx):
 def ouro_compile_contract(event, graph, ctx, llm_output: ObjectiveContractModel):
     run_state = state()
     contract = llm_output
+    contract.required_artifacts = normalize_required_artifacts(contract.required_artifacts)
     problems = validate_contract(contract)
     if problems:
         raise RuntimeError(f"compiled contract invalid: {problems}")
@@ -3157,6 +3247,44 @@ def ouro_compile_contract(event, graph, ctx, llm_output: ObjectiveContractModel)
             ],
         },
     )
+
+
+_ARTIFACT_TOKEN_RE = re.compile(
+    r"(?<![\w./-])(?:[\w.-]+/)*[\w.-]+\.(?:py|md|json|toml|yaml|yml|js|ts|html|css|sh|txt|cfg|ini)(?![\w./-])",
+    re.IGNORECASE,
+)
+
+
+def normalize_required_artifacts(items: list[str]) -> list[str]:
+    """Keep exact workspace-relative paths and salvage an unambiguous path
+    token from prose; drop entries that are descriptions or alternatives.
+
+    The LLM contract compiler sometimes emits prose in ``required_artifacts``
+    ("a main.py or equivalent entrypoint"). The hard gate checks each entry as
+    a literal path, so prose would fail the gate spuriously. This keeps clean
+    relative paths, extracts a single path token when a phrase contains exactly
+    one, and drops "or equivalent"/alternative phrasings so the builder's
+    architecture is not over-constrained.
+    """
+    normalized: list[str] = []
+    for value in items:
+        raw = str(value).strip()
+        if not raw:
+            continue
+        if not any(character.isspace() for character in raw):
+            resolved, _ = resolve_workspace_path(Path("/__ouro_probe__"), raw)
+            if resolved is not None:
+                normalized.append(PurePosixPath(raw.replace("\\", "/")).as_posix())
+            continue
+        lowered = raw.lower()
+        if " or equivalent" in lowered or " or alternative" in lowered:
+            continue
+        tokens = _ARTIFACT_TOKEN_RE.findall(raw)
+        if len(tokens) == 1:
+            resolved, _ = resolve_workspace_path(Path("/__ouro_probe__"), tokens[0])
+            if resolved is not None:
+                normalized.append(PurePosixPath(tokens[0].replace("\\", "/")).as_posix())
+    return list(dict.fromkeys(normalized))
 
 
 def validate_contract(contract: ObjectiveContractModel) -> list[str]:
@@ -4074,58 +4202,74 @@ def ouro_continue(event, graph, ctx):
     request_next_build(graph, generation + 1)
 
 
-@behavior(name="ouro_failure_router", on=["behavior.failed"])
-def ouro_failure_router(event, graph, ctx):
-    """Convert behavior failures into either a generation rejection (builder
-    ran out of turns / returned unparseable output) or terminal
-    finalization (provider/network/budget failures)."""
-    run_state = state()
-    if run_state.finalized:
-        return
-    payload = event.payload
-    failed_behavior = str(payload.get("behavior", ""))
-    reason = str(payload.get("reason", "") or payload.get("error_message", ""))
-    message = str(payload.get("message", "") or payload.get("error", ""))
-    run_state.llm_failures.append(
-        {"behavior": failed_behavior, "reason": reason, "message": short(message, 500)}
-    )
-
-    if failed_behavior == "ouro_builder" and reason in BUILDER_GENERATION_FAILURE_REASONS:
-        session = close_build_session()
-        generation = session.generation if session else run_state.generations_attempted
-        if session is not None:
-            session_node = graph.add_object(
-                OBJ["build_session"],
-                {
-                    "generation": generation,
-                    "started_at": session.started_at,
-                    "ended_at": now_iso(),
-                    "submitted": False,
-                    "tool_calls": len(session.tool_log),
-                    "files_written": session.files_written,
-                    "commands_run": len(session.commands),
-                    "status": f"failed:{reason}",
-                },
-            )
-            session.object_id = session_node.id
-            shutil.rmtree(session.workspace.parent, ignore_errors=True)
-        graph.emit(
-            E_CAND_REJECTED,
-            rejection_payload(
-                generation,
-                stage="builder_failure",
-                public_reason=f"builder session failed ({reason})",
-                session=session,
-            ),
+def emit_kernel_event(graph: Graph, event_type: str, payload: dict[str, Any]) -> None:
+    """Emit an application event directly on the raw Graph (used by the run
+    driver, which runs outside any behavior). Custom ``ouro.v0.*`` events are
+    dispatched by a subsequent ``run_until_idle`` — unlike framework lifecycle
+    events such as ``behavior.failed``, which activegraph never re-dispatches."""
+    graph.emit(
+        Event(
+            id=graph.ids.event(),
+            type=event_type,
+            payload=payload,
+            actor="ouroboros-kernel",
+            timestamp=graph.clock.now(),
         )
-        return
-
-    status = "budget_exhausted" if reason.startswith("budget.") else "failed"
-    finalize_run(
-        graph,
-        status=status,
-        reason=f"behavior {failed_behavior!r} failed: {reason} {short(message, 300)}",
     )
+
+
+def recover_builder_failure(graph: Graph, reason: str, message: str) -> bool:
+    """Turn a recoverable builder failure into a single-generation rejection so
+    the loop continues, instead of killing the whole run.
+
+    activegraph suppresses ``behavior.*`` events from behavior dispatch, so a
+    ``behavior.failed`` from the builder never reaches a subscribed behavior.
+    The run driver calls this at idle when ``runtime.errors`` shows the builder
+    failed with a recoverable reason (ran out of tool turns, or returned
+    unparseable / schema-violating final output). It records the failed build
+    session and emits ``E_CAND_REJECTED`` on the raw graph; the subsequent
+    ``run_until_idle`` dispatches ``ouro_continue``, which advances to the next
+    generation or finalizes. Returns True when it handled a recoverable builder
+    failure."""
+    run_state = state()
+    if run_state.finalized or reason not in BUILDER_GENERATION_FAILURE_REASONS:
+        return False
+    session = close_build_session()
+    if session is None or session.generation <= 0:
+        return False
+    generation = session.generation
+    run_state.llm_failures.append(
+        {"behavior": "ouro_builder", "reason": reason, "message": short(message, 500)}
+    )
+    session_node = graph.add_object(
+        OBJ["build_session"],
+        {
+            "generation": generation,
+            "started_at": session.started_at,
+            "ended_at": now_iso(),
+            "submitted": False,
+            "tool_calls": len(session.tool_log),
+            "files_written": session.files_written,
+            "commands_run": len(session.commands),
+            "status": f"failed:{reason}",
+        },
+    )
+    session.object_id = session_node.id
+    if run_state.run_object_id:
+        graph.add_relation(run_state.run_object_id, session_node.id, "contains")
+    if session.workspace.parent.exists():
+        shutil.rmtree(session.workspace.parent, ignore_errors=True)
+    emit_kernel_event(
+        graph,
+        E_CAND_REJECTED,
+        rejection_payload(
+            generation,
+            stage="builder_failure",
+            public_reason=f"builder session failed ({reason})",
+            session=session,
+        ),
+    )
+    return True
 
 
 BEHAVIORS = [
@@ -4138,7 +4282,6 @@ BEHAVIORS = [
     ouro_evaluate,
     ouro_judge,
     ouro_continue,
-    ouro_failure_router,
 ]
 
 
@@ -4168,7 +4311,79 @@ def _configure_behaviors(configuration: EngineConfig) -> None:
     for item in BEHAVIORS:
         if hasattr(item, "handler"):
             item.model = configuration.model  # None → provider default
-    ouro_builder.max_tool_turns = max(4, configuration.max_tool_turns)
+    # activegraph counts the final non-tool response as a turn in the same
+    # loop budget. Reserve one turn beyond the requested tool-turn budget so a
+    # builder that calls submit_candidate on its last allowed tool turn can
+    # still return the required BuilderFinal instead of hitting
+    # tool.max_turns_exhausted.
+    ouro_builder.max_tool_turns = max(4, configuration.max_tool_turns) + 1
+
+
+def _failure_fields(failure: Any) -> tuple[str, str, str]:
+    behavior_name = str(getattr(failure, "behavior", "") or "")
+    reason = str(
+        getattr(failure, "reason", "")
+        or getattr(failure, "exception_type", "")
+        or ""
+    )
+    message = str(getattr(failure, "message", "") or "")
+    return behavior_name, reason, message
+
+
+def _sync_llm_failures(run_state: RunState, runtime: Any) -> None:
+    seen = {
+        (row["behavior"], row["reason"], row["message"])
+        for row in run_state.llm_failures
+    }
+    for failure in getattr(runtime, "errors", []) or []:
+        behavior_name, reason, message = _failure_fields(failure)
+        row = {"behavior": behavior_name, "reason": reason, "message": short(message, 500)}
+        key = (row["behavior"], row["reason"], row["message"])
+        if key not in seen:
+            run_state.llm_failures.append(row)
+            seen.add(key)
+
+
+def _idle_failure_reason(runtime: Any) -> str:
+    errors = list(getattr(runtime, "errors", []) or [])
+    if errors:
+        behavior_name, reason, message = _failure_fields(errors[-1])
+        return (
+            f"behavior {behavior_name!r} failed: {reason} "
+            f"{short(message, 300)}".strip()
+        )
+    return "runtime went idle without reaching a terminal state; inspect trace.sqlite"
+
+
+def _drive_recovery(graph: Graph, runtime: Any, configuration: EngineConfig) -> None:
+    """After run_goal goes idle, recover recoverable builder failures.
+
+    ``behavior.failed`` is not dispatchable in activegraph, so the in-graph
+    failure router cannot fire. Instead the driver inspects ``runtime.errors``
+    at each idle point: a recoverable ``ouro_builder`` failure becomes a
+    single-generation rejection (via ``recover_builder_failure``) and the loop
+    is re-pumped, so one bad generation no longer kills the whole run."""
+    run_state = state()
+    processed = 0
+    guard = max(1, configuration.generations) + 3
+    while not run_state.finalized and guard > 0:
+        guard -= 1
+        errors = list(getattr(runtime, "errors", []) or [])
+        new_failures = errors[processed:]
+        processed = len(errors)
+        recovered = False
+        for failure in reversed(new_failures):
+            behavior_name, reason, message = _failure_fields(failure)
+            if (
+                behavior_name == "ouro_builder"
+                and reason in BUILDER_GENERATION_FAILURE_REASONS
+                and recover_builder_failure(graph, reason, message)
+            ):
+                runtime.run_until_idle()
+                recovered = True
+                break
+        if not recovered:
+            break
 
 
 def run_ouroboros(
@@ -4204,7 +4419,10 @@ def run_ouroboros(
     run_state = _STATE
 
     if provider is None:
-        provider = AnthropicProvider()
+        if configuration.provider == "openai":
+            provider = OpenAIProvider()
+        else:
+            provider = CostSafeAnthropicProvider()
     provider_name = type(provider).__name__
     resolved_model = configuration.model or getattr(
         provider, "default_model", "provider-default"
@@ -4248,15 +4466,17 @@ def run_ouroboros(
             )
         elif not iter_workspace_files(seed):
             precheck_failure = ("unsupported", f"--seed-dir {seed} contains no files")
-    if (
-        precheck_failure is None
-        and isinstance(provider, AnthropicProvider)
-        and not os.environ.get("ANTHROPIC_API_KEY")
-    ):
-        precheck_failure = (
-            "failed",
-            "ANTHROPIC_API_KEY is not set; export it or inject a provider.",
-        )
+    if precheck_failure is None:
+        required_key = None
+        if isinstance(provider, AnthropicProvider):
+            required_key = "ANTHROPIC_API_KEY"
+        elif isinstance(provider, OpenAIProvider):
+            required_key = "OPENAI_API_KEY"
+        if required_key and not os.environ.get(required_key):
+            precheck_failure = (
+                "failed",
+                f"{required_key} is not set; export it or inject a provider.",
+            )
 
     try:
         if precheck_failure is not None:
@@ -4264,6 +4484,7 @@ def run_ouroboros(
         else:
             try:
                 runtime.run_goal(configuration.objective)
+                _drive_recovery(graph, runtime, configuration)
             except Exception as exc:  # noqa: BLE001 - always finalize
                 finalize_run(
                     graph,
@@ -4271,6 +4492,7 @@ def run_ouroboros(
                     reason=f"kernel error: {type(exc).__name__}: {exc}",
                 )
             if not run_state.finalized:
+                _sync_llm_failures(run_state, runtime)
                 budget = getattr(runtime, "budget", None)
                 exhausted = budget.exhausted_by() if budget is not None else None
                 if exhausted:
@@ -4283,10 +4505,7 @@ def run_ouroboros(
                     finalize_run(
                         graph,
                         status="failed",
-                        reason=(
-                            "runtime went idle without reaching a terminal "
-                            "state; inspect trace.sqlite"
-                        ),
+                        reason=_idle_failure_reason(runtime),
                     )
     finally:
         if not run_state.finalized:
@@ -4411,6 +4630,9 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--allow-network", action="store_true")
     parser.add_argument("--allow-pip", action="store_true")
     parser.add_argument("--seed-dir", type=Path)
+    parser.add_argument(
+        "--provider", choices=("anthropic", "openai"), default="anthropic"
+    )
     parser.add_argument("--model", default=os.environ.get("ANTHROPIC_MODEL"))
     parser.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)
     parser.add_argument("--run-id")
@@ -4457,6 +4679,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         allow_network=args.allow_network,
         allow_pip=args.allow_pip,
         seed_dir=args.seed_dir.resolve() if args.seed_dir else None,
+        provider=args.provider,
         model=args.model,
         run_root=args.run_root,
         run_id=args.run_id or "",

@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import ouroboros as ob  # noqa: E402
 from activegraph.store.sqlite import SQLiteEventStore  # noqa: E402
+from activegraph.llm.types import LLMMessage, ToolCall  # noqa: E402
 
 import scripted_provider as sp  # noqa: E402
 
@@ -1291,6 +1292,153 @@ def test_entrypoint_module_path_guard(tmp_path):
     for bad in ["..//..//x", "../evil", "/etc/passwd"]:
         ok, reason = ob.entrypoint_target_exists(root, ["python", "-m", bad])
         assert not ok, bad
+
+
+# ---------------------------------------------------------------------------
+# Regression: D1 (cost-cap crash), D2 (dead failure router), turn budget, ports
+# ---------------------------------------------------------------------------
+
+
+class _FakeCountClient:
+    """Minimal stand-in for anthropic.Anthropic that records count_tokens args."""
+
+    def __init__(self, *, raise_on_call: bool = False):
+        import types as _types
+
+        self.captured = None
+        self.raise_on_call = raise_on_call
+        self.messages = _types.SimpleNamespace(count_tokens=self._count)
+
+    def _count(self, **kwargs):
+        import types as _types
+
+        if self.raise_on_call:
+            raise RuntimeError("simulated count_tokens failure")
+        self.captured = kwargs
+        return _types.SimpleNamespace(input_tokens=123)
+
+
+def test_d1_count_tokens_never_sends_tool_role():
+    # The upstream bug: count_tokens serialized role="tool" and the Anthropic
+    # API 400s. The fix routes messages through the same converter as the send
+    # path, so no "tool" role ever reaches the API.
+    fake = _FakeCountClient()
+    provider = ob.CostSafeAnthropicProvider(client=fake)
+    messages = [
+        LLMMessage(role="user", content="build it"),
+        LLMMessage(
+            role="assistant",
+            content="",
+            tool_calls=(ToolCall(id="tu_1", name="write_file", args={"path": "a.py"}),),
+        ),
+        LLMMessage(role="tool", content='{"ok": true}', tool_use_id="tu_1", tool_name="write_file"),
+    ]
+    tokens = provider.count_tokens(system="sys", messages=messages, model="claude-opus-4-8")
+    assert tokens == 123
+    assert fake.captured is not None, "the real count path did not run"
+    roles = [m["role"] for m in fake.captured["messages"]]
+    assert "tool" not in roles
+    assert set(roles) <= {"user", "assistant"}
+
+
+def test_d1_count_tokens_falls_back_without_raising():
+    # A failure in the count path must not kill the behavior; it returns a
+    # conservative local estimate instead.
+    provider = ob.CostSafeAnthropicProvider(client=_FakeCountClient(raise_on_call=True))
+    tokens = provider.count_tokens(
+        system="a" * 40,
+        messages=[LLMMessage(role="tool", content="b" * 40, tool_use_id="t")],
+        model="claude-opus-4-8",
+    )
+    assert tokens > 0
+
+
+def test_d1_cost_capped_run_completes(tmp_path):
+    # With a cost cap set, the runtime's pre-call cost gate calls count_tokens
+    # every turn. The run must complete rather than crash on the tool turns.
+    provider = sp.ScriptedProvider(
+        contract=sp.contract(objective="calc", public_tests=cli_public_tests()),
+        private=cli_private_tests(),
+        builder_generations=cli_builder_script(),
+    )
+    configuration = ob.EngineConfig(
+        objective="calc",
+        generations=1,
+        run_root=tmp_path / "runs",
+        max_tool_turns=12,
+        llm_retry_attempts=1,
+        max_cost_usd=5.0,
+        quiet=True,
+    )
+    result = ob.run_ouroboros(configuration, provider=provider, cli_args=["<test>"])
+    assert result["status"] == "completed", result["reason"]
+    assert result["generations_promoted"] == 1
+
+
+def test_d2_recoverable_builder_failure_continues(tmp_path):
+    # Generation 1's builder exhausts its tool turns (never submits); the run
+    # must reject that one generation and continue to generation 2, not die.
+    exhaust = [[("list_tree", {"path": ""})] for _ in range(8)]
+    provider = sp.ScriptedProvider(
+        contract=sp.contract(objective="calc", public_tests=cli_public_tests()),
+        private=cli_private_tests(),
+        builder_generations=[exhaust, cli_builder_script()[0]],
+    )
+    result = run_scenario(tmp_path, provider, objective="calc", generations=2, max_tool_turns=4)
+
+    assert result["status"] == "completed", result["reason"]
+    assert result["generations_promoted"] == 1, result
+    history = json.loads((Path(result["paths"]["run_dir"]) / "history.json").read_text())
+    stages = {row["generation"]: row["stage"] for row in history}
+    assert stages.get(1) == "builder_failure"
+    assert history[-1]["decision"] == "promoted"
+    # The recovered failure is recorded, and the run has exactly one terminal event.
+    assert any(f["reason"] == "tool.max_turns_exhausted" for f in result["llm_failures"])
+    events = load_events(result)
+    assert len([e for e in events if e.type == ob.E_RUN_FINISHED]) == 1
+    # Final workspace is the promoted generation-2 tree.
+    g2 = json.loads((Path(result["paths"]["run_dir"]) / "generations" / "g002" / "tree.json").read_text())
+    assert ob.workspace_id(Path(result["paths"]["final_workspace"])) == g2["workspace_id"]
+
+
+def test_turn_budget_reserves_final_response(tmp_path):
+    # A builder that uses exactly max_tool_turns tool turns (submitting on the
+    # last) must still get a turn for its final structured response. Without the
+    # reserved +1 this would exhaust and promote nothing.
+    four_turn_script = [
+        [
+            sp.write_turn(cli_files()),
+            [("run_command", {"argv": ["python", "test_agent.py"]})],
+            [("run_command", {"argv": ["python", "agent.py"], "stdin": json.dumps({"task": "add 1 1"})})],
+            sp.submit_turn("built calc in exactly four tool turns", "tests pass", "n/a"),
+        ]
+    ]
+    provider = sp.ScriptedProvider(
+        contract=sp.contract(objective="calc", public_tests=cli_public_tests()),
+        private=cli_private_tests(),
+        builder_generations=four_turn_script,
+    )
+    result = run_scenario(tmp_path, provider, objective="calc", generations=1, max_tool_turns=4)
+    assert result["status"] == "completed", result["reason"]
+    assert result["generations_promoted"] == 1
+
+
+def test_normalize_required_artifacts():
+    out = ob.normalize_required_artifacts(
+        [
+            "agent.py",
+            "src/calc/ops.py",
+            "a main.py entrypoint or equivalent",
+            "a module that exposes solve() in solver.py",
+            "some prose with no path at all",
+            "../escape.py",
+            "/abs/path.py",
+        ]
+    )
+    assert "agent.py" in out and "src/calc/ops.py" in out
+    assert "solver.py" in out  # single salvageable token from prose
+    assert not any("main.py" in item for item in out)  # 'or equivalent' dropped
+    assert not any(".." in item or item.startswith("/") for item in out)
 
 
 # ---------------------------------------------------------------------------

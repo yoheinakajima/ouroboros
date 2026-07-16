@@ -13,10 +13,45 @@ specification. Every command below was run and its result recorded.
 | activegraph | 1.10.0 |
 | pydantic | 2.13.4 |
 | anthropic (SDK) | 0.117.0 |
-| engine source SHA-256 | `801a7245a4283b71c80b1d2705019e6fb8039ebce951164dd9e1ed691ae02921` |
+| engine source SHA-256 | `63071859f5ec3cdd4ff531101fc6cc2ee84d3f2c264962bf640cb4fe47532cba` |
 | `ANTHROPIC_API_KEY` | not set in this environment |
 
-Sizes: `ouroboros.py` 4485 lines; `tests/test_ouroboros.py` 1240; `tests/scripted_provider.py` 219; preserved baseline `experiments/baselines/text_policy_v0.py` 2946.
+Sizes: `ouroboros.py` 4737 lines; `tests/test_ouroboros.py` 1468; `tests/scripted_provider.py` 219; preserved baseline `experiments/baselines/text_policy_v0.py` 2946.
+
+## Fixes landed after the v1 RC campaign
+
+An external release-candidate campaign (6 live runs, $2.53) surfaced two
+release blockers and some minor items. Both blockers were verified against the
+installed `activegraph 1.10.0` and fixed; regression tests were added.
+
+- **D1 — cost-capped runs crashed (P0).** `activegraph`'s `AnthropicProvider.count_tokens`
+  serialized messages with `to_dict()`, emitting `role="tool"`, which the
+  Anthropic count API rejects; the pre-call cost gate only runs when a cost
+  limit is set, so every `--max-cost-usd` run crashed on the first builder turn
+  that echoed a tool result. Fixed with `CostSafeAnthropicProvider`, whose
+  `count_tokens` reuses the send-path converter (`_message_to_anthropic`) and
+  falls back to a local estimate rather than raising. Tests:
+  `test_d1_count_tokens_never_sends_tool_role`,
+  `test_d1_count_tokens_falls_back_without_raising`,
+  `test_d1_cost_capped_run_completes`.
+- **D2 — failure-recovery router was dead code (P1).** `activegraph` never
+  re-dispatches `behavior.*` events, so a `@behavior(on=["behavior.failed"])`
+  handler never fires; recoverable builder failures killed the whole run.
+  Fixed by driving recovery from the run loop: at idle, a recoverable
+  `ouro_builder` failure in `runtime.errors` becomes a one-generation rejection
+  (`recover_builder_failure` emits `E_CAND_REJECTED`, which the existing
+  `ouro_continue` chain advances). Test:
+  `test_d2_recoverable_builder_failure_continues`.
+- **Turn-budget off-by-one.** The builder now reserves one turn beyond the
+  requested tool-turn budget for its final structured response. Test:
+  `test_turn_budget_reserves_final_response`.
+- **Ports from a parallel implementation:** macOS Seatbelt sandboxing,
+  `--provider {anthropic,openai}`, `required_artifacts` prose-normalization
+  (`test_normalize_required_artifacts`), and richer idle-failure reasons.
+- **D5 (`ouro.v0` prefix) is not a defect** — the engine spec mandates the
+  `ouro.v0.` application-event prefix; it is intentional.
+
+The suite is now **28 passed, 1 skipped**.
 
 ## How the tests exercise the real system
 
@@ -36,7 +71,7 @@ subprocesses during evaluation.
 
 ```
 $ python -m pytest tests/test_ouroboros.py -v
-19 passed, 1 skipped in 5.77s
+28 passed, 1 skipped
 ```
 
 The 1 skip is the live-model end-to-end test (`test_live_end_to_end_multifile`),
@@ -177,7 +212,7 @@ python ouroboros.py "Build a command-line to-do list tool (JSON stdin/stdout)" -
 
 ```bash
 pip install "activegraph[anthropic]" pytest
-python -m pytest tests/test_ouroboros.py -v          # 19 pass, 1 skip (no key)
+python -m pytest tests/test_ouroboros.py -v          # 28 pass, 1 skip (no key)
 ```
 
 To regenerate the inspected demo bundle:
@@ -202,7 +237,8 @@ activegraph inspect "sqlite:///$(pwd)/demo_runs/demo-multifile-cli/trace.sqlite"
 
 1. **Constrained execution, not a hardened sandbox.** Isolation is a stripped
    environment + POSIX `RLIMIT_*` + workspace-rooted path guard + process-group
-   kills. Network-off works by stripping proxy variables and gating
+   kills, plus macOS Seatbelt (`sandbox-exec`) when available. Network-off works
+   by stripping proxy variables and gating
    `fetch_url`/`pip`; it does **not** firewall raw sockets. Evidence:
    `test_actual_web_behavior` reaches `127.0.0.1` over loopback with
    `--allow-network`, and the same loopback path is not blocked by the
@@ -228,7 +264,7 @@ activegraph inspect "sqlite:///$(pwd)/demo_runs/demo-multifile-cli/trace.sqlite"
    back to `write_file` for whole-file rewrites (and does so in every scripted
    scenario).
 
-5. **Scripted-provider coverage ≠ live-model coverage.** 19 tests prove the
+5. **Scripted-provider coverage ≠ live-model coverage.** The tests prove the
    *engine mechanics* (tools, evaluation, gates, promotion, isolation, trace,
    finalization) with a deterministic model. They do **not** demonstrate that a
    live model reliably drives multi-generation improvement — that is what the

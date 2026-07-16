@@ -135,7 +135,11 @@ A prose description of a capability never satisfies a capability test.
 Candidate code runs in constrained subprocesses: `shell=False`, argv arrays, a
 stripped environment (no inherited API keys), a workspace-local `HOME`/`TMPDIR`,
 its own process group, and CPU / address-space / file-size / open-file limits
-(POSIX `RLIMIT_*`, where supported). Output is size-capped.
+(POSIX `RLIMIT_*`, where supported). Output is size-capped. On macOS, commands
+are additionally wrapped in a Seatbelt (`sandbox-exec`) profile that hides the
+real home directory, makes the filesystem read-only outside the candidate
+workspace, and denies networking unless `--allow-network` is set — defense in
+depth on top of the portable controls.
 
 - **Network** is off by default. `fetch_url` is disabled and proxy variables are
   stripped from subprocess environments unless `--allow-network` is passed.
@@ -208,6 +212,11 @@ Terminal status is always exactly one of: `baseline_only`, `completed`,
 terminal `ouro.v0.run.finished` event are produced on **every** path, including
 mid-run LLM failure, timeout, and budget exhaustion.
 
+A *recoverable* builder failure in one generation — the model runs out of tool
+turns or returns unparseable/schema-violating final output — is rejected as a
+single generation and the run continues to the next generation, rather than
+ending the whole run. Provider/network/budget failures still finalize.
+
 ## Inspecting a trace
 
 ```bash
@@ -252,6 +261,7 @@ python ouroboros.py "OBJECTIVE" [options]
   --allow-network            enable fetch_url and network env passthrough
   --allow-pip                enable package-installation commands
   --seed-dir DIR             evolve an existing project instead of the embedded seed
+  --provider {anthropic,openai}   LLM provider (default anthropic)
   --model NAME               provider model (default: provider default)
   --run-root DIR             where run bundles are written (default .ouroboros/runs)
   --run-id ID                explicit run id (default: timestamp + random)
@@ -259,7 +269,7 @@ python ouroboros.py "OBJECTIVE" [options]
   --command-timeout S        per-command wall-clock cap (default 60s)
   --test-timeout S           per-test wall-clock cap (default 30s)
   --max-run-seconds S        whole-run wall-clock budget (default 3600s)
-  --max-cost-usd USD         cost ceiling (optional)
+  --max-cost-usd USD         cost ceiling in USD (optional; safe to set)
   --max-workspace-files N    workspace file-count cap (default 400)
   --max-workspace-bytes N    workspace byte cap (default 8_000_000)
   --describe                 print the engine contract as JSON and exit
