@@ -1192,6 +1192,51 @@ def test_apply_unified_patch():
     patched, error = ob.apply_unified_patch(original, bad_patch)
     assert patched is None and error
 
+    # Regression: a hunk whose first body line is a deletion of "--..." or an
+    # addition of "++..." must not be silently dropped.
+    original2 = "---\ntitle: x\n"
+    patched, error = ob.apply_unified_patch(original2, "@@ -1,1 +0,0 @@\n----\n")
+    # The literal "---" separator line is removed (not silently kept).
+    assert error == "" and patched == "title: x\n", (patched, error)
+
+    original3 = "x = 1\n"
+    patched, error = ob.apply_unified_patch(original3, "@@ -1,0 +1,1 @@\n+++added\n")
+    assert error == "" and patched == "++added\nx = 1\n", (patched, error)
+
+
+def test_find_symlinks_skips_ignored_dirs(tmp_path):
+    root = tmp_path / "ws"
+    (root / ".ouro_home").mkdir(parents=True)
+    (root / "real").mkdir()
+    outside = tmp_path / "outside.txt"
+    outside.write_text("x")
+    try:
+        # A symlink inside a skipped dir must NOT be reported (it is never
+        # copied into the bundle or evaluated candidate).
+        (root / ".ouro_home" / "link").symlink_to(outside)
+        # A symlink in the real tree MUST be reported.
+        (root / "real" / "escape").symlink_to(outside)
+    except OSError:
+        pytest.skip("symlinks not supported here")
+    found = ob.find_symlinks(root)
+    assert "real/escape" in found
+    assert not any(f.startswith(".ouro_home") for f in found), found
+    # workspace_integrity therefore does not spuriously fail on sandbox dirs.
+    prev = ob._STATE
+    ob._STATE = ob.RunState(
+        config=ob.EngineConfig(objective="x"),
+        run_dir=tmp_path / "rd",
+        work_root=tmp_path / "wr",
+        private_dir=tmp_path / "pd",
+        trace_path=tmp_path / "rd" / "t.sqlite",
+    )
+    try:
+        # Only the .ouro_home symlink present -> integrity should be clean.
+        (root / "real" / "escape").unlink()
+        assert ob.workspace_integrity(root)["ok"] is True
+    finally:
+        ob._STATE = prev
+
 
 def test_tree_hash_is_path_content_based(tmp_path):
     a = tmp_path / "a"
@@ -1211,6 +1256,41 @@ def test_describe_and_export_contract(tmp_path, monkeypatch):
     assert described["engine_version"] == ob.ENGINE_VERSION
     assert "submit_candidate" in described["builder_tools"]
     assert set(ob.TERMINAL_STATUSES) == set(described["terminal_statuses"])
+
+
+def test_validate_contract_rejects_duplicate_ids():
+    dup_test = sp.contract(
+        objective="x",
+        public_tests=[
+            ob.TestCaseSpec(id="t", kind="entrypoint_io"),
+            ob.TestCaseSpec(id="t", kind="entrypoint_io"),
+        ],
+    )
+    problems = ob.validate_contract(dup_test)
+    assert any("duplicate test id" in p for p in problems)
+
+    dup_rubric = sp.contract(
+        objective="x",
+        public_tests=[ob.TestCaseSpec(id="t", kind="entrypoint_io")],
+        rubric=[
+            ob.RubricCriterion(id="r", criterion="a", anchors="0/50/100"),
+            ob.RubricCriterion(id="r", criterion="b", anchors="0/50/100"),
+        ],
+    )
+    problems = ob.validate_contract(dup_rubric)
+    assert any("duplicate rubric id" in p for p in problems)
+
+
+def test_entrypoint_module_path_guard(tmp_path):
+    root = tmp_path / "ws"
+    (root / "app").mkdir(parents=True)
+    (root / "app" / "main.py").write_text("print('x')")
+    ok, _ = ob.entrypoint_target_exists(root, ["python", "-m", "app.main"])
+    assert ok
+    # A crafted module name cannot escape the workspace or pass the gate.
+    for bad in ["..//..//x", "../evil", "/etc/passwd"]:
+        ok, reason = ob.entrypoint_target_exists(root, ["python", "-m", bad])
+        assert not ok, bad
 
 
 # ---------------------------------------------------------------------------

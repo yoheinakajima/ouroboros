@@ -643,10 +643,26 @@ def iter_workspace_files(root: Path) -> list[tuple[str, Path]]:
 
 
 def find_symlinks(root: Path) -> list[str]:
+    """Report symlinks in the part of the tree that is actually copied and
+    evaluated. Mirror ``iter_workspace_files`` pruning: skip ``SKIP_DIRS``
+    (e.g. .git, node_modules, .venv, the sandbox .ouro_home) so a symlink a
+    tool created under HOME/TMPDIR — which is never copied into the bundle or
+    the evaluated candidate — does not spuriously fail workspace integrity."""
     found: list[str] = []
     root = root.resolve()
     for base, dirs, files in os.walk(root, followlinks=False):
-        for name in list(dirs) + list(files):
+        kept: list[str] = []
+        for name in dirs:
+            path = Path(base) / name
+            if path.is_symlink():
+                # Report the symlinked directory itself, but do not recurse.
+                found.append(path.relative_to(root).as_posix())
+                continue
+            if name in SKIP_DIRS:
+                continue
+            kept.append(name)
+        dirs[:] = sorted(kept)
+        for name in files:
             path = Path(base) / name
             if path.is_symlink():
                 found.append(path.relative_to(root).as_posix())
@@ -922,8 +938,16 @@ def entrypoint_target_exists(root: Path, argv: list[str]) -> tuple[bool, str]:
         if index + 1 >= len(argv):
             return False, "'-m' has no module argument"
         module = argv[index + 1]
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)*", module):
+            return False, f"invalid module name for -m: {module!r}"
         rel = module.replace(".", "/")
-        if (root / (rel + ".py")).is_file() or (root / rel / "__main__.py").is_file():
+        # Path-guard the computed module paths so a crafted module name cannot
+        # make the gate pass on a file outside the workspace.
+        mod_file, _ = resolve_workspace_path(root, rel + ".py")
+        pkg_main, _ = resolve_workspace_path(root, rel + "/__main__.py")
+        if (mod_file is not None and mod_file.is_file()) or (
+            pkg_main is not None and pkg_main.is_file()
+        ):
             return True, ""
         return False, f"module {module!r} not found in workspace"
     for token in argv[1:]:
@@ -1341,10 +1365,11 @@ def apply_unified_patch(original: str, patch: str) -> tuple[Optional[str], str]:
             start = int(match.group(1))
             body: list[str] = []
             index += 1
+            # Collect the hunk body until the next @@. File headers
+            # (--- a/f, +++ b/f) are consumed by the outer loop before the
+            # first @@, so we must NOT skip lines here — a body line may be a
+            # deletion of "--..." or an addition of "++..." content.
             while index < len(patch_lines) and not patch_lines[index].startswith("@@"):
-                if patch_lines[index].startswith(("---", "+++")) and not body:
-                    index += 1
-                    continue
                 body.append(patch_lines[index])
                 index += 1
             hunks.append((start, body))
@@ -3151,11 +3176,15 @@ def validate_contract(contract: ObjectiveContractModel) -> list[str]:
         seen.add(test.id)
         if test.kind == "python_call" and not test.python_snippet.strip():
             problems.append(f"test {test.id!r}: python_call requires python_snippet")
+    seen_rubric: set[str] = set()
     for criterion in contract.qualitative_rubric:
         try:
             safe_id(criterion.id, "rubric id")
         except ValueError as exc:
             problems.append(str(exc))
+        if criterion.id in seen_rubric:
+            problems.append(f"duplicate rubric id {criterion.id!r}")
+        seen_rubric.add(criterion.id)
     return problems
 
 
