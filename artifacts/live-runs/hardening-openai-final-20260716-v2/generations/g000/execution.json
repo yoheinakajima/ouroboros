@@ -1,0 +1,168 @@
+{
+  "private": {
+    "details": "manager-private",
+    "passed": 0,
+    "results_digest": "5504285aacf9f9d67b72a804d0dffa62caee8b901edbaf08843931d8e1f4a44e",
+    "score": 0.0,
+    "total": 5
+  },
+  "private_receipt": {
+    "algorithm": "sha256",
+    "manager_path": "private/private_suite.json",
+    "sealed": true,
+    "suite_hash": "f9a71c23ebdba814dec7858ad3f42e956116fe400c5774130d2775c3f999d5cf",
+    "test_count": 5
+  },
+  "public": {
+    "declared_test": {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "-q"
+      ],
+      "discovered_tests": 0,
+      "duration_seconds": 0.046,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+      "stderr_truncated": false,
+      "stdout_tail": "",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "hard_gate_errors": [
+      "required artifact missing: cli.py",
+      "declared test command did not prove that at least one test executed"
+    ],
+    "hard_gates": {
+      "declared_test_command": true,
+      "declared_tests_discovered": false,
+      "entrypoint_exists": true,
+      "manifest_valid": true,
+      "no_symlinks_or_escape": true,
+      "private_test_isolation": true,
+      "program_starts_and_protocol_valid": true,
+      "required_artifacts": false,
+      "workspace_budget": true
+    },
+    "hard_gates_passed": false,
+    "passed": 1,
+    "phase": "baseline-public",
+    "protocol": {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.0448,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "smoke_input_sha256": "ad745976f344861a7d6197325becc005fe9c4468f63a4a01f42ed1f2eec97ee0",
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "score": 0.3333333333333333,
+    "test_results": [
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Test that the CLI converts input text to uppercase.",
+        "duration_seconds": 0.0259,
+        "exit_code": 0,
+        "id": "test_uppercase_conversion",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 0,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout missing 'HELLO WORLD'"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "2b532168cade7890454c78cbd1c9573428d73446d3024b8926e93deef687a549",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Test that the CLI handles an empty string correctly.",
+        "duration_seconds": 0.0256,
+        "exit_code": 0,
+        "id": "test_empty_string",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 1,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "1249201474fc71c95b433ba3c329adca846556a6efa9d47dda556bbd2e781f14",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Test that the CLI correctly converts mixed case input to uppercase.",
+        "duration_seconds": 0.0246,
+        "exit_code": 0,
+        "id": "test_mixed_case",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 2,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout missing 'HELLO WORLD'"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "134eaa48bb59981383e97446e04aa31d789043dcef71b773700a073ac05c7157",
+        "timed_out": false
+      }
+    ],
+    "total": 3,
+    "tree": {
+      "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+      "files": [
+        {
+          "path": "MEMORY.md",
+          "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+          "size": 34
+        },
+        {
+          "path": "SELF.md",
+          "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+          "size": 215
+        },
+        {
+          "path": "agent.py",
+          "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+          "size": 276
+        },
+        {
+          "path": "ouroboros.json",
+          "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+          "size": 267
+        }
+      ],
+      "symlinks": [],
+      "total_bytes": 792
+    }
+  }
+}

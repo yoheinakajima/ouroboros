@@ -1,0 +1,75 @@
+{
+  "manager_reviewed": true,
+  "suite_hash": "15c2c0442cf659ef2b6e2ec367d0bf843b283cf62390c1fda1eee7a907db2f3b",
+  "tests": [
+    {
+      "argv": [],
+      "description": "Test that the CLI converts input text to uppercase.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_001",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": "hello world"
+      },
+      "stdout_contains": [
+        "{\"text\": \"HELLO WORLD\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI handles empty input text.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_002",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": ""
+      },
+      "stdout_contains": [
+        "{\"text\": \"\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI handles input with numbers and symbols.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_003",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": "1234!@#$"
+      },
+      "stdout_contains": [
+        "{\"text\": \"1234!@#$\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    }
+  ]
+}

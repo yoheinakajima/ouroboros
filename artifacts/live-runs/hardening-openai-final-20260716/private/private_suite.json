@@ -1,0 +1,124 @@
+{
+  "builder_visible": false,
+  "coverage_notes": [
+    "These private tests cover edge cases and additional scenarios not included in the public tests."
+  ],
+  "manager_reviewed": true,
+  "tests": [
+    {
+      "argv": [],
+      "description": "Test that the CLI handles mixed case input.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "private_test_001",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": "HeLLo WoRLd"
+      },
+      "stdout_contains": [
+        "{\"text\": \"HELLO WORLD\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI handles input with leading and trailing spaces.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "private_test_002",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": "  hello world  "
+      },
+      "stdout_contains": [
+        "{\"text\": \"  HELLO WORLD  \"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI handles input with newline characters.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "private_test_003",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": "hello\nworld"
+      },
+      "stdout_contains": [
+        "{\"text\": \"HELLO\\nWORLD\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI handles input with only spaces.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "private_test_004",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": "     "
+      },
+      "stdout_contains": [
+        "{\"text\": \"     \"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI handles very long input strings.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "private_test_005",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "stdout_contains": [
+        "{\"text\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    }
+  ]
+}

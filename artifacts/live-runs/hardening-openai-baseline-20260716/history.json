@@ -1,0 +1,11 @@
+[
+  {
+    "accepted": true,
+    "generation": 0,
+    "reason": "seed baseline unavailable before terminal preflight",
+    "submission": {
+      "summary": "no evaluated generation"
+    },
+    "tree_changes": []
+  }
+]

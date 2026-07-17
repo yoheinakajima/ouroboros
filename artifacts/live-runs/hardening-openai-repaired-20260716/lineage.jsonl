@@ -1,0 +1,2 @@
+{"content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57", "generation": 0, "record_type": "workspace", "status": "incumbent"}
+{"final_content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57", "reason": "generation limit is zero", "record_type": "run_finalized", "status": "baseline_only"}

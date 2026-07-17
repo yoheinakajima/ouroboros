@@ -21,6 +21,7 @@ if str(ROOT) not in sys.path:
 
 import ouroboros as ouro  # noqa: E402
 from activegraph.llm import LLMResponse, ToolCall  # noqa: E402
+from activegraph.llm.errors import LLMBehaviorError  # noqa: E402
 
 
 def response(*, parsed=None, tool_calls=None, model="scripted-model"):
@@ -48,6 +49,7 @@ class ScriptedProvider:
         self.builder_calls = {}
         self.call_count = 0
         self.judge_calls = 0
+        self.last_private_tests = []
 
     def complete(self, **kwargs):
         self.call_count += 1
@@ -92,10 +94,31 @@ class ScriptedProvider:
                         json_equals={"result": "CAFÉ 東京"},
                     ),
                 ]
+            self.last_private_tests = private_tests
             return response(
                 parsed=ouro.PrivateSuite(
                     private_tests=private_tests,
                     coverage_notes=["different inputs from public tests"],
+                ),
+                model=model,
+            )
+        if schema is ouro.SuiteReview:
+            smoke = self.contract.protocol_smoke_input
+            if smoke is None:
+                smoke = next(
+                    (
+                        test.stdin
+                        for test in self.contract.public_tests
+                        if test.kind == "entrypoint" and test.stdin is not None
+                    ),
+                    {"input": "scripted smoke"},
+                )
+            return response(
+                parsed=ouro.SuiteReview(
+                    public_tests=self.contract.public_tests,
+                    private_tests=self.last_private_tests,
+                    protocol_smoke_input=smoke,
+                    findings=["scripted suites are internally consistent"],
                 ),
                 model=model,
             )
@@ -134,18 +157,24 @@ class ScriptedProvider:
             )
         if schema is ouro.JudgeResult:
             self.judge_calls += 1
+            text = "\n".join(
+                str(getattr(message, "content", ""))
+                for message in kwargs.get("messages", [])
+            )
+            case_ids = sorted(
+                set(re.findall(r"rubric-\d{3}-view-[12]", text))
+            )
             return response(
                 parsed=ouro.JudgeResult(
                     scores=[
                         ouro.JudgeCaseScore(
-                            case_id=f"rubric-{index + 1:03d}-view-{view}",
+                            case_id=case_id,
                             a_score=90,
                             b_score=90,
                             severe_regression_side="neither",
                             rationale="Both are scored against absolute anchors; deterministic tests distinguish them.",
                         )
-                        for index, _ in enumerate(self.contract.qualitative_rubric)
-                        for view in (1, 2)
+                        for case_id in case_ids
                     ],
                     summary="The executed evidence is suitable for the kernel decision.",
                 ),
@@ -220,6 +249,14 @@ LOGIC_SOURCE = '''def transform(value: str) -> str:
     return value.strip().upper()
 '''
 
+TEST_SOURCE = '''import unittest
+from logic import transform
+
+class TransformTest(unittest.TestCase):
+    def test_uppercase(self):
+        self.assertEqual(transform(" hello "), "HELLO")
+'''
+
 
 def manifest(entry="app.py"):
     return json.dumps(
@@ -240,6 +277,7 @@ def successful_actions(extra=None):
     rows = [
         ("write_file", {"path": "logic.py", "content": LOGIC_SOURCE}),
         ("write_file", {"path": "app.py", "content": APP_SOURCE}),
+        ("write_file", {"path": "test_app.py", "content": TEST_SOURCE}),
         ("write_file", {"path": "ouroboros.json", "content": manifest()}),
         ("write_file", {"path": "SELF.md", "content": "# Self\n\nMulti-file CLI with tested uppercase transformation.\n"}),
         ("write_file", {"path": "MEMORY.md", "content": "# Memory\n\nExecutable checks are stronger than prose claims.\n"}),
@@ -404,6 +442,10 @@ class CoreEvolutionTests(unittest.TestCase):
             (self.config.run_dir / "private_suite_receipt.json").read_text()
         )
         payload = private_suite["tests"]
+        self.assertTrue(private_suite["manager_reviewed"])
+        self.assertTrue(
+            (self.config.run_dir / "private" / "suite_review.json").is_file()
+        )
         self.assertEqual(receipt["suite_hash"], ouro.sha256_json(payload))
         public_signatures = {
             ouro.test_semantic_signature(test)
@@ -442,6 +484,9 @@ class CoreEvolutionTests(unittest.TestCase):
         )
         usage = json.loads((self.config.run_dir / "usage.json").read_text())
         self.assertEqual(usage["llm_calls"], self.provider.call_count)
+        self.assertEqual(usage["llm_attempts"], self.provider.call_count)
+        self.assertEqual(usage["failed_llm_attempts"], 0)
+        self.assertEqual(usage["calls_by_phase"]["suite_review"], 1)
 
     def test_05d_judge_payload_is_per_case_balanced_and_has_no_private_scores(self):
         contract = ouro.state().contract.model_copy(deep=True)
@@ -458,13 +503,28 @@ class CoreEvolutionTests(unittest.TestCase):
             ]
             self.assertEqual(sorted(views), [False, True])
         conn = sqlite3.connect(self.config.run_dir / "trace.sqlite")
-        payload = conn.execute(
-            "SELECT payload FROM events WHERE type=? ORDER BY seq LIMIT 1",
+        payloads = [
+            row[0]
+            for row in conn.execute(
+                "SELECT payload FROM events WHERE type=? ORDER BY seq",
             (f"{ouro.EVENT_PREFIX}.judge.requested",),
-        ).fetchone()[0]
+            )
+        ]
         conn.close()
-        self.assertNotIn("sealed_behavior_pass_rate", payload)
-        self.assertIn('"cases"', payload)
+        self.assertEqual(len(payloads), 2)
+        self.assertEqual(self.provider.judge_calls, 2)
+        decoded = [json.loads(payload) for payload in payloads]
+        self.assertEqual(
+            {item["independent_batch"] for item in decoded}, {1, 2}
+        )
+        case_sets = [
+            {case["case_id"] for case in item["cases"]} for item in decoded
+        ]
+        self.assertTrue(case_sets[0].isdisjoint(case_sets[1]))
+        self.assertEqual(set.union(*case_sets), set(ouro.state()._comparison_context["judge_mapping"]))
+        for payload in payloads:
+            self.assertNotIn("sealed_behavior_pass_rate", payload)
+            self.assertIn('"cases"', payload)
 
     def test_05e_deterministic_dominance_cannot_be_vetoed_by_one_bad_label(self):
         candidate = {
@@ -705,6 +765,19 @@ print(json.dumps({"result": value, "source": url if url.startswith("http") else 
                 )
                 actions = [
                     ("write_file", {"path": "fetcher.py", "content": fetcher}),
+                    (
+                        "write_file",
+                        {
+                            "path": "test_fetcher.py",
+                            "content": """import json, subprocess, sys, unittest
+
+class FetcherTest(unittest.TestCase):
+    def test_readiness(self):
+        proc = subprocess.run([sys.executable, "fetcher.py"], input=json.dumps({"input": "ready"}), text=True, capture_output=True)
+        self.assertEqual(json.loads(proc.stdout)["result"], "ready")
+""",
+                        },
+                    ),
                     ("write_file", {"path": "ouroboros.json", "content": manifest("fetcher.py")}),
                     ("write_file", {"path": "SELF.md", "content": "# Self\n\nHTTP retrieval agent.\n"}),
                     ("write_file", {"path": "MEMORY.md", "content": "# Memory\n\nCite retrieved bytes.\n"}),
@@ -775,6 +848,20 @@ else:
         contract.qualitative_rubric = ["correctness", "robustness", "usability", "architecture"]
         actions = [
             ("write_file", {"path": "todo.py", "content": cli_source}),
+            (
+                "write_file",
+                {
+                    "path": "test_todo.py",
+                    "content": """import subprocess, sys, unittest
+
+class TodoTest(unittest.TestCase):
+    def test_help(self):
+        proc = subprocess.run([sys.executable, "todo.py", "--help"], text=True, capture_output=True)
+        self.assertEqual(proc.returncode, 0)
+        self.assertIn("usage:", proc.stdout)
+""",
+                },
+            ),
             ("write_file", {"path": "ouroboros.json", "content": argv_manifest}),
             ("write_file", {"path": "SELF.md", "content": "# Self\n\nArgv CLI.\n"}),
             ("write_file", {"path": "MEMORY.md", "content": "# Memory\n\nExpose --help.\n"}),
@@ -796,7 +883,7 @@ else:
             cfg.objective = contract.objective
             result, _ = ouro.run_engine(cfg, provider)
             self.assertEqual(result["accepted_generations"], 1)
-            self.assertEqual(provider.judge_calls, 1)
+            self.assertEqual(provider.judge_calls, 2)
             final_manifest = ouro.load_manifest(cfg.run_dir / "final_workspace")
             self.assertEqual(final_manifest.input_protocol, "argv")
             self.assertEqual(final_manifest.output_protocol, "stdout")
@@ -841,7 +928,7 @@ else:
             cfg = make_config(root, "cost", generations=2, max_tool_turns=5, max_cost_usd=0.5)
             budget = ouro.derived_runtime_budget(cfg)
             self.assertEqual(budget["max_tool_calls"], 40)
-            self.assertEqual(budget["max_llm_calls"], 18)
+            self.assertEqual(budget["max_llm_calls"], 22)
 
             class ExpensiveProvider(ScriptedProvider):
                 def estimate_cost(self, **kwargs):
@@ -927,6 +1014,340 @@ elif sys.argv[1] == "list":
                 ouro._STATE = old_state
             self.assertTrue(evidence["passed"], evidence)
             self.assertEqual(len(evidence["steps"]), 2)
+
+    def test_20_protocol_gate_uses_contract_valid_smoke_input(self):
+        source = '''#!/usr/bin/env python3
+import json
+import sys
+
+payload = json.loads(sys.stdin.read())
+if not isinstance(payload.get("task"), str) or not isinstance(payload.get("files"), dict):
+    raise SystemExit(2)
+print(json.dumps({"files": payload["files"]}))
+'''
+        with tempfile.TemporaryDirectory(prefix="ouro-smoke-") as temporary:
+            root = Path(temporary)
+            workspace = root / "workspace"
+            workspace.mkdir()
+            (workspace / "agent.py").write_text(source)
+            (workspace / "ouroboros.json").write_text(manifest("agent.py"))
+            contract = base_contract(
+                tests=[
+                    ouro.ExecutableTest(
+                        id="schema-input",
+                        kind="entrypoint",
+                        description="Accept the contract request schema",
+                        stdin={"task": "preserve files", "files": {"a.py": "x=1\n"}},
+                        json_equals={"files": {"a.py": "x=1\n"}},
+                    )
+                ]
+            )
+            cfg = make_config(root, "smoke", generations=0)
+            old_state = ouro._STATE
+            ouro._STATE = ouro.RunState(config=cfg, contract=contract)
+            try:
+                passed, evidence = ouro.protocol_gate(
+                    workspace, ouro.load_manifest(workspace), contract
+                )
+            finally:
+                ouro._STATE = old_state
+            self.assertTrue(passed, evidence)
+            expected = json.dumps(contract.public_tests[0].stdin)
+            self.assertEqual(
+                evidence["smoke_input_sha256"],
+                ouro.sha256_bytes(expected.encode()),
+            )
+
+    def test_21_declared_unittest_must_discover_a_test(self):
+        source = '''#!/usr/bin/env python3
+import json
+import sys
+p = json.loads(sys.stdin.read() or "{}")
+print(json.dumps({"result": str(p.get("input", "")).upper()}))
+'''
+        with tempfile.TemporaryDirectory(prefix="ouro-discovery-") as temporary:
+            root = Path(temporary)
+            workspace = root / "workspace"
+            workspace.mkdir()
+            (workspace / "agent.py").write_text(source)
+            (workspace / "ouroboros.json").write_text(manifest("agent.py"))
+            (workspace / "SELF.md").write_text("# Self\n")
+            (workspace / "MEMORY.md").write_text("# Memory\n")
+            contract = base_contract()
+            cfg = make_config(root, "discovery", generations=0)
+            old_state = ouro._STATE
+            ouro._STATE = ouro.RunState(config=cfg, contract=contract)
+            try:
+                empty = ouro.evaluate_workspace(
+                    workspace, contract.public_tests, "empty-tests", True
+                )
+                (workspace / "test_agent.py").write_text(
+                    "import unittest\n"
+                    "class T(unittest.TestCase):\n"
+                    "    def test_one(self): self.assertTrue(True)\n"
+                )
+                discovered = ouro.evaluate_workspace(
+                    workspace, contract.public_tests, "one-test", True
+                )
+            finally:
+                ouro._STATE = old_state
+            self.assertFalse(empty["hard_gates"]["declared_tests_discovered"])
+            self.assertIn("at least one test", "; ".join(empty["hard_gate_errors"]))
+            self.assertTrue(discovered["hard_gates"]["declared_tests_discovered"])
+            self.assertEqual(discovered["declared_test"]["discovered_tests"], 1)
+
+    def test_22_suite_structure_rejects_wrappers_and_contradictions(self):
+        with tempfile.TemporaryDirectory(prefix="ouro-suite-") as temporary:
+            root = Path(temporary)
+            cfg = make_config(root, "suite", generations=0)
+            old_state = ouro._STATE
+            ouro._STATE = ouro.RunState(config=cfg)
+            try:
+                invalid = [
+                    ouro.ExecutableTest(
+                        id="wrapped",
+                        kind="entrypoint",
+                        description="bad wrapper",
+                        stdin={"content": '{"input":"hello"}', "mode": "evaluate"},
+                    )
+                ]
+                with self.assertRaisesRegex(ValueError, "serialized JSON"):
+                    ouro.normalize_test_suite(
+                        invalid, split="public", minimum=1, maximum=12
+                    )
+                contradictory = ouro.ExecutableTest(
+                    id="contradictory",
+                    kind="entrypoint",
+                    description="cannot both contain and omit a value",
+                    stdout_contains=["ready"],
+                    stdout_not_contains=["ready"],
+                )
+                self.assertTrue(ouro.test_definition_errors(contradictory))
+                pytest_test = ouro.ExecutableTest(
+                    id="pytest",
+                    kind="command",
+                    description="undeclared dependency",
+                    argv=["python", "-m", "pytest", "-q"],
+                )
+                self.assertIn(
+                    "package installation is disabled",
+                    "; ".join(ouro.test_definition_errors(pytest_test)),
+                )
+                serialized = ouro.ExecutableTest(
+                    id="serialized-json",
+                    kind="entrypoint",
+                    description="model serialized a JSON protocol fixture",
+                    stdin='{"input":"hello"}',
+                )
+                normalized = ouro.normalize_test_suite(
+                    [serialized],
+                    split="public",
+                    minimum=1,
+                    maximum=12,
+                    input_protocol="json-stdin-stdout",
+                )
+                self.assertEqual(normalized[0].stdin, {"input": "hello"})
+            finally:
+                ouro._STATE = old_state
+
+    def test_23_manager_review_repairs_compiled_suite_before_execution(self):
+        wrapped = ouro.ExecutableTest(
+            id="wrapped-public",
+            kind="entrypoint",
+            description="compiler emitted a serialized wrapper",
+            stdin={"content": '{"input":"hello"}', "mode": "evaluate"},
+            json_equals={"result": "HELLO"},
+        )
+        contract = base_contract(tests=[wrapped])
+
+        class RepairingProvider(ScriptedProvider):
+            def complete(self, **kwargs):
+                if kwargs.get("output_schema") is ouro.SuiteReview:
+                    self.call_count += 1
+                    return response(
+                        parsed=ouro.SuiteReview(
+                            public_tests=[
+                                ouro.ExecutableTest(
+                                    id="repaired-public",
+                                    kind="entrypoint",
+                                    description="uses the actual request schema",
+                                    stdin={"input": "hello"},
+                                    json_equals={"result": "HELLO"},
+                                )
+                            ],
+                            private_tests=self.last_private_tests,
+                            protocol_smoke_input={"input": "reviewed smoke"},
+                            findings=["unwrapped serialized public stdin"],
+                        )
+                    )
+                return super().complete(**kwargs)
+
+        with tempfile.TemporaryDirectory(prefix="ouro-review-") as temporary:
+            root = Path(temporary)
+            provider = RepairingProvider(contract)
+            cfg = make_config(root, "suite-review", generations=0)
+            result, _ = ouro.run_engine(cfg, provider)
+            self.assertEqual(result["status"], "baseline_only")
+            reviewed = json.loads(
+                (cfg.run_dir / "objective_contract.json").read_text()
+            )
+            self.assertEqual(
+                reviewed["public_tests"][0]["stdin"], {"input": "hello"}
+            )
+            self.assertEqual(
+                reviewed["protocol_smoke_input"], {"input": "reviewed smoke"}
+            )
+            audit = json.loads(
+                (cfg.run_dir / "private" / "suite_review.json").read_text()
+            )
+            self.assertIn("unwrapped serialized public stdin", audit["findings"])
+
+    def test_24_manager_suite_parse_failure_retries_once_and_is_accounted(self):
+        contract = base_contract()
+
+        class MalformedPrivateOnceProvider(ScriptedProvider):
+            def __init__(self, value):
+                super().__init__(value)
+                self.failed_private_once = False
+
+            def complete(self, **kwargs):
+                if (
+                    kwargs.get("output_schema") is ouro.PrivateSuite
+                    and not self.failed_private_once
+                ):
+                    self.failed_private_once = True
+                    self.call_count += 1
+                    raise LLMBehaviorError(
+                        "llm.parse_error",
+                        "model returned a code expression inside JSON",
+                        payload_extras={"raw_text": '"stdin": "x" * 10000'},
+                    )
+                return super().complete(**kwargs)
+
+        with tempfile.TemporaryDirectory(prefix="ouro-suite-retry-") as temporary:
+            root = Path(temporary)
+            provider = MalformedPrivateOnceProvider(contract)
+            cfg = make_config(root, "suite-retry", generations=0)
+            result, runtime = ouro.run_engine(cfg, provider)
+            self.assertEqual(result["status"], "baseline_only")
+            self.assertTrue(
+                any(
+                    error.behavior == "compile_private_suite"
+                    and error.reason == "llm.parse_error"
+                    for error in runtime.errors
+                )
+            )
+            usage = result["usage"]
+            self.assertEqual(usage["llm_attempts"], 4)
+            self.assertEqual(usage["failed_llm_attempts"], 1)
+            self.assertEqual(usage["llm_calls"], 3)
+            self.assertEqual(usage["attempts_by_phase"]["private_suite"], 2)
+            self.assertEqual(
+                usage["failed_attempts_by_phase"]["private_suite"], 1
+            )
+            conn = sqlite3.connect(cfg.run_dir / "trace.sqlite")
+            private_requests = [
+                json.loads(row[0])
+                for row in conn.execute(
+                    "SELECT payload FROM events WHERE type=? ORDER BY seq",
+                    (f"{ouro.EVENT_PREFIX}.private.requested",),
+                )
+            ]
+            conn.close()
+            self.assertEqual(len(private_requests), 2)
+            self.assertEqual(private_requests[1]["retry"], 1)
+            self.assertTrue(
+                private_requests[1]["literal_json_contract"][
+                    "all_values_must_be_literal_json"
+                ]
+            )
+
+    def test_25_bounded_literal_expression_repair_never_executes_code(self):
+        raw_suite = '''```json
+{
+  "coverage_notes": ["bounded expression fixture"],
+  "private_tests": [
+    {
+      "id": "private-repeat-one",
+      "kind": "entrypoint",
+      "description": "repeated lowercase input",
+      "stdin": {"input": "m" * 5},
+      "json_equals": {"result": "M".repeat(5)}
+    },
+    {
+      "id": "private-repeat-two",
+      "kind": "entrypoint",
+      "description": "concatenated mixed input",
+      "stdin": {"input": "ab" + "cd"},
+      "json_equals": {"result": "AB" + "CD"}
+    }
+  ]
+}
+```'''
+        repaired = ouro.repair_structured_expression_response(
+            raw_suite, ouro.PrivateSuite
+        )
+        self.assertIsInstance(repaired, ouro.PrivateSuite)
+        self.assertEqual(repaired.private_tests[0].stdin, {"input": "mmmmm"})
+        self.assertEqual(
+            repaired.private_tests[0].json_equals, {"result": "MMMMM"}
+        )
+        malicious = (
+            '{"coverage_notes": [], "private_tests": '
+            '__import__("os").system("touch should-not-exist")}'
+        )
+        self.assertIsNone(
+            ouro.repair_structured_expression_response(
+                malicious, ouro.PrivateSuite
+            )
+        )
+        oversized = raw_suite.replace('"m" * 5', '"m" * 1000000000')
+        self.assertIsNone(
+            ouro.repair_structured_expression_response(
+                oversized, ouro.PrivateSuite
+            )
+        )
+
+        class ExpressionPrivateProvider(ScriptedProvider):
+            def __init__(self, value):
+                super().__init__(value)
+                self.emitted_expression = False
+
+            def complete(self, **kwargs):
+                schema = kwargs.get("output_schema")
+                if schema is ouro.PrivateSuite and not self.emitted_expression:
+                    self.emitted_expression = True
+                    self.call_count += 1
+                    raise LLMBehaviorError(
+                        "llm.parse_error",
+                        "model returned bounded literal expressions",
+                        payload_extras={"raw_text": raw_suite},
+                    )
+                if schema is ouro.SuiteReview:
+                    self.last_private_tests = ouro.state().private_tests
+                return super().complete(**kwargs)
+
+        with tempfile.TemporaryDirectory(prefix="ouro-expression-repair-") as temporary:
+            root = Path(temporary)
+            provider = ExpressionPrivateProvider(base_contract())
+            cfg = make_config(root, "expression-repair", generations=0)
+            result, runtime = ouro.run_engine(cfg, provider)
+            self.assertEqual(result["status"], "baseline_only")
+            self.assertFalse(runtime.errors)
+            usage = result["usage"]
+            self.assertEqual(usage["llm_attempts"], 3)
+            self.assertEqual(usage["llm_calls"], 3)
+            self.assertEqual(usage["failed_llm_attempts"], 0)
+            self.assertEqual(usage["repaired_llm_outputs"], 1)
+            self.assertEqual(usage["unmetered_llm_attempts"], 1)
+            conn = sqlite3.connect(cfg.run_dir / "trace.sqlite")
+            repaired_events = conn.execute(
+                "SELECT COUNT(*) FROM events WHERE type=?",
+                (f"{ouro.EVENT_PREFIX}.llm.output_repaired",),
+            ).fetchone()[0]
+            conn.close()
+            self.assertEqual(repaired_events, 1)
+            self.assertFalse((Path.cwd() / "should-not-exist").exists())
 
 
 if __name__ == "__main__":

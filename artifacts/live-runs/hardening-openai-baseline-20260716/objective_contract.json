@@ -1,0 +1,88 @@
+{
+  "capability_requirements": [],
+  "deliverable_kind": "entrypoint",
+  "entrypoint_protocol": "JSON-stdin/JSON-stdout",
+  "objective": "Build a standard-library JSON-stdin/JSON-stdout uppercase CLI with real automated unittest coverage.",
+  "protocol_smoke_input": {
+    "text": "hello world"
+  },
+  "public_behavior_spec": [
+    "The CLI reads a JSON object from stdin with a 'text' field.",
+    "The CLI outputs a JSON object to stdout with the 'text' field converted to uppercase."
+  ],
+  "public_tests": [
+    {
+      "argv": [],
+      "description": "Test that the CLI converts input text to uppercase.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_uppercase_conversion",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"text\": \"hello world\"}",
+      "stdout_contains": [
+        "{\"text\": \"HELLO WORLD\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI handles empty input text.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_empty_input",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"text\": \"\"}",
+      "stdout_contains": [
+        "{\"text\": \"\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI handles numeric input text.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_numeric_input",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"text\": \"1234\"}",
+      "stdout_contains": [
+        "{\"text\": \"1234\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    }
+  ],
+  "qualitative_rubric": [
+    "The CLI should handle typical edge cases such as empty strings and numeric strings.",
+    "The CLI should not crash or produce errors for valid JSON input.",
+    "The CLI should only use the Python standard library."
+  ],
+  "required_artifacts": [
+    "cli.py"
+  ],
+  "stopping_condition": "All public tests pass successfully.",
+  "success_threshold": 100.0
+}

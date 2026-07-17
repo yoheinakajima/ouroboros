@@ -1,0 +1,11 @@
+{
+  "calls_by_phase": {
+    "contract": 1
+  },
+  "input_tokens": 3831,
+  "llm_calls": 1,
+  "max_cost_usd": 1.0,
+  "output_tokens": 436,
+  "provider_estimated_cost_usd": "0.0139375",
+  "resolved_model": "gpt-4o"
+}

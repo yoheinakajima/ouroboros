@@ -1,0 +1,20 @@
+{
+  "attempts_by_phase": {
+    "contract": 1,
+    "private_suite": 2
+  },
+  "calls_by_phase": {
+    "contract": 1
+  },
+  "failed_attempts_by_phase": {
+    "private_suite": 2
+  },
+  "failed_llm_attempts": 2,
+  "input_tokens": 3831,
+  "llm_attempts": 3,
+  "llm_calls": 1,
+  "max_cost_usd": 1.0,
+  "output_tokens": 449,
+  "provider_estimated_cost_usd": "0.0140675",
+  "resolved_model": "gpt-4o"
+}

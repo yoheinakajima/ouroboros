@@ -1,0 +1,75 @@
+{
+  "manager_reviewed": true,
+  "suite_hash": "09e45fa5d40e3ac27cd7f1c674b93812b6ddecfc60c738bd39be4ceb1746a9e1",
+  "tests": [
+    {
+      "argv": [],
+      "description": "Test that the CLI converts input text to uppercase.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_uppercase_conversion",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": "hello world"
+      },
+      "stdout_contains": [
+        "HELLO WORLD"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI handles an empty string correctly.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_empty_string",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": ""
+      },
+      "stdout_contains": [
+        ""
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Test that the CLI correctly converts mixed case input to uppercase.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_mixed_case",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": {
+        "text": "HeLLo WoRLd"
+      },
+      "stdout_contains": [
+        "HELLO WORLD"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    }
+  ]
+}

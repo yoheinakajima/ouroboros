@@ -1,0 +1,26 @@
+{
+  "attempts_by_phase": {
+    "contract": 1,
+    "private_suite": 1,
+    "suite_review": 1
+  },
+  "calls_by_phase": {
+    "contract": 1,
+    "private_suite": 1,
+    "suite_review": 1
+  },
+  "failed_attempts_by_phase": {},
+  "failed_llm_attempts": 0,
+  "input_tokens": 8688,
+  "llm_attempts": 3,
+  "llm_calls": 3,
+  "max_cost_usd": 1.0,
+  "output_tokens": 1789,
+  "provider_estimated_cost_usd": "0.0396100",
+  "repaired_llm_outputs": 1,
+  "repaired_outputs_by_phase": {
+    "private_suite": 1
+  },
+  "resolved_model": "gpt-4o",
+  "unmetered_llm_attempts": 1
+}

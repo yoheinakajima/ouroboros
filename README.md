@@ -1,4 +1,4 @@
-# Ouroboros v1.1
+# Ouroboros v1.2
 
 Ouroboros is a one-file evolutionary environment for software workspaces. Give
 `ouroboros.py` a vague objective; it compiles the objective into an executable
@@ -53,18 +53,26 @@ The engine never forwards provider credentials to candidate subprocesses.
 
 1. An ActiveGraph `@llm_behavior` compiles the objective into a typed public
    `ObjectiveContract`. A separate manager-only behavior authors non-duplicate
-   private tests, persisted under `private/` and represented on public surfaces
-   only by a sealed hash receipt.
-2. The incumbent is cloned into a clean candidate directory.
-3. A multi-turn ActiveGraph builder inspects, edits, deletes, restructures, and
+   private tests.
+2. An independent manager-only suite reviewer recomputes exact expectations,
+   repairs invalid protocol fixtures, and returns corrected public/private
+   suites. Deterministic structural validation then rejects contradictory,
+   wrapped, impossible, or undeclared-dependency tests. Private material is
+   persisted under `private/` and represented publicly only by a sealed receipt.
+   JSON-shaped suite output containing only bounded string concatenation or
+   repetition is repaired by a non-executing literal parser; other malformed
+   output gets one literal-only retry before the run fails.
+3. The incumbent is cloned into a clean candidate directory.
+4. A multi-turn ActiveGraph builder inspects, edits, deletes, restructures, and
    tests the candidate through runtime-owned tools. It must explicitly call
    `submit_candidate`.
-4. The kernel validates `ouroboros.json`, artifacts, paths, budgets, startup,
-   protocol behavior, and the declared test command.
-5. Public and private tests execute against clean incumbent and candidate
-   copies. A blinded LLM judge sees each criterion twice with A/B positions
-   reversed, but no lineage, diff, hypothesis, private scores, or mapping.
-6. Deterministic promotion logic enforces hard gates and regression bounds. A
+5. The kernel validates `ouroboros.json`, artifacts, paths, budgets, startup
+   using a contract-valid smoke input, and a declared test command that proves
+   at least one test executed.
+6. Public and private tests execute against clean incumbent and candidate
+   copies. Two isolated blinded judge calls see opposite A/B positions for each
+   criterion, but no lineage, diff, hypothesis, private scores, or mapping.
+7. Deterministic promotion logic enforces hard gates and regression bounds. A
    candidate that strictly dominates executable evidence cannot be vetoed by a
    contradictory judge label; otherwise mirrored qualitative thresholds,
    meaningful wins, and worst-case safety apply. There is no human review
@@ -106,7 +114,11 @@ The builder tools are `list_tree`, `read_file`, `write_file`, `apply_patch`,
 escapes. Command-created file changes are detected by before/after tree hashes.
 The exact manifest schema and live remaining budget accompany the build request
 and every tool result. Tool, model-call, token, time, workspace, and estimated
-dollar caps are enforced independently; usage is durably checkpointed.
+dollar caps are enforced independently; usage is durably checkpointed. The
+usage record distinguishes total LLM attempts, failed attempts, and successful
+calls by phase so malformed provider output remains visible in the audit trail.
+If a provider throws away usage metadata before literal repair, the attempt is
+explicitly marked unmetered rather than reported as zero-cost evidence.
 
 ## Evidence bundle
 
@@ -126,6 +138,7 @@ Each run writes:
   trace.sqlite
   private/
     private_suite.json
+    suite_review.json
     results/
   seed_workspace/
   final_workspace/
@@ -172,7 +185,10 @@ real local HTTP fetch, imported project repair, sealed-test isolation, pre-judge
 no-op rejection, stateful argv workflows, capability gating, recoverable
 builder exhaustion, budget/cost taxonomy, balanced judging, deterministic
 dominance, failure finalization, history compaction, unique runs, ActiveGraph
-trace integrity, and manager-only meta-evolution handoff. See
+trace integrity, manager-only suite review, schema-valid protocol smoke inputs,
+nonzero test discovery, bounded suite-generation recovery, failed-call usage
+accounting, non-executing literal-expression repair, and manager-only
+meta-evolution handoff. See
 [`TEST_REPORT.md`](TEST_REPORT.md) for the observed commands and artifacts.
 The exact-prompt coding-agent/chatbot experiment is documented in
 [`CAPABILITY_TEST_REPORT.md`](CAPABILITY_TEST_REPORT.md).

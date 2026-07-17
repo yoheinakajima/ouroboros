@@ -1,0 +1,357 @@
+[
+  {
+    "accepted": true,
+    "candidate": {
+      "private": {
+        "declared_test": {
+          "argv": [
+            "python",
+            "-m",
+            "unittest",
+            "-q"
+          ],
+          "discovered_tests": 0,
+          "duration_seconds": 0.04,
+          "exit_code": 0,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "policy_blocked": false,
+          "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "timed_out": false
+        },
+        "hard_gate_errors": [
+          "required artifact missing: cli.py",
+          "declared test command did not prove that at least one test executed"
+        ],
+        "hard_gates": {
+          "declared_test_command": true,
+          "declared_tests_discovered": false,
+          "entrypoint_exists": true,
+          "manifest_valid": true,
+          "no_symlinks_or_escape": true,
+          "private_test_isolation": true,
+          "program_starts_and_protocol_valid": true,
+          "required_artifacts": false,
+          "workspace_budget": true
+        },
+        "hard_gates_passed": false,
+        "passed": 0,
+        "phase": "baseline-private",
+        "protocol": {
+          "argv": [
+            "python",
+            "agent.py"
+          ],
+          "duration_seconds": 0.0419,
+          "exit_code": 0,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "policy_blocked": false,
+          "smoke_input_sha256": "ad745976f344861a7d6197325becc005fe9c4468f63a4a01f42ed1f2eec97ee0",
+          "stderr_tail": "",
+          "stderr_truncated": false,
+          "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+          "stdout_truncated": false,
+          "timed_out": false
+        },
+        "score": 0.0,
+        "test_results": [
+          {
+            "argv": [
+              "python",
+              "agent.py"
+            ],
+            "duration_seconds": 0.0406,
+            "exit_code": 0,
+            "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+            "ordinal": 0,
+            "passed": false,
+            "policy_blocked": false,
+            "reasons": [
+              "stdout missing '{\"text\": \"!@#$%^&*()_+\"}'"
+            ],
+            "stderr_tail": "",
+            "stderr_truncated": false,
+            "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+            "stdout_truncated": false,
+            "test_hash": "56c1ebfad88f9442b19d4204815b869c1542d433cc64ddc1062c53130503c5c4",
+            "timed_out": false
+          },
+          {
+            "argv": [
+              "python",
+              "agent.py"
+            ],
+            "duration_seconds": 0.042,
+            "exit_code": 0,
+            "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+            "ordinal": 1,
+            "passed": false,
+            "policy_blocked": false,
+            "reasons": [
+              "stdout missing '{\"text\": \"HELLO WORLD\"}'"
+            ],
+            "stderr_tail": "",
+            "stderr_truncated": false,
+            "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+            "stdout_truncated": false,
+            "test_hash": "5730df4fb642a4576bf562b8aeb7855bfc68a07901b453b32f5a2391410169ec",
+            "timed_out": false
+          },
+          {
+            "argv": [
+              "python",
+              "agent.py"
+            ],
+            "duration_seconds": 0.0401,
+            "exit_code": 0,
+            "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+            "ordinal": 2,
+            "passed": false,
+            "policy_blocked": false,
+            "reasons": [
+              "stdout missing '{\"text\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}'"
+            ],
+            "stderr_tail": "",
+            "stderr_truncated": false,
+            "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+            "stdout_truncated": false,
+            "test_hash": "a6d2f783abb25cfda8afa7c0aa4c1ce012034fa5c6278c43cf0a9618b26f5de2",
+            "timed_out": false
+          },
+          {
+            "argv": [
+              "python",
+              "agent.py"
+            ],
+            "duration_seconds": 0.0422,
+            "exit_code": 0,
+            "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+            "ordinal": 3,
+            "passed": false,
+            "policy_blocked": false,
+            "reasons": [
+              "stdout missing '{\"text\": \"\\\\u3053\\\\u3093\\\\u306b\\\\u3061\\\\u306f\\\\u4e16\\\\u754c\"}'"
+            ],
+            "stderr_tail": "",
+            "stderr_truncated": false,
+            "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+            "stdout_truncated": false,
+            "test_hash": "53b8e3c3f905e450437880155b8f387077bc3734502680bc2a42125255ccf88c",
+            "timed_out": false
+          },
+          {
+            "argv": [
+              "python",
+              "agent.py"
+            ],
+            "duration_seconds": 0.0421,
+            "exit_code": 0,
+            "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+            "ordinal": 4,
+            "passed": false,
+            "policy_blocked": false,
+            "reasons": [
+              "stdout missing '{\"text\": \"   LEADING AND TRAILING SPACES   \"}'"
+            ],
+            "stderr_tail": "",
+            "stderr_truncated": false,
+            "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+            "stdout_truncated": false,
+            "test_hash": "adb9ec8b53b39c3739a3ba6068b87eb37cca967ec76814f545b3f5c37f742ffd",
+            "timed_out": false
+          }
+        ],
+        "total": 5,
+        "tree": {
+          "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+          "files": [
+            {
+              "path": "MEMORY.md",
+              "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+              "size": 34
+            },
+            {
+              "path": "SELF.md",
+              "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+              "size": 215
+            },
+            {
+              "path": "agent.py",
+              "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+              "size": 276
+            },
+            {
+              "path": "ouroboros.json",
+              "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+              "size": 267
+            }
+          ],
+          "symlinks": [],
+          "total_bytes": 792
+        }
+      },
+      "public": {
+        "declared_test": {
+          "argv": [
+            "python",
+            "-m",
+            "unittest",
+            "-q"
+          ],
+          "discovered_tests": 0,
+          "duration_seconds": 0.0791,
+          "exit_code": 0,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "policy_blocked": false,
+          "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "timed_out": false
+        },
+        "hard_gate_errors": [
+          "required artifact missing: cli.py",
+          "declared test command did not prove that at least one test executed"
+        ],
+        "hard_gates": {
+          "declared_test_command": true,
+          "declared_tests_discovered": false,
+          "entrypoint_exists": true,
+          "manifest_valid": true,
+          "no_symlinks_or_escape": true,
+          "private_test_isolation": true,
+          "program_starts_and_protocol_valid": true,
+          "required_artifacts": false,
+          "workspace_budget": true
+        },
+        "hard_gates_passed": false,
+        "passed": 0,
+        "phase": "baseline-public",
+        "protocol": {
+          "argv": [
+            "python",
+            "agent.py"
+          ],
+          "duration_seconds": 0.0437,
+          "exit_code": 0,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "policy_blocked": false,
+          "smoke_input_sha256": "ad745976f344861a7d6197325becc005fe9c4468f63a4a01f42ed1f2eec97ee0",
+          "stderr_tail": "",
+          "stderr_truncated": false,
+          "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+          "stdout_truncated": false,
+          "timed_out": false
+        },
+        "score": 0.0,
+        "test_results": [
+          {
+            "argv": [
+              "python",
+              "agent.py"
+            ],
+            "description": "Test that the CLI converts input text to uppercase.",
+            "duration_seconds": 0.0426,
+            "exit_code": 0,
+            "id": "test_uppercase_conversion",
+            "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+            "ordinal": 0,
+            "passed": false,
+            "policy_blocked": false,
+            "reasons": [
+              "stdout missing '{\"text\": \"HELLO WORLD\"}'"
+            ],
+            "stderr_tail": "",
+            "stderr_truncated": false,
+            "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+            "stdout_truncated": false,
+            "test_hash": "e049df939e407862291eecbd6c259947c71894c65d6e69de16aee2b1579b5135",
+            "timed_out": false
+          },
+          {
+            "argv": [
+              "python",
+              "agent.py"
+            ],
+            "description": "Test that the CLI handles an empty string correctly.",
+            "duration_seconds": 0.0382,
+            "exit_code": 0,
+            "id": "test_empty_string",
+            "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+            "ordinal": 1,
+            "passed": false,
+            "policy_blocked": false,
+            "reasons": [
+              "stdout missing '{\"text\": \"\"}'"
+            ],
+            "stderr_tail": "",
+            "stderr_truncated": false,
+            "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+            "stdout_truncated": false,
+            "test_hash": "329e735dd1e50c7a2f0aab3665fb0b47de23e998332ff9007b28c6568afefd2e",
+            "timed_out": false
+          },
+          {
+            "argv": [
+              "python",
+              "agent.py"
+            ],
+            "description": "Test that the CLI handles numeric input correctly.",
+            "duration_seconds": 0.0423,
+            "exit_code": 0,
+            "id": "test_numeric_input",
+            "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+            "ordinal": 2,
+            "passed": false,
+            "policy_blocked": false,
+            "reasons": [
+              "stdout missing '{\"text\": \"1234\"}'"
+            ],
+            "stderr_tail": "",
+            "stderr_truncated": false,
+            "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+            "stdout_truncated": false,
+            "test_hash": "c624bef7bfaed74232e650377af734a8b76eb014a7ad2c4ac9eea87971970bb6",
+            "timed_out": false
+          }
+        ],
+        "total": 3,
+        "tree": {
+          "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+          "files": [
+            {
+              "path": "MEMORY.md",
+              "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+              "size": 34
+            },
+            {
+              "path": "SELF.md",
+              "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+              "size": 215
+            },
+            {
+              "path": "agent.py",
+              "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+              "size": 276
+            },
+            {
+              "path": "ouroboros.json",
+              "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+              "size": 267
+            }
+          ],
+          "symlinks": [],
+          "total_bytes": 792
+        }
+      }
+    },
+    "generation": 0,
+    "reason": "seed baseline",
+    "submission": {
+      "summary": "embedded/imported seed"
+    },
+    "tree_changes": []
+  }
+]

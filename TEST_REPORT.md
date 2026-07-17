@@ -1,23 +1,49 @@
-# Ouroboros v1.1 upgrade and release-candidate test report
+# Ouroboros v1.2 evaluator-hardening and release test report
 
 Date: 2026-07-16  
 Host: macOS, Python 3.11.15  
 ActiveGraph: 1.10.0  
-Live provider/model: OpenAI / `gpt-5.6-sol`
+Live providers/models: OpenAI / `gpt-5.6-sol`, `gpt-4o`
 
 ## Recommendation
 
-Work from this Codex-authored v1.1 kernel. It closes the defects in the Replit
-report, preserves the single-file ActiveGraph architecture, and has a complete
-current-source live promotion. The Claude version remains useful as a
+Work from this Codex-authored v1.2 kernel. It retains the v1.1 full live
+promotion and adds execution-contract hardening validated by current-source
+GPT-4o manager calls. The Claude version remains useful as a
 comparison artifact, but is not the stronger base: the Codex kernel has the
 broader tested evaluator, immutable evidence bundle, manager-only private suite,
 explicit capability gate, and durable cost/accounting path.
 
 ## Outcome
 
-The deterministic suite passes 25/25 tests. Ruff and Python compilation pass.
-The final scratch live run attempted one generation and promoted one generation:
+The deterministic suite passes 31/31 tests. Ruff and Python compilation pass.
+The final v1.2 live baseline completed the contract, private-suite, and
+independent suite-review path in three GPT-4o calls. Its repaired private-suite
+call is explicitly marked unmetered because the provider adapter discarded
+token metadata when JSON parsing threw; the other calls recorded $0.0388450.
+All three public and five private JSON-stdin fixtures were normalized to JSON
+objects. The seed correctly failed required-artifact and nonzero-test-discovery
+gates instead of receiving a false pass.
+
+- [v1.2 final result](artifacts/live-runs/hardening-openai-final-20260716-v2/result.json)
+- [v1.2 reviewed public contract](artifacts/live-runs/hardening-openai-final-20260716-v2/objective_contract.json)
+- [v1.2 manager suite review](artifacts/live-runs/hardening-openai-final-20260716-v2/private/suite_review.json)
+- [v1.2 trace](artifacts/live-runs/hardening-openai-final-20260716-v2/trace.sqlite)
+
+### v1.2 versus v1.1
+
+| Evaluator boundary | v1.1 | v1.2 |
+|---|---|---|
+| Deterministic regression suite | 25 tests | 31 tests |
+| Startup smoke | Generic protocol sample | Contract-valid typed smoke input |
+| Declared tests | Exit code only | Must prove at least one test ran |
+| Generated suite QA | Schema + semantic de-duplication | Separate LLM audit plus deterministic wrapper, contradiction, dependency, and feasibility checks |
+| Qualitative position control | Mirrored positions in one call | Two isolated calls with disjoint case batches |
+| Malformed suite output | Terminal parse failure | Non-executing bounded literal repair, then one bounded retry |
+| Usage evidence | Successful calls/tokens | Attempts, failures, repairs, unmetered calls, and per-phase totals |
+
+The earlier v1.1 scratch live run attempted one generation and promoted one
+generation:
 
 | Signal | Incumbent | Candidate |
 |---|---:|---:|
@@ -53,7 +79,7 @@ and there were no meaningful losses. Its final content ID is
 
 The event namespace remains `ouro.v0` because that is the original protocol
 contract, not an implementation version. Engine version is independently
-reported as `1.1.0-workspace`.
+reported as `1.2.0-workspace`; protocol version is 3.
 
 ## Additional upgrades
 
@@ -61,9 +87,9 @@ reported as `1.1.0-workspace`.
   workspace, making durable state observable instead of inferred.
 - Private tests are normalized to at least two distinct behaviors and capped at
   eight; the live suite has five with zero public semantic clones.
-- Every qualitative criterion is presented in mirrored A/B and B/A views. The
-  kernel unblinds and aggregates the pair, requiring both views to confirm a
-  severe regression.
+- Every qualitative criterion is presented in mirrored A/B and B/A views in
+  two isolated calls. The kernel unblinds and aggregates the pair, requiring
+  both views to confirm a severe regression.
 - Strict deterministic dominance is explicit. A hard-gate-passing candidate
   that non-regressively improves executable public/private evidence cannot be
   rejected solely by a contradictory qualitative label.
@@ -85,8 +111,8 @@ Static and deterministic validation:
 /Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python -m unittest -v tests.test_ouroboros
 ```
 
-Observed: compilation passed, Ruff reported `All checks passed!`, and unittest
-reported `Ran 25 tests ... OK`. Logged `llm.network_error`,
+Observed for v1.2: compilation passed, Ruff reported `All checks passed!`, and
+unittest reported `Ran 31 tests ... OK`. Logged `llm.network_error`,
 `tool.max_turns_exhausted`, and `budget.cost_exhausted` lines are deliberate
 fault injections with asserted terminal/recovery behavior.
 
@@ -105,7 +131,7 @@ python ouroboros.py \
 
 Observed: completed in 4m23s; 12 builder calls, 28 tool calls, 15 total model
 calls, estimated $1.413895, one accepted generation, and one terminal event.
-The run-manifest engine hash equals the current `ouroboros.py` SHA-256:
+The run-manifest engine hash equals that v1.1 `ouroboros.py` SHA-256:
 `c477b44a78e3fbdce15baab855ac26e97b9d668c7fc3ec4cacaa46957469c818`.
 
 Independent promoted-workspace verification:
@@ -124,6 +150,18 @@ pending item, completed it, and reported total 1 / pending 0 / completed 1.
 
 ## Immutable live debugging trail
 
+The v1.2 evaluator-hardening trail is also preserved:
+
+| Bundle | Outcome | Defect exposed or verified |
+|---|---|---|
+| `hardening-openai-baseline-20260716` | failed | GPT-4o emitted a code expression inside JSON; failed calls were missing from the usage ledger |
+| `hardening-openai-retry-20260716` | failed after one retry | Bounded retry and honest 3-attempt/2-failure accounting worked; prompt-only JSON was insufficient |
+| `hardening-openai-repaired-20260716` | baseline-only | Non-executing literal repair reached the separate manager suite review |
+| `hardening-openai-final-20260716` | baseline-only | Current source normalized all eight JSON fixtures and enforced zero-test discovery |
+| `hardening-openai-final-20260716-v2` | baseline-only | Exact committed-source candidate; bounded pre-allocation checks, 31 tests, and matching engine hash |
+
+The earlier v1.1 generation trail:
+
 | Bundle | Outcome | Defect exposed |
 |---|---|---|
 | `upgrade-openai-baseline-20260716` | baseline-only, complete | Validated GPT-5.6 contract/private path and accounting at $0.250165 |
@@ -135,10 +173,22 @@ The failed/rejected bundles were intentionally retained rather than rewritten.
 
 ## Integrity and leakage audit
 
+Current-source v1.2 baseline:
+
+- SQLite `PRAGMA integrity_check`: `ok`; exactly one terminal event and one
+  audited literal-repair event.
+- Trace: three `llm.requested` and three `llm.responded` events covering the
+  contract, private suite, and independent suite review.
+- Final run-manifest source hash matches the current engine:
+  `029e24b2e8d445d849cd147f4103e7ebcdd6e8d18ca78d01a19f3914ecf5cfdc`.
+- Two credential values from `.env` were checked across all 417 live-artifact
+  files: zero hits. Values were never printed.
+
+Earlier v1.1 promoted generation:
+
 - SQLite `PRAGMA integrity_check`: `ok`.
 - Trace: 321 events, 15 `llm.requested`, 28 `tool.requested`, one candidate
   acceptance, zero runtime errors, and exactly one terminal event.
-- Run-manifest source hash matches the current engine.
 - Exact provider credential values from `.env` were compared against every
   bundle file, including SQLite: zero hits. Values were never printed.
 - Exact private-suite bytes do not occur in public contract, suite, or receipt
@@ -160,9 +210,9 @@ The failed/rejected bundles were intentionally retained rather than rewritten.
 5. The GPT-5.6 Chat Completions tool limitation means builder tool turns use
    reasoning effort `none`; moving ActiveGraph's builder transport to the
    Responses API would allow tool use with the model's reasoning mode.
-6. Mirrored judge views are position-balanced but evaluated in one model call,
-   so they are not statistically independent. Deterministic evidence remains
-   the release authority when it strictly dominates.
+6. Mirrored judge views use isolated calls, but both calls may still use the
+   same model and prompt family. Deterministic evidence remains the release
+   authority when it strictly dominates.
 7. Bundle immutability is logical: exclusive run IDs and content hashes detect
    mutation, but completed directories are not filesystem-locked or signed.
 8. This release live-tested a standard-library Python argv application. Network,

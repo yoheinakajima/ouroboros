@@ -1,0 +1,190 @@
+{
+  "declared_test": {
+    "argv": [
+      "python",
+      "-m",
+      "unittest",
+      "-q"
+    ],
+    "discovered_tests": 0,
+    "duration_seconds": 0.0414,
+    "exit_code": 0,
+    "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+    "policy_blocked": false,
+    "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+    "stderr_truncated": false,
+    "stdout_tail": "",
+    "stdout_truncated": false,
+    "timed_out": false
+  },
+  "hard_gate_errors": [
+    "required artifact missing: cli.py",
+    "declared test command did not prove that at least one test executed"
+  ],
+  "hard_gates": {
+    "declared_test_command": true,
+    "declared_tests_discovered": false,
+    "entrypoint_exists": true,
+    "manifest_valid": true,
+    "no_symlinks_or_escape": true,
+    "private_test_isolation": true,
+    "program_starts_and_protocol_valid": true,
+    "required_artifacts": false,
+    "workspace_budget": true
+  },
+  "hard_gates_passed": false,
+  "passed": 0,
+  "phase": "baseline-private",
+  "protocol": {
+    "argv": [
+      "python",
+      "agent.py"
+    ],
+    "duration_seconds": 0.0473,
+    "exit_code": 0,
+    "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+    "policy_blocked": false,
+    "smoke_input_sha256": "ad745976f344861a7d6197325becc005fe9c4468f63a4a01f42ed1f2eec97ee0",
+    "stderr_tail": "",
+    "stderr_truncated": false,
+    "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+    "stdout_truncated": false,
+    "timed_out": false
+  },
+  "score": 0.0,
+  "test_results": [
+    {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.0406,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "ordinal": 0,
+      "passed": false,
+      "policy_blocked": false,
+      "reasons": [
+        "stdout missing '{\"text\": \"HELLO WORLD\"}'"
+      ],
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "test_hash": "0f9d4b812711d59ad52cdffed52017ef0e28ec3ca97d94859dbfa3694026f759",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.0485,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "ordinal": 1,
+      "passed": false,
+      "policy_blocked": false,
+      "reasons": [
+        "stdout missing '{\"text\": \"  HELLO WORLD  \"}'"
+      ],
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "test_hash": "05e171ba22a6f6b6f60c8adad3baf5cca49a09afa9f2248e056335d8fab66d7f",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.0422,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "ordinal": 2,
+      "passed": false,
+      "policy_blocked": false,
+      "reasons": [
+        "stdout missing '{\"text\": \"HELLO\\\\nWORLD\"}'"
+      ],
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "test_hash": "b9a501e551b684ab0f0bcd51fcb8a4879685535dc9f718abd247d3c9fa398f51",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.0243,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "ordinal": 3,
+      "passed": false,
+      "policy_blocked": false,
+      "reasons": [
+        "stdout missing '{\"text\": \"     \"}'"
+      ],
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "test_hash": "a71a27e7f321f11870a9d02a0c3ca672dbfb2092ac86a61c0819ab335b82e5fd",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.025,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "ordinal": 4,
+      "passed": false,
+      "policy_blocked": false,
+      "reasons": [
+        "stdout missing '{\"text\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}'"
+      ],
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "test_hash": "eecbcbfa77c0d9840e83a286fb7b0be69f43642bed462479ef89459cff78c233",
+      "timed_out": false
+    }
+  ],
+  "total": 5,
+  "tree": {
+    "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+    "files": [
+      {
+        "path": "MEMORY.md",
+        "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+        "size": 34
+      },
+      {
+        "path": "SELF.md",
+        "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+        "size": 215
+      },
+      {
+        "path": "agent.py",
+        "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+        "size": 276
+      },
+      {
+        "path": "ouroboros.json",
+        "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+        "size": 267
+      }
+    ],
+    "symlinks": [],
+    "total_bytes": 792
+  }
+}

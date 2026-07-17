@@ -1,0 +1,40 @@
+{
+  "accepted_generations": 0,
+  "final_content_id": "workspace-sha256-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "finished_at": "2026-07-17T02:12:54.864643+00:00",
+  "generations_attempted": 0,
+  "objective": "Build a standard-library JSON-stdin/JSON-stdout uppercase CLI with real automated unittest coverage.",
+  "paths": {
+    "final_workspace": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/hardening-openai-retry-20260716/final_workspace",
+    "promotion": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/hardening-openai-retry-20260716/promotion.json",
+    "run_dir": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/hardening-openai-retry-20260716",
+    "trace": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/hardening-openai-retry-20260716/trace.sqlite",
+    "usage": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/hardening-openai-retry-20260716/usage.json"
+  },
+  "reason": "compile_private_suite: llm.parse_error",
+  "rejected_generations": 0,
+  "run_id": "hardening-openai-retry-20260716",
+  "schema_version": 2,
+  "started_at": "2026-07-17T02:12:40.030410+00:00",
+  "status": "failed",
+  "usage": {
+    "attempts_by_phase": {
+      "contract": 1,
+      "private_suite": 2
+    },
+    "calls_by_phase": {
+      "contract": 1
+    },
+    "failed_attempts_by_phase": {
+      "private_suite": 2
+    },
+    "failed_llm_attempts": 2,
+    "input_tokens": 3831,
+    "llm_attempts": 3,
+    "llm_calls": 1,
+    "max_cost_usd": 1.0,
+    "output_tokens": 449,
+    "provider_estimated_cost_usd": "0.0140675",
+    "resolved_model": "gpt-4o"
+  }
+}
