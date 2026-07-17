@@ -25,7 +25,7 @@ from typing import Any
 
 from activegraph import Graph, Runtime, llm_behavior
 from activegraph.llm import AnthropicProvider, OpenAIProvider
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from experiments.hybrid_ouroboros import (
     Case,
@@ -184,18 +184,36 @@ class PackProposal(BaseModel):
         )
 
 
+class PackSetProposal(BaseModel):
+    """One architecture-level mutation containing one or more composed Packs."""
+
+    packs: list[PackProposal] = Field(min_length=1, max_length=6)
+    design_summary: str
+    documentation_used: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def unique_names(self) -> "PackSetProposal":
+        names = [pack.name for pack in self.packs]
+        if len(set(names)) != len(names):
+            raise ValueError("a Pack set may not contain duplicate names")
+        return self
+
+    def drafts(self) -> tuple[PackDraft, ...]:
+        return tuple(pack.draft() for pack in self.packs)
+
+
 class ResearchBudget(BaseModel):
     """Deliberately generous per-run ceiling; the recorder makes spend visible."""
 
     model: str = "gpt-5.6-sol"
-    max_cost_usd: float = 10.0
-    max_llm_calls: int = 6
-    max_output_tokens: int = 20_000
+    max_cost_usd: float = 30.0
+    max_llm_calls: int = 12
+    max_output_tokens: int = 40_000
     author_timeout_seconds: float = 900.0
     trial_timeout_seconds: float = 90.0
     max_events: int = 10_000
     max_behavior_calls: int = 2_000
-    max_author_attempts: int = Field(default=3, ge=1, le=10)
+    max_author_attempts: int = Field(default=4, ge=1, le=10)
 
 
 @dataclass(frozen=True)
@@ -287,7 +305,9 @@ guess or request them.
 """
     return f"""You are the implementation author inside a governed recursive-improvement experiment.
 
-Your job is to return a COMPLETE, IMPORTABLE ActiveGraph Pack source bundle for the public task below.
+Your job is to return a COMPLETE, IMPORTABLE SET of one to six ActiveGraph Pack source bundles for the public task
+below. Use one Pack when one coherent behavior domain is enough. Use multiple Packs when independently meaningful
+event-driven components, typed domains, or policies need to compose. The entire set is trialed and adopted atomically.
 You may author real event-driven behaviors, typed graph objects, relations, settings, prompts, and policies.
 Use the supplied ActiveGraph documentation as the API authority. Do not rely on remembered APIs when the
 documentation gives an exact contract.
@@ -304,7 +324,10 @@ AUTHORITY BOUNDARY
 - Behavior bodies must be deterministic and store durable state in the ActiveGraph graph, never module globals.
 - Inside a behavior, read existing state with ctx.view.objects(type=...) and filter Object.data fields in Python;
   the behavior graph argument is the write surface. A View ``where`` path would be ``data.<field>``, not ``<field>``.
-- Export exactly one module-level Pack whose name/version/description and declared surface exactly match this output.
+- Every source bundle must export exactly one module-level Pack whose name/version/description and declared surface
+  exactly match that bundle's output.
+- Packs in the proposed set may compose through explicit ActiveGraph events. Do not use imports between proposal
+  bundles or hidden module-global coupling.
 - If the Python Pack uses ActiveGraph's EmptySettings sentinel, return settings_schema as an empty string because
   the manager manifest represents EmptySettings as no named schema.
 - Prefer a compact __init__.py unless multiple files materially clarify the behavior.
@@ -373,7 +396,7 @@ def author_pack(
     budget: ResearchBudget,
     doc_paths: tuple[str, ...] = DEFAULT_DOC_PATHS,
     repair_feedback: tuple[str, ...] = (),
-) -> tuple[PackProposal, dict[str, Any]]:
+) -> tuple[PackSetProposal, dict[str, Any]]:
     output_root = Path(run_dir).resolve()
     output_root.mkdir(parents=True, exist_ok=True)
     corpus = build_documentation_corpus(docs_root, paths=doc_paths)
@@ -398,14 +421,14 @@ def author_pack(
         name="research.hybrid_pack_author",
         on=["goal.created"],
         description=prompt,
-        output_schema=PackProposal,
+        output_schema=PackSetProposal,
         model=budget.model,
         temperature=0.1,
         max_tokens=budget.max_output_tokens,
         timeout_seconds=budget.author_timeout_seconds,
         creates=["pack_draft"],
     )
-    def pack_author(event: Any, graph: Any, ctx: Any, llm_output: PackProposal) -> None:
+    def pack_author(event: Any, graph: Any, ctx: Any, llm_output: PackSetProposal) -> None:
         graph.add_object("pack_draft", llm_output.model_dump(mode="json"))
 
     run_id = "hybrid_author_" + uuid.uuid4().hex
@@ -451,7 +474,7 @@ def author_pack(
     write_json(output_root / "author.summary.json", summary)
     if len(drafts) != 1 or failures:
         raise RuntimeError(f"pack author failed: drafts={len(drafts)} failures={failures}")
-    proposal = PackProposal.model_validate(drafts[0].data)
+    proposal = PackSetProposal.model_validate(drafts[0].data)
     write_json(output_root / "proposal.json", proposal.model_dump(mode="json"))
     # The exact private suite is manager evidence and is written only after the
     # model call has completed. It never enters the prompt or author trace.
@@ -535,7 +558,7 @@ def author_evaluate_and_record(
     repair_feedback: tuple[str, ...] = ()
     total_cost = Decimal("0")
     total_requests = 0
-    proposal: PackProposal | None = None
+    proposal: PackSetProposal | None = None
     report = None
     author_summary: dict[str, Any] = {}
     final_author_root = root
@@ -560,9 +583,9 @@ def author_evaluate_and_record(
         usage = author_summary["usage"]
         total_cost += Decimal(str(usage["estimated_cost_usd"]))
         total_requests += int(usage["requests"])
-        report = organism.evolve(
+        report = organism.evolve_set(
             objective=task.objective,
-            draft=proposal.draft(),
+            drafts=proposal.drafts(),
             public_cases=(case.core_case() for case in task.public_cases),
             private_cases=(case.core_case() for case in task.private_cases),
         )
@@ -665,14 +688,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--docs-root", type=Path, default=DEFAULT_ACTIVEGRAPH_DOCS)
     parser.add_argument("--provider", choices=("openai", "anthropic"), default="openai")
     parser.add_argument("--model", default="gpt-5.6-sol")
-    parser.add_argument("--max-cost-usd", type=float, default=10.0)
-    parser.add_argument("--max-llm-calls", type=int, default=6)
-    parser.add_argument("--max-output-tokens", type=int, default=20_000)
+    parser.add_argument("--max-cost-usd", type=float, default=30.0)
+    parser.add_argument("--max-llm-calls", type=int, default=12)
+    parser.add_argument("--max-output-tokens", type=int, default=40_000)
     parser.add_argument("--max-events", type=int, default=10_000)
     parser.add_argument("--max-behavior-calls", type=int, default=2_000)
     parser.add_argument("--author-timeout", type=float, default=900.0)
     parser.add_argument("--trial-timeout", type=float, default=90.0)
-    parser.add_argument("--max-author-attempts", type=int, default=3)
+    parser.add_argument("--max-author-attempts", type=int, default=4)
     args = parser.parse_args(argv)
     load_env_file(Path(".env"))
     budget = ResearchBudget(

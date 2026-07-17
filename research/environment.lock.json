@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "python": "3.11",
+  "packages": {
+    "activegraph": "1.10.0",
+    "anthropic": "0.117.0",
+    "openai": "2.46.0",
+    "pydantic": "2.13.4",
+    "tiktoken": "0.13.0"
+  },
+  "activegraph_source_revision": "148e12c2969f18fa12a1a3c2e75f3affd9aa0616",
+  "calibration_image": "python@sha256:db3ff2e1800a8581e2c48a27c3995339d47bdf046da21c7627accd3d51053a93",
+  "notes": "Exact observed host versions for protocol 0.2 calibration; task images and external evaluators are pinned separately in research/selections/."
+}

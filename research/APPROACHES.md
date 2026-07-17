@@ -13,13 +13,15 @@ test lines.
 **Minimal v2 is an apprentice with a notebook and tool belt.** One persistent
 model actor performs work, remembers successful procedures, and can add small
 deterministic tools. It feels most like one continuing agent and is easiest to
-demo conversationally. The current kernel is 1,510 lines plus 431 test lines.
+demo conversationally. The current kernel is 1,531 lines plus 478 test lines.
 
 **Hybrid Packs is an organism that grows hash-pinned organs.** A powerful model
 may propose a complete ActiveGraph Pack—types, relations, and behaviors—but an
 immune-system-like manager decides whether the organ is safe and actually
-improves behavior. The pack manager is 952 lines; the docs-grounded author and
-recorder add 613 lines; their focused tests total 373 lines.
+improves behavior. The pack manager is 1,167 lines; the docs-grounded author
+and recorder add 724 lines; their focused tests total 584 lines. The shared
+broker, agent, grader, sandbox, and runner are research infrastructure and are
+reported separately from all three kernels.
 
 ## High-level architecture
 
@@ -46,7 +48,7 @@ is the mutation unit.
 |---|---|---|---|
 | Persistent identity | ActiveGraph run + promoted workspace lineage | ActiveGraph event log + adopted Pack registry | ActiveGraph run + procedures + capabilities |
 | Mutation unit | Arbitrary workspace tree | Complete ActiveGraph Pack | Procedure text or pure JSON capability |
-| Author action | Multi-turn coding with file/command tools | One structured Pack proposal today | Generic tool loop or one structured mutation proposal |
+| Author action | Multi-turn coding with file/command tools | One atomic proposal containing one to six composed Packs | Generic tool loop or one structured mutation proposal |
 | Evaluation | Executable public/private tests + gates + judge | Static pre-import gate + fresh-process public/private graph trials | External task check or held-out subprocess fork |
 | Adoption | Copy promoted workspace; optional next engine | Copy exact bundle; load only after restart | Store procedure or promote exact Pack-backed capability |
 | Native state | Anything the workspace implements | Typed objects/relations in the organism graph | Event history, procedure objects, host workspace |
@@ -98,10 +100,10 @@ Weaknesses:
   actually require repair.
 - The import membrane blocks common authority expansion but is not a security
   proof against adversarial Python.
-- Current autonomous Packs cannot use network, tools, or model inference, so
-  acquired behavior is deterministic and local.
-- Replacing one Pack at a time is still too local if future improvements need
-  coordinated changes across manager, prompts, and multiple Packs.
+- Native adopted Packs remain deterministic and local; model and workspace
+  authority are available only through the outer host broker.
+- Atomic multi-Pack proposals now support coordinated graph behavior, but the
+  manager and authoring algorithm themselves are still outside that mutation unit.
 - Three successful pilots show acquisition, not reliability or recursion.
 
 ### Minimal v2

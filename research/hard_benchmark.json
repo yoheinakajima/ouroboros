@@ -1,8 +1,9 @@
 {
   "schema_version": 1,
-  "protocol_version": "0.1-draft",
+  "protocol_version": "0.2-calibration",
   "execution_enabled": false,
-  "execution_lock_reason": "Task IDs, upstream revisions, adapters, and approach hashes must be frozen after calibration and before paid runs.",
+  "execution_lock_reason": "Scored execution stays locked until oracle/no-score calibration promotes selection manifests from calibration_locked to frozen and a protocol freeze lock is committed.",
+  "calibration_enabled": true,
   "primary_model": "gpt-5.6-sol",
   "replications": {
     "calibration": 1,
@@ -10,10 +11,11 @@
     "recursive_claim": 5
   },
   "common_budget": {
-    "max_cost_usd": 25.0,
-    "max_wall_seconds": 7200,
-    "max_model_calls": 80,
-    "max_output_tokens": 200000
+    "max_cost_usd": 50.0,
+    "max_wall_seconds": 14400,
+    "max_model_calls": 120,
+    "max_output_tokens": 400000,
+    "max_tool_calls": 1000
   },
   "studies": [
     {
@@ -43,11 +45,12 @@
       "id": "ouro_swe_50",
       "study": "common_outcome",
       "source": "https://github.com/SWE-bench/SWE-bench",
-      "upstream_revision": "UNPINNED",
+      "upstream_revision": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
       "dataset": "SWE-bench Verified",
+      "selection_manifest": "research/selections/swe_verified.json",
       "development_instances": 20,
       "evaluation_instances": 50,
-      "selection_status": "pending_calibration",
+      "selection_status": "calibration_locked",
       "score": "resolved instances / total, plus fail-to-pass and pass-to-pass test counts",
       "isolation": "official Docker evaluator",
       "why_hard": "Real GitHub issues in unfamiliar repositories; patches must satisfy official tests without regressions."
@@ -55,12 +58,13 @@
     {
       "id": "ouro_terminal_12",
       "study": "common_outcome",
-      "source": "https://github.com/harbor-framework/terminal-bench",
-      "upstream_revision": "UNPINNED",
+      "source": "https://github.com/harbor-framework/terminal-bench-2",
+      "upstream_revision": "2fd12b88aafdd04a52c298e3940bcb189f9766d6",
       "dataset": "Terminal-Bench 2 verified task set",
+      "selection_manifest": "research/selections/terminal_bench_2.json",
       "development_instances": 6,
       "evaluation_instances": 12,
-      "selection_status": "pending_calibration",
+      "selection_status": "calibration_locked",
       "score": "official task pass rate",
       "isolation": "Harbor task containers",
       "why_hard": "End-to-end terminal work spanning builds, debugging, servers, data processing, and system configuration."
@@ -69,11 +73,12 @@
       "id": "ouro_mle_6",
       "study": "common_outcome",
       "source": "https://github.com/openai/mle-bench",
-      "upstream_revision": "UNPINNED",
+      "upstream_revision": "507f92e1138bb6e40dac5c6ee7a6758e6424bf97",
       "dataset": "six low-size, non-leaky MLE-bench competitions",
+      "selection_manifest": "research/selections/mle.json",
       "development_instances": 3,
       "evaluation_instances": 6,
-      "selection_status": "pending_license_data_and_leakage_review",
+      "selection_status": "calibration_locked_external_data",
       "score": "normalized held-out competition score and improvement over supplied seed",
       "isolation": "pinned MLE-bench container with hidden grading split",
       "why_hard": "Agents must inspect data, build experiments, train models, and improve a continuous score rather than merely pass examples."
@@ -82,11 +87,12 @@
       "id": "ouro_rebench_2",
       "study": "native_ceiling",
       "source": "https://github.com/METR/RE-Bench",
-      "upstream_revision": "UNPINNED",
+      "upstream_revision": "93b98062e55f6945d4a7e213a3226dd419896170",
       "dataset": "two METR Task Standard R&D environments",
+      "selection_manifest": "research/selections/rebench.json",
       "development_instances": 1,
       "evaluation_instances": 2,
-      "selection_status": "pending_protected_material_review",
+      "selection_status": "calibration_locked_external_compute",
       "score": "official continuous task score",
       "isolation": "METR-compatible task containers",
       "why_hard": "Long-horizon autonomous AI R&D with measurable performance on held-out data."
@@ -95,11 +101,12 @@
       "id": "ouro_paperbench_code_dev_2",
       "study": "native_ceiling",
       "source": "https://github.com/openai/frontier-evals/tree/main/project/paperbench",
-      "upstream_revision": "UNPINNED",
+      "upstream_revision": "51052cede8cc608f95bb00346635e03759013e5a",
       "dataset": "two PaperBench Code-Dev papers",
+      "selection_manifest": "research/selections/paperbench.json",
       "development_instances": 1,
       "evaluation_instances": 2,
-      "selection_status": "pending_paper_and_cost_calibration",
+      "selection_status": "calibration_locked_external_grader",
       "score": "official hierarchical rubric score",
       "isolation": "PaperBench agent and judge containers",
       "why_hard": "Requires understanding a research paper and constructing a substantial replication codebase."
@@ -107,9 +114,10 @@
     {
       "id": "ouro_activegraph_50",
       "study": "native_ceiling",
-      "source": "internal versioned task package",
-      "upstream_revision": "UNBUILT",
+      "source": "https://github.com/yoheinakajima/activegraph",
+      "upstream_revision": "148e12c2969f18fa12a1a3c2e75f3affd9aa0616",
       "dataset": "five multi-stage ActiveGraph systems with 50 sealed checks each",
+      "task_package_status": "unbuilt",
       "development_instances": 2,
       "evaluation_instances": 5,
       "selection_status": "task_authoring_required",
@@ -126,5 +134,25 @@
     "No retry is silently discarded; failed attempts consume budget and remain in the trace.",
     "All headline results report per-task outcomes and uncertainty, not only an aggregate mean.",
     "No paid execution begins while execution_enabled is false."
+  ],
+  "execution_profiles": [
+    {
+      "id": "local_no_account",
+      "suites": ["ouro_swe_50", "ouro_terminal_12"],
+      "status": "ready_for_oracle_calibration",
+      "requirements": ["Docker-compatible daemon", "internet access to clone sources and pull pinned task images"]
+    },
+    {
+      "id": "external_data_or_compute",
+      "suites": ["ouro_mle_6", "ouro_rebench_2", "ouro_paperbench_code_dev_2"],
+      "status": "selection_locked_prerequisites_required",
+      "requirements": ["Kaggle credentials and accepted rules for MLE-bench", "H100 infrastructure for selected RE-Bench tasks", "trusted-host judge credentials for PaperBench"]
+    },
+    {
+      "id": "activegraph_native",
+      "suites": ["ouro_activegraph_50"],
+      "status": "task_authoring_required",
+      "requirements": ["five sealed 50-check evaluators and 20/50 seed systems"]
+    }
   ]
 }

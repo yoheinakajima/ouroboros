@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "calibration_only": true,
+  "upstream_tasks_executed": false,
+  "score_blind": true,
+  "model_calls": 0,
+  "ready": true,
+  "revisions": {
+    "swe": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+    "swe_verified": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+    "terminal2": "2fd12b88aafdd04a52c298e3940bcb189f9766d6"
+  },
+  "terminal_tasks_checked": 18,
+  "terminal_images_checked": 18,
+  "issues": []
+}

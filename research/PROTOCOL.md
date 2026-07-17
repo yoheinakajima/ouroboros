@@ -83,13 +83,13 @@ mutation may justify more calls than pure capability synthesis.
 ## Budget and model controls
 
 The primary model is `gpt-5.6-sol`. Hybrid pilot defaults were intentionally raised
-to a $10 per-run ceiling, six LLM calls, 20,000 output tokens, 15 minutes for
+to a $30 per-run ceiling, 12 LLM calls, 40,000 output tokens, 15 minutes for
 authorship, 90 seconds per isolated suite, 10,000 events, and 2,000 behavior
 calls. A typical one-shot hybrid author currently uses one call and less than
 $0.20, but the ceiling permits repair loops and harder tasks later.
 
-Hard cross-approach comparisons use the same model, a $25 cost ceiling, an
-80-call ceiling, 200,000 output tokens, and a two-hour wall ceiling. Calls and tool turns are reported rather than forced to
+Hard cross-approach comparisons use the same model, a $50 cost ceiling, a
+120-call ceiling, 400,000 output tokens, 1,000 broker tools, and a four-hour wall ceiling. Calls and tool turns are reported rather than forced to
 be identical, because the architectures allocate work differently. Model,
 provider, documentation commit, engine hash, platform, and dependencies must be
 recorded.

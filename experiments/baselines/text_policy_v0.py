@@ -88,8 +88,6 @@ from difflib import unified_diff
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
-
 from activegraph import (
     Frame,
     Graph,
@@ -100,7 +98,7 @@ from activegraph import (
     register,
 )
 from activegraph.llm import AnthropicProvider
-
+from pydantic import BaseModel, Field
 
 # ---------------------------------------------------------------------------
 # Stable engine / manager protocol

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "sha256": "6ff2938a53fc66a6f21434bc29cb768a8ddbe48d0e0df1d2c16731fee5e0003a",
+  "status": {
+    "architecture": "aarch64",
+    "operating_system": "Ubuntu 24.04.4 LTS",
+    "ready": true,
+    "security_options": [
+      "name=apparmor",
+      "name=seccomp,profile=builtin",
+      "name=cgroupns"
+    ],
+    "server_version": "29.5.2",
+    "smoke": {
+      "command": [
+        "/usr/bin/env"
+      ],
+      "container_name": "ouroboros-94d3ef865ceb478099d1f5579e7f22a2",
+      "duration_seconds": 0.12979208305478096,
+      "image": "python@sha256:db3ff2e1800a8581e2c48a27c3995339d47bdf046da21c7627accd3d51053a93",
+      "output_truncated": false,
+      "returncode": 0,
+      "security_profile": {
+        "capabilities": [],
+        "limits": {
+          "cpus": 1,
+          "memory_mb": 128,
+          "output_bytes": 1000000,
+          "pids": 32,
+          "tmpfs_mb": 32,
+          "wall_seconds": 30
+        },
+        "network": "none",
+        "no_new_privileges": true,
+        "provider_credentials_forwarded": false,
+        "read_only_root": true,
+        "user": "65532:65532",
+        "workspace_mount": "/workspace:rw"
+      },
+      "stderr": "",
+      "stdout": "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\nHOSTNAME=ed2f2c9ec711\nHOME=/tmp/home\nOUROBOROS_SANDBOX=1\nLANG=C.UTF-8\nGPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D\nPYTHON_VERSION=3.11.15\nPYTHON_SHA256=272179ddd9a2e41a0fc8e42e33dfbdca0b3711aa5abf372d3f2d51543d09b625\n",
+      "timed_out": false
+    }
+  }
+}

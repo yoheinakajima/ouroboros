@@ -1,5 +1,7 @@
 # Ouroboros
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Ouroboros is an experiment in the smallest useful recursively self-improving
 agent: a model, an ActiveGraph event history, an evaluation boundary, and a
 way to retain what worked. The long-term hypothesis is that a minimal organism
@@ -23,10 +25,10 @@ under `recovered/v1.2/`; the Hybrid is under `experiments/` with its real
 documentation-grounded author under `research/`. None depends on the separate
 `activegraph-packs` repository.
 
-See [the research design](docs/RESEARCH_DESIGN.md), [current pilot
-results](research/RESULTS.md), and [the readiness gate](research/readiness.py).
-Paid hard-benchmark execution is locked until tasks, adapters, containers,
-budgets, and source hashes are frozen.
+See [the research design](docs/RESEARCH_DESIGN.md), [benchmark feasibility
+audit](docs/BENCHMARK_AUDIT.md), [current pilot results](research/RESULTS.md),
+and [the readiness gate](research/readiness.py). Paid hard-benchmark execution
+is locked until oracle calibration promotes the pinned selections to frozen.
 
 ## Minimal v2
 
@@ -154,6 +156,7 @@ or candidate code.
 ```bash
 python -m unittest discover -s tests -p 'test_*.py'
 python -m research.validate_research
+python -m research.smoke --output evidence/calibration_smoke.json
 python -m research.readiness --development
 ```
 
@@ -165,3 +168,16 @@ dotenv handling, and the absence of an `activegraph-packs` dependency.
 Raw experiment trees live locally under ignored `artifacts/`. Small public
 summaries are under `evidence/`; selected redacted bundles can be attached to
 tagged releases without turning model traces into source code.
+
+## Prepare the hard local benchmark inputs
+
+The anonymous local profile is SWE-bench Verified plus Terminal-Bench 2. Fetch
+and verify their exact revisions, selected task files, dataset hash, and remote
+image digests without making model calls:
+
+```bash
+python -m research.bootstrap_benchmarks --fetch --verify-images
+python -m research.readiness
+```
+
+This prepares oracle calibration; it does not unlock scored execution.

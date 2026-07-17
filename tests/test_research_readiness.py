@@ -16,9 +16,10 @@ class ResearchReadinessTests(unittest.TestCase):
         self.assertTrue(report["structurally_valid"], report)
         self.assertFalse(report["ready"])
         self.assertIn("execution_disabled", codes)
-        self.assertIn("suite_revision_unpinned", codes)
-        self.assertIn("hardening_incomplete", codes)
-        self.assertIn("broker_not_ready", codes)
+        self.assertNotIn("suite_revision_unpinned", codes)
+        self.assertNotIn("hardening_incomplete", codes)
+        self.assertNotIn("broker_not_ready", codes)
+        self.assertTrue(report["selection_report"]["calibration_ready"])
         self.assertEqual(report["approaches"], ["hybrid_packs", "minimal_v2", "workspace_v1_2"])
 
     def test_attempt_and_score_contracts_keep_claims_separate(self) -> None:

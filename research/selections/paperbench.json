@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "suite_id": "ouro_paperbench_code_dev_2",
+  "status": "calibration_locked_external_grader",
+  "source_revision": "51052cede8cc608f95bb00346635e03759013e5a",
+  "selection_rule": {
+    "seed": "ouroboros-hard-v1-paperbench-code-dev",
+    "description": "Use the API-free official dev paper self-expansion for development; exclude papers whose agent task requires OpenAI or Hugging Face credentials, then SHA-256 rank remaining IDs and take two for evaluation.",
+    "score_blind": true
+  },
+  "development": [
+    {"id": "self-expansion", "tree_sha256": "0739c095af42b70937bb85a16c65a1c335687e19943bfd0738aaae770a1c14c8", "config_sha256": "6102ba71fa05676a6ca7a85061b2fd845e17f4d6204281a8e8c5709c2126b2ee", "rubric_sha256": "11aa33097f9b7dd6aa4660bbae6869298a3cd061b6f05328905504364af238ab"}
+  ],
+  "evaluation": [
+    {"id": "bam", "tree_sha256": "2f6e71047a42f95b435e111b552c6eac5074fc0f12a50b68c597edef499451dc", "config_sha256": "2556025b1b76f8d2f1ce00a00ac4624ec82c7a14c3278e2a3b8bac2154281f5e", "rubric_sha256": "033abb959c3c85a1b1cc9575c5d7046b92eefff08213d0d8e9891ae9ab591786"},
+    {"id": "ftrl", "tree_sha256": "2372ee5fe57120d995f62fcdd08d6a8c17e1218027119f5bc212424e6b584556", "config_sha256": "6a308b62e88aba15877e848e28f599e4ac6464df05e66889de6d4ae2d39b9fee", "rubric_sha256": "1480740ec2ff1bf411b96237ef6f67a6c3331d0055a57913c5fe504ff4c3b495"}
+  ],
+  "external_requirements": [
+    "PaperBench judge model credentials remain on the trusted grader host",
+    "The agent container receives no provider credentials",
+    "Rubrics and judge addenda are sealed until the attempt ends"
+  ]
+}

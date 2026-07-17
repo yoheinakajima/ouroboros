@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "suite_id": "ouro_rebench_2",
+  "status": "calibration_locked_external_compute",
+  "source_revision": "93b98062e55f6945d4a7e213a3226dd419896170",
+  "selection_rule": {
+    "seed": "ouroboros-hard-v1-rebench",
+    "description": "Use the only CPU task for development and two disjoint one-H100 tasks with different optimization modes for evaluation; selection used manifests and resource requirements, never task scores or protected solutions.",
+    "score_blind": true
+  },
+  "development": [
+    {"id": "ai_rd_rust_codecontests_inference", "manifest_sha256": "d6f080c49829c4d86c96de97c0d2cc06574da2ccbc93c863d675a4ba9c320f4e", "resources": "20 CPU, 100 GB RAM"}
+  ],
+  "evaluation": [
+    {"id": "ai_rd_fix_embedding", "manifest_sha256": "5196490d1ff2659295f3839fe608e6015fc144c709940f1b15279775d0677b47", "resources": "1 H100, 13 CPU, 100 GB RAM"},
+    {"id": "ai_rd_triton_cumsum", "manifest_sha256": "cc943a161fef441f13f98c383c9f8a15f86d75bd520a916f3479f5972d51c3e9", "resources": "1 H100, 13 CPU, 100 GB RAM"}
+  ],
+  "publication_policy": [
+    "Do not extract or publish official_solution.zip contents",
+    "Do not send protected evaluation material to training APIs",
+    "Publish scores and redacted receipts, not protected task solutions"
+  ]
+}

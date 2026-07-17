@@ -16,6 +16,7 @@ from activegraph.llm import LLMResponse  # noqa: E402
 
 from research.hybrid_author import (  # noqa: E402
     PackProposal,
+    PackSetProposal,
     ResearchBudget,
     author_evaluate_and_record,
     build_documentation_corpus,
@@ -72,7 +73,7 @@ PACK = Pack(
 class ScriptedProvider:
     default_model = "scripted-pack-author"
 
-    def __init__(self, proposal: PackProposal | list[PackProposal]) -> None:
+    def __init__(self, proposal: PackSetProposal | list[PackSetProposal]) -> None:
         self.proposals = list(proposal) if isinstance(proposal, list) else [proposal]
         self.calls: list[dict[str, Any]] = []
 
@@ -136,14 +137,19 @@ class HybridAuthorTests(unittest.TestCase):
                 build_documentation_corpus(root, paths=("guide.md",), max_characters=5)
 
     def test_scripted_llm_author_is_recorded_then_governed_and_adopted(self):
-        proposal = PackProposal(
-            name="usage_tracker",
-            version="1.0.0",
-            description="Tracks cumulative usage per tenant in typed graph objects.",
-            files={"__init__.py": PACK_SOURCE},
-            behaviors=["record_usage"],
-            object_types=["usage_counter"],
-            design_summary="One typed counter object per tenant; deterministic patches preserve state.",
+        proposal = PackSetProposal(
+            packs=[
+                PackProposal(
+                    name="usage_tracker",
+                    version="1.0.0",
+                    description="Tracks cumulative usage per tenant in typed graph objects.",
+                    files={"__init__.py": PACK_SOURCE},
+                    behaviors=["record_usage"],
+                    object_types=["usage_counter"],
+                    design_summary="One typed counter object per tenant; deterministic patches preserve state.",
+                )
+            ],
+            design_summary="One typed counter Pack; deterministic patches preserve state.",
             documentation_used=["guide.md"],
         )
         provider = ScriptedProvider(proposal)
@@ -183,21 +189,31 @@ class HybridAuthorTests(unittest.TestCase):
             self.assertEqual(saved["author"]["documentation"]["documents"][0]["path"], "guide.md")
 
     def test_rejected_pack_is_repaired_without_private_case_feedback(self):
-        unsafe = PackProposal(
-            name="usage_tracker",
-            version="1.0.0",
-            description="Unsafe first attempt.",
-            files={"__init__.py": "import os\n"},
-            behaviors=[],
+        unsafe = PackSetProposal(
+            packs=[
+                PackProposal(
+                    name="usage_tracker",
+                    version="1.0.0",
+                    description="Unsafe first attempt.",
+                    files={"__init__.py": "import os\n"},
+                    behaviors=[],
+                    design_summary="Incorrectly requests environment authority.",
+                )
+            ],
             design_summary="Incorrectly requests environment authority.",
         )
-        repaired = PackProposal(
-            name="usage_tracker",
-            version="1.0.0",
-            description="Tracks cumulative usage per tenant in typed graph objects.",
-            files={"__init__.py": PACK_SOURCE},
-            behaviors=["record_usage"],
-            object_types=["usage_counter"],
+        repaired = PackSetProposal(
+            packs=[
+                PackProposal(
+                    name="usage_tracker",
+                    version="1.0.0",
+                    description="Tracks cumulative usage per tenant in typed graph objects.",
+                    files={"__init__.py": PACK_SOURCE},
+                    behaviors=["record_usage"],
+                    object_types=["usage_counter"],
+                    design_summary="Repaired within the declared authority boundary.",
+                )
+            ],
             design_summary="Repaired within the declared authority boundary.",
         )
         provider = ScriptedProvider([unsafe, repaired])

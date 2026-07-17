@@ -43,8 +43,8 @@ difference is the retained mutation unit:
 - Hybrid: complete hash-pinned ActiveGraph Pack.
 
 The operation schemas and authority invariants are versioned in
-`research/broker_protocol.json`. Its implementation is still a readiness
-blocker; the contract exists now so it cannot be quietly tailored per approach.
+`research/broker_protocol.json`. One host-owned implementation now serves all
+three adapters and records a hash-chained trace under a single budget ledger.
 
 Report cold and evolved arms independently. The official grader, never the
 agent, owns the score. A failed attempt, timeout, or budget exhaustion remains
@@ -93,9 +93,10 @@ The external sources are the official [SWE-bench](https://github.com/SWE-bench/S
 [MLE-bench](https://github.com/openai/mle-bench),
 [RE-Bench](https://github.com/METR/RE-Bench), and
 [PaperBench](https://github.com/openai/frontier-evals/tree/main/project/paperbench)
-repositories. Upstream commits and exact task IDs are deliberately unpinned
-until a no-score calibration checks runtime, license, data access, leakage,
-broken tests, and cost. Selection is then frozen before any scored run.
+repositories. Upstream commits and score-blind task IDs are now calibration
+locked in `research/selections/`. Oracle/no-score calibration must still check
+runtime, data access, broken tests, and cost before those manifests become
+frozen and any scored run is enabled.
 
 ## Task-selection rules
 
@@ -118,8 +119,8 @@ before freezing.
 
 ## Controls and budgets
 
-The primary model is `gpt-5.6-sol`. The initial common cap is $25, 80 model
-calls, 200,000 output tokens, and two wall-clock hours per task attempt. These
+The primary model is `gpt-5.6-sol`. The initial common cap is $50, 120 model
+calls, 400,000 output tokens, 1,000 broker tools, and four wall-clock hours per task attempt. These
 are ceilings, not targets. Model, provider settings, broker, container digest,
 CPU/GPU/RAM, source hashes, tool calls, token counts, and cost are recorded.
 

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "suite_id": "ouro_terminal_12",
+  "status": "calibration_locked",
+  "source_revision": "2fd12b88aafdd04a52c298e3940bcb189f9766d6",
+  "dataset": "terminal-bench@2.0",
+  "selection_rule": {
+    "seed": "ouroboros-hard-v1-terminal2",
+    "description": "Keep non-easy zero-GPU tasks; SHA-256 rank categories and task IDs, then select category-diverse hard and medium tasks: 3+3 development and 6+6 evaluation.",
+    "score_blind": true
+  },
+  "network_policy": "Use each official task.toml allow_internet value identically for every approach; broker credentials remain unavailable.",
+  "development": [
+    {"id": "configure-git-webserver", "difficulty": "hard", "category": "system-administration", "task_toml_sha256": "ebb40d72f689512cbd90d865d88ef966b6665ab215544f9247b898b7fa94751b", "image": "alexgshaw/configure-git-webserver@sha256:9e48389b917fd4650dda1f64406bd7198bbf20dc1c6b0e5c4d81a3c16369f88c"},
+    {"id": "polyglot-rust-c", "difficulty": "hard", "category": "software-engineering", "task_toml_sha256": "3c41e83437068c62a3fdff74641899146e34907aefd9e47346213f47caeb82de", "image": "alexgshaw/polyglot-rust-c@sha256:3ba84f0e138a4b65e58c53f920a0fc852571e6402901c3bdbb876e9dab6e6c5e"},
+    {"id": "extract-moves-from-video", "difficulty": "hard", "category": "file-operations", "task_toml_sha256": "f0ba9af241fab0217ef689c90d02d0bd17225c3aadf9a2788dc024f87dbf81ec", "image": "alexgshaw/extract-moves-from-video@sha256:14a9dcca7d08ce53c5a0ed9fbd663a996ef28f207c199ed69d9ccf6064f8b184"},
+    {"id": "db-wal-recovery", "difficulty": "medium", "category": "file-operations", "task_toml_sha256": "1cdc2c615e259bc10265efbe71b518332070c1c002e226566399e9788f18d0aa", "image": "alexgshaw/db-wal-recovery@sha256:0e33ea5ec823975d1bd6c3778395c9f94251dd88f571146057bff6adb7e4594e"},
+    {"id": "sqlite-with-gcov", "difficulty": "medium", "category": "system-administration", "task_toml_sha256": "9a0da96990ee2ecbf4d92682a4c5301a53db45fc6e2d46ac7d45d3b8ee7fe523", "image": "alexgshaw/sqlite-with-gcov@sha256:f986820b00c74ce75db7288719d364df313fde7c7917bea6eb6352a08431a89f"},
+    {"id": "tune-mjcf", "difficulty": "medium", "category": "scientific-computing", "task_toml_sha256": "27b6d4e5a23761cc1a24a695125d891be74a2930fb83a02a66221db0244b08b3", "image": "alexgshaw/tune-mjcf@sha256:56c197739db2db79562384581fcc9d3d71e6c171bf052104b1a7ee0282e7c3cf"}
+  ],
+  "evaluation": [
+    {"id": "install-windows-3.11", "difficulty": "hard", "category": "system-administration", "task_toml_sha256": "0485184bd16cc74883396115d93520bd25b36d23d61e248da88c0dceeab2eeac", "image": "alexgshaw/install-windows-3.11@sha256:c6695097316ef8810abce0545e347e65354aef9d51d4f7f662c3242e742f6a3e"},
+    {"id": "llm-inference-batching-scheduler", "difficulty": "hard", "category": "machine-learning", "task_toml_sha256": "52aaac942f917e6a91ff658e0272195bd1cd842d41d71e302414c52603cc588b", "image": "alexgshaw/llm-inference-batching-scheduler@sha256:19e79aa49be4e55dccca1dde966515ebe6852314b6010bcb9230afb48b996774"},
+    {"id": "sam-cell-seg", "difficulty": "hard", "category": "data-science", "task_toml_sha256": "f0eb6af2acb87cb6fee67d77e8fdd55e3b331baf48999260bc5b6c4ac466c128", "image": "alexgshaw/sam-cell-seg@sha256:d76bdeef19d8113f4094013249c982eca93e62e46130484846269b2d378879d0"},
+    {"id": "bn-fit-modify", "difficulty": "hard", "category": "scientific-computing", "task_toml_sha256": "6493f7162da424a4fd95da721bd3fd1ce7e5dd26e792132cb9c46db536b67090", "image": "alexgshaw/bn-fit-modify@sha256:5aeb11ca6e802b83816c9a31f055ac9d028309a853509400c2e3139ac2d8380d"},
+    {"id": "video-processing", "difficulty": "hard", "category": "video-processing", "task_toml_sha256": "be4fb42fccc5faa4862789cedd2c560eaa5758a2971989649a6dafeaeccc17aa", "image": "alexgshaw/video-processing@sha256:a2c0f39e3ab04e67ac6e49cad9167bb0d987babe32511768c01aa0c6905a875f"},
+    {"id": "fix-code-vulnerability", "difficulty": "hard", "category": "security", "task_toml_sha256": "9aa2bd14ce9408289d199d0608bc3fa65b8b5e23374c9641020de62197dbf1e2", "image": "alexgshaw/fix-code-vulnerability@sha256:cac325252991f823713b2d0441502972901dd782bd67f66c03d9b1e410dac5c0"},
+    {"id": "chess-best-move", "difficulty": "medium", "category": "games", "task_toml_sha256": "d8f01d3c84ed5836edbb49c6c3b3cc7b5b96d951cf01a0987467c9206fb22f9e", "image": "alexgshaw/chess-best-move@sha256:bb447f94d9e2a8ed879f85c85a514b213b7418f9fe11fd7b2428a0b0e436e647"},
+    {"id": "portfolio-optimization", "difficulty": "medium", "category": "optimization", "task_toml_sha256": "4918687e4e261a9852e39e5a554156733c071c17dc89c5f544f15f2ef744ce0a", "image": "alexgshaw/portfolio-optimization@sha256:93461db3cec697c31585941a3b9387c1398495aa1ff0aee2ac752c7230b50ef8"},
+    {"id": "adaptive-rejection-sampler", "difficulty": "medium", "category": "scientific-computing", "task_toml_sha256": "6ed7b37f74beb46e9d47b0f5fad53025667c9548baff4e96d467b56d429fab1a", "image": "alexgshaw/adaptive-rejection-sampler@sha256:985bed39e8448bc95f138b5f766b59003a95c4be171c96af8e76448338f3dd8f"},
+    {"id": "hf-model-inference", "difficulty": "medium", "category": "data-science", "task_toml_sha256": "a75f95a090ad0352069c6d7dc2f4de0a7b80cd12cd6b9ec1c57e59ad3956b89d", "image": "alexgshaw/hf-model-inference@sha256:f96dd7d3c85c7257b404fd63ba8d24ced2478cd90232c20e297c372f953fa607"},
+    {"id": "build-cython-ext", "difficulty": "medium", "category": "debugging", "task_toml_sha256": "c472f0e7522c128fb7f03e00b50c8cdf2e5e6474daa1e094e7441f4b54e770b2", "image": "alexgshaw/build-cython-ext@sha256:3612a38fadb89a96f74a1a951fb0b0af734198fd160571eeaba6401593234594"},
+    {"id": "schemelike-metacircular-eval", "difficulty": "medium", "category": "software-engineering", "task_toml_sha256": "8dae8eb226183b0ca92331c1106152a7abc93b03b4e5a95291b86a4ddc9b44e0", "image": "alexgshaw/schemelike-metacircular-eval@sha256:b485be38bf80d56c1a4cd9da95bbf7ec129dc03f6786b86c0525518a96f6d1db"}
+  ],
+  "calibration_gates": [
+    "Harbor resolves every selected task at the pinned source revision",
+    "every digest-pinned task image pulls for linux/amd64 and its official verifier runs",
+    "oracle calibration passes without model calls before status may become frozen"
+  ]
+}

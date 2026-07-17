@@ -933,7 +933,7 @@ pack = Pack(
 name = {json.dumps(pack_name)}
 version = "0.1.0"
 description = {json.dumps(draft.description.strip() or draft.capability_name)}
-license = "Apache-2.0"
+license = "MIT"
 
 [pack.provenance]
 authors = ["Ouroboros"]

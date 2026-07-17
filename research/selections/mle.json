@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "suite_id": "ouro_mle_6",
+  "status": "calibration_locked_external_data",
+  "source_revision": "507f92e1138bb6e40dac5c6ee7a6758e6424bf97",
+  "selection_rule": {
+    "seed": "ouroboros-hard-v1-mle",
+    "description": "From the official Low split, keep datasets at most 1 GB and exclude every Low task named in upstream Known Issues; SHA-256 sort categories and IDs, round-robin by category, and take 3 development plus 6 evaluation tasks.",
+    "score_blind": true,
+    "maximum_dataset_gb": 1.0
+  },
+  "external_requirements": [
+    "A Kaggle account and ~/.kaggle/kaggle.json",
+    "The operator must accept each selected competition's rules",
+    "Prepared public/private data remains outside the public repository",
+    "Comparable accelerator, CPU, RAM, and time limits must be declared before scoring"
+  ],
+  "development": [
+    {"id": "text-normalization-challenge-english-language", "category": "Sequence to Sequence", "dataset_gb": 0.01, "config_sha256": "9900cdf37dcd69b1d93af4967d321af2ad01ce17c0c57291b842f5e88f18e546", "checksums_sha256": "2d38872c1d4c0812cf00e4480200a9d02066ccfe524e60253b061bdbe2cbe8f2"},
+    {"id": "nomad2018-predict-transparent-conductors", "category": "Tabular", "dataset_gb": 0.00624, "config_sha256": "aef4d908b680f04de4f4f52527bf417fcfd13f6e2d66441a150464e7f2dddfd9", "checksums_sha256": "899eecae873540137ed039252148a503ec2f352dafcb6a60a9bce0866489e427"},
+    {"id": "denoising-dirty-documents", "category": "Image to Image", "dataset_gb": 0.06, "config_sha256": "561230032305599107f2a0c7cbe03828b21c0a83707dcf3087c885d8f4841c5b", "checksums_sha256": "d44e9b7f63414ac1397760b689545ebe06bf50f22310c9389eaef756f7eaa574"}
+  ],
+  "evaluation": [
+    {"id": "spooky-author-identification", "category": "Text Classification", "dataset_gb": 0.0019, "config_sha256": "3b810f01991ad6fa08e9374e9e6736fdcf90e61a449c6020f53aaecf6347e57d", "checksums_sha256": "ac708035ed0954a1e08a4e481784b4a6c13e7a131a2972c2d0e26bafc0c2f692"},
+    {"id": "the-icml-2013-whale-challenge-right-whale-redux", "category": "Audio Classification", "dataset_gb": 0.29314, "config_sha256": "31779955576fbfa5945b0bcd4ede3c13d620d693b2cfda7e43f07c5b220459a8", "checksums_sha256": "8ebf9bd59ed06bd176be5e0710744cc4d27783176ff46047a3ca4b2822263b2f"},
+    {"id": "leaf-classification", "category": "Image Classification", "dataset_gb": 0.036, "config_sha256": "8ee662676de3e47a22240d5929a0ae14d7e011b87ca94dc09792ecd1966a56f7", "checksums_sha256": "0120ef585e5ec8db610d13504152827890d9b3248bc69029770a4412464260f6"},
+    {"id": "text-normalization-challenge-russian-language", "category": "Sequence to Sequence", "dataset_gb": 0.01, "config_sha256": "0d4268608283761ae4b27904933280685a9e75378f2162516a42e6464d97725e", "checksums_sha256": "6a862261c40193c6fcda39fe7f63e081ef2cc84be12a9ac1edf99acdb807e79f"},
+    {"id": "detecting-insults-in-social-commentary", "category": "Text Classification", "dataset_gb": 0.002, "config_sha256": "f3ed07ef0a8b7a49bb22ca28f91b241d0e565a514194197f6d0ba3c09eeac23b", "checksums_sha256": "97c96dac98a8c434bf5e15352c0bf28351de4f833765c7d14f6175e3e2aad7b0"},
+    {"id": "mlsp-2013-birds", "category": "Audio Classification", "dataset_gb": 0.5851, "config_sha256": "07cddd2a930fbe9d89b680bc6c2db092b0bafc0a9e250b7364c89b2bf63788a9", "checksums_sha256": "7280a3a9d8d915d7323c135976af85d607dd97e2889427a076b2a0ad334ef1e2"}
+  ]
+}

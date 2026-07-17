@@ -1,0 +1,53 @@
+{
+  "calibration_only": true,
+  "families": [
+    {
+      "audit_seal_sha256": "b63daf291d9ef02f6ae4b41617cb493f6579be748915adb9cf2a79e729041b9f",
+      "audit_valid": true,
+      "family": "swe",
+      "passed": true,
+      "score": 1.0
+    },
+    {
+      "audit_seal_sha256": "f660eec72e7cfa201ec271dbaf133f02cab034de8b76eae2a5c47460272e1333",
+      "audit_valid": true,
+      "family": "terminal",
+      "passed": true,
+      "score": 1.0
+    },
+    {
+      "audit_seal_sha256": "2f039c6ece21d9560343bb6d5a89c31ddd78eb966d2e69813ffc9dffe86a9800",
+      "audit_valid": true,
+      "family": "mle",
+      "passed": true,
+      "score": 1.0
+    },
+    {
+      "audit_seal_sha256": "1ec6bae9bec8f96eb2ca66806eeeacb4363d5895107d59841a11c1431e7f2acf",
+      "audit_valid": true,
+      "family": "rebench",
+      "passed": true,
+      "score": 1.0
+    },
+    {
+      "audit_seal_sha256": "cd9ea757909e7345a229dbdd65bb6d728c60234aadf35cf19359c6a004cc7b8b",
+      "audit_valid": true,
+      "family": "paperbench",
+      "passed": true,
+      "score": 1.0
+    },
+    {
+      "audit_seal_sha256": "f1258a14e454f42f2c1ac70bd5909180d70bafb33cc0c534d1263b9282d80936",
+      "audit_valid": true,
+      "family": "activegraph",
+      "passed": true,
+      "score": 1.0
+    }
+  ],
+  "image": "python@sha256:db3ff2e1800a8581e2c48a27c3995339d47bdf046da21c7627accd3d51053a93",
+  "model_calls": 0,
+  "passed": true,
+  "purpose": "Verify broker-journal, sealed-grader, score-record, and audit plumbing; never report as capability evidence.",
+  "schema_version": 1,
+  "upstream_tasks_executed": false
+}

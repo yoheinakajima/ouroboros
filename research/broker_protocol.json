@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "protocol_version": "0.1-draft",
-  "implementation_status": "contract_only",
+  "protocol_version": "1.0",
+  "implementation_status": "ready",
   "purpose": "Give every approach the same host-owned task authority without putting credentials or graders inside evolved code.",
   "operations": [
     {"name": "list_files", "authority": "read_workspace", "recorded": true},

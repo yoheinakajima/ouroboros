@@ -38,7 +38,6 @@ from activegraph.packs.manifest import (
     verify_surface,
 )
 
-
 REQUEST_EVENT = "hybrid.task.requested"
 RESULT_EVENT = "hybrid.task.completed"
 EVENT_PREFIX = "ouroboros.hybrid"
@@ -110,7 +109,19 @@ class ReleasePolicy:
     """The capability envelope inside which adoption may be autonomous."""
 
     allowed_imports: frozenset[str] = frozenset(
-        {"__future__", "activegraph.packs", "collections", "dataclasses", "json", "math", "pydantic", "re", "statistics", "typing", "unicodedata"}
+        {
+            "__future__",
+            "activegraph.packs",
+            "collections",
+            "dataclasses",
+            "json",
+            "math",
+            "pydantic",
+            "re",
+            "statistics",
+            "typing",
+            "unicodedata",
+        }
     )
     allowed_tools: frozenset[str] = frozenset()
     allowed_capabilities: frozenset[str] = frozenset()
@@ -126,6 +137,25 @@ class EvolutionReport:
     name: str
     version: str
     bundle_hash: str
+    public_candidate: str
+    public_incumbent: str
+    private_candidate: str
+    private_incumbent: str
+    restart_required: bool
+    author_feedback: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class PackSetEvolutionReport:
+    """One atomic decision over a composed set of complete Packs."""
+
+    accepted: bool
+    reason: str
+    packs: tuple[dict[str, str], ...]
+    proposal_hash: str
     public_candidate: str
     public_incumbent: str
     private_candidate: str
@@ -172,7 +202,7 @@ def _manifest_text(draft: PackDraft, content_hash: str) -> str:
 name = {_toml_string(draft.name)}
 version = {_toml_string(draft.version)}
 description = {_toml_string(draft.description)}
-license = "Apache-2.0"
+license = "MIT"
 
 [pack.provenance]
 authors = ["ouroboros"]
@@ -635,8 +665,11 @@ class HybridOuroboros:
 
     def _write_registry(self, data: dict[str, Any]) -> None:
         temporary = self.root / (".registry-" + uuid.uuid4().hex + ".json")
-        temporary.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-        temporary.replace(self.registry_path)
+        try:
+            temporary.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            temporary.replace(self.registry_path)
+        finally:
+            temporary.unlink(missing_ok=True)
 
     def _record(self, event_type: str, payload: dict[str, Any]) -> None:
         _emit(self.runtime.graph, event_type, payload, actor="ouroboros")
@@ -655,39 +688,102 @@ class HybridOuroboros:
         public_cases: Iterable[Case],
         private_cases: Iterable[Case],
     ) -> EvolutionReport:
-        """Trial one whole-pack proposal and adopt it only on a strict win."""
+        """Backward-compatible single-Pack wrapper around atomic set evolution."""
 
+        report = self.evolve_set(
+            objective=objective,
+            drafts=(draft,),
+            public_cases=public_cases,
+            private_cases=private_cases,
+        )
+        pack = report.packs[0] if report.packs else {"name": draft.name, "version": draft.version, "bundle_hash": ""}
+        return EvolutionReport(
+            accepted=report.accepted,
+            reason=report.reason,
+            name=pack["name"],
+            version=pack["version"],
+            bundle_hash=pack["bundle_hash"],
+            public_candidate=report.public_candidate,
+            public_incumbent=report.public_incumbent,
+            private_candidate=report.private_candidate,
+            private_incumbent=report.private_incumbent,
+            restart_required=report.restart_required,
+            author_feedback=report.author_feedback,
+        )
+
+    def evolve_set(
+        self,
+        *,
+        objective: str,
+        drafts: Iterable[PackDraft],
+        public_cases: Iterable[Case],
+        private_cases: Iterable[Case],
+    ) -> PackSetEvolutionReport:
+        """Trial a composed Pack set and publish all registry entries atomically."""
+
+        proposed = tuple(drafts)
         public = tuple(public_cases)
         private = tuple(private_cases)
-        if not objective.strip() or not public or not private:
-            raise ValueError("objective and nonempty public/private suites are required")
+        if not objective.strip() or not proposed or not public or not private:
+            raise ValueError("objective, drafts, and nonempty public/private suites are required")
+        if len(proposed) > 6:
+            raise ValueError("a Pack set may contain at most six Packs")
+        if len({draft.name for draft in proposed}) != len(proposed):
+            raise ValueError("a Pack set may not contain duplicate names")
         if len({case.id for case in public + private}) != len(public) + len(private):
             raise ValueError("test case ids must be unique")
 
         proposal_id = uuid.uuid4().hex
-        candidate_root = self.root / "candidates" / proposal_id
-        self._record(f"{EVENT_PREFIX}.gap_observed", {"objective": objective, "proposal_id": proposal_id})
-        try:
-            bundle_hash = _materialize_draft(draft, candidate_root)
-        except Exception as exc:
-            return self._reject(draft, "materialization rejected", "", [f"{type(exc).__name__}: {exc}"])
+        candidate_base = self.root / "candidates" / proposal_id
         self._record(
-            f"{EVENT_PREFIX}.pack_proposed",
-            {"proposal_id": proposal_id, "name": draft.name, "version": draft.version, "bundle_hash": bundle_hash},
+            f"{EVENT_PREFIX}.gap_observed",
+            {"objective": objective, "proposal_id": proposal_id, "pack_count": len(proposed)},
+        )
+        pack_rows: list[dict[str, str]] = []
+        materialized: list[tuple[PackDraft, Path, str]] = []
+        for draft in proposed:
+            candidate_root = candidate_base / draft.name
+            try:
+                bundle_hash = _materialize_draft(draft, candidate_root)
+            except Exception as exc:
+                return self._reject_set(
+                    proposed,
+                    pack_rows,
+                    "materialization rejected",
+                    [f"{draft.name}: {type(exc).__name__}: {exc}"],
+                )
+            row = {"name": draft.name, "version": draft.version, "bundle_hash": bundle_hash}
+            pack_rows.append(row)
+            materialized.append((draft, candidate_root, bundle_hash))
+            self._record(f"{EVENT_PREFIX}.pack_proposed", {"proposal_id": proposal_id, **row})
+        self._record(
+            f"{EVENT_PREFIX}.pack_set_proposed",
+            {"proposal_id": proposal_id, "packs": pack_rows, "proposal_hash": _digest(pack_rows)},
         )
 
-        gate_errors = _static_gate(candidate_root, self.policy)
+        gate_errors = [
+            f"{draft.name}: {error}"
+            for draft, candidate_root, _ in materialized
+            for error in _static_gate(candidate_root, self.policy)
+        ]
         self._record(
             f"{EVENT_PREFIX}.gate_checked",
-            {"proposal_id": proposal_id, "accepted": not gate_errors, "error_count": len(gate_errors)},
+            {
+                "proposal_id": proposal_id,
+                "accepted": not gate_errors,
+                "error_count": len(gate_errors),
+                "pack_count": len(proposed),
+            },
         )
         if gate_errors:
-            return self._reject(draft, "static policy rejected proposal", bundle_hash, gate_errors)
+            return self._reject_set(proposed, pack_rows, "static policy rejected proposal", gate_errors)
 
         incumbent_entries = list(self.registry["adopted"])
-        candidate_entries = [entry for entry in incumbent_entries if entry["name"] != draft.name]
+        replaced_names = {draft.name for draft in proposed}
+        candidate_entries = [entry for entry in incumbent_entries if entry["name"] not in replaced_names]
         candidate_specs = self._pack_specs(candidate_entries) + [
             {"root": str(candidate_root.resolve()), "bundle_hash": bundle_hash}
+            for _, candidate_root, bundle_hash in materialized
         ]
         incumbent_specs = self._pack_specs(incumbent_entries)
 
@@ -749,78 +845,161 @@ class HybridOuroboros:
             > incumbent_public.get("passed", 0) + incumbent_private.get("passed", 0)
         )
         if not workers_ok:
-            return self._reject(
-                draft,
+            return self._reject_set(
+                proposed,
+                pack_rows,
                 "isolated trial failed",
-                bundle_hash,
                 _public_repair_feedback(candidate_public)
-                + [f"Manager-private trial score: {_score(candidate_private)}; exact cases and failures remain sealed."],
+                + [
+                    f"Manager-private trial score: {_score(candidate_private)}; "
+                    "exact cases and failures remain sealed."
+                ],
                 scores=(candidate_public, incumbent_public, candidate_private, incumbent_private),
             )
         if not candidate_clean:
-            return self._reject(
-                draft,
+            return self._reject_set(
+                proposed,
+                pack_rows,
                 "candidate did not pass every public and private case",
-                bundle_hash,
                 _public_repair_feedback(candidate_public)
-                + [f"Manager-private trial score: {_score(candidate_private)}; exact cases and failures remain sealed."],
+                + [
+                    f"Manager-private trial score: {_score(candidate_private)}; "
+                    "exact cases and failures remain sealed."
+                ],
                 scores=(candidate_public, incumbent_public, candidate_private, incumbent_private),
             )
         if not no_regression:
-            return self._reject(
-                draft,
+            return self._reject_set(
+                proposed,
+                pack_rows,
                 "candidate regressed against the adopted pack set",
-                bundle_hash,
                 _public_repair_feedback(candidate_public)
                 + ["The candidate regressed against the incumbent on a sealed comparison."],
                 scores=(candidate_public, incumbent_public, candidate_private, incumbent_private),
             )
         if not improvement:
-            return self._reject(
-                draft,
+            return self._reject_set(
+                proposed,
+                pack_rows,
                 "behavioral no-op: candidate did not improve on the incumbent",
-                bundle_hash,
                 ["The candidate was a behavioral no-op relative to the incumbent."],
                 scores=(candidate_public, incumbent_public, candidate_private, incumbent_private),
             )
 
-        adopted_rel = Path("adopted") / draft.name / f"{draft.version}-{bundle_hash[-12:]}"
-        adopted_root = self.root / adopted_rel
-        adopted_root.parent.mkdir(parents=True, exist_ok=True)
-        if adopted_root.exists():
-            verify_bundle_hash(bundle_hash, adopted_root)
-        else:
-            shutil.copytree(candidate_root, adopted_root)
-        verify_bundle_hash(bundle_hash, adopted_root)
-        entry = {
-            "name": draft.name,
-            "version": draft.version,
-            "bundle_hash": bundle_hash,
-            "path": adopted_rel.as_posix(),
-        }
-        self.registry["adopted"] = [item for item in incumbent_entries if item["name"] != draft.name] + [entry]
-        self._write_registry(self.registry)
+        staging_root = self.root / ".adoption" / proposal_id
+        entries: list[dict[str, str]] = []
+        created_roots: list[Path] = []
+        try:
+            for draft, candidate_root, bundle_hash in materialized:
+                staged = staging_root / draft.name
+                staged.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copytree(candidate_root, staged)
+                verify_bundle_hash(bundle_hash, staged)
+                adopted_rel = Path("adopted") / draft.name / f"{draft.version}-{bundle_hash[-12:]}"
+                adopted_root = self.root / adopted_rel
+                adopted_root.parent.mkdir(parents=True, exist_ok=True)
+                if adopted_root.exists():
+                    verify_bundle_hash(bundle_hash, adopted_root)
+                    shutil.rmtree(staged)
+                else:
+                    staged.replace(adopted_root)
+                    created_roots.append(adopted_root)
+                    verify_bundle_hash(bundle_hash, adopted_root)
+                entries.append(
+                    {
+                        "name": draft.name,
+                        "version": draft.version,
+                        "bundle_hash": bundle_hash,
+                        "path": adopted_rel.as_posix(),
+                    }
+                )
+            new_registry = {
+                **self.registry,
+                "adopted": [item for item in incumbent_entries if item["name"] not in replaced_names] + entries,
+            }
+            self._write_registry(new_registry)
+        except Exception as exc:
+            for adopted_root in reversed(created_roots):
+                shutil.rmtree(adopted_root, ignore_errors=True)
+            return self._reject_set(
+                proposed,
+                pack_rows,
+                "atomic adoption failed",
+                [f"{type(exc).__name__}: {exc}"],
+                scores=(candidate_public, incumbent_public, candidate_private, incumbent_private),
+            )
+        finally:
+            shutil.rmtree(staging_root, ignore_errors=True)
+        self.registry = new_registry
         self._record(
-            f"{EVENT_PREFIX}.pack_adopted",
+            f"{EVENT_PREFIX}.pack_set_adopted",
             {
-                **entry,
+                "packs": entries,
                 "proposal_id": proposal_id,
+                "proposal_hash": _digest(pack_rows),
                 "public_suite": _digest(_case_payload(public)),
                 "private_suite": _digest(_case_payload(private)),
             },
         )
-        return EvolutionReport(
+        for entry in entries:
+            self._record(
+                f"{EVENT_PREFIX}.pack_adopted",
+                {
+                    **entry,
+                    "proposal_id": proposal_id,
+                    "proposal_hash": _digest(pack_rows),
+                    "public_suite": _digest(_case_payload(public)),
+                    "private_suite": _digest(_case_payload(private)),
+                },
+            )
+        return PackSetEvolutionReport(
             accepted=True,
-            reason="strict execution-grounded improvement adopted",
-            name=draft.name,
-            version=draft.version,
-            bundle_hash=bundle_hash,
+            reason="strict execution-grounded Pack set adopted atomically",
+            packs=tuple(pack_rows),
+            proposal_hash=_digest(pack_rows),
             public_candidate=_score(candidate_public),
             public_incumbent=_score(incumbent_public),
             private_candidate=_score(candidate_private),
             private_incumbent=_score(incumbent_private),
             restart_required=True,
             author_feedback=(),
+        )
+
+    def _reject_set(
+        self,
+        drafts: tuple[PackDraft, ...],
+        packs: list[dict[str, str]],
+        reason: str,
+        errors: list[str],
+        *,
+        scores: tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]] | None = None,
+    ) -> PackSetEvolutionReport:
+        self._record(
+            f"{EVENT_PREFIX}.pack_set_rejected",
+            {
+                "packs": packs
+                or [{"name": draft.name, "version": draft.version, "bundle_hash": ""} for draft in drafts],
+                "reason": reason,
+                "gate_errors": errors[:20],
+            },
+        )
+        candidate_public, incumbent_public, candidate_private, incumbent_private = scores or ({}, {}, {}, {})
+        rows_by_name = {row["name"]: row for row in packs}
+        complete_rows = tuple(
+            rows_by_name.get(draft.name, {"name": draft.name, "version": draft.version, "bundle_hash": ""})
+            for draft in drafts
+        )
+        return PackSetEvolutionReport(
+            accepted=False,
+            reason=reason,
+            packs=complete_rows,
+            proposal_hash=_digest(complete_rows),
+            public_candidate=_score(candidate_public),
+            public_incumbent=_score(incumbent_public),
+            private_candidate=_score(candidate_private),
+            private_incumbent=_score(incumbent_private),
+            restart_required=False,
+            author_feedback=tuple(errors[:20]),
         )
 
     def _record_trial(

@@ -7,13 +7,30 @@ name = "ouroboros-activegraph"
 version = "0.1.0"
 description = "A minimal self-improving ActiveGraph agent and comparative research harness"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.11"
-dependencies = [
-  "activegraph[llm]>=1.10,<2",
+authors = [
+  {name = "Yohei Nakajima"},
 ]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "activegraph[llm]==1.10.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yoheinakajima/ouroboros"
+Repository = "https://github.com/yoheinakajima/ouroboros"
+Issues = "https://github.com/yoheinakajima/ouroboros/issues"
 
 [project.optional-dependencies]
 dev = [
+  "build>=1.2,<2",
+  "pytest>=8,<10",
   "ruff>=0.15,<1",
 ]
 
@@ -21,6 +38,11 @@ dev = [
 ouroboros = "ouroboros:main"
 ouroboros-research-ready = "research.readiness:main"
 ouroboros-benchmark = "research.benchmark_runner:main"
+ouroboros-benchmark-bootstrap = "research.bootstrap_benchmarks:main"
+ouroboros-attempt = "research.attempt_runner:main"
+ouroboros-freeze = "research.freeze:main"
+ouroboros-sandbox-check = "research.sandbox:main"
+ouroboros-smoke = "research.smoke:main"
 
 [tool.setuptools]
 py-modules = ["ouroboros"]
@@ -29,7 +51,7 @@ py-modules = ["ouroboros"]
 include = ["experiments*", "research*"]
 
 [tool.setuptools.package-data]
-research = ["*.json", "tasks/*.json"]
+research = ["*.json", "tasks/*.json", "selections/*.json"]
 
 [tool.ruff]
 target-version = "py311"
@@ -37,3 +59,6 @@ line-length = 120
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

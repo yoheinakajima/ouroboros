@@ -18,7 +18,7 @@ acquired improvement measurably helps the organism acquire the next one.
 - The hybrid author is a real ActiveGraph `@llm_behavior` using `gpt-5.6-sol`.
 - It receives an exact, hash-recorded 90,406-character snapshot of the relevant
   ActiveGraph documentation.
-- It proposes complete Pack source but has no release authority.
+- It proposes an atomic set of one to six complete Pack sources but has no release authority.
 - Candidate source is checked before import, run in fresh subprocess trials,
   compared with the incumbent on public and manager-private cases, copied by
   exact bundle hash, then loaded only after restart.
@@ -36,7 +36,10 @@ architecture comparison.
 The next phase is specified in [the hard research design](../docs/RESEARCH_DESIGN.md):
 SWE-bench, Terminal-Bench, MLE-bench, selected long-horizon R&D tasks, and a
 sealed 20/50-to-50/50 ActiveGraph construction benchmark. The suites in
-`hard_benchmark.json` are a preregistration draft, not executed results.
+`hard_benchmark.json` are calibration-locked research inputs, not executed results.
+SWE-bench Verified and Terminal-Bench 2 can be oracle-calibrated locally without
+a hosted sandbox account. The MLE, RE-Bench, and PaperBench tracks keep their
+real data, accelerator, and trusted-grader prerequisites explicit.
 
 ## Run a recorded hybrid experiment
 
@@ -92,6 +95,8 @@ research/
   contracts.py              architecture-neutral attempt/score records
   broker_protocol.json      equal outer tools, inference, and authority contract
   adapters/                 common outer-interface contract
+  attempt_runner.py         one adapter → broker → grader → audit execution path
+  selections/               score-blind task IDs, revisions, and image hashes
   readiness.py              no-spend execution and release preflight
   run_index.json            provenance and validity of recorded runs
   hybrid_author.py          docs-grounded LLM Pack author and recorder

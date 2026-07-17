@@ -18,7 +18,9 @@ class HardBenchmarkDesignTests(unittest.TestCase):
         self.assertEqual(suites["ouro_swe_50"]["evaluation_instances"], 50)
         self.assertIn("Docker", suites["ouro_swe_50"]["isolation"])
         self.assertEqual(suites["ouro_activegraph_50"]["score"].split(",")[0], "checks passed / 50")
-        self.assertTrue(all(suite["upstream_revision"].startswith("UN") for suite in suites.values()))
+        self.assertTrue(all(len(suite["upstream_revision"]) == 40 for suite in suites.values()))
+        self.assertEqual(suites["ouro_terminal_12"]["source"].split("/")[-1], "terminal-bench-2")
+        self.assertEqual(design["common_budget"]["max_cost_usd"], 50.0)
 
     def test_recursive_study_requires_cold_and_sham_controls(self) -> None:
         design = json.loads((ROOT / "research" / "hard_benchmark.json").read_text(encoding="utf-8"))
@@ -38,7 +40,7 @@ class HardBenchmarkDesignTests(unittest.TestCase):
         )
         self.assertIn("provider_credentials", broker["forbidden_surfaces"])
         self.assertIn("evaluator_container", broker["forbidden_surfaces"])
-        self.assertEqual(broker["implementation_status"], "contract_only")
+        self.assertEqual(broker["implementation_status"], "ready")
 
 
 if __name__ == "__main__":
