@@ -30,6 +30,12 @@ audit](docs/BENCHMARK_AUDIT.md), [current pilot results](research/RESULTS.md),
 and [the readiness gate](research/readiness.py). Paid hard-benchmark execution
 is locked until oracle calibration promotes the pinned selections to frozen.
 
+The no-account study has three locally runnable families: 50 held-out
+SWE-bench Verified issues, 12 held-out Terminal-Bench 2 tasks, and three
+held-out ActiveGraph systems that begin at exactly 20/50. See [the local test
+plan](docs/LOCAL_TEST_PLAN.md) for the precise better/worse rules and
+[`research/local_study.json`](research/local_study.json) for the frozen matrix.
+
 ## Minimal v2
 
 There is one generic model actor, six graph concepts (`goal`, `attempt`,

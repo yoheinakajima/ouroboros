@@ -28,6 +28,8 @@ class PreparedAttempt(BaseModel):
     retained_context: str = ""
     retained_state_present: bool = False
     retained_state_exposed: bool = False
+    exposed_context_sha256: str | None = None
+    exposed_context_bytes: int = 0
 
 
 class AgentOutcome(BaseModel):

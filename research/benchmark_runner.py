@@ -30,7 +30,7 @@ def main(argv: list[str] | None = None) -> int:
     if not report["ready"]:
         raise SystemExit("benchmark execution refused: run `python -m research.readiness` for blockers")
     raise SystemExit(
-        "global scheduling is intentionally manual in protocol v0.2; use `python -m research.attempt_runner` "
+        "global scheduling is intentionally manual in protocol v0.3; use `python -m research.attempt_runner` "
         "for each frozen task/arm/replication and retain every bundle"
     )
 

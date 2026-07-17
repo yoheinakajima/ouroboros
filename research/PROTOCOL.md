@@ -41,7 +41,9 @@ Some tasks intentionally exercise an approach's natural domain:
 
 Native tasks establish breadth but do not enter a cross-approach leaderboard.
 The hard common-outcome and recursive-uplift studies are preregistered in
-`../docs/RESEARCH_DESIGN.md` and `hard_benchmark.json`.
+`../docs/RESEARCH_DESIGN.md` and `hard_benchmark.json`. The exact locally
+runnable matrix, recursive probe, and better/worse rules are frozen in
+`local_study.json`.
 
 ## Evidence splits
 

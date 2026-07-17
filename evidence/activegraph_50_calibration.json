@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "suite_id": "ouro_activegraph_50",
+  "purpose": "Infrastructure and oracle evidence only; this is not model capability evidence.",
+  "model_calls": 0,
+  "passed": true,
+  "container": {
+    "image_id": "sha256:0c767296ab2e999b0daca91dc8d7a8f63dcf279ec2778bcddfc54e377f442ae5",
+    "architecture": "arm64",
+    "network": "none",
+    "public_runner": "passed for all five tasks",
+    "sealed_grader": "passed for all five tasks"
+  },
+  "tasks": [
+    {"id": "incident_coordination", "split": "development", "seed_score": 20, "oracle_score": 50, "total": 50},
+    {"id": "approval_workflow", "split": "development", "seed_score": 20, "oracle_score": 50, "total": 50},
+    {"id": "quota_scheduler", "split": "evaluation", "seed_score": 20, "oracle_score": 50, "total": 50},
+    {"id": "provenance_pipeline", "split": "evaluation", "seed_score": 20, "oracle_score": 50, "total": 50},
+    {"id": "delegated_access_control", "split": "evaluation", "seed_score": 20, "oracle_score": 50, "total": 50}
+  ]
+}

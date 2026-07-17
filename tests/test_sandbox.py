@@ -54,9 +54,9 @@ class DockerSandboxTests(unittest.TestCase):
         self.assertEqual(command[-2:], ["python", "-V"])
 
     def test_images_must_be_digest_pinned(self) -> None:
-        valid = "python@sha256:" + "1" * 64
-        DockerSandbox.validate_image(valid)
-        for invalid in ("python:3.11", "sha256:" + "1" * 64, "python@sha256:ABC"):
+        for valid in ("python@sha256:" + "1" * 64, "sha256:" + "1" * 64):
+            DockerSandbox.validate_image(valid)
+        for invalid in ("python:3.11", "sha256:short", "python@sha256:ABC"):
             with self.subTest(invalid=invalid), self.assertRaises(ValueError):
                 DockerSandbox.validate_image(invalid)
 

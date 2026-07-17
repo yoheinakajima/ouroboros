@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "suite_id": "ouro_activegraph_50",
+  "status": "calibration_locked",
+  "source_revision": "148e12c2969f18fa12a1a3c2e75f3affd9aa0616",
+  "dataset": "five deterministic ActiveGraph construction systems with 50 checks each",
+  "selection_rule": {
+    "description": "Two development domains and three disjoint evaluation domains were committed before any model attempt; task removal is allowed only for a documented evaluator defect.",
+    "score_blind": true
+  },
+  "generator": {
+    "path": "research/activegraph_benchmark.py",
+    "sha256": "6916dfcb857f1089b83ccc6d183e16758b47a6d4dee22e90d2332aaa856d4b0a"
+  },
+  "runtime": {
+    "path": "research/activegraph_task_runtime.py",
+    "sha256": "b04f9a337c5b482b8c65fe201feb3edcd5158e13ca6378145765310331121085"
+  },
+  "container": {
+    "dockerfile": "benchmarks/activegraph_50/Dockerfile",
+    "dockerfile_sha256": "63692bba2c98761a8ecd1afbff85911b3b0d8cb0cd315c12b79678d6c976f4e4",
+    "base": "python@sha256:db3ff2e1800a8581e2c48a27c3995339d47bdf046da21c7627accd3d51053a93",
+    "observed_local_arm64_image_id": "sha256:0c767296ab2e999b0daca91dc8d7a8f63dcf279ec2778bcddfc54e377f442ae5"
+  },
+  "agent_documentation": {
+    "path": "benchmarks/activegraph_50/ACTIVEGRAPH_API.md",
+    "sha256": "e5f43c7d18cda2b5da9d54c548e4dd83bf0e138d2dcb16b9545c802cd618116b"
+  },
+  "development": ["incident_coordination", "approval_workflow"],
+  "evaluation": ["quota_scheduler", "provenance_pipeline", "delegated_access_control"],
+  "task_hashes": {
+    "incident_coordination": {
+      "contract_sha256": "bb23ddf1757b815405387c15e26fb5b6d254aa96cf20aefeee7c75d4df36cf26",
+      "cases_sha256": "ba2235219a187227067f46776adb0919bcd545774a6498a93c7d46dbef117f71"
+    },
+    "approval_workflow": {
+      "contract_sha256": "c09087f75aceba6b3c6559a3678d598604f47073c59913324d9225a88581ea52",
+      "cases_sha256": "082605d68c13ff0424db084466405705efdbd0e84f6ad97c7c6410a1f36154a6"
+    },
+    "quota_scheduler": {
+      "contract_sha256": "bb01e4fbfae3aeb8d92b49448b34d4483567da3184856d03f409fe9ba39d7486",
+      "cases_sha256": "03f1510fb4b127e7457699cdabf6d384305f11f2812f48c4e8d1b3f3cc34b372"
+    },
+    "provenance_pipeline": {
+      "contract_sha256": "b7571bbe88eba70974385f3673884c1027dca6d7c88262ff181668489a09330b",
+      "cases_sha256": "6ecbd4f7bb729dbd20f264060915a75f55e004c130a3a8e988d02c6cda39db5e"
+    },
+    "delegated_access_control": {
+      "contract_sha256": "8c319d98d98adee0c57e937244901c7bb2b3b6b15458f3cdf1d55edaaf936eda",
+      "cases_sha256": "dde9be7cd685e36fc06767f41999082807af5f0ab1ece03cf65252ec24c4bb91"
+    }
+  },
+  "calibration_gates": [
+    "every deliberate seed scores exactly 20/50",
+    "the manager fixture oracle scores exactly 50/50",
+    "public and sealed evaluators run inside the same pinned no-network container",
+    "cold reload occurs between transfer checks five and six",
+    "no model score is inspected before task identities and hashes are committed"
+  ]
+}

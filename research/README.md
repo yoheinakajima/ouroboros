@@ -37,9 +37,12 @@ The next phase is specified in [the hard research design](../docs/RESEARCH_DESIG
 SWE-bench, Terminal-Bench, MLE-bench, selected long-horizon R&D tasks, and a
 sealed 20/50-to-50/50 ActiveGraph construction benchmark. The suites in
 `hard_benchmark.json` are calibration-locked research inputs, not executed results.
-SWE-bench Verified and Terminal-Bench 2 can be oracle-calibrated locally without
-a hosted sandbox account. The MLE, RE-Bench, and PaperBench tracks keep their
-real data, accelerator, and trusted-grader prerequisites explicit.
+SWE-bench Verified, Terminal-Bench 2, and the five-system ActiveGraph-50 suite
+can be oracle-calibrated locally without a hosted sandbox account. ActiveGraph-50
+has two development systems and three held-out systems; every seed is exactly
+20/50 and every manager oracle is 50/50. The MLE, RE-Bench, and PaperBench
+tracks keep their real data, accelerator, and trusted-grader prerequisites
+explicit.
 
 ## Run a recorded hybrid experiment
 
@@ -91,6 +94,7 @@ research/
   RESULTS.md                evidence-backed current findings
   benchmark.json            category-balanced task catalog
   hard_benchmark.json       external and sealed hard-suite design (locked)
+  local_study.json          exact local run matrix and better/worse rules
   approaches.json           exact source hashes and hardening status
   contracts.py              architecture-neutral attempt/score records
   broker_protocol.json      equal outer tools, inference, and authority contract
@@ -98,6 +102,9 @@ research/
   attempt_runner.py         one adapter → broker → grader → audit execution path
   selections/               score-blind task IDs, revisions, and image hashes
   readiness.py              no-spend execution and release preflight
+  activegraph_benchmark.py  five generated 20/50 ActiveGraph systems
+  comparison.py             paired family-level uplift and uncertainty analysis
+  curriculum.py             evolved-state provenance and hash validation
   run_index.json            provenance and validity of recorded runs
   hybrid_author.py          docs-grounded LLM Pack author and recorder
   tasks/                    executable public/private/transfer contracts

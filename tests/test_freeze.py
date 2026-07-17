@@ -15,14 +15,15 @@ class FreezeTests(unittest.TestCase):
         self.assertTrue(report["calibration_ready"], report)
         self.assertEqual(
             set(report["statuses"]),
-            {"ouro_swe_50", "ouro_terminal_12"},
+            {"ouro_swe_50", "ouro_terminal_12", "ouro_activegraph_50"},
         )
 
-    def test_global_freeze_remains_blocked_by_unbuilt_activegraph_suite(self) -> None:
+    def test_global_selections_are_valid_but_not_yet_frozen(self) -> None:
         report = inspect_selections(ROOT)
-        codes = {row["code"] for row in report["issues"]}
-        self.assertFalse(report["calibration_ready"])
-        self.assertIn("selection_manifest_missing", codes)
+        self.assertTrue(report["valid"], report)
+        self.assertTrue(report["calibration_ready"], report)
+        self.assertFalse(report["frozen"])
+        self.assertEqual(report["issues"], [])
 
     def test_frontier_selections_are_locked_but_keep_external_prerequisites(self) -> None:
         report = inspect_selections(ROOT, profile="external_data_or_compute")

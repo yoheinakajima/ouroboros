@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Mapping, Sequence
 
 _DIGEST_IMAGE = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9._/:@-]*@sha256:[0-9a-f]{64}$")
+_LOCAL_IMAGE_ID = re.compile(r"^sha256:[0-9a-f]{64}$")
 _ENV_NAME = re.compile(r"^[A-Z_][A-Z0-9_]*$")
 _PROVIDER_MARKERS = ("API_KEY", "ACCESS_KEY", "SECRET", "TOKEN", "PASSWORD", "CREDENTIAL")
 
@@ -110,8 +111,10 @@ class DockerSandbox:
 
     @staticmethod
     def validate_image(image: str) -> None:
-        if not _DIGEST_IMAGE.fullmatch(image):
-            raise ValueError("container image must be an explicit repo@sha256:<64 lowercase hex> reference")
+        if not (_DIGEST_IMAGE.fullmatch(image) or _LOCAL_IMAGE_ID.fullmatch(image)):
+            raise ValueError(
+                "container image must be a repo@sha256:<64 hex> reference or a local sha256:<64 hex> image ID"
+            )
 
     def _docker_command(
         self,

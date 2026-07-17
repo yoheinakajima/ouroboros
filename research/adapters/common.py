@@ -17,6 +17,19 @@ from research.agent import BrokeredRepoAgent
 from research.broker import AuthorityBroker
 
 ARMS = {"cold", "evolved", "cold_ablation", "sham_improvement_control", "native_evolved"}
+CONTEXT_LIMIT = 64_000
+CONTEXT_FILE_LIMIT = 16_000
+DENIED_CONTEXT_PARTS = {
+    ".git",
+    ".env",
+    "grader",
+    "hidden",
+    "manager",
+    "private",
+    "secret",
+    "secrets",
+    "__pycache__",
+}
 
 
 def _hash_tree(root: Path) -> str:
@@ -31,6 +44,40 @@ def _hash_tree(root: Path) -> str:
             digest.update(path.read_bytes())
             digest.update(b"\0")
     return "sha256:" + digest.hexdigest()
+
+
+def _safe_text_files(root: Path) -> list[tuple[str, str]]:
+    rows: list[tuple[str, str]] = []
+    for path in sorted(root.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(root)
+        if relative.as_posix() == "evolution_manifest.json":
+            continue
+        if any(part.lower() in DENIED_CONTEXT_PARTS for part in relative.parts):
+            continue
+        raw = path.read_bytes()[: CONTEXT_FILE_LIMIT + 1]
+        if b"\0" in raw:
+            continue
+        try:
+            value = raw[:CONTEXT_FILE_LIMIT].decode("utf-8")
+        except UnicodeDecodeError:
+            continue
+        if len(raw) > CONTEXT_FILE_LIMIT:
+            value += "\n[truncated]"
+        rows.append((relative.as_posix(), value))
+    return rows
+
+
+def _bounded_sections(sections: list[str]) -> str:
+    output = ""
+    for section in sections:
+        remaining = CONTEXT_LIMIT - len(output)
+        if remaining <= 0:
+            break
+        addition = ("\n\n" if output else "") + section
+        output += addition[:remaining]
+    return output
 
 
 class StateAdapter(ApproachAdapter):
@@ -83,8 +130,11 @@ class StateAdapter(ApproachAdapter):
         elif arm == "sham_improvement_control":
             if self.sham_context is None or not self.sham_context.is_file():
                 raise ValueError("sham control requires a frozen unrelated-context file")
-            context = self.sham_context.read_text(encoding="utf-8")
+            if self.sham_context.is_symlink():
+                raise ValueError("sham control may not be a symlink")
+            context = self.sham_context.read_text(encoding="utf-8")[:CONTEXT_LIMIT]
             exposed = True
+        context_bytes = context.encode("utf-8")
         return PreparedAttempt(
             approach_id=self.approach_id,
             arm=arm,
@@ -94,6 +144,8 @@ class StateAdapter(ApproachAdapter):
             retained_context=context,
             retained_state_present=state_present,
             retained_state_exposed=exposed,
+            exposed_context_sha256=("sha256:" + hashlib.sha256(context_bytes).hexdigest() if exposed else None),
+            exposed_context_bytes=len(context_bytes),
         )
 
     def run(self, prepared: PreparedAttempt, broker: AuthorityBroker) -> AgentOutcome:
@@ -112,13 +164,11 @@ class WorkspaceV12Adapter(StateAdapter):
     def _render_context(self, root: Path) -> str:
         sections: list[str] = []
         workspace = root / "final_workspace" if (root / "final_workspace").is_dir() else root
-        for relative in ("SELF.md", "MEMORY.md"):
-            path = workspace / relative
-            if path.is_file():
-                sections.append(f"## {relative}\n{path.read_text(encoding='utf-8')[:24_000]}")
-        files = [path.relative_to(workspace).as_posix() for path in sorted(workspace.rglob("*")) if path.is_file()]
-        sections.append("## Retained workspace files\n" + "\n".join(files[:500]))
-        return "\n\n".join(sections)[:64_000]
+        rows = _safe_text_files(workspace)
+        priority = {"SELF.md": 0, "MEMORY.md": 1}
+        rows.sort(key=lambda row: (priority.get(row[0], 2), row[0]))
+        sections.extend(f"## Retained workspace file: {relative}\n{text}" for relative, text in rows)
+        return _bounded_sections(sections)
 
 
 class MinimalV2Adapter(StateAdapter):
@@ -152,13 +202,12 @@ class HybridPacksAdapter(StateAdapter):
             pack_root = (root / entry["path"]).resolve()
             if root != pack_root and root not in pack_root.parents:
                 raise ValueError("Hybrid registry path escapes retained state")
-            manifest = (pack_root / "manifest.toml").read_text(encoding="utf-8")
             rows.append(
                 {
                     "name": entry["name"],
                     "version": entry["version"],
                     "bundle_hash": entry["bundle_hash"],
-                    "manifest": manifest,
+                    "files": [{"path": relative, "text": text} for relative, text in _safe_text_files(pack_root)],
                 }
             )
-        return json.dumps({"adopted_pack_set": rows}, indent=2, sort_keys=True)[:64_000]
+        return json.dumps({"adopted_pack_set": rows}, indent=2, sort_keys=True)[:CONTEXT_LIMIT]

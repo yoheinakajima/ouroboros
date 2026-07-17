@@ -36,6 +36,7 @@ def inspect_readiness(root: str | Path) -> dict[str, Any]:
         "README.md",
         "pyproject.toml",
         "research/hard_benchmark.json",
+        "research/local_study.json",
         "research/approaches.json",
         "research/broker_protocol.json",
         "research/environment.lock.json",
@@ -190,6 +191,43 @@ def inspect_readiness(root: str | Path) -> dict[str, Any]:
                 issues.append(_issue("benchmark_bootstrap_failed", "local source/image verification incomplete"))
         except (OSError, json.JSONDecodeError) as exc:
             issues.append(_issue("benchmark_bootstrap_invalid", str(exc), severity="error"))
+
+    activegraph_path = repository / "evidence" / "activegraph_50_calibration.json"
+    if not activegraph_path.is_file():
+        issues.append(_issue("activegraph_calibration_missing", str(activegraph_path.relative_to(repository))))
+    else:
+        try:
+            activegraph = _read_json(activegraph_path)
+            task_rows = activegraph.get("tasks", [])
+            if (
+                activegraph.get("passed") is not True
+                or activegraph.get("model_calls") != 0
+                or len(task_rows) != 5
+                or any(row.get("seed_score") != 20 or row.get("oracle_score") != 50 for row in task_rows)
+            ):
+                issues.append(
+                    _issue("activegraph_calibration_failed", "five 20/50 seeds and 50/50 oracles are required")
+                )
+            image_id = str(activegraph.get("container", {}).get("image_id", ""))
+            if image_id and shutil.which("docker") is not None:
+                image = subprocess.run(
+                    ["docker", "image", "inspect", image_id],
+                    cwd=repository,
+                    text=True,
+                    capture_output=True,
+                    timeout=10,
+                    check=False,
+                )
+                if image.returncode != 0:
+                    issues.append(
+                        _issue(
+                            "activegraph_image_missing",
+                            f"build benchmarks/activegraph_50/Dockerfile to restore {image_id}",
+                            scope="environment",
+                        )
+                    )
+        except (OSError, json.JSONDecodeError, subprocess.TimeoutExpired) as exc:
+            issues.append(_issue("activegraph_calibration_invalid", str(exc), severity="error"))
 
     try:
         status = subprocess.run(

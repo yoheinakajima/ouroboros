@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "protocol_version": "0.2-calibration",
+  "protocol_version": "0.3-calibration",
   "execution_enabled": false,
   "execution_lock_reason": "Scored execution stays locked until oracle/no-score calibration promotes selection manifests from calibration_locked to frozen and a protocol freeze lock is committed.",
   "calibration_enabled": true,
@@ -113,15 +113,16 @@
     },
     {
       "id": "ouro_activegraph_50",
-      "study": "native_ceiling",
+      "study": "common_outcome",
       "source": "https://github.com/yoheinakajima/activegraph",
       "upstream_revision": "148e12c2969f18fa12a1a3c2e75f3affd9aa0616",
       "dataset": "five multi-stage ActiveGraph systems with 50 sealed checks each",
-      "task_package_status": "unbuilt",
+      "selection_manifest": "research/selections/activegraph_50.json",
+      "task_package_status": "built_oracle_calibrated",
       "development_instances": 2,
-      "evaluation_instances": 5,
-      "selection_status": "task_authoring_required",
-      "score": "checks passed / 50, with hard authority and replay gates",
+      "evaluation_instances": 3,
+      "selection_status": "calibration_locked",
+      "score": "checks passed / 50 per held-out system, with hard Pack-surface and replay gates",
       "isolation": "fresh container, sealed evaluator package, cold replay",
       "why_hard": "Measures partial improvement from a deliberately incomplete 20/50 seed through schemas, relations, policies, replay, composition, and adversarial events."
     }
@@ -138,21 +139,15 @@
   "execution_profiles": [
     {
       "id": "local_no_account",
-      "suites": ["ouro_swe_50", "ouro_terminal_12"],
+      "suites": ["ouro_swe_50", "ouro_terminal_12", "ouro_activegraph_50"],
       "status": "ready_for_oracle_calibration",
-      "requirements": ["Docker-compatible daemon", "internet access to clone sources and pull pinned task images"]
+      "requirements": ["Docker-compatible daemon", "internet access to clone sources, pull pinned task images, and build the no-key ActiveGraph image"]
     },
     {
       "id": "external_data_or_compute",
       "suites": ["ouro_mle_6", "ouro_rebench_2", "ouro_paperbench_code_dev_2"],
       "status": "selection_locked_prerequisites_required",
       "requirements": ["Kaggle credentials and accepted rules for MLE-bench", "H100 infrastructure for selected RE-Bench tasks", "trusted-host judge credentials for PaperBench"]
-    },
-    {
-      "id": "activegraph_native",
-      "suites": ["ouro_activegraph_50"],
-      "status": "task_authoring_required",
-      "requirements": ["five sealed 50-check evaluators and 20/50 seed systems"]
     }
   ]
 }

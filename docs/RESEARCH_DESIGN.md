@@ -50,6 +50,13 @@ Report cold and evolved arms independently. The official grader, never the
 agent, owns the score. A failed attempt, timeout, or budget exhaustion remains
 in the denominator.
 
+The three cold adapters intentionally enter through the same outer repo agent
+and contain no architecture-specific retained state. Cold runs are therefore
+an equivalence/model-floor control, not a ranking of the architectures. The
+main architecture comparison is evolved state after the shared development
+curriculum; the causal recursion measure is evolved minus matched cold
+ablation.
+
 ### Study 2 — recursive uplift
 
 Question: does learning on development tasks improve performance on disjoint
@@ -86,7 +93,7 @@ procedure learning can each be shown at full power.
 | Ouro-MLE-6 | 3 / 6 | Continuous improvement of real ML scores over a supplied seed | Hidden MLE-bench grader |
 | Ouro-REBench-2 | 1 / 2 | Long-horizon AI R&D optimization | METR task grader |
 | Ouro-PaperBench-CodeDev-2 | 1 / 2 | Research understanding and substantial code reproduction | Official hierarchical rubric |
-| Ouro-ActiveGraph-50 | 2 / 5 systems | Partial improvement from about 20/50 through typed state, relations, policy, replay, composition, and adversarial events | Sealed 50-check evaluator |
+| Ouro-ActiveGraph-50 | 2 / 3 systems | Partial improvement from exactly 20/50 through typed state, relations, policy, replay, composition, and adversarial events | Sealed 50-check evaluator |
 
 The external sources are the official [SWE-bench](https://github.com/SWE-bench/SWE-bench),
 [Terminal-Bench/Harbor](https://github.com/harbor-framework/terminal-bench),
@@ -113,6 +120,9 @@ Selection happens without viewing model scores. A task is eligible only if:
 
 Calibration may remove an ineligible task but may not replace a hard task
 because an approach scored poorly. Every removal and reason is published.
+The locally authored ActiveGraph systems additionally require an exact 20/50
+seed, a 50/50 manager oracle, and successful execution of both inside the
+pinned no-network container.
 Recent analysis has shown that coding benchmark defects can materially distort
 leaderboards, so selected SWE-style instances receive an explicit grader audit
 before freezing.

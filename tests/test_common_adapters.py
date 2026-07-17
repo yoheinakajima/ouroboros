@@ -134,6 +134,10 @@ class CommonAdapterTests(unittest.TestCase):
         self.assertFalse(cold.retained_state_present)
         self.assertFalse(cold.retained_state_exposed)
         self.assertEqual(control.retained_context, "unrelated retained method")
+        self.assertIsNotNone(evolved.exposed_context_sha256)
+        self.assertIsNotNone(control.exposed_context_sha256)
+        self.assertEqual(control.exposed_context_bytes, len("unrelated retained method"))
+        self.assertIsNone(ablated.exposed_context_sha256)
 
     def test_architecture_specific_state_exports_are_strictly_projected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -154,6 +158,7 @@ class CommonAdapterTests(unittest.TestCase):
             pack = hybrid / "adopted" / "planner" / "1"
             pack.mkdir(parents=True)
             (pack / "manifest.toml").write_text('[pack]\nname="planner"\n', encoding="utf-8")
+            (pack / "__init__.py").write_text("def reusable_planning_method(): return 'plan'\n", encoding="utf-8")
             (hybrid / "registry.json").write_text(
                 json.dumps(
                     {
@@ -178,10 +183,13 @@ class CommonAdapterTests(unittest.TestCase):
         self.assertIn("focused repair", minimal_prepared.retained_context)
         self.assertNotIn("private_history", minimal_prepared.retained_context)
         self.assertIn("planner", hybrid_prepared.retained_context)
+        self.assertIn("reusable_planning_method", hybrid_prepared.retained_context)
         self.assertEqual(
-            {MinimalV2Adapter(model="x").descriptor.broker_protocol_version,
-             HybridPacksAdapter(model="x").descriptor.broker_protocol_version,
-             WorkspaceV12Adapter(model="x").descriptor.broker_protocol_version},
+            {
+                MinimalV2Adapter(model="x").descriptor.broker_protocol_version,
+                HybridPacksAdapter(model="x").descriptor.broker_protocol_version,
+                WorkspaceV12Adapter(model="x").descriptor.broker_protocol_version,
+            },
             {"1.0"},
         )
 

@@ -19,3 +19,4 @@ artifacts/**
 # External benchmark images, datasets, caches, and paid run outputs.
 benchmark/.cache/
 benchmark/runs/
+.benchmark-cache/

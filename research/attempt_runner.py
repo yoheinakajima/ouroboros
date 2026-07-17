@@ -25,6 +25,7 @@ from research.broker import (
     InferenceProvider,
 )
 from research.contracts import AttemptRecord, ResourceUsage
+from research.curriculum import validate_manifest
 from research.grading import GraderSpec, SealedGrader
 from research.sandbox import SandboxLimits
 
@@ -103,11 +104,16 @@ def run_attempt(
     for path in grader_workspace.resolve(strict=True).rglob("*"):
         if path.is_symlink():
             raise ValueError("grader workspace contains a symlink")
+    adapter_type = ADAPTERS[approach_id]
+    curriculum_manifest = None
+    if arm in {"evolved", "native_evolved", "cold_ablation"}:
+        if retained_state is None:
+            raise ValueError(f"{arm} requires evolved state")
+        curriculum_manifest = validate_manifest(retained_state, approach_id=approach_id)
     run_dir.mkdir(parents=True)
     workspace = run_dir / "workspace"
     shutil.copytree(source_workspace, workspace, symlinks=False)
     _make_container_writable(workspace)
-    adapter_type = ADAPTERS[approach_id]
     adapter = adapter_type(model=model, retained_state=retained_state, sham_context=sham_context)
     prepared = adapter.prepare(task=task_spec.model_dump(), arm=arm, seed=seed)
     provider = inference_provider or ActiveGraphHostInference(provider_for(provider_name))
@@ -171,6 +177,11 @@ def run_attempt(
             "retained_state_hash": prepared.retained_state_hash,
             "retained_state_present": prepared.retained_state_present,
             "retained_state_exposed": prepared.retained_state_exposed,
+            "exposed_context_sha256": prepared.exposed_context_sha256,
+            "exposed_context_bytes": prepared.exposed_context_bytes,
+            "curriculum_manifest": (
+                curriculum_manifest.model_dump(mode="json") if curriculum_manifest is not None else None
+            ),
         },
     )
     (run_dir / "attempt.json").write_text(attempt.model_dump_json(indent=2) + "\n", encoding="utf-8")

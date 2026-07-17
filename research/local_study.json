@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "study_id": "ouroboros_local_comparison_v1",
+  "status": "calibration_locked",
+  "claim": "Architecture-specific retained improvements can raise held-out performance under an otherwise shared model, agent, tool, sandbox, and budget contract.",
+  "approaches": ["workspace_v1_2", "minimal_v2", "hybrid_packs"],
+  "model": "gpt-5.6-sol",
+  "suites": [
+    {
+      "id": "ouro_swe_50",
+      "development_tasks": 20,
+      "evaluation_tasks": 50,
+      "primary_measure": "resolved instances / 50",
+      "unit": "binary official SWE-bench resolution per issue",
+      "better_rule": "Higher paired held-out resolution rate. Report task-clustered bootstrap intervals and call a difference inconclusive when its interval includes zero.",
+      "diagnostics": ["fail-to-pass tests", "pass-to-pass regressions", "cost per resolved issue", "wall time per resolved issue"]
+    },
+    {
+      "id": "ouro_terminal_12",
+      "development_tasks": 6,
+      "evaluation_tasks": 12,
+      "primary_measure": "official tasks passed / 12",
+      "unit": "binary Harbor verifier result per task",
+      "better_rule": "Higher paired held-out pass rate. One extra task is reported as one task, not hidden inside a cross-suite average; uncertainty must still be shown.",
+      "diagnostics": ["category pass rate", "timeout rate", "cost per passed task", "wall time per passed task"]
+    },
+    {
+      "id": "ouro_activegraph_50",
+      "development_tasks": 2,
+      "evaluation_tasks": 3,
+      "primary_measure": "sealed checks passed / 50 for each held-out system",
+      "unit": "one exact output-plus-graph check; hard surface failure sets the task score to zero",
+      "better_rule": "Higher paired check score on held-out systems, reported per system and as an unweighted mean of the three task percentages.",
+      "diagnostics": ["typed state", "relations", "policy", "composition", "adversarial handling", "restart/replay", "cost per added check"]
+    }
+  ],
+  "arms": [
+    {
+      "id": "cold",
+      "purpose": "Model-and-harness floor before any architecture-specific retained state.",
+      "interpretation": "All adapters intentionally use the same outer repo agent here, so cold labels are an equivalence control and do not rank architectures."
+    },
+    {
+      "id": "evolved",
+      "purpose": "Use the architecture's retained state produced from the development curriculum.",
+      "interpretation": "This is the main architecture comparison."
+    },
+    {
+      "id": "cold_ablation",
+      "purpose": "Keep the same history and retained-state hash but hide the retained behavior at evaluation.",
+      "interpretation": "Paired evolved minus cold-ablation score is the primary causal uplift measure."
+    },
+    {
+      "id": "sham_improvement_control",
+      "purpose": "Expose an unrelated artifact matched for development effort and approximate context size.",
+      "interpretation": "Separates useful acquired behavior from generic extra context or extra compute."
+    }
+  ],
+  "curriculum_rules": {
+    "task_order": "The committed order in each suite selection manifest; suites run SWE-bench, Terminal-Bench, then ActiveGraph.",
+    "lineages": "Build one independent retained-state lineage per approach and downstream replication seed.",
+    "feedback": "Only public task material and the frozen feedback policy in evolution_manifest.json; sealed evaluator content is never exposed.",
+    "fairness": "The model, task order, per-task outer budget, and feedback surface are identical across approaches.",
+    "artifact_gate": "Every retained state must pass evolution_manifest.json validation before either evolved or cold-ablation evaluation."
+  },
+  "recursive_probe": {
+    "selection_rule": "Score-blind prefix/category selection committed before model results.",
+    "swe_verified": [
+      "django__django-17087",
+      "astropy__astropy-14539",
+      "sympy__sympy-19040",
+      "matplotlib__matplotlib-26291",
+      "pytest-dev__pytest-5809",
+      "scikit-learn__scikit-learn-13124",
+      "pydata__xarray-3305",
+      "sphinx-doc__sphinx-9461",
+      "pylint-dev__pylint-6386",
+      "psf__requests-1921"
+    ],
+    "terminal_bench_2": [
+      "install-windows-3.11",
+      "llm-inference-batching-scheduler",
+      "bn-fit-modify",
+      "fix-code-vulnerability",
+      "portfolio-optimization",
+      "build-cython-ext"
+    ],
+    "activegraph_50": ["quota_scheduler", "provenance_pipeline", "delegated_access_control"]
+  },
+  "run_stages": [
+    {
+      "id": "oracle_calibration",
+      "replications": 1,
+      "model_calls": false,
+      "result_status": "infrastructure_only",
+      "stop_rule": "Every official/local oracle passes and every deliberate ActiveGraph seed is exactly 20/50."
+    },
+    {
+      "id": "development_curriculum",
+      "replications": "one independent lineage for every downstream replication seed",
+      "model_calls": true,
+      "tasks": "all committed development tasks in frozen manifest order",
+      "approaches": ["workspace_v1_2", "minimal_v2", "hybrid_packs"],
+      "stop_rule": "Retain every parent run id and failure; do not alter the curriculum after inspecting evaluation results."
+    },
+    {
+      "id": "one_replication_probe",
+      "replications": 1,
+      "model_calls": true,
+      "tasks": "recursive_probe only",
+      "arms": ["cold", "evolved", "cold_ablation", "sham_improvement_control"],
+      "stop_rule": "Fix only documented infrastructure defects; do not change a task because an approach performs poorly."
+    },
+    {
+      "id": "preliminary_full",
+      "replications": 3,
+      "model_calls": true,
+      "tasks": "all evaluation tasks",
+      "arms": ["cold", "evolved"],
+      "stop_rule": "Publish every attempt; expand only after the one-replication probe is valid."
+    },
+    {
+      "id": "recursive_claim",
+      "replications": 5,
+      "model_calls": true,
+      "tasks": "recursive_probe only",
+      "arms": ["evolved", "cold_ablation", "sham_improvement_control"],
+      "stop_rule": "Stop after the fixed five replications and report inconclusive when paired uncertainty remains too wide; any extension is a newly frozen confirmatory study."
+    }
+  ],
+  "comparison_rules": {
+    "family_scores_remain_separate": true,
+    "primary_architecture_delta": "paired evolved score minus paired cold-ablation score on the same task and seed",
+    "strong_recursive_evidence": [
+      "positive paired uplift with an interval excluding zero",
+      "uplift on at least two task families, including SWE-bench or Terminal-Bench",
+      "evolved outperforms the sham control",
+      "retained state reloads byte-identically after cold restart",
+      "no material regression on previously passed development checks"
+    ],
+    "tie_policy": "If score uncertainty overlaps, report no detected winner. Cost, calls, and latency describe the Pareto tradeoff and do not override a lower task score.",
+    "no_general_intelligence_score": true
+  }
+}

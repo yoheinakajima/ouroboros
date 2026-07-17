@@ -13,6 +13,8 @@
       "hardening": {
         "official_external_grader_adapter": true,
         "brokered_model_inference_for_evolved_artifacts": true,
+        "bounded_retained_workspace_source_context": true,
+        "bounded_hash_receipted_sham_context": true,
         "cold_ablation": true,
         "sham_control": true,
         "common_outer_container_execution": true
@@ -29,6 +31,7 @@
       "hardening": {
         "official_external_grader_adapter": true,
         "brokered_model_inference": true,
+        "bounded_hash_receipted_sham_context": true,
         "cold_ablation": true,
         "sham_control": true,
         "procedure_ablation": true,
@@ -53,6 +56,8 @@
         "cold_ablation": true,
         "sham_control": true,
         "atomic_multi_pack_proposal": true,
+        "bounded_retained_pack_source_context": true,
+        "bounded_hash_receipted_sham_context": true,
         "common_outer_container_execution": true
       }
     }

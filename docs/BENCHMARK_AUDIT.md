@@ -67,13 +67,24 @@ solutions were viewed. Exact task IDs and hashes live in `research/selections/`.
 
 The framework is pinned at commit
 `148e12c2969f18fa12a1a3c2e75f3affd9aa0616` and installed version 1.10.0.
-The proposed 20/50-to-50/50 systems are not yet authored, so this suite is
-explicitly outside the runnable calibration profile. It must not be silently
-replaced by the easier pilot fixtures.
+The suite now contains five authored systems: incident coordination and
+separation-of-duty approvals for development, then held-out quota scheduling,
+revision provenance, and delegated access control. Every deliberate seed is
+exactly 20/50 and every manager fixture oracle is 50/50 both on the host and in
+the pinned no-network container. The remaining checks cover exact typed state,
+relations, policy, composition, adversarial inputs, idempotency, and a real
+cold runtime reload. This is evaluator calibration, not model evidence.
+
+The sealed case generator is open source for reproducibility. During an
+experiment the agent receives only the materialized public workspace, never
+the repository root or manager grader directory. That is sufficient for this
+preregistered local study, but it is not a durable secret-test leaderboard:
+after release, an operator could inspect the generator manually.
 
 ## License conclusion
 
 Ouroboros itself is MIT. That does not relicense external benchmark code,
 datasets, papers, container images, or protected evaluation material. The
 repository stores selection metadata and hashes; upstream assets stay in the
-ignored `benchmark/.cache/` tree or their official infrastructure.
+ignored `benchmark/.cache/` tree, generated ActiveGraph tasks stay in
+`.benchmark-cache/`, and protected materials remain in official infrastructure.
