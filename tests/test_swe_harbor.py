@@ -25,8 +25,13 @@ class SWEHarborHardeningTests(unittest.TestCase):
             _harden_task(root, instance_id="example", image=image)
 
             dockerfile = (root / "environment/Dockerfile").read_text()
-            self.assertEqual(dockerfile, f"FROM {image}\n\nWORKDIR /testbed\nRUN mkdir -p /logs\n")
+            self.assertEqual(
+                dockerfile,
+                f'FROM {image}\n\nENV PATH="/opt/miniconda3/envs/testbed/bin:${{PATH}}" \\\n'
+                "    CONDA_DEFAULT_ENV=testbed\n\nWORKDIR /testbed\nRUN mkdir -p /logs\n",
+            )
             self.assertNotIn("curl", dockerfile)
+            self.assertIn("/opt/miniconda3/envs/testbed/bin", dockerfile)
             self.assertEqual((root / "tests/test.sh").read_text(), PATCH_EXPORT_VERIFIER)
             task = (root / "task.toml").read_text()
             self.assertIn('[verifier]\nnetwork_mode = "no-network"', task)

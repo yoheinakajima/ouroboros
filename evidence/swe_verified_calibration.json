@@ -86,8 +86,8 @@
   ],
   "harbor_parity": {
     "materialized_tasks": 70,
-    "materialization_receipt_sha256": "7d23edf9e9780fbe7828500d38948e9afc6f7756bc9d667ad798338f083f456d",
-    "current_boundary": "Harbor supplies a digest-pinned no-network agent shell and exports a patch; the pinned official SWE-bench evaluator grades later on the host.",
+    "materialization_receipt_sha256": "69b5c7ccbd2ad2d30d48fbce98b129cc735ceb0aee432a976242532b02ca1cc5",
+    "current_boundary": "Harbor supplies a digest-pinned agent shell with the official testbed environment and a no-network patch exporter; the pinned official SWE-bench evaluator grades later on the host.",
     "hardened_sample_task": "matplotlib__matplotlib-25960",
     "hardened_sample_completed": true,
     "hardened_sample_resolved": true,

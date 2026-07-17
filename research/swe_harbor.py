@@ -37,6 +37,16 @@ echo 0 > /logs/verifier/reward.txt
 """
 
 
+def _task_dockerfile(image: str) -> str:
+    return (
+        f"FROM {image}\n\n"
+        'ENV PATH="/opt/miniconda3/envs/testbed/bin:${PATH}" \\\n'
+        "    CONDA_DEFAULT_ENV=testbed\n\n"
+        "WORKDIR /testbed\n"
+        "RUN mkdir -p /logs\n"
+    )
+
+
 def _revision(path: Path) -> str:
     result = subprocess.run(
         ["git", "rev-parse", "HEAD"],
@@ -73,10 +83,7 @@ def _harden_task(task_root: Path, *, instance_id: str, image: str) -> None:
     dockerfile = task_root / "environment/Dockerfile"
     if not dockerfile.is_file():
         raise FileNotFoundError(f"generated SWE Dockerfile missing: {instance_id}")
-    dockerfile.write_text(
-        f"FROM {image}\n\nWORKDIR /testbed\nRUN mkdir -p /logs\n",
-        encoding="utf-8",
-    )
+    dockerfile.write_text(_task_dockerfile(image), encoding="utf-8")
 
     verifier = task_root / "tests/test.sh"
     if not verifier.is_file():
@@ -111,7 +118,7 @@ def verify_materialized(
     for instance_id in requested:
         task_root = output / instance_id
         expected_image = images.get(instance_id, "")
-        expected_dockerfile = f"FROM {expected_image}\n\nWORKDIR /testbed\nRUN mkdir -p /logs\n"
+        expected_dockerfile = _task_dockerfile(expected_image)
         paths = {
             "dockerfile": task_root / "environment/Dockerfile",
             "verifier": task_root / "tests/test.sh",
@@ -222,6 +229,7 @@ def materialize(
     for path in generated:
         _harden_task(path, instance_id=path.name, image=pinned_images[path.name])
     task_hashes = {path.name: _hash_tree(path) for path in generated}
+    canonical_hashes = json.dumps(task_hashes, sort_keys=True, separators=(",", ":"))
     return {
         "schema_version": 1,
         "passed": len(generated) == len(requested),
@@ -229,6 +237,7 @@ def materialize(
         "task_count": len(generated),
         "task_ids": requested,
         "task_hashes": task_hashes,
+        "aggregate_task_hash_sha256": hashlib.sha256(canonical_hashes.encode()).hexdigest(),
         "harbor_revision": HARBOR_REVISION,
         "swebench_revision": SWEBENCH_REVISION,
         "dataset_revision": manifest["dataset"]["revision"],

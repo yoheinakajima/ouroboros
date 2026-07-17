@@ -47,7 +47,9 @@ For SWE tasks, Harbor is deliberately only the persistent agent shell and
 patch exporter: every official task image is digest-pinned, the verifier is
 offline and contains no tests, and the exported patch is graded afterward by
 the pinned official SWE-bench harness. A gold-patch end-to-end handoff has been
-recorded before scored execution.
+recorded before scored execution. The agent shell also activates the official
+image's prebuilt `testbed` environment so every architecture can run the same
+repository tests the evaluator will later invoke.
 
 ## Run a recorded hybrid experiment
 

@@ -19,9 +19,16 @@ protected solution content were viewed. Exact task IDs and hashes live in
   chosen by a score-blind deterministic hash rule.
 - Calibration: the initial 70 gold runs resolved 65 tasks. Five evaluator-defective
   tasks were replaced by the committed score-blind rule; all five replacements
-  resolved, so the final frozen selection is 70/70 oracle-valid. A materialized
-  SymPy sample also passed through Harbor. See
-  `evidence/swe_verified_calibration.json`.
+  resolved, so the final frozen selection is 70/70 oracle-valid. All 70 Harbor
+  task shells use exact official image digests, expose the image's `testbed`
+  environment equally to every architecture, and contain only a no-network
+  patch exporter; a materialized Matplotlib gold patch resolved after the
+  separate official handoff. See `evidence/swe_verified_calibration.json`.
+- Reproducibility limit: the pinned official evaluation code and image are
+  content-addressed, but upstream evaluation scripts may use Python build
+  isolation and reach package indexes while rebuilding a patched repository.
+  Results therefore record the evaluator output and receipt hashes but are not
+  described as fully offline-hermetic.
 
 ### Terminal-Bench 2
 

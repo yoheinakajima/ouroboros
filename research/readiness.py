@@ -238,6 +238,7 @@ def inspect_readiness(root: str | Path, *, profile: str = "local_no_account") ->
                 or swe_materialization.get("model_calls") != 0
                 or swe_materialization.get("task_count") != 70
                 or not image_manifest_valid
+                or boundary.get("testbed_environment_first_on_path") is not True
                 or boundary.get("mutable_image_tags") != 0
                 or boundary.get("network_installs") != 0
                 or boundary.get("embedded_evaluator_tests") != 0

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "protocol_version": "0.4-local-frozen",
+  "protocol_version": "0.5-local-frozen",
   "execution_enabled": true,
   "execution_lock_reason": "Only the frozen local_no_account profile is enabled. External-data, external-compute, and external-grader tracks remain locked.",
   "calibration_enabled": true,

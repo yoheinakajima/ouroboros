@@ -38,6 +38,12 @@ container. A container is a practical benchmark containment boundary, not a
 claim of perfect isolation against a kernel exploit; adversarial public service
 operation still warrants disposable hosts or hardened microVM infrastructure.
 
+SWE-bench grading follows the pinned upstream evaluator. Its task scripts may
+access public package indexes during build isolation, so this grader is
+separate and credential-free but not yet fully offline-hermetic. The agent
+environment never receives grader files or provider credentials, and every
+result retains exact patch, report, and evaluator-output hashes.
+
 Terminal-Bench is the persistence exception within this boundary: Harbor starts
 one fresh official task environment per attempt, and the brokered agent's shell
 commands persist inside that environment until Harbor runs its separate
