@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "purpose": "Paid development-task canary for harness calibration; not a comparative or held-out benchmark result.",
+  "headline_eligible": false,
+  "suite_id": "ouro_swe_50",
+  "task_id": "matplotlib__matplotlib-25960",
+  "split": "development",
+  "approach_id": "workspace_v1_2",
+  "arm": "cold",
+  "provider": "openai",
+  "model": "gpt-5.6-sol",
+  "seed": 101,
+  "attempts": [
+    {
+      "job_name": "development-workspace-v12-r1-swe-001",
+      "protocol_version": "0.3-local-frozen",
+      "repository_commit": "e11d16e",
+      "valid_model_attempt": false,
+      "outcome": "canceled_during_environment_setup",
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0.0,
+      "reason": "Pre-inference inspection found mutable task images and a network-installing embedded verifier; execution was stopped before credentials or inference were used.",
+      "job_result_sha256": "74c4b88da340ea94d21099daa3fd6f322f1a06277c5cb375e8b78c955dcd6325",
+      "exception_sha256": "e225930f1bafe8323715fe3644cd3cf31fe15478cd1ede93c216da17fb931f4a"
+    },
+    {
+      "job_name": "development-workspace-v12-r1-swe-001-v2",
+      "protocol_version": "0.4-local-frozen",
+      "repository_commit": "030d8a6",
+      "valid_model_attempt": true,
+      "headline_eligible": false,
+      "outcome": "officially_unresolved",
+      "agent_status": "completed",
+      "testbed_environment_first_on_path": false,
+      "model_calls": 11,
+      "tool_calls": 10,
+      "input_tokens": 83511,
+      "output_tokens": 1447,
+      "cost_usd": 0.460965,
+      "agent_wall_seconds": 65.713247,
+      "patch_bytes": 2512,
+      "patch_sha256": "a8eed5b2e2f476ebfb59827a9d5dada32a993f5a186483f48340994953dfa8f0",
+      "trial_result_sha256": "83524cea9b755507e028ff5c3980dbd117284051444d4affaa4561c250377891",
+      "official_receipt_sha256": "809b238e514000495b22fce8591b482677a90a55d216ce4315580c185a6f0102",
+      "official_report_sha256": "af80131b43484d9b2ddea83384df85d776b6d39cdcde3d98995b33483aba2f9a",
+      "official_completed": true,
+      "official_error": false,
+      "official_resolved": false,
+      "fail_to_pass": {
+        "success": 0,
+        "failure": 1
+      },
+      "pass_to_pass": {
+        "success": 131,
+        "failure": 6
+      },
+      "diagnosis": "The agent shell selected the base Conda interpreter, so the agent could not run NumPy/Matplotlib tests. Its plausible margin-aware patch failed the issue test and regressed six existing subfigure tests."
+    },
+    {
+      "job_name": "development-workspace-v12-r1-swe-001-v3-testbed",
+      "protocol_version": "0.5-local-frozen",
+      "protocol_root_sha256": "fd42d0230b30487a8a79ba32ab4b3465c5e4d9a33f6d12ddb0e249f7aa8e5ad4",
+      "repository_commit": "304a43b",
+      "valid_model_attempt": true,
+      "headline_eligible": false,
+      "outcome": "officially_resolved",
+      "agent_status": "completed",
+      "testbed_environment_first_on_path": true,
+      "agent_visible_subfigure_tests": {
+        "passed": 10,
+        "failed": 0
+      },
+      "model_calls": 13,
+      "tool_calls": 12,
+      "input_tokens": 139286,
+      "output_tokens": 2494,
+      "cost_usd": 0.77125,
+      "agent_wall_seconds": 152.995001,
+      "patch_bytes": 2456,
+      "patch_sha256": "3297b1d453f1c733d6faef6413e905e10681937adf454b56fa0bde662c1346d7",
+      "trial_result_sha256": "14f892fe7b2b5ed24dfa1fa07007e27951565547500209a2314bf5521c039953",
+      "official_receipt_sha256": "e7562f8352989310975d0795219b11072309a2fdae37117541886608ca94ca67",
+      "official_report_sha256": "93011a45cf8d4712fce61a07406edf19eb0c90cc289b320c5ec0acce16cae0ba",
+      "official_completed": true,
+      "official_error": false,
+      "official_resolved": true,
+      "fail_to_pass": {
+        "success": 1,
+        "failure": 0
+      },
+      "pass_to_pass": {
+        "success": 137,
+        "failure": 0
+      }
+    }
+  ],
+  "paid_totals": {
+    "valid_model_attempts": 2,
+    "model_calls": 24,
+    "tool_calls": 22,
+    "input_tokens": 222797,
+    "output_tokens": 3941,
+    "cost_usd": 1.232215,
+    "agent_wall_seconds": 218.708248
+  },
+  "security": {
+    "provider_credentials_forwarded_to_task": false,
+    "verifier_visible_to_agent": false,
+    "oracle_visible_to_agent": false
+  },
+  "reproducibility_limit": {
+    "official_image_and_evaluator_pinned": true,
+    "official_grader_fully_offline_hermetic": false,
+    "detail": "The upstream Matplotlib evaluation script uses Python build isolation and was observed accessing a public package index before tests."
+  },
+  "interpretation": "This canary validates protocol 0.5's SWE agent-to-grader path and shows that test-environment parity materially changes agent behavior. It does not estimate Workspace v1.2 reliability or compare architectures.",
+  "raw_artifacts": "ignored artifacts/hard-benchmark/development-workspace-v12-r1-swe-001*"
+}

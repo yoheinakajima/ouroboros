@@ -28,3 +28,9 @@ The SWE and Terminal calibration summaries retain aggregate hashes for every
 initial failure, infrastructure retry, deterministic replacement, and final
 pass. Protected patches, tests, and exact verifier output stay in the ignored
 manager-local cache.
+
+`swe_canary_workspace_v1_2.json` is different: it records paid model calls on
+one development SWE task. It retains an aborted pre-inference run, a valid
+negative attempt that exposed missing test-environment parity, and the matched
+protocol-0.5 retry that resolved under the official evaluator. It is explicitly
+not a held-out score, reliability estimate, or architecture comparison.

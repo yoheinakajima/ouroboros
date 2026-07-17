@@ -23,6 +23,32 @@ in the ignored calibration cache; curated zero-call receipts are in `../evidence
 These results validate tasks and infrastructure only. They do not measure any
 of the three approaches.
 
+## First paid hard-suite canary
+
+One Workspace v1.2 cold attempt was run on the development issue
+`matplotlib__matplotlib-25960` with `gpt-5.6-sol` and seed 101. This is harness
+calibration, not a held-out or comparative score.
+
+The first paid attempt produced a plausible patch for $0.460965 but could not
+run NumPy/Matplotlib tests because Harbor exposed the base Conda interpreter.
+The official evaluator rejected it: the fail-to-pass test failed and six
+pass-to-pass subfigure tests regressed. Protocol 0.5 now places the official
+image's `testbed` environment first on `PATH` for every architecture.
+
+The matched retry then ran 10 visible subfigure tests successfully, used 13
+model calls and 139,286 input / 2,494 output tokens, cost $0.771250, and passed
+the official evaluator: 1/1 fail-to-pass and 137/137 pass-to-pass tests. The
+patch was 2,456 bytes. The two paid attempts cost $1.232215 combined; an earlier
+setup run was canceled before inference and cost $0.
+
+This establishes that the protocol-0.5 SWE path can produce and independently
+verify a real frontier-model fix. It also demonstrates why harness parity must
+be calibrated before comparing architectures. It does **not** establish
+Workspace v1.2 reliability: there is one resolved development task after a
+harness-motivated retry. Exact public hashes are in
+`../evidence/swe_canary_workspace_v1_2.json`; full traces and patches remain in
+the ignored artifact tree.
+
 ## Docs-grounded Hybrid Packs
 
 Three capability acquisitions have valid clean runs; two require materialized
