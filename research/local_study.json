@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study_id": "ouroboros_local_comparison_v1",
-  "status": "calibration_locked",
+  "status": "frozen",
   "claim": "Architecture-specific retained improvements can raise held-out performance under an otherwise shared model, agent, tool, sandbox, and budget contract.",
   "approaches": ["workspace_v1_2", "minimal_v2", "hybrid_packs"],
   "model": "gpt-5.6-sol",
@@ -75,7 +75,7 @@
       "pydata__xarray-3305",
       "sphinx-doc__sphinx-9461",
       "pylint-dev__pylint-6386",
-      "psf__requests-1921"
+      "astropy__astropy-14995"
     ],
     "terminal_bench_2": [
       "install-windows-3.11",
@@ -83,7 +83,7 @@
       "bn-fit-modify",
       "fix-code-vulnerability",
       "portfolio-optimization",
-      "build-cython-ext"
+      "custom-memory-heap-crash"
     ],
     "activegraph_50": ["quota_scheduler", "provenance_pipeline", "delegated_access_control"]
   },

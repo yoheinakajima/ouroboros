@@ -27,8 +27,10 @@ documentation-grounded author under `research/`. None depends on the separate
 
 See [the research design](docs/RESEARCH_DESIGN.md), [benchmark feasibility
 audit](docs/BENCHMARK_AUDIT.md), [current pilot results](research/RESULTS.md),
-and [the readiness gate](research/readiness.py). Paid hard-benchmark execution
-is locked until oracle calibration promotes the pinned selections to frozen.
+and [the readiness gate](research/readiness.py). The no-account benchmark
+selections are oracle-calibrated and frozen; no scored hard-benchmark result is
+claimed yet. Execution still requires the committed hash lock and a clean
+checkout.
 
 The no-account study has three locally runnable families: 50 held-out
 SWE-bench Verified issues, 12 held-out Terminal-Bench 2 tasks, and three
@@ -186,4 +188,6 @@ python -m research.bootstrap_benchmarks --fetch --verify-images
 python -m research.readiness
 ```
 
-This prepares oracle calibration; it does not unlock scored execution.
+The committed local selections have passed oracle calibration. These commands
+reproduce the pinned inputs; scored execution is accepted only when the frozen
+protocol lock validates.

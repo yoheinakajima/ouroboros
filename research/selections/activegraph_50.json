@@ -1,8 +1,9 @@
 {
   "schema_version": 1,
   "suite_id": "ouro_activegraph_50",
-  "status": "calibration_locked",
+  "status": "frozen",
   "source_revision": "148e12c2969f18fa12a1a3c2e75f3affd9aa0616",
+  "calibration_evidence": "evidence/activegraph_50_calibration.json",
   "dataset": "five deterministic ActiveGraph construction systems with 50 checks each",
   "selection_rule": {
     "description": "Two development domains and three disjoint evaluation domains were committed before any model attempt; task removal is allowed only for a documented evaluator defect.",
@@ -20,6 +21,7 @@
     "dockerfile": "benchmarks/activegraph_50/Dockerfile",
     "dockerfile_sha256": "63692bba2c98761a8ecd1afbff85911b3b0d8cb0cd315c12b79678d6c976f4e4",
     "base": "python@sha256:db3ff2e1800a8581e2c48a27c3995339d47bdf046da21c7627accd3d51053a93",
+    "local_tag": "ouroboros-activegraph-50:1",
     "observed_local_arm64_image_id": "sha256:0c767296ab2e999b0daca91dc8d7a8f63dcf279ec2778bcddfc54e377f442ae5"
   },
   "agent_documentation": {

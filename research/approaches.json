@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "freeze_status": "calibration_locked",
+  "freeze_status": "frozen",
   "approaches": [
     {
       "id": "workspace_v1_2",
@@ -17,7 +17,8 @@
         "bounded_hash_receipted_sham_context": true,
         "cold_ablation": true,
         "sham_control": true,
-        "common_outer_container_execution": true
+        "common_outer_container_execution": true,
+        "persistent_harbor_task_environment": true
       }
     },
     {
@@ -36,7 +37,8 @@
         "sham_control": true,
         "procedure_ablation": true,
         "promotion_ablation": true,
-        "common_outer_container_execution": true
+        "common_outer_container_execution": true,
+        "persistent_harbor_task_environment": true
       }
     },
     {
@@ -58,7 +60,8 @@
         "atomic_multi_pack_proposal": true,
         "bounded_retained_pack_source_context": true,
         "bounded_hash_receipted_sham_context": true,
-        "common_outer_container_execution": true
+        "common_outer_container_execution": true,
+        "persistent_harbor_task_environment": true
       }
     }
   ]

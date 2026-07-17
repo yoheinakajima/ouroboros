@@ -9,6 +9,18 @@
     "tiktoken": "0.13.0"
   },
   "activegraph_source_revision": "148e12c2969f18fa12a1a3c2e75f3affd9aa0616",
+  "external_harnesses": {
+    "harbor": {
+      "version": "0.19.0",
+      "source_revision": "19f72aa8b45c710744d231edbb57a903b4216553",
+      "python": "3.12.13"
+    },
+    "swebench": {
+      "version": "4.1.0",
+      "source_revision": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+      "python": "3.12.13"
+    }
+  },
   "calibration_image": "python@sha256:db3ff2e1800a8581e2c48a27c3995339d47bdf046da21c7627accd3d51053a93",
-  "notes": "Exact observed host versions for protocol 0.2 calibration; task images and external evaluators are pinned separately in research/selections/."
+  "notes": "Exact observed host and isolated evaluator versions for the frozen protocol 0.3 local profile; task images and external evaluators are pinned separately in research/selections/."
 }

@@ -1,6 +1,7 @@
 # Comparative research design
 
-Status: preregistration draft; execution is locked.
+Status: local no-account profile oracle-calibrated and frozen; no scored hard
+benchmark has been run.
 
 ## Claim under test
 
@@ -100,10 +101,10 @@ The external sources are the official [SWE-bench](https://github.com/SWE-bench/S
 [MLE-bench](https://github.com/openai/mle-bench),
 [RE-Bench](https://github.com/METR/RE-Bench), and
 [PaperBench](https://github.com/openai/frontier-evals/tree/main/project/paperbench)
-repositories. Upstream commits and score-blind task IDs are now calibration
-locked in `research/selections/`. Oracle/no-score calibration must still check
-runtime, data access, broken tests, and cost before those manifests become
-frozen and any scored run is enabled.
+repositories. Upstream commits and score-blind task IDs are frozen in
+`research/selections/`. The local SWE, Terminal, and ActiveGraph suites passed
+oracle/no-score calibration before scored execution was enabled. External-data,
+external-compute, and external-judge tracks remain locked.
 
 ## Task-selection rules
 

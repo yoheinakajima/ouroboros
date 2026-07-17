@@ -8,7 +8,14 @@
     {"name": "read_file", "authority": "read_workspace", "recorded": true},
     {"name": "write_file", "authority": "write_workspace", "recorded": true},
     {"name": "replace_file", "authority": "write_workspace", "recorded": true},
-    {"name": "run_command", "authority": "execute_in_task_container", "recorded": true, "shell": false},
+    {
+      "name": "run_command",
+      "authority": "execute_in_task_container",
+      "recorded": true,
+      "mode": "suite_bound",
+      "workspace_mode": "fresh container, argv only, workspace state persists",
+      "harbor_mode": "fresh task environment, persistent shell, system and workspace state persist through verification"
+    },
     {"name": "model_complete", "authority": "host_owned_model_inference", "recorded": true}
   ],
   "invariants": [
@@ -17,7 +24,8 @@
     "Evaluator-private files, task IDs, tests, expected outputs, and grader logs are never broker-readable.",
     "Every request, response, error, duration, token count, tool count, and cost is appended to the attempt trace.",
     "Budget denial is a recorded task outcome and cannot be retried outside the attempt.",
-    "Commands use argv without a shell and execute only inside the pinned task container.",
+    "Command mechanics are frozen per suite and identical across approaches: argv-only fresh commands for local workspace tasks, persistent Harbor shell commands for official SWE and Terminal tasks.",
+    "Every Harbor attempt starts one fresh official task environment; provider inference remains host-side and the verifier runs only after the agent phase.",
     "Network is denied unless a suite preregisters the same scoped network capability for every approach."
   ],
   "budget_fields": [

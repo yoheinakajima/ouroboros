@@ -1,11 +1,27 @@
 # Current results
 
-Date: 2026-07-16
+Date: 2026-07-17
 Primary model: OpenAI `gpt-5.6-sol`
 ActiveGraph: 1.10.0
 
 These are pilot results and native evidence, not a completed comparative
 benchmark. Task contracts differ across the three historical approaches.
+
+## Hard-suite calibration (zero model calls)
+
+The frozen local study now has valid evaluator ceilings before model scoring:
+
+| Suite | Frozen tasks | Oracle result |
+|---|---:|---:|
+| SWE-bench Verified | 20 development + 50 evaluation | 70/70 resolved by official gold patches |
+| Terminal-Bench 2 | 6 development + 12 evaluation | 18/18 pass official Harbor verifiers |
+| Ouro-ActiveGraph-50 | 2 development + 3 evaluation systems | every seed 20/50; every oracle 50/50 |
+
+Five defective initial SWE tasks and two defective initial Terminal tasks were
+replaced by preregistered score-blind rules. All raw failures and retries remain
+in the ignored calibration cache; curated zero-call receipts are in `../evidence/`.
+These results validate tasks and infrastructure only. They do not measure any
+of the three approaches.
 
 ## Docs-grounded Hybrid Packs
 

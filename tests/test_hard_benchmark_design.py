@@ -8,9 +8,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class HardBenchmarkDesignTests(unittest.TestCase):
-    def test_hard_suite_is_diverse_verifiable_and_execution_locked(self) -> None:
+    def test_hard_suite_is_diverse_verifiable_and_local_execution_is_frozen(self) -> None:
         design = json.loads((ROOT / "research" / "hard_benchmark.json").read_text(encoding="utf-8"))
-        self.assertFalse(design["execution_enabled"])
+        self.assertTrue(design["execution_enabled"])
         suites = {suite["id"]: suite for suite in design["suites"]}
         self.assertEqual(len(suites), len(design["suites"]))
         self.assertGreaterEqual(len(suites), 6)
@@ -23,6 +23,10 @@ class HardBenchmarkDesignTests(unittest.TestCase):
         self.assertEqual(suites["ouro_activegraph_50"]["task_package_status"], "built_oracle_calibrated")
         self.assertTrue(all(len(suite["upstream_revision"]) == 40 for suite in suites.values()))
         self.assertEqual(suites["ouro_terminal_12"]["source"].split("/")[-1], "terminal-bench-2")
+        self.assertEqual(suites["ouro_swe_50"]["selection_status"], "frozen")
+        self.assertEqual(suites["ouro_terminal_12"]["selection_status"], "frozen")
+        self.assertEqual(suites["ouro_activegraph_50"]["selection_status"], "frozen")
+        self.assertIn("External", design["execution_lock_reason"])
         self.assertEqual(design["common_budget"]["max_cost_usd"], 50.0)
 
     def test_recursive_study_requires_cold_and_sham_controls(self) -> None:

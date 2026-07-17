@@ -27,6 +27,7 @@ from research.broker import (
 from research.contracts import AttemptRecord, ResourceUsage
 from research.curriculum import validate_manifest
 from research.grading import GraderSpec, SealedGrader
+from research.harbor_jobs import authorize_scored_execution
 from research.sandbox import SandboxLimits
 
 
@@ -232,6 +233,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-tool-calls", type=int, default=1_000)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args(argv)
+    task_spec = TaskSpec.model_validate(_load_json(args.task))
+    authorize_scored_execution(args.root.resolve(), suite_id=task_spec.suite_id)
     load_env_file(args.root / ".env")
     required = "OPENAI_API_KEY" if args.provider == "openai" else "ANTHROPIC_API_KEY"
     import os
@@ -242,7 +245,7 @@ def main(argv: list[str] | None = None) -> int:
         repository=args.root.resolve(),
         approach_id=args.approach,
         arm=args.arm,
-        task_spec=TaskSpec.model_validate(_load_json(args.task)),
+        task_spec=task_spec,
         task_workspace=args.workspace,
         grader_spec=GraderSpec.model_validate(_load_json(args.grader_spec)),
         grader_workspace=args.grader_workspace,

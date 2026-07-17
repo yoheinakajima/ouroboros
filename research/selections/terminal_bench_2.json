@@ -1,13 +1,39 @@
 {
   "schema_version": 1,
   "suite_id": "ouro_terminal_12",
-  "status": "calibration_locked",
+  "status": "frozen",
   "source_revision": "2fd12b88aafdd04a52c298e3940bcb189f9766d6",
+  "calibration_evidence": "evidence/terminal_bench_2_calibration.json",
   "dataset": "terminal-bench@2.0",
+  "harness": {
+    "repository": "https://github.com/harbor-framework/harbor",
+    "revision": "19f72aa8b45c710744d231edbb57a903b4216553",
+    "version": "0.19.0"
+  },
   "selection_rule": {
     "seed": "ouroboros-hard-v1-terminal2",
     "description": "Keep non-easy zero-GPU tasks; SHA-256 rank categories and task IDs, then select category-diverse hard and medium tasks: 3+3 development and 6+6 evaluation.",
     "score_blind": true
+  },
+  "calibration": {
+    "seed": "ouroboros-hard-v1-terminal2-calibration-replacement-v1",
+    "replacement_rule": "Replace an oracle-defective task with the SHA-256-ranked unselected task from the same split, difficulty, and category; candidate scores are never consulted.",
+    "excluded": [
+      {
+        "id": "build-cython-ext",
+        "replacement": "custom-memory-heap-crash",
+        "reason_code": "upstream_repository_test_drift",
+        "oracle_checks_passed": 10,
+        "oracle_checks_total": 11
+      },
+      {
+        "id": "schemelike-metacircular-eval",
+        "replacement": "kv-store-grpc",
+        "reason_code": "official_solution_verifier_failure",
+        "oracle_checks_passed": 54,
+        "oracle_checks_total": 63
+      }
+    ]
   },
   "network_policy": "Use each official task.toml allow_internet value identically for every approach; broker credentials remain unavailable.",
   "development": [
@@ -29,8 +55,8 @@
     {"id": "portfolio-optimization", "difficulty": "medium", "category": "optimization", "task_toml_sha256": "4918687e4e261a9852e39e5a554156733c071c17dc89c5f544f15f2ef744ce0a", "image": "alexgshaw/portfolio-optimization@sha256:93461db3cec697c31585941a3b9387c1398495aa1ff0aee2ac752c7230b50ef8"},
     {"id": "adaptive-rejection-sampler", "difficulty": "medium", "category": "scientific-computing", "task_toml_sha256": "6ed7b37f74beb46e9d47b0f5fad53025667c9548baff4e96d467b56d429fab1a", "image": "alexgshaw/adaptive-rejection-sampler@sha256:985bed39e8448bc95f138b5f766b59003a95c4be171c96af8e76448338f3dd8f"},
     {"id": "hf-model-inference", "difficulty": "medium", "category": "data-science", "task_toml_sha256": "a75f95a090ad0352069c6d7dc2f4de0a7b80cd12cd6b9ec1c57e59ad3956b89d", "image": "alexgshaw/hf-model-inference@sha256:f96dd7d3c85c7257b404fd63ba8d24ced2478cd90232c20e297c372f953fa607"},
-    {"id": "build-cython-ext", "difficulty": "medium", "category": "debugging", "task_toml_sha256": "c472f0e7522c128fb7f03e00b50c8cdf2e5e6474daa1e094e7441f4b54e770b2", "image": "alexgshaw/build-cython-ext@sha256:3612a38fadb89a96f74a1a951fb0b0af734198fd160571eeaba6401593234594"},
-    {"id": "schemelike-metacircular-eval", "difficulty": "medium", "category": "software-engineering", "task_toml_sha256": "8dae8eb226183b0ca92331c1106152a7abc93b03b4e5a95291b86a4ddc9b44e0", "image": "alexgshaw/schemelike-metacircular-eval@sha256:b485be38bf80d56c1a4cd9da95bbf7ec129dc03f6786b86c0525518a96f6d1db"}
+    {"id": "custom-memory-heap-crash", "difficulty": "medium", "category": "debugging", "task_toml_sha256": "ed474be1983e212913aa8866ebb66216acbe36aef2339ac375d232aa46617481", "image": "alexgshaw/custom-memory-heap-crash@sha256:1895d7d6240d5fb2ec774d6bfdd1057d170f8d199c15c582e4585d3c63802557"},
+    {"id": "kv-store-grpc", "difficulty": "medium", "category": "software-engineering", "task_toml_sha256": "6ff0f30a526bfff86a67b0b53439b9965229c0f368167dc1a5d05f34d82299a3", "image": "alexgshaw/kv-store-grpc@sha256:3399400800dcb207634daa42bc1b052e831e285cc9d221eea66c47bc0fc79791"}
   ],
   "calibration_gates": [
     "Harbor resolves every selected task at the pinned source revision",

@@ -14,6 +14,7 @@ from research.smoke import run_all
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--profile", default="local_no_account")
     parser.add_argument("--dry-run", action="store_true", help="show readiness without executing an approach")
     parser.add_argument("--calibration-smoke", action="store_true", help="run six no-model local grading paths")
     parser.add_argument("--output", type=Path, help="receipt path for --calibration-smoke")
@@ -23,7 +24,7 @@ def main(argv: list[str] | None = None) -> int:
         result = run_all(output=args.output)
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["passed"] else 1
-    report = inspect_readiness(args.root)
+    report = inspect_readiness(args.root, profile=args.profile)
     if args.dry_run or not args.execute:
         print(json.dumps(report, indent=2, sort_keys=True))
         return 0 if report["ready_for_oracle_calibration"] else 1

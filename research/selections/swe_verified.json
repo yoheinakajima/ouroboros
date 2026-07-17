@@ -1,8 +1,9 @@
 {
   "schema_version": 1,
   "suite_id": "ouro_swe_50",
-  "status": "calibration_locked",
+  "status": "frozen",
   "source_revision": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+  "calibration_evidence": "evidence/swe_verified_calibration.json",
   "dataset": {
     "repository": "https://huggingface.co/datasets/princeton-nlp/SWE-bench_Verified",
     "revision": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
@@ -14,6 +15,24 @@
     "description": "Group all 500 IDs by repository, SHA-256 sort repositories and IDs with the seed, then round-robin one ID per repository until 70; first 20 are development and next 50 are evaluation.",
     "score_blind": true
   },
+  "calibration": {
+    "replacement_seed": "ouroboros-hard-v1-swe-calibration-replacement-v1",
+    "replacement_rule": "Remove only IDs rejected by official gold-patch calibration. Starting from retained repository counts, repeatedly choose the eligible repository with the fewest selections, break repository and unused-ID ties by SHA-256 of the replacement seed and domain-separated value, and fill vacancies in their original manifest order without consulting candidate outcomes.",
+    "initial_oracle_run": {
+      "run_id": "calibration-gold-all-70",
+      "completed": 70,
+      "resolved": 65,
+      "unresolved": 5,
+      "errors": 0
+    },
+    "excluded": [
+      {"id": "psf__requests-1766", "split": "development", "reason_code": "external_service_test_drift", "replacement": "psf__requests-6028"},
+      {"id": "psf__requests-1921", "split": "evaluation", "reason_code": "external_service_test_drift", "replacement": "astropy__astropy-14995"},
+      {"id": "psf__requests-1724", "split": "evaluation", "reason_code": "external_service_test_drift", "replacement": "sympy__sympy-15345"},
+      {"id": "psf__requests-2317", "split": "evaluation", "reason_code": "external_service_test_drift", "replacement": "astropy__astropy-13033"},
+      {"id": "astropy__astropy-8872", "split": "evaluation", "reason_code": "dependency_warning_collection_drift", "replacement": "django__django-13786"}
+    ]
+  },
   "development": [
     "matplotlib__matplotlib-25960",
     "pytest-dev__pytest-5262",
@@ -23,7 +42,7 @@
     "sphinx-doc__sphinx-7440",
     "mwaskom__seaborn-3069",
     "pylint-dev__pylint-4661",
-    "psf__requests-1766",
+    "psf__requests-6028",
     "django__django-15629",
     "astropy__astropy-14365",
     "sympy__sympy-19495",
@@ -46,7 +65,7 @@
     "pydata__xarray-3305",
     "sphinx-doc__sphinx-9461",
     "pylint-dev__pylint-6386",
-    "psf__requests-1921",
+    "astropy__astropy-14995",
     "django__django-13417",
     "astropy__astropy-14096",
     "sympy__sympy-20916",
@@ -66,7 +85,7 @@
     "pydata__xarray-3151",
     "sphinx-doc__sphinx-7985",
     "pylint-dev__pylint-4604",
-    "psf__requests-1724",
+    "sympy__sympy-15345",
     "django__django-14580",
     "astropy__astropy-14309",
     "sympy__sympy-24443",
@@ -76,9 +95,9 @@
     "pydata__xarray-4966",
     "sphinx-doc__sphinx-9658",
     "pylint-dev__pylint-7277",
-    "psf__requests-2317",
+    "astropy__astropy-13033",
     "django__django-16082",
-    "astropy__astropy-8872",
+    "django__django-13786",
     "sympy__sympy-13877",
     "matplotlib__matplotlib-24637",
     "pytest-dev__pytest-10081",

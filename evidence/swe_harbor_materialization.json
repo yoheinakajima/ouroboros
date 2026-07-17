@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "model_calls": 0,
+  "task_count": 70,
+  "aggregate_task_hash_sha256": "967c2070366f1e9c493699899eab28d3fe83130436c91575ebc60be9499c5882",
+  "harbor_revision": "19f72aa8b45c710744d231edbb57a903b4216553",
+  "swebench_revision": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+  "dataset_revision": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+  "dataset_sha256": "a45b1fe4e2f0c8390b2b2938ac83e92ed5979000856808f3679c07812e9e6dcd",
+  "manager_private_content_committed": false,
+  "raw_tasks_location": "ignored benchmark/.cache/swe_harbor"
+}

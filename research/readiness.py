@@ -29,7 +29,7 @@ def _issue(code: str, message: str, *, scope: str = "benchmark", severity: str =
     return {"code": code, "message": message, "scope": scope, "severity": severity}
 
 
-def inspect_readiness(root: str | Path) -> dict[str, Any]:
+def inspect_readiness(root: str | Path, *, profile: str = "local_no_account") -> dict[str, Any]:
     repository = Path(root).resolve()
     issues: list[dict[str, str]] = []
     required = [
@@ -54,6 +54,13 @@ def inspect_readiness(root: str | Path) -> dict[str, Any]:
     approaches = _read_json(approaches_path) if approaches_path.is_file() else {}
     broker = _read_json(broker_path) if broker_path.is_file() else {}
     environment = _read_json(environment_path) if environment_path.is_file() else {}
+    profiles = {str(row.get("id", "")): row for row in benchmark.get("execution_profiles", [])}
+    selected_profile = profiles.get(profile)
+    if selected_profile is None:
+        issues.append(_issue("execution_profile_unknown", profile, scope="structure", severity="error"))
+        scored_suite_ids: set[str] = set()
+    else:
+        scored_suite_ids = {str(item) for item in selected_profile.get("suites", [])}
 
     if broker and broker.get("implementation_status") != "ready":
         issues.append(_issue("broker_not_ready", str(broker.get("implementation_status"))))
@@ -69,7 +76,7 @@ def inspect_readiness(root: str | Path) -> dict[str, Any]:
         revision = str(suite.get("upstream_revision", ""))
         if not revision or revision.startswith("UN"):
             issues.append(_issue("suite_revision_unpinned", f"{suite_id}: {revision or '<missing>'}"))
-        if suite.get("selection_status") != "frozen":
+        if suite_id in scored_suite_ids and suite.get("selection_status") != "frozen":
             issues.append(_issue("suite_selection_unfrozen", f"{suite_id}: {suite.get('selection_status')}"))
 
     if approaches.get("freeze_status") != "frozen":
@@ -151,7 +158,7 @@ def inspect_readiness(root: str | Path) -> dict[str, Any]:
                 )
             )
 
-    selection_report = inspect_selections(repository, profile="local_no_account")
+    selection_report = inspect_selections(repository, profile=profile)
     if not selection_report["calibration_ready"]:
         issues.append(
             _issue(
@@ -208,10 +215,25 @@ def inspect_readiness(root: str | Path) -> dict[str, Any]:
                 issues.append(
                     _issue("activegraph_calibration_failed", "five 20/50 seeds and 50/50 oracles are required")
                 )
-            image_id = str(activegraph.get("container", {}).get("image_id", ""))
+            container = activegraph.get("container", {})
+            image_id = str(container.get("image_id", ""))
+            image_tag = str(container.get("image_tag", ""))
+            recorded_architecture = str(container.get("architecture", ""))
             if image_id and shutil.which("docker") is not None:
+                architecture = subprocess.run(
+                    ["docker", "info", "--format", "{{.Architecture}}"],
+                    cwd=repository,
+                    text=True,
+                    capture_output=True,
+                    timeout=10,
+                    check=False,
+                )
+                current_architecture = architecture.stdout.strip() if architecture.returncode == 0 else ""
+                image_reference = image_id
+                if current_architecture and current_architecture != recorded_architecture:
+                    image_reference = image_tag
                 image = subprocess.run(
-                    ["docker", "image", "inspect", image_id],
+                    ["docker", "image", "inspect", image_reference],
                     cwd=repository,
                     text=True,
                     capture_output=True,
@@ -222,7 +244,10 @@ def inspect_readiness(root: str | Path) -> dict[str, Any]:
                     issues.append(
                         _issue(
                             "activegraph_image_missing",
-                            f"build benchmarks/activegraph_50/Dockerfile to restore {image_id}",
+                            (
+                                "build benchmarks/activegraph_50/Dockerfile as "
+                                f"{image_tag or image_id} for Docker architecture {current_architecture or '<unknown>'}"
+                            ),
                             scope="environment",
                         )
                     )
@@ -256,6 +281,8 @@ def inspect_readiness(root: str | Path) -> dict[str, Any]:
         "ready_for_oracle_calibration": not errors and not calibration_blockers,
         "structurally_valid": not errors,
         "execution_enabled": benchmark.get("execution_enabled") is True,
+        "execution_profile": profile,
+        "scored_suites": sorted(scored_suite_ids),
         "approaches": sorted(approach_ids),
         "suites": sorted(suite_ids),
         "issue_count": len(issues),
@@ -268,13 +295,14 @@ def inspect_readiness(root: str | Path) -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--profile", default="local_no_account")
     parser.add_argument(
         "--development",
         action="store_true",
         help="succeed when schemas and paths are sound, while still reporting blockers",
     )
     args = parser.parse_args(argv)
-    report = inspect_readiness(args.root)
+    report = inspect_readiness(args.root, profile=args.profile)
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0 if (report["structurally_valid"] if args.development else report["ready"]) else 1
 

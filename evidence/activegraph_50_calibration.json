@@ -5,6 +5,7 @@
   "model_calls": 0,
   "passed": true,
   "container": {
+    "image_tag": "ouroboros-activegraph-50:1",
     "image_id": "sha256:0c767296ab2e999b0daca91dc8d7a8f63dcf279ec2778bcddfc54e377f442ae5",
     "architecture": "arm64",
     "network": "none",

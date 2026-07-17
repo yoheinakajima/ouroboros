@@ -36,13 +36,13 @@ architecture comparison.
 The next phase is specified in [the hard research design](../docs/RESEARCH_DESIGN.md):
 SWE-bench, Terminal-Bench, MLE-bench, selected long-horizon R&D tasks, and a
 sealed 20/50-to-50/50 ActiveGraph construction benchmark. The suites in
-`hard_benchmark.json` are calibration-locked research inputs, not executed results.
+`hard_benchmark.json` are frozen research inputs, not scored model results.
 SWE-bench Verified, Terminal-Bench 2, and the five-system ActiveGraph-50 suite
-can be oracle-calibrated locally without a hosted sandbox account. ActiveGraph-50
-has two development systems and three held-out systems; every seed is exactly
-20/50 and every manager oracle is 50/50. The MLE, RE-Bench, and PaperBench
-tracks keep their real data, accelerator, and trusted-grader prerequisites
-explicit.
+have been oracle-calibrated locally without a hosted sandbox account. The final
+SWE selection is 70/70 gold-valid, the final Terminal selection is 18/18
+oracle-valid, and every ActiveGraph seed/oracle pair is exactly 20/50 and
+50/50. The MLE, RE-Bench, and PaperBench tracks keep their real data,
+accelerator, and trusted-grader prerequisites explicit and remain locked.
 
 ## Run a recorded hybrid experiment
 

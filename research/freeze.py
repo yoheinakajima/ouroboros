@@ -17,6 +17,10 @@ LOCK_INPUTS = (
     "LICENSE",
     "README.md",
     "pyproject.toml",
+    "evidence/activegraph_50_calibration.json",
+    "evidence/swe_verified_calibration.json",
+    "evidence/terminal_bench_2_calibration.json",
+    "evidence/swe_harbor_materialization.json",
     "docs/BENCHMARK_AUDIT.md",
     "docs/LOCAL_TEST_PLAN.md",
     "docs/RESEARCH_DESIGN.md",
@@ -34,15 +38,19 @@ LOCK_INPUTS = (
     "research/environment.lock.json",
     "research/freeze.py",
     "research/grading.py",
+    "research/harbor_agent.py",
+    "research/harbor_jobs.py",
     "research/hybrid_author.py",
     "research/readiness.py",
     "research/sandbox.py",
     "research/smoke.py",
+    "research/swe_harbor.py",
     "research/benchmark_runner.py",
     "research/bootstrap_benchmarks.py",
     "research/activegraph_benchmark.py",
     "research/activegraph_task_runtime.py",
     "research/comparison.py",
+    "research/calibration.py",
     "research/curriculum.py",
     "research/adapters/base.py",
     "research/adapters/common.py",
@@ -122,6 +130,25 @@ def inspect_selections(root: str | Path, *, profile: str | None = None) -> dict[
             issues.append({"code": "selection_split_overlap", "suite_id": suite_id})
         if not manifest.get("selection_rule", {}).get("score_blind"):
             issues.append({"code": "selection_not_score_blind", "suite_id": suite_id})
+        if status == "frozen":
+            evidence_relative = str(manifest.get("calibration_evidence", ""))
+            evidence_path = (repository / evidence_relative).resolve()
+            if not evidence_relative or repository not in evidence_path.parents or not evidence_path.is_file():
+                issues.append({"code": "calibration_evidence_missing", "suite_id": suite_id})
+            else:
+                try:
+                    evidence = _read(evidence_path)
+                except (OSError, json.JSONDecodeError) as exc:
+                    issues.append(
+                        {"code": "calibration_evidence_invalid", "suite_id": suite_id, "detail": str(exc)}
+                    )
+                else:
+                    if (
+                        evidence.get("suite_id") != suite_id
+                        or evidence.get("passed") is not True
+                        or evidence.get("model_calls") != 0
+                    ):
+                        issues.append({"code": "calibration_evidence_failed", "suite_id": suite_id})
         for row in development + evaluation:
             if not row.strip():
                 issues.append({"code": "empty_selection_id", "suite_id": suite_id})

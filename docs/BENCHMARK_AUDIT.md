@@ -1,10 +1,12 @@
 # Benchmark source and feasibility audit
 
-Snapshot: 2026-07-16. This audit used upstream manifests, licenses, task
-metadata, and resource declarations only. No approach scores or protected
-solutions were viewed. Exact task IDs and hashes live in `research/selections/`.
+Snapshot: 2026-07-17. Selection used upstream manifests, licenses, task
+metadata, and resource declarations only. Oracle calibration then used official
+gold solutions and verifiers without model calls. No approach scores or
+protected solution content were viewed. Exact task IDs and hashes live in
+`research/selections/`.
 
-## Locally calibratable without an account
+## Locally calibrated without an account
 
 ### SWE-bench Verified
 
@@ -15,17 +17,26 @@ solutions were viewed. Exact task IDs and hashes live in `research/selections/`.
   SHA-256 pinned in the selection manifest.
 - Selection: 20 development and 50 evaluation IDs, repository-balanced and
   chosen by a score-blind deterministic hash rule.
-- Remaining gate: build and oracle-run every selected official evaluator.
+- Calibration: the initial 70 gold runs resolved 65 tasks. Five evaluator-defective
+  tasks were replaced by the committed score-blind rule; all five replacements
+  resolved, so the final frozen selection is 70/70 oracle-valid. A materialized
+  SymPy sample also passed through Harbor. See
+  `evidence/swe_verified_calibration.json`.
 
 ### Terminal-Bench 2
 
 - Source: `harbor-framework/terminal-bench-2` at
   `2fd12b88aafdd04a52c298e3940bcb189f9766d6` (Apache-2.0).
+- Evaluator: `harbor-framework/harbor` 0.19.0 at
+  `19f72aa8b45c710744d231edbb57a903b4216553` (Apache-2.0).
 - Selection: 6 development and 12 evaluation tasks, all non-easy and zero-GPU.
 - Every `task.toml` and published Docker image is SHA-256 pinned. The task's
   own `allow_internet` setting is preserved equally across approaches.
-- Remaining gate: pull each linux/amd64 image and oracle-run its Harbor
-  verifier. Harbor itself does not require a hosted sandbox account.
+- Calibration: all 18 final selections pass their official Harbor verifier.
+  Two original tasks were excluded for published-solution/verifier drift and
+  replaced within their frozen strata; one image-pull timeout passed its single
+  infrastructure retry. See `evidence/terminal_bench_2_calibration.json`.
+  Harbor itself does not require a hosted sandbox account.
 
 ## Frontier tracks with external prerequisites
 

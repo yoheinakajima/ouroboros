@@ -1,10 +1,18 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
-from research.curriculum import build_manifest, validate_manifest, write_manifest
+from activegraph import Graph, Runtime
+
+from research.curriculum import (
+    build_manifest,
+    export_minimal_state,
+    validate_manifest,
+    write_manifest,
+)
 
 
 class CurriculumManifestTests(unittest.TestCase):
@@ -61,6 +69,48 @@ class CurriculumManifestTests(unittest.TestCase):
                     parent_run_ids=["run-1"],
                     feedback_policy="public_only",
                 )
+
+    def test_native_minimal_state_exports_only_bounded_context(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state = Path(temporary)
+            (state / "organism.json").write_text(
+                json.dumps({"engine_version": "2.0.0-minimal", "run_id": "test-run"}),
+                encoding="utf-8",
+            )
+            runtime = Runtime(Graph(run_id="test-run"), behaviors=[], persist_to=str(state / "trace.sqlite"))
+            runtime.graph.add_object(
+                "procedure",
+                {
+                    "name": "inspect before editing",
+                    "trigger_terms": ["debug"],
+                    "steps": ["Read the failing path.", "Run a focused check."],
+                    "evidence": "verified development attempt",
+                    "private_case": "must not be exported",
+                },
+            )
+            runtime.graph.add_object(
+                "mutation_trial",
+                {"evaluation_receipt": "sha256:" + "a" * 64, "hidden_cases": ["not exported"]},
+            )
+            runtime.graph.add_object(
+                "promotion",
+                {
+                    "status": "active",
+                    "capability_name": "normalize",
+                    "description": "Normalize a record.",
+                    "pack_name": "normalize_pack",
+                    "bundle_hash": "sha256:" + "b" * 64,
+                    "root": "/private/author/path",
+                },
+            )
+            runtime.save_state()
+
+            exported = json.loads(export_minimal_state(state).read_text(encoding="utf-8"))
+
+        self.assertEqual(exported["procedures"][0]["name"], "inspect before editing")
+        self.assertNotIn("private_case", exported["procedures"][0])
+        self.assertNotIn("root", exported["capabilities"][0])
+        self.assertEqual(exported["evidence_receipts"], ["sha256:" + "a" * 64])
 
 
 if __name__ == "__main__":

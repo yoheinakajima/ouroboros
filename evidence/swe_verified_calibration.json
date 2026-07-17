@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "suite_id": "ouro_swe_50",
+  "purpose": "Infrastructure and oracle evidence only; this is not model capability evidence.",
+  "model_calls": 0,
+  "passed": true,
+  "source": {
+    "swebench_revision": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+    "dataset_revision": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+    "dataset_parquet_sha256": "a45b1fe4e2f0c8390b2b2938ac83e92ed5979000856808f3679c07812e9e6dcd",
+    "harbor_revision": "19f72aa8b45c710744d231edbb57a903b4216553"
+  },
+  "initial_selection": {
+    "tasks": 70,
+    "gold_resolved": 65,
+    "oracle_rejected": 5,
+    "harness_errors": 0,
+    "aggregate_receipt_sha256": "645268251f08672f9cac9822303a377f12f037fa135987d870d5d24721d3aeb7"
+  },
+  "final_selection": {
+    "tasks": 70,
+    "gold_resolved": 70,
+    "gold_unresolved": 0,
+    "harness_errors_after_retry": 0
+  },
+  "replacement_runs": [
+    {
+      "id": "calibration-gold-replacements-5",
+      "submitted": 5,
+      "gold_resolved": 2,
+      "infrastructure_errors": 3,
+      "aggregate_receipt_sha256": "309f65125ed463191afdf76cec18b2a8fb5bf5bdbde3c991ea9b16605cf1367a"
+    },
+    {
+      "id": "calibration-gold-replacements-serial-retry-3",
+      "submitted": 3,
+      "gold_resolved": 2,
+      "infrastructure_errors": 1,
+      "aggregate_receipt_sha256": "d7ef32a440e112146d4de719e2589c7881aa054d11cd97d94d526558574fa30c"
+    },
+    {
+      "id": "calibration-gold-astropy-13033-prebuilt",
+      "submitted": 1,
+      "gold_resolved": 1,
+      "infrastructure_errors": 0,
+      "official_image": "swebench/sweb.eval.x86_64.astropy_1776_astropy-13033@sha256:42797a2c686ed35b43e28dd2f58149381c3bf79abea2346fb7062c009e9fa528",
+      "aggregate_receipt_sha256": "24eb998ddb1eede1e9ba89acad11e26c98d96f127ea4b76c0da4253d38b6041f"
+    }
+  ],
+  "exclusions": [
+    {
+      "id": "psf__requests-1766",
+      "reason_code": "external_service_test_drift",
+      "replacement": "psf__requests-6028"
+    },
+    {
+      "id": "psf__requests-1921",
+      "reason_code": "external_service_test_drift",
+      "replacement": "astropy__astropy-14995"
+    },
+    {
+      "id": "psf__requests-1724",
+      "reason_code": "external_service_test_drift",
+      "replacement": "sympy__sympy-15345"
+    },
+    {
+      "id": "psf__requests-2317",
+      "reason_code": "external_service_test_drift",
+      "replacement": "astropy__astropy-13033"
+    },
+    {
+      "id": "astropy__astropy-8872",
+      "reason_code": "dependency_warning_collection_drift",
+      "replacement": "django__django-13786"
+    }
+  ],
+  "infrastructure_retries": [
+    {
+      "reason_code": "parallel_build_memory_pressure",
+      "detail": "Parallel amd64 environment builds exited 137 on a 16 GiB ARM host; serial retries built the same pinned inputs successfully."
+    },
+    {
+      "reason_code": "amd64_emulation_compiler_crash",
+      "detail": "The Astropy instance linker segfaulted under ARM amd64 emulation; the official immutable amd64 instance image passed the official evaluator."
+    }
+  ],
+  "harbor_parity": {
+    "materialized_tasks": 70,
+    "materialization_receipt_sha256": "a03facf882cd183e826bdd4c7c5562cd14911abd3ffb8571bb4f74335740c116",
+    "sample_task": "sympy__sympy-19040",
+    "sample_oracle_reward": 1.0,
+    "sample_exceptions": 0,
+    "aggregate_receipt_sha256": "b8ab2f15bfc122e2dfe0382554c58f97257f4b63d120e732cb6d4723ed9bd702",
+    "retained_infrastructure_failure_receipt_sha256": "f12504941630bb51f78ba1172689821f2dbfb1add2160a31fd6967306de31439"
+  },
+  "raw_receipts": [
+    "benchmark/.cache/calibration/swe",
+    "benchmark/.cache/calibration/swe-harbor"
+  ]
+}

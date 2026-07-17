@@ -38,13 +38,25 @@ container. A container is a practical benchmark containment boundary, not a
 claim of perfect isolation against a kernel exploit; adversarial public service
 operation still warrants disposable hosts or hardened microVM infrastructure.
 
+Terminal-Bench is the persistence exception within this boundary: Harbor starts
+one fresh official task environment per attempt, and the brokered agent's shell
+commands persist inside that environment until Harbor runs its separate
+verifier. Provider inference still runs on the host, credentials are never
+forwarded, and the entire task environment is removed after the attempt.
+
 ## Local reference setup
 
 ```bash
-brew install colima docker
-colima start --runtime docker --vm-type vz --cpu 4 --memory 8 --disk 60
+brew install colima docker docker-compose qemu lima-additional-guestagents
+mkdir -p ~/.docker/cli-plugins
+ln -sfn "$(brew --prefix docker-compose)/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
+colima start --profile ouro-x86 --runtime docker --arch x86_64 --vm-type qemu \
+  --cpu 8 --memory 16 --disk 200
 python -m research.sandbox --check
 ```
 
-Buildx is not required for benchmark execution. Homebrew installs it separately
-if multi-platform image building is later needed.
+The full x86 guest is the no-license reference path for linux/amd64 Terminal
+tasks on Apple silicon. It is slower than a native host but avoids compiler
+crashes seen with per-process emulation. Operators running native x86 Linux can
+use Docker directly. Buildx is not required for benchmark execution; Homebrew
+installs it separately if multi-platform image building is later needed.

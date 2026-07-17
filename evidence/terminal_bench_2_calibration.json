@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "suite_id": "ouro_terminal_12",
+  "purpose": "Infrastructure and oracle evidence only; this is not model capability evidence.",
+  "model_calls": 0,
+  "passed": true,
+  "source": {
+    "task_repository_revision": "2fd12b88aafdd04a52c298e3940bcb189f9766d6",
+    "harbor_revision": "19f72aa8b45c710744d231edbb57a903b4216553",
+    "harbor_version": "0.19.0"
+  },
+  "environment": {
+    "docker_server_version": "29.5.2",
+    "docker_architecture": "amd64",
+    "virtualization": "Colima full-system QEMU x86_64",
+    "selected_task_images_verified": 18
+  },
+  "final_selection": {
+    "tasks": 18,
+    "oracle_passed": 18,
+    "oracle_failed": 0,
+    "infrastructure_errors_after_retry": 0
+  },
+  "runs": [
+    {
+      "id": "calibration-terminal-selected-17-x86",
+      "submitted": 17,
+      "oracle_passed": 15,
+      "oracle_failed": 1,
+      "infrastructure_errors": 1,
+      "started_at": "2026-07-17T07:43:15.819259",
+      "finished_at": "2026-07-17T10:26:11.517490",
+      "aggregate_receipt_sha256": "c6959ac95eefc3e8ad44cc3bcbfce09fd4866c4844af7301242cf50fae3291f3"
+    },
+    {
+      "id": "calibration-terminal-build-cython-ext-x86",
+      "submitted": 1,
+      "oracle_passed": 0,
+      "oracle_failed": 1,
+      "infrastructure_errors": 0,
+      "oracle_checks_passed": 10,
+      "oracle_checks_total": 11,
+      "aggregate_receipt_sha256": "35f3c5d9f7ce1eddf6279419adb6297f92148ad2cf9602c8715cb4729b54c371"
+    },
+    {
+      "id": "calibration-terminal-retries-and-replacements-x86",
+      "submitted": 3,
+      "oracle_passed": 3,
+      "oracle_failed": 0,
+      "infrastructure_errors": 0,
+      "started_at": "2026-07-17T09:46:29.691630",
+      "finished_at": "2026-07-17T09:56:51.716703",
+      "aggregate_receipt_sha256": "167a4a3d427a4bc79b415ecdd9e8c0f258925e6ca246c10016912ca1ab9242bb"
+    }
+  ],
+  "exclusions": [
+    {
+      "id": "build-cython-ext",
+      "reason_code": "upstream_repository_test_drift",
+      "replacement": "custom-memory-heap-crash",
+      "replacement_oracle_passed": true
+    },
+    {
+      "id": "schemelike-metacircular-eval",
+      "reason_code": "official_solution_verifier_failure",
+      "replacement": "kv-store-grpc",
+      "replacement_oracle_passed": true
+    }
+  ],
+  "infrastructure_retries": [
+    {
+      "id": "hf-model-inference",
+      "initial_error": "EnvironmentStartTimeoutError while pulling the pinned image",
+      "retry_rule": "one retry after the immutable image digest finished caching",
+      "retry_oracle_passed": true
+    }
+  ],
+  "raw_receipts": "benchmark/.cache/calibration/terminal (ignored manager-local cache)"
+}

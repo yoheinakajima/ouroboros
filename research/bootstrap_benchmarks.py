@@ -39,6 +39,11 @@ SOURCES = (
         "https://github.com/harbor-framework/terminal-bench-2.git",
         "2fd12b88aafdd04a52c298e3940bcb189f9766d6",
     ),
+    Source(
+        "harbor",
+        "https://github.com/harbor-framework/harbor.git",
+        "19f72aa8b45c710744d231edbb57a903b4216553",
+    ),
 )
 
 

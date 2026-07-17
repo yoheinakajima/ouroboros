@@ -76,6 +76,71 @@ def hash_artifact(root: str | Path) -> tuple[str, int]:
     return digest.hexdigest(), total
 
 
+def export_minimal_state(root: str | Path) -> Path:
+    """Create the bounded adapter export from a native Minimal v2 state.
+
+    The export contains learned procedures, promoted-capability descriptors,
+    and evaluation receipt hashes. Generated capability source and author-held
+    cases stay in the hash-pinned native state but are not exposed as model
+    context by the common adapter.
+    """
+
+    from activegraph import Runtime
+
+    state = Path(root).resolve(strict=True)
+    metadata_path = state / "organism.json"
+    trace_path = state / "trace.sqlite"
+    for path in (metadata_path, trace_path):
+        if not path.is_file() or path.is_symlink():
+            raise ValueError(f"minimal native state requires regular {path.name}")
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    run_id = str(metadata.get("run_id", "")).strip()
+    if not run_id:
+        raise ValueError("minimal organism metadata is missing run_id")
+    runtime = Runtime.load(str(trace_path), run_id=run_id, behaviors=[])
+
+    procedures: list[dict[str, object]] = []
+    capabilities: list[dict[str, object]] = []
+    evidence_receipts: list[str] = []
+    for item in runtime.graph.all_objects():
+        data = dict(item.data)
+        if item.type == "procedure":
+            procedures.append(
+                {
+                    "name": str(data.get("name", "")),
+                    "trigger_terms": [str(value) for value in data.get("trigger_terms", [])],
+                    "steps": [str(value) for value in data.get("steps", [])],
+                    "evidence": str(data.get("evidence", "")),
+                }
+            )
+        elif item.type == "promotion" and data.get("status") == "active":
+            capabilities.append(
+                {
+                    "name": str(data.get("capability_name", "")),
+                    "description": str(data.get("description", "")),
+                    "pack_name": str(data.get("pack_name", "")),
+                    "bundle_hash": str(data.get("bundle_hash", "")),
+                }
+            )
+        elif item.type == "mutation_trial":
+            receipt = str(data.get("evaluation_receipt", ""))
+            if receipt:
+                evidence_receipts.append(receipt)
+    payload = {
+        "schema_version": 1,
+        "engine_version": str(metadata.get("engine_version", "")),
+        "run_id": run_id,
+        "procedures": sorted(procedures, key=lambda row: (str(row["name"]), json.dumps(row, sort_keys=True))),
+        "capabilities": sorted(capabilities, key=lambda row: (str(row["name"]), str(row["bundle_hash"]))),
+        "evidence_receipts": sorted(set(evidence_receipts)),
+    }
+    target = state / "state_export.json"
+    temporary = target.with_name(target.name + ".tmp")
+    temporary.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temporary.replace(target)
+    return target
+
+
 def build_manifest(
     root: str | Path,
     *,
