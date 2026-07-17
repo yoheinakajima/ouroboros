@@ -43,6 +43,11 @@ SWE selection is 70/70 gold-valid, the final Terminal selection is 18/18
 oracle-valid, and every ActiveGraph seed/oracle pair is exactly 20/50 and
 50/50. The MLE, RE-Bench, and PaperBench tracks keep their real data,
 accelerator, and trusted-grader prerequisites explicit and remain locked.
+For SWE tasks, Harbor is deliberately only the persistent agent shell and
+patch exporter: every official task image is digest-pinned, the verifier is
+offline and contains no tests, and the exported patch is graded afterward by
+the pinned official SWE-bench harness. A gold-patch end-to-end handoff has been
+recorded before scored execution.
 
 ## Run a recorded hybrid experiment
 

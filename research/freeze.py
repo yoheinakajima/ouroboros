@@ -45,6 +45,7 @@ LOCK_INPUTS = (
     "research/sandbox.py",
     "research/smoke.py",
     "research/swe_harbor.py",
+    "research/swe_official.py",
     "research/benchmark_runner.py",
     "research/bootstrap_benchmarks.py",
     "research/activegraph_benchmark.py",

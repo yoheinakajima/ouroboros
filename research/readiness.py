@@ -135,6 +135,25 @@ def inspect_readiness(root: str | Path, *, profile: str = "local_no_account") ->
                     scope="environment",
                 )
             )
+        try:
+            buildx = subprocess.run(
+                ["docker", "buildx", "version"],
+                cwd=repository,
+                text=True,
+                capture_output=True,
+                timeout=10,
+                check=False,
+            )
+            if buildx.returncode != 0:
+                issues.append(
+                    _issue(
+                        "docker_buildx_missing",
+                        "Docker Buildx is required for Harbor's no-network verifier sidecar.",
+                        scope="environment",
+                    )
+                )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            issues.append(_issue("docker_buildx_unavailable", str(exc), scope="environment"))
     if sys.version_info < (3, 11):
         issues.append(
             _issue(
@@ -198,6 +217,42 @@ def inspect_readiness(root: str | Path, *, profile: str = "local_no_account") ->
                 issues.append(_issue("benchmark_bootstrap_failed", "local source/image verification incomplete"))
         except (OSError, json.JSONDecodeError) as exc:
             issues.append(_issue("benchmark_bootstrap_invalid", str(exc), severity="error"))
+
+    swe_materialization_path = repository / "evidence" / "swe_harbor_materialization.json"
+    if not swe_materialization_path.is_file():
+        issues.append(_issue("swe_materialization_missing", str(swe_materialization_path.relative_to(repository))))
+    else:
+        try:
+            swe_materialization = _read_json(swe_materialization_path)
+            boundary = swe_materialization.get("harbor_boundary", {})
+            handoff = swe_materialization.get("official_handoff_oracle", {})
+            image_manifest = swe_materialization.get("official_image_manifest", {})
+            image_manifest_path = repository / str(image_manifest.get("path", ""))
+            image_manifest_valid = (
+                image_manifest_path.is_file()
+                and image_manifest.get("sha256") == _sha256(image_manifest_path)
+                and image_manifest.get("digest_pinned_images") == 70
+            )
+            if (
+                swe_materialization.get("passed") is not True
+                or swe_materialization.get("model_calls") != 0
+                or swe_materialization.get("task_count") != 70
+                or not image_manifest_valid
+                or boundary.get("mutable_image_tags") != 0
+                or boundary.get("network_installs") != 0
+                or boundary.get("embedded_evaluator_tests") != 0
+                or handoff.get("completed") is not True
+                or handoff.get("error") is not False
+                or handoff.get("resolved") is not True
+            ):
+                issues.append(
+                    _issue(
+                        "swe_materialization_failed",
+                        "70 digest-pinned patch-only tasks and a resolved official handoff oracle are required",
+                    )
+                )
+        except (OSError, json.JSONDecodeError) as exc:
+            issues.append(_issue("swe_materialization_invalid", str(exc), severity="error"))
 
     activegraph_path = repository / "evidence" / "activegraph_50_calibration.json"
     if not activegraph_path.is_file():

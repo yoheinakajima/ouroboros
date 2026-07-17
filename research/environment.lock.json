@@ -21,6 +21,13 @@
       "python": "3.12.13"
     }
   },
+  "reference_container_runtime": {
+    "docker_cli": "29.6.2",
+    "docker_engine": "29.5.2",
+    "docker_buildx": "0.35.0",
+    "colima": "0.10.3",
+    "guest_architecture": "x86_64"
+  },
   "calibration_image": "python@sha256:db3ff2e1800a8581e2c48a27c3995339d47bdf046da21c7627accd3d51053a93",
-  "notes": "Exact observed host and isolated evaluator versions for the frozen protocol 0.3 local profile; task images and external evaluators are pinned separately in research/selections/."
+  "notes": "Exact observed host and isolated evaluator versions for the frozen protocol 0.4 local profile; task images and external evaluators are pinned separately in research/selections/. Buildx is a required Harbor isolation dependency; exact Docker and Colima versions describe the reference host and are not portable task inputs."
 }

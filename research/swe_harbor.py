@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -13,6 +14,27 @@ from typing import Any
 
 HARBOR_REVISION = "19f72aa8b45c710744d231edbb57a903b4216553"
 SWEBENCH_REVISION = "f7bbbb2ccdf479001d6467c9e34af59e44a840f9"
+IMAGE_MANIFEST = "research/selections/swe_verified_images.json"
+OFFICIAL_IMAGE = re.compile(r"^swebench/[A-Za-z0-9][A-Za-z0-9._/-]*@sha256:[0-9a-f]{64}$")
+
+
+PATCH_EXPORT_VERIFIER = """#!/bin/bash
+set -euo pipefail
+
+cd /testbed
+mkdir -p /logs/verifier
+
+# Capture new files as well as tracked edits. The official pinned SWE-bench
+# evaluator consumes this patch after Harbor has destroyed the agent task
+# environment; no evaluator tests or expected outputs are mounted here.
+git add -A
+git diff --cached --binary --full-index > /logs/verifier/model.patch
+sha256sum /logs/verifier/model.patch > /logs/verifier/model.patch.sha256
+
+# Harbor requires a syntactically valid reward, but this is explicitly not the
+# SWE score. The host-side official evaluator replaces this placeholder.
+echo 0 > /logs/verifier/reward.txt
+"""
 
 
 def _revision(path: Path) -> str:
@@ -43,6 +65,80 @@ def _hash_tree(root: Path) -> str:
     return digest.hexdigest()
 
 
+def _harden_task(task_root: Path, *, instance_id: str, image: str) -> None:
+    """Make Harbor an immutable patch-producing shell for official SWE eval."""
+
+    if not OFFICIAL_IMAGE.fullmatch(image):
+        raise ValueError(f"SWE image is not digest pinned: {instance_id}")
+    dockerfile = task_root / "environment/Dockerfile"
+    if not dockerfile.is_file():
+        raise FileNotFoundError(f"generated SWE Dockerfile missing: {instance_id}")
+    dockerfile.write_text(
+        f"FROM {image}\n\nWORKDIR /testbed\nRUN mkdir -p /logs\n",
+        encoding="utf-8",
+    )
+
+    verifier = task_root / "tests/test.sh"
+    if not verifier.is_file():
+        raise FileNotFoundError(f"generated SWE verifier missing: {instance_id}")
+    verifier.write_text(PATCH_EXPORT_VERIFIER, encoding="utf-8")
+
+    task_toml = task_root / "task.toml"
+    task_text = task_toml.read_text(encoding="utf-8")
+    verifier_header = "[verifier]\nnetwork_mode = \"public\""
+    if task_text.count(verifier_header) != 1:
+        raise ValueError(f"unexpected SWE verifier network contract: {instance_id}")
+    task_toml.write_text(
+        task_text.replace(verifier_header, "[verifier]\nnetwork_mode = \"no-network\""),
+        encoding="utf-8",
+    )
+
+
+def verify_materialized(
+    *, repository: Path, output: Path, task_ids: list[str] | None = None
+) -> dict[str, Any]:
+    """Reject mutable or evaluator-bearing Harbor SWE task environments."""
+
+    manifest = json.loads((repository / "research/selections/swe_verified.json").read_text(encoding="utf-8"))
+    selected = [str(item) for item in manifest["development"] + manifest["evaluation"]]
+    requested = task_ids or selected
+    if not requested or not set(requested) <= set(selected):
+        raise ValueError("verification is limited to the committed SWE selection")
+    image_manifest = json.loads((repository / IMAGE_MANIFEST).read_text(encoding="utf-8"))
+    images = {str(key): str(value) for key, value in image_manifest.get("images", {}).items()}
+    issues: list[dict[str, str]] = []
+    task_hashes: dict[str, str] = {}
+    for instance_id in requested:
+        task_root = output / instance_id
+        expected_image = images.get(instance_id, "")
+        expected_dockerfile = f"FROM {expected_image}\n\nWORKDIR /testbed\nRUN mkdir -p /logs\n"
+        paths = {
+            "dockerfile": task_root / "environment/Dockerfile",
+            "verifier": task_root / "tests/test.sh",
+            "task": task_root / "task.toml",
+        }
+        if any(not path.is_file() for path in paths.values()):
+            issues.append({"instance_id": instance_id, "code": "materialized_task_incomplete"})
+            continue
+        if not OFFICIAL_IMAGE.fullmatch(expected_image):
+            issues.append({"instance_id": instance_id, "code": "official_image_not_digest_pinned"})
+        if paths["dockerfile"].read_text(encoding="utf-8") != expected_dockerfile:
+            issues.append({"instance_id": instance_id, "code": "environment_not_digest_pinned"})
+        if paths["verifier"].read_text(encoding="utf-8") != PATCH_EXPORT_VERIFIER:
+            issues.append({"instance_id": instance_id, "code": "harbor_verifier_not_patch_only"})
+        task_text = paths["task"].read_text(encoding="utf-8")
+        if '[verifier]\nnetwork_mode = "no-network"' not in task_text:
+            issues.append({"instance_id": instance_id, "code": "harbor_verifier_network_enabled"})
+        task_hashes[instance_id] = _hash_tree(task_root)
+    return {
+        "schema_version": 1,
+        "passed": not issues and len(task_hashes) == len(requested),
+        "task_count": len(requested),
+        "task_hashes": task_hashes,
+        "issues": issues,
+    }
+
+
 def materialize(
     *,
     repository: Path,
@@ -60,12 +156,23 @@ def materialize(
 
     parquet_path = (cache / "swe_verified/data/test-00000-of-00001.parquet").resolve(strict=True)
     manifest = json.loads((repository / "research/selections/swe_verified.json").read_text(encoding="utf-8"))
+    image_manifest_path = repository / IMAGE_MANIFEST
+    image_manifest = json.loads(image_manifest_path.read_text(encoding="utf-8"))
+    if image_manifest.get("suite_id") != manifest.get("suite_id"):
+        raise ValueError("SWE image manifest suite mismatch")
+    pinned_images = {str(key): str(value) for key, value in image_manifest.get("images", {}).items()}
     selected = manifest["development"] + manifest["evaluation"]
+    invalid_images = any(not OFFICIAL_IMAGE.fullmatch(item) for item in pinned_images.values())
+    if set(pinned_images) != set(selected) or invalid_images:
+        raise ValueError("SWE image manifest must exactly pin every selected official image")
     requested = task_ids or selected
     if not requested or len(set(requested)) != len(requested):
         raise ValueError("task IDs must be nonempty and unique")
     if not set(requested) <= set(selected):
         raise ValueError("materialization is limited to the committed selection")
+    missing_images = set(requested) - pinned_images.keys()
+    if missing_images:
+        raise ValueError(f"selected SWE images are not pinned: {sorted(missing_images)}")
 
     try:
         import pyarrow.parquet as parquet
@@ -112,6 +219,8 @@ def materialize(
     generated, failures = converter.generate_many(requested, overwrite=overwrite)
     if failures:
         raise RuntimeError(f"SWE Harbor materialization failures: {failures}")
+    for path in generated:
+        _harden_task(path, instance_id=path.name, image=pinned_images[path.name])
     task_hashes = {path.name: _hash_tree(path) for path in generated}
     return {
         "schema_version": 1,
@@ -124,6 +233,9 @@ def materialize(
         "swebench_revision": SWEBENCH_REVISION,
         "dataset_revision": manifest["dataset"]["revision"],
         "dataset_sha256": manifest["dataset"]["parquet_sha256"],
+        "image_manifest": IMAGE_MANIFEST,
+        "image_manifest_sha256": hashlib.sha256(image_manifest_path.read_bytes()).hexdigest(),
+        "official_grader": "host-side pinned SWE-bench evaluator after Harbor patch export",
         "output": str(output.resolve()),
     }
 

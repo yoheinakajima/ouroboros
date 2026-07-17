@@ -47,16 +47,19 @@ forwarded, and the entire task environment is removed after the attempt.
 ## Local reference setup
 
 ```bash
-brew install colima docker docker-compose qemu lima-additional-guestagents
+brew install colima docker docker-buildx docker-compose qemu lima-additional-guestagents
 mkdir -p ~/.docker/cli-plugins
+ln -sfn "$(brew --prefix docker-buildx)/bin/docker-buildx" ~/.docker/cli-plugins/docker-buildx
 ln -sfn "$(brew --prefix docker-compose)/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
 colima start --profile ouro-x86 --runtime docker --arch x86_64 --vm-type qemu \
   --cpu 8 --memory 16 --disk 200
+docker buildx version
 python -m research.sandbox --check
 ```
 
 The full x86 guest is the no-license reference path for linux/amd64 Terminal
 tasks on Apple silicon. It is slower than a native host but avoids compiler
 crashes seen with per-process emulation. Operators running native x86 Linux can
-use Docker directly. Buildx is not required for benchmark execution; Homebrew
-installs it separately if multi-platform image building is later needed.
+use Docker directly. Docker Buildx is required because Harbor constructs a
+dedicated egress-control sidecar for `no-network` verifier execution. The
+readiness gate checks that the plugin is callable before a scored run begins.

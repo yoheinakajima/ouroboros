@@ -20,3 +20,7 @@ artifacts/**
 benchmark/.cache/
 benchmark/runs/
 .benchmark-cache/
+
+# Harbor's default output when a caller omits --jobs-dir. Curated receipts
+# belong in evidence/; complete local job trees may contain model transcripts.
+jobs/

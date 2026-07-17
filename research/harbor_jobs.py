@@ -87,6 +87,12 @@ def build_command(
     missing = [item for item in selected if not (task_root / item).is_dir()]
     if missing:
         raise FileNotFoundError(f"materialized Harbor tasks missing: {missing}")
+    if suite == "swe":
+        from research.swe_harbor import verify_materialized
+
+        materialized = verify_materialized(repository=repository, output=task_root, task_ids=selected)
+        if not materialized["passed"]:
+            raise PermissionError(f"materialized SWE task hardening failed: {materialized['issues']}")
 
     command = [
         str(harbor_binary),

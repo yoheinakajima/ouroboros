@@ -190,4 +190,6 @@ python -m research.readiness
 
 The committed local selections have passed oracle calibration. These commands
 reproduce the pinned inputs; scored execution is accepted only when the frozen
-protocol lock validates.
+protocol lock validates. SWE execution additionally requires Docker Buildx:
+Harbor uses it to construct the no-network verifier sidecar, while official
+grading occurs later in a separate pinned SWE-bench container.

@@ -45,6 +45,7 @@ ouroboros-harbor-job = "research.harbor_jobs:main"
 ouroboros-sandbox-check = "research.sandbox:main"
 ouroboros-smoke = "research.smoke:main"
 ouroboros-swe-harbor = "research.swe_harbor:main"
+ouroboros-swe-official = "research.swe_official:main"
 
 [tool.setuptools]
 py-modules = ["ouroboros"]

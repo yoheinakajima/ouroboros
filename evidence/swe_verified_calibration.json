@@ -86,11 +86,16 @@
   ],
   "harbor_parity": {
     "materialized_tasks": 70,
-    "materialization_receipt_sha256": "a03facf882cd183e826bdd4c7c5562cd14911abd3ffb8571bb4f74335740c116",
-    "sample_task": "sympy__sympy-19040",
-    "sample_oracle_reward": 1.0,
-    "sample_exceptions": 0,
-    "aggregate_receipt_sha256": "b8ab2f15bfc122e2dfe0382554c58f97257f4b63d120e732cb6d4723ed9bd702",
+    "materialization_receipt_sha256": "7d23edf9e9780fbe7828500d38948e9afc6f7756bc9d667ad798338f083f456d",
+    "current_boundary": "Harbor supplies a digest-pinned no-network agent shell and exports a patch; the pinned official SWE-bench evaluator grades later on the host.",
+    "hardened_sample_task": "matplotlib__matplotlib-25960",
+    "hardened_sample_completed": true,
+    "hardened_sample_resolved": true,
+    "hardened_sample_exceptions": 0,
+    "hardened_sample_receipt_sha256": "47c06dec03358d0c3ab08e5ac866746904435a52629277b63c3bf164a014b3e5",
+    "historical_embedded_verifier_sample_task": "sympy__sympy-19040",
+    "historical_embedded_verifier_sample_reward": 1.0,
+    "historical_embedded_verifier_receipt_sha256": "b8ab2f15bfc122e2dfe0382554c58f97257f4b63d120e732cb6d4723ed9bd702",
     "retained_infrastructure_failure_receipt_sha256": "f12504941630bb51f78ba1172689821f2dbfb1add2160a31fd6967306de31439"
   },
   "raw_receipts": [

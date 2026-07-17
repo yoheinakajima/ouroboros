@@ -17,9 +17,12 @@ agent solved any benchmark task. Every calibration receipt records zero model
 calls.
 
 `swe_harbor_materialization.json` proves that all 70 committed SWE tasks were
-generated from the pinned parquet through the pinned Harbor adapter. Gold
-patches, test patches, and generated task trees remain manager-private in the
-ignored cache; only their aggregate hash is tracked.
+generated from the pinned parquet through the pinned Harbor adapter, rewritten
+to exact official image digests, stripped of evaluator tests and network
+installs, and checked as patch-only no-network environments. Its handoff sample
+also proves that an exported gold patch resolves under the separately pinned
+official SWE-bench evaluator. Gold patches, test patches, and generated task
+trees remain manager-private in the ignored cache; only hashes are tracked.
 
 The SWE and Terminal calibration summaries retain aggregate hashes for every
 initial failure, infrastructure retry, deterministic replacement, and final

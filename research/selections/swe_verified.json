@@ -10,6 +10,12 @@
     "parquet_sha256": "a45b1fe4e2f0c8390b2b2938ac83e92ed5979000856808f3679c07812e9e6dcd",
     "instance_count": 500
   },
+  "official_images": {
+    "path": "research/selections/swe_verified_images.json",
+    "sha256": "b058eac581e26ee961bf4ab537121fb4bd3b83dcca52edf71d6f47b78d82feab",
+    "count": 70,
+    "architecture": "linux/amd64"
+  },
   "selection_rule": {
     "seed": "ouroboros-hard-v1-swe",
     "description": "Group all 500 IDs by repository, SHA-256 sort repositories and IDs with the seed, then round-robin one ID per repository until 70; first 20 are development and next 50 are evaluation.",

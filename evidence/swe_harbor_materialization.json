@@ -1,13 +1,40 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "purpose": "Infrastructure evidence only; this is not model capability evidence.",
   "passed": true,
   "model_calls": 0,
   "task_count": 70,
-  "aggregate_task_hash_sha256": "967c2070366f1e9c493699899eab28d3fe83130436c91575ebc60be9499c5882",
+  "aggregate_task_hash_sha256": "4534fd546c721298af32c650b7a602e4a5847ab0885c00d7956805690d2ffb48",
   "harbor_revision": "19f72aa8b45c710744d231edbb57a903b4216553",
   "swebench_revision": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
   "dataset_revision": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
   "dataset_sha256": "a45b1fe4e2f0c8390b2b2938ac83e92ed5979000856808f3679c07812e9e6dcd",
+  "official_image_manifest": {
+    "path": "research/selections/swe_verified_images.json",
+    "sha256": "b058eac581e26ee961bf4ab537121fb4bd3b83dcca52edf71d6f47b78d82feab",
+    "digest_pinned_images": 70
+  },
+  "harbor_boundary": {
+    "role": "persistent no-network agent shell and patch exporter only",
+    "patch_exporter_sha256": "eaf77258fe8f336be71e11d6f438aa6d8796494226de9597377ee47b5d733569",
+    "mutable_image_tags": 0,
+    "network_installs": 0,
+    "embedded_evaluator_tests": 0
+  },
+  "official_handoff_oracle": {
+    "instance_id": "matplotlib__matplotlib-25960",
+    "harbor_job": "calibration-swe-hardened-matplotlib-25960-v3",
+    "harbor_exceptions": 0,
+    "harbor_result_sha256": "15559d9ceb3069a86b625ea8d03c5383dc8c7d8baeb92cb36b926e9d1bbb1832",
+    "patch_sha256": "4f517f0aec8c22b814b0027bfb734db907b4baf313e975f141f921ed783867c8",
+    "official_image": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-25960@sha256:e214f9a106be3f6c3622cff11a66d6f2005df039353a2dd37c463369e1a24e43",
+    "official_report_sha256": "93011a45cf8d4712fce61a07406edf19eb0c90cc289b320c5ec0acce16cae0ba",
+    "official_receipt_sha256": "47c06dec03358d0c3ab08e5ac866746904435a52629277b63c3bf164a014b3e5",
+    "completed": true,
+    "error": false,
+    "resolved": true
+  },
   "manager_private_content_committed": false,
-  "raw_tasks_location": "ignored benchmark/.cache/swe_harbor"
+  "raw_tasks_location": "ignored benchmark/.cache/swe_harbor",
+  "raw_oracle_location": "ignored benchmark/.cache/calibration/swe-hardened"
 }
