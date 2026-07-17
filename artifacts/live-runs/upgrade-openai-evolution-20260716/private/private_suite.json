@@ -1,0 +1,246 @@
+{
+  "builder_visible": false,
+  "coverage_notes": [
+    "Exercises explicit nested data paths, repeated completion, stable increasing IDs, and persisted statistics.",
+    "Validates the on-disk JSON representation and semantic completion state across separate processes.",
+    "Covers malformed state and invalid non-positive IDs without traceback leakage.",
+    "Confirms the submitted unittest suite contains and runs at least one real test."
+  ],
+  "tests": [
+    {
+      "argv": [],
+      "description": "A nested explicit state path is created automatically, repeated completion remains idempotent, and later additions retain increasing IDs.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "nested-path-idempotent-sequence",
+      "json_equals": {},
+      "kind": "state_persistence",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "--data-file",
+            ".manager-state/deep/session/todos.json",
+            "add",
+            "Review quarterly plan"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Added todo 1: Review quarterly plan"
+          ],
+          "stdout_not_contains": [
+            "Traceback"
+          ]
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "--data-file",
+            ".manager-state/deep/session/todos.json",
+            "done",
+            "1"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Completed todo 1: Review quarterly plan"
+          ],
+          "stdout_not_contains": [
+            "Traceback"
+          ]
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "--data-file",
+            ".manager-state/deep/session/todos.json",
+            "done",
+            "1"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Completed todo 1: Review quarterly plan"
+          ],
+          "stdout_not_contains": [
+            "Traceback"
+          ]
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "--data-file",
+            ".manager-state/deep/session/todos.json",
+            "add",
+            "Archive notes"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Added todo 2: Archive notes"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "--data-file",
+            ".manager-state/deep/session/todos.json",
+            "list"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "[x] 1 Review quarterly plan",
+            "[ ] 2 Archive notes"
+          ],
+          "stdout_not_contains": [
+            "[ ] 1 Review quarterly plan",
+            "[x] 2 Archive notes",
+            "Traceback"
+          ]
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "--data-file",
+            ".manager-state/deep/session/todos.json",
+            "stats"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Total: 2",
+            "Open: 1",
+            "Done: 1"
+          ],
+          "stdout_not_contains": []
+        }
+      ],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Separate CLI processes write parseable JSON records with integer IDs, exact text, and distinguishable completion state.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "durable-json-records",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import json\nimport pathlib\nimport subprocess\nimport sys\nimport tempfile\n\nwith tempfile.TemporaryDirectory() as td:\n    data = pathlib.Path(td) / 'nested' / 'durable.json'\n\n    def invoke(*args):\n        result = subprocess.run(\n            [sys.executable, '-m', 'todo_cli', '--data-file', str(data), *args],\n            text=True,\n            capture_output=True,\n        )\n        assert result.returncode == 0, result.stdout + result.stderr\n        return result\n\n    invoke('add', 'First durable item')\n    invoke('add', 'Second durable item')\n    invoke('done', '2')\n\n    assert data.is_file(), 'explicit nested data file was not created'\n    payload = json.loads(data.read_text(encoding='utf-8'))\n\n    records = []\n    def visit(value):\n        if isinstance(value, dict):\n            if isinstance(value.get('id'), int) and isinstance(value.get('text'), str):\n                records.append(value)\n            for child in value.values():\n                visit(child)\n        elif isinstance(value, list):\n            for child in value:\n                visit(child)\n    visit(payload)\n\n    by_id = {record['id']: record for record in records}\n    assert by_id[1]['text'] == 'First durable item'\n    assert by_id[2]['text'] == 'Second durable item'\n\n    def completion_marker(record):\n        for key, value in record.items():\n            lowered = key.lower()\n            if key not in ('id', 'text') and any(token in lowered for token in ('done', 'complete', 'status')):\n                return value\n        raise AssertionError('todo record has no durable completion marker')\n\n    open_marker = completion_marker(by_id[1])\n    done_marker = completion_marker(by_id[2])\n    assert open_marker != done_marker, (open_marker, done_marker)\n    print('durable JSON records verified')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "durable JSON records verified"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Malformed persisted JSON causes a concise nonzero CLI failure rather than an internal traceback.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "malformed-json-friendly-error",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import pathlib\nimport subprocess\nimport sys\nimport tempfile\n\nwith tempfile.TemporaryDirectory() as td:\n    data = pathlib.Path(td) / 'broken.json'\n    data.write_text('{\"todos\": [', encoding='utf-8')\n    result = subprocess.run(\n        [sys.executable, '-m', 'todo_cli', '--data-file', str(data), 'stats'],\n        text=True,\n        capture_output=True,\n    )\n    output = result.stdout + result.stderr\n    assert result.returncode != 0, output\n    assert 'Error:' in output, output\n    assert 'Traceback' not in output, output\n    print('malformed state rejected cleanly')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "malformed state rejected cleanly"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "todo_cli",
+        "--data-file",
+        ".manager-state/invalid-zero.json",
+        "done",
+        "0"
+      ],
+      "description": "A non-positive todo ID is rejected as invalid with a helpful nonzero error and no traceback.",
+      "expected_exit": 2,
+      "expected_status": 200,
+      "id": "reject-zero-id",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "Error:",
+        "0"
+      ],
+      "stdout_not_contains": [
+        "Traceback",
+        "Completed todo"
+      ],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Standard-library unittest discovery succeeds and reports that at least one automated test actually ran.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "unittest-suite-has-tests",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import re\nimport subprocess\nimport sys\n\nresult = subprocess.run(\n    [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test*.py', '-v'],\n    text=True,\n    capture_output=True,\n)\noutput = result.stdout + result.stderr\nassert result.returncode == 0, output\nmatch = re.search(r'Ran\\s+(\\d+)\\s+tests?', output)\nassert match is not None, output\nassert int(match.group(1)) > 0, output\nprint('nonempty unittest suite passed')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "nonempty unittest suite passed"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    }
+  ]
+}

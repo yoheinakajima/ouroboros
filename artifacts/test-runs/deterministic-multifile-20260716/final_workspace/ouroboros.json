@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "language": "python",
+  "entrypoint": [
+    "python",
+    "app.py"
+  ],
+  "test_command": [
+    "python",
+    "-m",
+    "unittest",
+    "-q"
+  ],
+  "input_protocol": "json-stdin",
+  "output_protocol": "json-stdout",
+  "environment": {}
+}

@@ -1,0 +1,284 @@
+{
+  "capability_requirements": [
+    "Read JSON from stdin containing a sentence field",
+    "Parse and analyze text to count words",
+    "Identify unique words in the input",
+    "Determine the longest word in the input",
+    "Output valid JSON with word_count, unique_words, and longest_word fields",
+    "Handle edge cases like empty input, punctuation, and multiple spaces"
+  ],
+  "deliverable_kind": "JSON-stdin CLI application",
+  "entrypoint_protocol": "JSON-stdin CLI: reads JSON from stdin, writes JSON to stdout, exits 0 on success",
+  "objective": "Build a multi-file JSON-stdin CLI that analyzes an input sentence and returns valid JSON containing word_count, unique_words, and longest_word, with real automated tests.",
+  "public_behavior_spec": [
+    "CLI accepts JSON on stdin with a 'sentence' field",
+    "CLI outputs valid JSON to stdout",
+    "Output JSON contains 'word_count' (integer) representing total word count",
+    "Output JSON contains 'unique_words' (integer) representing count of unique words",
+    "Output JSON contains 'longest_word' (string) representing the longest word found",
+    "Words are separated by whitespace",
+    "Word comparison is case-insensitive for uniqueness counting",
+    "If multiple words tie for longest, any one of them is acceptable",
+    "Punctuation attached to words is considered part of the word",
+    "Empty or whitespace-only input results in word_count=0, unique_words=0, longest_word=empty string"
+  ],
+  "public_tests": [
+    {
+      "argv": [],
+      "description": "Analyze a simple sentence with distinct words",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_basic_sentence",
+      "json_equals": {
+        "longest_word": "quick",
+        "unique_words": 5,
+        "word_count": 5
+      },
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"sentence\": \"The quick brown fox jumps\"}",
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Handle repeated words correctly",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_repeated_words",
+      "json_equals": {
+        "longest_word": "hello",
+        "unique_words": 2,
+        "word_count": 3
+      },
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"sentence\": \"hello world hello\"}",
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Count unique words case-insensitively",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_case_insensitive",
+      "json_equals": {
+        "longest_word": "Hello",
+        "unique_words": 1,
+        "word_count": 3
+      },
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"sentence\": \"Hello HELLO hello\"}",
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Handle empty sentence",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_empty_sentence",
+      "json_equals": {
+        "longest_word": "",
+        "unique_words": 0,
+        "word_count": 0
+      },
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"sentence\": \"\"}",
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Handle whitespace-only input",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_whitespace_only",
+      "json_equals": {
+        "longest_word": "",
+        "unique_words": 0,
+        "word_count": 0
+      },
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"sentence\": \"   \"}",
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Handle single word input",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_single_word",
+      "json_equals": {
+        "longest_word": "supercalifragilisticexpialidocious",
+        "unique_words": 1,
+        "word_count": 1
+      },
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"sentence\": \"supercalifragilisticexpialidocious\"}",
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Handle multiple spaces between words",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_multiple_spaces",
+      "json_equals": {
+        "longest_word": "three",
+        "unique_words": 3,
+        "word_count": 3
+      },
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"sentence\": \"one  two   three\"}",
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Handle words with attached punctuation",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_with_punctuation",
+      "json_equals": {
+        "longest_word": "Hello,",
+        "unique_words": 2,
+        "word_count": 2
+      },
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"sentence\": \"Hello, world!\"}",
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Verify automated test file exists",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_automated_tests_exist",
+      "json_equals": {},
+      "kind": "file",
+      "method": "GET",
+      "path": "test_analyzer.py",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "test_analyzer.py"
+      ],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "test_analyzer.py",
+        "-v"
+      ],
+      "description": "Run automated tests successfully",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_automated_tests_run",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "passed"
+      ],
+      "stdout_not_contains": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Verify README exists",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "test_readme_exists",
+      "json_equals": {},
+      "kind": "file",
+      "method": "GET",
+      "path": "README.md",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "README.md"
+      ],
+      "stdout_not_contains": [],
+      "url": ""
+    }
+  ],
+  "qualitative_rubric": [
+    "Code is organized into multiple files with clear separation of concerns",
+    "Test coverage includes edge cases and normal operation",
+    "JSON parsing and generation is robust and handles errors gracefully",
+    "Code is readable with appropriate comments where needed",
+    "README provides clear usage instructions",
+    "Implementation correctly handles all specified edge cases"
+  ],
+  "required_artifacts": [
+    "main.py",
+    "test_analyzer.py",
+    "README.md"
+  ],
+  "stopping_condition": "All public tests pass and qualitative rubric items are satisfied",
+  "success_threshold": 90.0
+}

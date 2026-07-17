@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "language": "python",
+  "entrypoint": ["python3", "todo.py"],
+  "test_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+  "input_protocol": "argv",
+  "output_protocol": "stdout",
+  "environment": {}
+}

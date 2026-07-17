@@ -1,0 +1,14 @@
+{
+  "calls_by_phase": {
+    "builder": 12,
+    "contract": 1,
+    "judge": 1,
+    "private_suite": 1
+  },
+  "input_tokens": 206561,
+  "llm_calls": 15,
+  "max_cost_usd": 5.0,
+  "output_tokens": 12703,
+  "provider_estimated_cost_usd": "1.413895",
+  "resolved_model": "gpt-5.6-sol"
+}

@@ -1,0 +1,395 @@
+{
+  "candidate": {
+    "declared_test": {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "-q"
+      ],
+      "duration_seconds": 0.0413,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "----------------------------------------------------------------------\nRan 8 tests in 0.000s\n\nOK\n",
+      "stderr_truncated": false,
+      "stdout_tail": "",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "hard_gate_errors": [
+      "required artifact missing: main.py or equivalent entrypoint file",
+      "required artifact missing: At least one additional module file demonstrating multi-file architecture",
+      "required artifact missing: README.md with usage instructions"
+    ],
+    "hard_gates": {
+      "declared_test_command": true,
+      "entrypoint_exists": true,
+      "manifest_valid": true,
+      "no_symlinks_or_escape": true,
+      "private_test_isolation": true,
+      "program_starts_and_protocol_valid": true,
+      "required_artifacts": false,
+      "workspace_budget": true
+    },
+    "hard_gates_passed": false,
+    "passed": 5,
+    "phase": "candidate-private",
+    "protocol": {
+      "argv": [
+        "python",
+        "main.py"
+      ],
+      "duration_seconds": 0.0413,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"word_count\": 4, \"unique_words\": 4, \"longest_word\": \"ouroboros\"}\n",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "score": 1.0,
+    "test_results": [
+      {
+        "argv": [
+          "python",
+          "main.py"
+        ],
+        "duration_seconds": 0.0412,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 0,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"word_count\": 5, \"unique_words\": 5, \"longest_word\": \"OUROPRIVATEa3e7810705cb4d7bb66cd44c95246ca6\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "825760b1967d4a7076e4c21ada48d885f6a46e2818aa0a3e5bfddda4b5808b32",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "main.py"
+        ],
+        "duration_seconds": 0.0414,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 1,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"word_count\": 5, \"unique_words\": 5, \"longest_word\": \"quick\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "2b743a22372e847aba5b351d8b8a8492a28fc37897a936323af00420b9f347a0",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "main.py"
+        ],
+        "duration_seconds": 0.0415,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 2,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"word_count\": 3, \"unique_words\": 2, \"longest_word\": \"hello\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "38365da14ea616977d8599784884c06621eb65024afcbdb4a8ec37ac1f2b2bcb",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "main.py"
+        ],
+        "duration_seconds": 0.0415,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 3,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"word_count\": 3, \"unique_words\": 1, \"longest_word\": \"Hello\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "e15af0e28c42af451706d02588944a2ecfd0eff0479859baac5d93b1c0a31422",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "main.py"
+        ],
+        "duration_seconds": 0.0413,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 4,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"word_count\": 0, \"unique_words\": 0, \"longest_word\": \"\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "9168b167860d9b454c1fa9d3631909d0a178c84030351f0af7739e5e35d19ccf",
+        "timed_out": false
+      }
+    ],
+    "total": 5,
+    "tree": {
+      "content_id": "workspace-sha256-f775c237870989e1582a8f6c0cc3572a63de6b2d7e8435597a5cdf697b22ba99",
+      "files": [
+        {
+          "path": "MEMORY.md",
+          "sha256": "3f52394356c64fb649dd259da9074349fca43a993f55ef0baa655ee208a0be80",
+          "size": 1004
+        },
+        {
+          "path": "README.md",
+          "sha256": "2458d6d3cb643f77844ada7fc14b630284c902e79f9a9c74ce14eaf4b8cf7330",
+          "size": 1867
+        },
+        {
+          "path": "SELF.md",
+          "sha256": "81900cf31fa7d170aa3b5527e6f7c97017b24f047311368ba6da54fdd77a1c61",
+          "size": 1137
+        },
+        {
+          "path": "integration_test.sh",
+          "sha256": "2c2f2e9c26c3d752310a80a5f868ed6bed2c765b93ec7a99bd0823df78452863",
+          "size": 898
+        },
+        {
+          "path": "main.py",
+          "sha256": "f5e95222579e01a75ed19176fcaf1730e66d2499057cf0ae0d2262dcb435a751",
+          "size": 952
+        },
+        {
+          "path": "ouroboros.json",
+          "sha256": "8409aba0a69efd70e9ecd9ca57d73b444d07766d0c4768361332032c32354019",
+          "size": 266
+        },
+        {
+          "path": "test_analyzer.py",
+          "sha256": "76f6beb600298f03f5f6d2f7ce2fc1c4ad9ef04c95fed7e4075934a4140f5e67",
+          "size": 2875
+        },
+        {
+          "path": "text_analyzer.py",
+          "sha256": "6753d8734e5efc4a78cdef0b5c98d4f768de1703ed328cc623683822c3dfd547",
+          "size": 1652
+        }
+      ],
+      "symlinks": [],
+      "total_bytes": 10651
+    }
+  },
+  "incumbent": {
+    "declared_test": {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "-q"
+      ],
+      "duration_seconds": 0.0412,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+      "stderr_truncated": false,
+      "stdout_tail": "",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "hard_gate_errors": [
+      "required artifact missing: main.py or equivalent entrypoint file",
+      "required artifact missing: At least one additional module file demonstrating multi-file architecture",
+      "required artifact missing: README.md with usage instructions"
+    ],
+    "hard_gates": {
+      "declared_test_command": true,
+      "entrypoint_exists": true,
+      "manifest_valid": true,
+      "no_symlinks_or_escape": true,
+      "private_test_isolation": true,
+      "program_starts_and_protocol_valid": true,
+      "required_artifacts": false,
+      "workspace_budget": true
+    },
+    "hard_gates_passed": false,
+    "passed": 1,
+    "phase": "incumbent-private",
+    "protocol": {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.0415,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"ouroboros health check\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "score": 0.2,
+    "test_results": [
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "duration_seconds": 0.0215,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 0,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"  OURO_PRIVATE_a3e7810705cb4d7bb66cd44c95246ca6 \\u2014 caf\\u00e9 \\u6771\\u4eac  \", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "825760b1967d4a7076e4c21ada48d885f6a46e2818aa0a3e5bfddda4b5808b32",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "duration_seconds": 0.0212,
+        "exit_code": 1,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 1,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "exit 1 != 0",
+          "stdout was not valid JSON"
+        ],
+        "stderr_tail": "Traceback (most recent call last):\n  File \"/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-vzsfo31j/workspace/agent.py\", line 11, in <module>\n    main()\n  File \"/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-vzsfo31j/workspace/agent.py\", line 6, in main\n    payload = json.loads(sys.stdin.read() or \"{}\")\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py\", line 337, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py\", line 355, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "test_hash": "2b743a22372e847aba5b351d8b8a8492a28fc37897a936323af00420b9f347a0",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "duration_seconds": 0.0214,
+        "exit_code": 1,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 2,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "exit 1 != 0",
+          "stdout was not valid JSON"
+        ],
+        "stderr_tail": "Traceback (most recent call last):\n  File \"/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-vzsfo31j/workspace/agent.py\", line 11, in <module>\n    main()\n  File \"/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-vzsfo31j/workspace/agent.py\", line 6, in main\n    payload = json.loads(sys.stdin.read() or \"{}\")\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py\", line 337, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py\", line 355, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "test_hash": "38365da14ea616977d8599784884c06621eb65024afcbdb4a8ec37ac1f2b2bcb",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "duration_seconds": 0.0214,
+        "exit_code": 1,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 3,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "exit 1 != 0",
+          "stdout was not valid JSON"
+        ],
+        "stderr_tail": "Traceback (most recent call last):\n  File \"/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-vzsfo31j/workspace/agent.py\", line 11, in <module>\n    main()\n  File \"/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-vzsfo31j/workspace/agent.py\", line 6, in main\n    payload = json.loads(sys.stdin.read() or \"{}\")\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py\", line 337, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py\", line 355, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "test_hash": "e15af0e28c42af451706d02588944a2ecfd0eff0479859baac5d93b1c0a31422",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "duration_seconds": 0.0416,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 4,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "9168b167860d9b454c1fa9d3631909d0a178c84030351f0af7739e5e35d19ccf",
+        "timed_out": false
+      }
+    ],
+    "total": 5,
+    "tree": {
+      "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+      "files": [
+        {
+          "path": "MEMORY.md",
+          "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+          "size": 34
+        },
+        {
+          "path": "SELF.md",
+          "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+          "size": 215
+        },
+        {
+          "path": "agent.py",
+          "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+          "size": 276
+        },
+        {
+          "path": "ouroboros.json",
+          "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+          "size": 267
+        }
+      ],
+      "symlinks": [],
+      "total_bytes": 792
+    }
+  },
+  "receipt": {
+    "algorithm": "sha256",
+    "sealed": true,
+    "suite_hash": "6234e17f979c72b7df8c8c6b52d1f5293ea354eadba8fc894870211f03a49b22",
+    "test_count": 5
+  }
+}

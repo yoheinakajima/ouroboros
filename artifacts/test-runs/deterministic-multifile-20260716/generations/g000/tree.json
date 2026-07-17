@@ -1,0 +1,27 @@
+{
+  "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+  "files": [
+    {
+      "path": "MEMORY.md",
+      "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+      "size": 34
+    },
+    {
+      "path": "SELF.md",
+      "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+      "size": 215
+    },
+    {
+      "path": "agent.py",
+      "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+      "size": 276
+    },
+    {
+      "path": "ouroboros.json",
+      "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+      "size": 267
+    }
+  ],
+  "symlinks": [],
+  "total_bytes": 792
+}

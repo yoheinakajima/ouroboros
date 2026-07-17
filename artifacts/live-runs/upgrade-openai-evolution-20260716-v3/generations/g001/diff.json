@@ -1,0 +1,60 @@
+{
+  "changes": [
+    {
+      "after": "50f05e03aa3c7276813781f0111971fe6204202c1bcc1af008efa9994c66ab00",
+      "before": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+      "change": "modified",
+      "path": "MEMORY.md"
+    },
+    {
+      "after": "b31cfdbacb962779233680b794ea25e91335f3a15ebf083cc830344197b843b2",
+      "before": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+      "change": "modified",
+      "path": "SELF.md"
+    },
+    {
+      "after": "75e1b728d0a7374037a9a4649cf8983323fb395a353687c722e4ace4d447090f",
+      "before": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+      "change": "modified",
+      "path": "ouroboros.json"
+    },
+    {
+      "after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before": null,
+      "change": "added",
+      "path": "tests/__init__.py"
+    },
+    {
+      "after": "b1c883dc6e191a3f6450045c6f58950bdcff9e600fcf9a9c072ba9287b8e1f08",
+      "before": null,
+      "change": "added",
+      "path": "tests/test_cli.py"
+    },
+    {
+      "after": "79a5fdef992e1cf7aa76fb3504e918afbf05faab7cac63e6de4e0f35aefae398",
+      "before": null,
+      "change": "added",
+      "path": "todo.py"
+    },
+    {
+      "after": "fe735e9dea33d67bcd22bc7e999bda22c88f887dfda8976d3ba78e0cc3e279e4",
+      "before": null,
+      "change": "added",
+      "path": "todo_cli/__init__.py"
+    },
+    {
+      "after": "468ed2f4789c7dd5ad95a2a13e6c1cdb17c96df237c957864543e6b2c8a54589",
+      "before": null,
+      "change": "added",
+      "path": "todo_cli/cli.py"
+    },
+    {
+      "after": "c018e17578efa1cedaa479ea9bcedeeedc43bb54d0e505175a673d631e4b1705",
+      "before": null,
+      "change": "added",
+      "path": "todo_cli/storage.py"
+    }
+  ],
+  "from": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+  "to": "workspace-sha256-b9e29c93d1d614090d95e5847ddc7533f3b811f3ced489c7d8a18d1cb62802ba"
+}

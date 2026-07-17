@@ -1,0 +1,355 @@
+{
+  "suite_hash": "08a6b402b9bdcf0f8cda7bff1131900817dcdd6f217c5998c4efdce6928c7f3f",
+  "tests": [
+    {
+      "argv": [
+        "python3",
+        "todo.py",
+        "--help"
+      ],
+      "description": "The argv entrypoint exposes help for every required command.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "help-documents-command-surface",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "add",
+        "list",
+        "done",
+        "stats"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "A previously absent state file behaves as an empty todo store.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "empty-store-behavior",
+      "json_equals": {},
+      "kind": "state_persistence",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [
+        {
+          "argv": [
+            "python3",
+            "todo.py",
+            "--data-file",
+            ".public-state/empty.json",
+            "list"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "No pending todos."
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python3",
+            "todo.py",
+            "--data-file",
+            ".public-state/empty.json",
+            "stats"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Total: 0",
+            "Pending: 0",
+            "Completed: 0"
+          ],
+          "stdout_not_contains": []
+        }
+      ],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Adds, completion state, filtering, and statistics survive separate process invocations against one JSON file.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "durable-add-list-done-stats-flow",
+      "json_equals": {},
+      "kind": "state_persistence",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [
+        {
+          "argv": [
+            "python3",
+            "todo.py",
+            "--data-file",
+            ".public-state/workflow.json",
+            "add",
+            "Buy milk"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Added todo 1: Buy milk"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python3",
+            "todo.py",
+            "--data-file",
+            ".public-state/workflow.json",
+            "add",
+            "Write tests"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Added todo 2: Write tests"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python3",
+            "todo.py",
+            "--data-file",
+            ".public-state/workflow.json",
+            "list"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "[ ] 1: Buy milk",
+            "[ ] 2: Write tests"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python3",
+            "todo.py",
+            "--data-file",
+            ".public-state/workflow.json",
+            "done",
+            "1"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Completed todo 1: Buy milk"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python3",
+            "todo.py",
+            "--data-file",
+            ".public-state/workflow.json",
+            "list"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "[ ] 2: Write tests"
+          ],
+          "stdout_not_contains": [
+            "Buy milk"
+          ]
+        },
+        {
+          "argv": [
+            "python3",
+            "todo.py",
+            "--data-file",
+            ".public-state/workflow.json",
+            "list",
+            "--all"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "[x] 1: Buy milk",
+            "[ ] 2: Write tests"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python3",
+            "todo.py",
+            "--data-file",
+            ".public-state/workflow.json",
+            "stats"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Total: 2",
+            "Pending: 1",
+            "Completed: 1"
+          ],
+          "stdout_not_contains": []
+        }
+      ],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "todo.py",
+        "--data-file",
+        ".public-state/unknown-id.json",
+        "done",
+        "999"
+      ],
+      "description": "Completing an ID that is not present is rejected with the documented error exit status.",
+      "expected_exit": 2,
+      "expected_status": 200,
+      "id": "unknown-id-fails",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "todo.py",
+        "--data-file",
+        ".public-state/blank-title.json",
+        "add",
+        "   "
+      ],
+      "description": "Whitespace-only todo titles are rejected rather than persisted.",
+      "expected_exit": 2,
+      "expected_status": 200,
+      "id": "blank-title-fails",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "todo.py",
+        "--data-file",
+        ".public-state/unknown-command.json",
+        "remove",
+        "1"
+      ],
+      "description": "An unsupported command produces a usage error.",
+      "expected_exit": 2,
+      "expected_status": 200,
+      "id": "unknown-command-fails",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "The required multi-file implementation modules import without launching the CLI or failing.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "modules-are-importable",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import todo_cli.cli\nimport todo_cli.storage\nprint('imports ok')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "imports ok"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "description": "The submitted automated tests execute successfully with the Python standard-library test runner.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "repository-test-suite-passes",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    }
+  ]
+}

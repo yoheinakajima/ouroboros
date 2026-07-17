@@ -1,0 +1,145 @@
+{
+  "builder_visible": false,
+  "coverage_notes": [
+    "Exercises blank-line handling and continued processing.",
+    "Covers validation failures for missing and non-string message fields.",
+    "Checks default-session memory, name replacement, and multi-word names.",
+    "Verifies interleaved session state remains isolated.",
+    "Checks UTF-8 fallback behavior and compact JSON serialization."
+  ],
+  "tests": [
+    {
+      "argv": [],
+      "description": "Ignores empty input lines while producing a response for each non-empty valid line.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "blank-lines-ignored",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "\n\n{\"session\":\"quiet\",\"message\":\"Who are you?\"}\n\n",
+      "stdout_contains": [
+        "{\"session\":\"quiet\",\"reply\":\"I am a chatbot.\"}"
+      ],
+      "stdout_not_contains": [
+        "{\"error\":\"Invalid request\"}",
+        "Traceback",
+        "{\"session\": \"quiet\""
+      ],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Rejects missing and non-string message fields, then processes a later valid request.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "invalid-fields-recover",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"session\":\"bad-one\"}\n{\"session\":\"bad-two\",\"message\":42}\n{\"session\":\"ok\",\"message\":\"Who are you?\"}\n",
+      "stdout_contains": [
+        "{\"error\":\"Invalid request\"}",
+        "{\"session\":\"ok\",\"reply\":\"I am a chatbot.\"}"
+      ],
+      "stdout_not_contains": [
+        "Traceback",
+        "{\"session\": \"ok\"",
+        "\"reply\": \"I am a chatbot.\""
+      ],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Uses the default session for memory and replaces an earlier remembered name with a later multi-word name.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "default-session-name-replacement",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"message\":\"What is my name?\"}\n{\"message\":\"My name is Kai.\"}\n{\"message\":\"My name is Mary Jane.\"}\n{\"message\":\"What is my name?\"}\n",
+      "stdout_contains": [
+        "{\"session\":\"default\",\"reply\":\"I don't know your name yet.\"}",
+        "{\"session\":\"default\",\"reply\":\"Nice to meet you, Kai!\"}",
+        "{\"session\":\"default\",\"reply\":\"Nice to meet you, Mary Jane!\"}",
+        "{\"session\":\"default\",\"reply\":\"Your name is Mary Jane.\"}"
+      ],
+      "stdout_not_contains": [
+        "Traceback",
+        "{\"session\": \"default\""
+      ],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Maintains independent names while two sessions are updated and queried in interleaved order.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "interleaved-session-updates",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"session\":\"red\",\"message\":\"My name is Rowan.\"}\n{\"session\":\"blue\",\"message\":\"My name is Bea.\"}\n{\"session\":\"red\",\"message\":\"My name is Rhea.\"}\n{\"session\":\"blue\",\"message\":\"What is my name?\"}\n{\"session\":\"red\",\"message\":\"What is my name?\"}\n",
+      "stdout_contains": [
+        "{\"session\":\"red\",\"reply\":\"Nice to meet you, Rowan!\"}",
+        "{\"session\":\"blue\",\"reply\":\"Nice to meet you, Bea!\"}",
+        "{\"session\":\"red\",\"reply\":\"Nice to meet you, Rhea!\"}",
+        "{\"session\":\"blue\",\"reply\":\"Your name is Bea.\"}",
+        "{\"session\":\"red\",\"reply\":\"Your name is Rhea.\"}"
+      ],
+      "stdout_not_contains": [
+        "{\"session\":\"blue\",\"reply\":\"Your name is Rhea.\"}",
+        "{\"session\":\"red\",\"reply\":\"Your name is Bea.\"}",
+        "Traceback"
+      ],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Preserves UTF-8 text in the deterministic fallback response and emits compact JSON.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "utf8-fallback-compact",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"session\":\"世界\",\"message\":\"Café ☕\"}\n",
+      "stdout_contains": [
+        "{\"session\":\"世界\",\"reply\":\"You said: Café ☕\"}"
+      ],
+      "stdout_not_contains": [
+        "{\"session\": \"世界\"",
+        "\", \"reply\"",
+        "\": \"You said",
+        "Traceback"
+      ],
+      "steps": [],
+      "url": ""
+    }
+  ]
+}

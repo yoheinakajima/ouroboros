@@ -1,0 +1,33 @@
+{
+  "accepted_generations": 0,
+  "final_content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+  "finished_at": "2026-07-17T00:36:55.350882+00:00",
+  "generations_attempted": 1,
+  "objective": "Become a coding agent.",
+  "paths": {
+    "final_workspace": "/Users/yoheinakajima/Documents/ouroboros/artifacts/capability-runs/capability-coding-agent-20260716/final_workspace",
+    "promotion": "/Users/yoheinakajima/Documents/ouroboros/artifacts/capability-runs/capability-coding-agent-20260716/promotion.json",
+    "run_dir": "/Users/yoheinakajima/Documents/ouroboros/artifacts/capability-runs/capability-coding-agent-20260716",
+    "trace": "/Users/yoheinakajima/Documents/ouroboros/artifacts/capability-runs/capability-coding-agent-20260716/trace.sqlite",
+    "usage": "/Users/yoheinakajima/Documents/ouroboros/artifacts/capability-runs/capability-coding-agent-20260716/usage.json"
+  },
+  "reason": "generation limit reached",
+  "rejected_generations": 1,
+  "run_id": "capability-coding-agent-20260716",
+  "schema_version": 2,
+  "started_at": "2026-07-17T00:32:57.682395+00:00",
+  "status": "completed",
+  "usage": {
+    "calls_by_phase": {
+      "builder": 18,
+      "contract": 1,
+      "private_suite": 1
+    },
+    "input_tokens": 237826,
+    "llm_calls": 20,
+    "max_cost_usd": 5.0,
+    "output_tokens": 11353,
+    "provider_estimated_cost_usd": "1.529720",
+    "resolved_model": "gpt-5.6-sol"
+  }
+}

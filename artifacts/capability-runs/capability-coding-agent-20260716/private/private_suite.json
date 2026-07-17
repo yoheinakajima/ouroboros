@@ -1,0 +1,120 @@
+{
+  "builder_visible": false,
+  "coverage_notes": [
+    "Exercises creation of a new Python module with wraparound arithmetic, negative inputs, and input immutability.",
+    "Exercises localized repair inside a class while preserving related methods and unrelated workspace files.",
+    "Exercises extension of an existing module, boundary validation, and preservation of existing behavior.",
+    "Exercises multiple valid CLI requests in one process, blank-line handling, response ordering, and protocol-only stdout.",
+    "Exercises malformed JSON handling independently of request-field validation."
+  ],
+  "tests": [
+    {
+      "argv": [],
+      "description": "Creates a sequence rotation helper that handles empty input, large and negative step counts, and does not mutate its argument.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "create_rotation_module",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import solution\nrequest = {\n    'task': 'Create sequences.py with a function rotate_left(values, steps). It must return a new list containing the values rotated left by steps positions. Steps must wrap for values larger than the sequence length, negative steps must rotate right, and an empty input must return an empty list. Do not mutate the supplied sequence.',\n    'files': {'guide.txt': 'Sequence utilities\\n'}\n}\nresponse = solution.handle_request(request)\nassert isinstance(response, dict)\nassert set(response) == {'files'}\nfiles = response['files']\nassert files['guide.txt'] == 'Sequence utilities\\n'\nassert isinstance(files.get('sequences.py'), str)\nnamespace = {}\nexec(compile(files['sequences.py'], 'sequences.py', 'exec'), namespace)\nrotate_left = namespace['rotate_left']\nvalues = [1, 2, 3, 4]\nassert rotate_left(values, 1) == [2, 3, 4, 1]\nassert rotate_left(values, 6) == [3, 4, 1, 2]\nassert rotate_left(values, -1) == [4, 1, 2, 3]\nassert rotate_left([], 100) == []\nassert values == [1, 2, 3, 4]\nassert rotate_left(('a', 'b', 'c'), 3) == ['a', 'b', 'c']\nprint('rotation-ok')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "rotation-ok"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Repairs a defective class method while retaining constructor and reset behavior and preserving an unrelated document.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "repair_counter_method",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import solution\nsource = '''class Counter:\\n    def __init__(self, start=0):\\n        self.value = start\\n\\n    def increment(self, amount=1):\\n        self.value -= amount\\n        return self.value\\n\\n    def reset(self):\\n        self.value = 0\\n        return self.value\\n'''\nrequest = {\n    'task': 'Fix Counter.increment in counter.py so it adds amount to the current value and returns the updated value. Preserve the constructor and reset behavior, and do not change unrelated files.',\n    'files': {'counter.py': source, 'CHANGELOG.md': 'Initial release\\n'}\n}\nresponse = solution.handle_request(request)\nassert set(response) == {'files'}\nfiles = response['files']\nassert files['CHANGELOG.md'] == 'Initial release\\n'\nnamespace = {}\nexec(compile(files['counter.py'], 'counter.py', 'exec'), namespace)\nCounter = namespace['Counter']\ncounter = Counter(10)\nassert counter.value == 10\nassert counter.increment() == 11\nassert counter.increment(4) == 15\nassert counter.increment(-3) == 12\nassert counter.reset() == 0\nassert counter.increment(2) == 2\nprint('counter-repair-ok')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "counter-repair-ok"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Adds a validated chunking function to an existing module without breaking its existing helper or unrelated data.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "extend_module_with_chunked",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import solution\nsource = '''def first_or_none(values):\\n    return values[0] if values else None\\n'''\nrequest = {\n    'task': 'Add chunked(values, size) to collection_utils.py. It must return a list of consecutive lists of at most size elements, including a shorter final chunk when needed. Empty values must produce an empty list. Raise ValueError when size is zero or negative. Preserve first_or_none.',\n    'files': {'collection_utils.py': source, 'fixtures/items.txt': 'red\\nblue\\n'}\n}\nresponse = solution.handle_request(request)\nassert set(response) == {'files'}\nfiles = response['files']\nassert files['fixtures/items.txt'] == 'red\\nblue\\n'\nnamespace = {}\nexec(compile(files['collection_utils.py'], 'collection_utils.py', 'exec'), namespace)\nassert namespace['first_or_none']([8, 9]) == 8\nassert namespace['first_or_none']([]) is None\nchunked = namespace['chunked']\nassert chunked([1, 2, 3, 4, 5], 2) == [[1, 2], [3, 4], [5]]\nassert chunked(('a', 'b', 'c'), 5) == [['a', 'b', 'c']]\nassert chunked([], 3) == []\nfor invalid_size in (0, -2):\n    try:\n        chunked([1], invalid_size)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError('non-positive size must raise ValueError')\nprint('chunked-ok')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "chunked-ok"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Processes multiple valid JSON requests in one CLI session, ignores an intervening blank line, and emits exactly one ordered JSON response per request.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "cli_multiple_requests_ordered",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import json\nimport subprocess\nimport sys\nimport solution\nrequests = [\n    {'task': 'No changes are required. Return the complete workspace unchanged.', 'files': {'alpha.txt': 'A\\n', 'src/a.py': 'VALUE = 1\\n'}},\n    {'task': 'Keep every file unchanged and return the workspace.', 'files': {'beta.txt': 'B\\n'}}\n]\nstdin_text = json.dumps(requests[0]) + '\\n\\n' + json.dumps(requests[1]) + '\\n'\ncompleted = subprocess.run([sys.executable, solution.__file__], input=stdin_text, text=True, capture_output=True)\nassert completed.returncode == 0, (completed.returncode, completed.stdout, completed.stderr)\nlines = completed.stdout.splitlines()\nassert len(lines) == 2, completed.stdout\nresponses = [json.loads(line) for line in lines]\nassert responses == [{'files': requests[0]['files']}, {'files': requests[1]['files']}]\nassert '```' not in completed.stdout\nassert 'Traceback' not in completed.stdout\nprint('cli-batch-ok')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "cli-batch-ok"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Rejects syntactically malformed JSON with a machine-readable error and a nonzero exit status.",
+      "expected_exit": 2,
+      "expected_status": 200,
+      "id": "cli_rejects_malformed_json",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"task\":\"broken\", \"files\": }\n",
+      "stdout_contains": [
+        "\"error\""
+      ],
+      "stdout_not_contains": [
+        "```",
+        "Traceback"
+      ],
+      "steps": [],
+      "url": ""
+    }
+  ]
+}

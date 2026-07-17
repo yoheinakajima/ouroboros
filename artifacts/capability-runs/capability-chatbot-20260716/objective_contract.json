@@ -1,0 +1,163 @@
+{
+  "capability_requirements": [],
+  "deliverable_kind": "stdin CLI chatbot",
+  "entrypoint_protocol": "Invoke the candidate's configured entrypoint once. Send newline-delimited JSON requests on stdin and read newline-delimited compact JSON responses from stdout. State persists between lines only for the lifetime of that process.",
+  "objective": "Turn into a chatbot.",
+  "public_behavior_spec": [
+    "The chatbot reads UTF-8 JSON objects from stdin, one object per line, and writes exactly one compact JSON object to stdout for every non-empty input line.",
+    "Each valid request must contain a string field named \"message\" and may contain a string field named \"session\"; omitted sessions default to \"default\".",
+    "Responses to valid requests contain the request session and a string field named \"reply\".",
+    "Greeting messages such as \"hello\" produce the reply \"Hello! How can I help you?\".",
+    "When asked \"Who are you?\", the chatbot replies \"I am a chatbot.\".",
+    "Within one running process, the chatbot remembers a user's name independently per session after receiving a message of the form \"My name is NAME.\".",
+    "When a session subsequently asks \"What is my name?\", the chatbot reports the name remembered for that session or says \"I don't know your name yet.\" if none was supplied.",
+    "For other valid messages, the deterministic fallback reply is \"You said: MESSAGE\", preserving the original message text.",
+    "Malformed JSON or a request without a string \"message\" produces an error object and does not prevent later input lines from being processed.",
+    "All emitted JSON uses compact serialization with no spaces after commas or colons, and the process exits with status 0 after reaching EOF."
+  ],
+  "public_tests": [
+    {
+      "argv": [],
+      "description": "Responds to a basic greeting using the default session.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "greeting",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"message\":\"hello\"}\n",
+      "stdout_contains": [
+        "{\"session\":\"default\",\"reply\":\"Hello! How can I help you?\"}"
+      ],
+      "stdout_not_contains": [
+        "Traceback"
+      ],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Identifies itself when asked.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "identity",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"session\":\"visitor\",\"message\":\"Who are you?\"}\n",
+      "stdout_contains": [
+        "{\"session\":\"visitor\",\"reply\":\"I am a chatbot.\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Remembers a user's name across turns in the same session.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "multiturn-memory",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"session\":\"alpha\",\"message\":\"My name is Ada.\"}\n{\"session\":\"alpha\",\"message\":\"What is my name?\"}\n",
+      "stdout_contains": [
+        "{\"session\":\"alpha\",\"reply\":\"Nice to meet you, Ada!\"}",
+        "{\"session\":\"alpha\",\"reply\":\"Your name is Ada.\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Keeps remembered names isolated between sessions.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "session-isolation",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"session\":\"one\",\"message\":\"My name is Lin.\"}\n{\"session\":\"two\",\"message\":\"What is my name?\"}\n{\"session\":\"one\",\"message\":\"What is my name?\"}\n",
+      "stdout_contains": [
+        "{\"session\":\"two\",\"reply\":\"I don't know your name yet.\"}",
+        "{\"session\":\"one\",\"reply\":\"Your name is Lin.\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Provides a deterministic response for an otherwise unsupported message.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "fallback",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "{\"message\":\"Tell me about oceans.\"}\n",
+      "stdout_contains": [
+        "{\"session\":\"default\",\"reply\":\"You said: Tell me about oceans.\"}"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Reports malformed input and continues processing later requests.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "invalid-input-recovery",
+      "json_equals": {},
+      "kind": "entrypoint",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": "not-json\n{\"message\":\"hello\"}\n",
+      "stdout_contains": [
+        "{\"error\":\"Invalid request\"}",
+        "{\"session\":\"default\",\"reply\":\"Hello! How can I help you?\"}"
+      ],
+      "stdout_not_contains": [
+        "Traceback"
+      ],
+      "steps": [],
+      "url": ""
+    }
+  ],
+  "qualitative_rubric": [
+    "The implementation is concise, readable, and avoids unnecessary dependencies.",
+    "Protocol output is not contaminated by prompts, logs, banners, or debugging text.",
+    "Input validation handles malformed values without crashing or exposing stack traces.",
+    "Conversation state is scoped correctly by session and does not leak between sessions.",
+    "The chatbot's deterministic rules are easy to extend without breaking the public protocol."
+  ],
+  "required_artifacts": [],
+  "stopping_condition": "Stop implementation work when all public executable tests pass and the qualitative score reaches the success threshold; release remains subject to manager approval.",
+  "success_threshold": 85.0
+}

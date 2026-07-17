@@ -1,0 +1,235 @@
+{
+  "builder_visible": false,
+  "coverage_notes": [
+    "Exercises title trimming, monotonic IDs after completion, repeated-completion errors, and state stability after a failed command.",
+    "Verifies both syntactically malformed and structurally incompatible JSON are rejected without modifying the original files.",
+    "Checks default current-working-directory storage across separate processes and confirms the resulting state is valid JSON.",
+    "Covers a missing required argument as a usage error.",
+    "Runs the repository's complete unittest discovery rather than only selected test methods."
+  ],
+  "tests": [
+    {
+      "argv": [],
+      "description": "Trimmed titles and monotonically increasing IDs persist, while completing an item twice fails without changing statistics.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "trim-monotonic-and-repeat-done",
+      "json_equals": {},
+      "kind": "state_persistence",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "manager_sequence_9c4d.json",
+            "add",
+            "   Prepare release notes   "
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Added #1: Prepare release notes"
+          ],
+          "stdout_not_contains": [
+            "Added #1:    Prepare release notes"
+          ]
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "manager_sequence_9c4d.json",
+            "done",
+            "1"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Completed #1: Prepare release notes"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "manager_sequence_9c4d.json",
+            "add",
+            "Archive artifacts"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Added #2: Archive artifacts"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "manager_sequence_9c4d.json",
+            "done",
+            "1"
+          ],
+          "expected_exit": 1,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Error:",
+            "#1"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "manager_sequence_9c4d.json",
+            "list"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "[x] #1 Prepare release notes",
+            "[ ] #2 Archive artifacts"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "manager_sequence_9c4d.json",
+            "stats"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Total: 2",
+            "Pending: 1",
+            "Completed: 1"
+          ],
+          "stdout_not_contains": []
+        }
+      ],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Malformed and incompatible state files produce operational errors and remain byte-for-byte unchanged.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "malformed-state-preserved",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import pathlib\nimport subprocess\nimport sys\nimport tempfile\n\nroot = pathlib.Path.cwd()\ncli = root / 'todo.py'\n\ndef run(path, command):\n    result = subprocess.run(\n        [sys.executable, str(cli), '--data-file', str(path), *command],\n        cwd=path.parent,\n        text=True,\n        capture_output=True,\n    )\n    output = result.stdout + result.stderr\n    assert result.returncode != 0, (result.returncode, output)\n    assert any(line.startswith('Error:') for line in output.splitlines()), output\n\nwith tempfile.TemporaryDirectory() as directory:\n    work = pathlib.Path(directory)\n    cases = [\n        ('broken.json', b'{not valid json\\n', ['list']),\n        ('incompatible.json', b'{\"todos\":\"not-a-list\",\"next_id\":9}\\n', ['add', 'Must not be written']),\n    ]\n    for name, original, command in cases:\n        state = work / name\n        state.write_bytes(original)\n        run(state, command)\n        assert state.read_bytes() == original, (name, state.read_bytes())\nprint('malformed state preserved')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "malformed state preserved"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Omitting --data-file uses .todo.json in the process working directory and transfers valid state between processes.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "default-cwd-store-transfer",
+      "json_equals": {},
+      "kind": "python",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "import json\nimport pathlib\nimport subprocess\nimport sys\nimport tempfile\n\nroot = pathlib.Path.cwd()\ncli = root / 'todo.py'\n\ndef invoke(work, *args):\n    result = subprocess.run(\n        [sys.executable, str(cli), *args],\n        cwd=work,\n        text=True,\n        capture_output=True,\n    )\n    output = result.stdout + result.stderr\n    assert result.returncode == 0, (result.returncode, output)\n    return output\n\nwith tempfile.TemporaryDirectory() as directory:\n    work = pathlib.Path(directory)\n    added = invoke(work, 'add', '  Stored in cwd  ')\n    assert 'Added #1: Stored in cwd' in added, added\n    state = work / '.todo.json'\n    assert state.is_file(), list(work.iterdir())\n    json.loads(state.read_text(encoding='utf-8'))\n    listed = invoke(work, 'list')\n    assert '[ ] #1 Stored in cwd' in listed, listed\n    completed = invoke(work, 'done', '1')\n    assert 'Completed #1: Stored in cwd' in completed, completed\n    stats = invoke(work, 'stats')\n    assert 'Total: 1' in stats, stats\n    assert 'Pending: 0' in stats, stats\n    assert 'Completed: 1' in stats, stats\n    json.loads(state.read_text(encoding='utf-8'))\nprint('default store persisted')",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "default store persisted"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python",
+        "todo.py",
+        "--data-file",
+        "manager_missing_title_2a71.json",
+        "add"
+      ],
+      "description": "Invoking add without its required title is a usage error with a clear diagnostic.",
+      "expected_exit": 2,
+      "expected_status": 200,
+      "id": "missing-add-title-usage-error",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "Error:",
+        "title"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "description": "The complete automated test suite is discoverable and passes.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "full-unittest-discovery",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    }
+  ]
+}

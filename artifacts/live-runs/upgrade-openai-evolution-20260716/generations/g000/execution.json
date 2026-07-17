@@ -1,0 +1,347 @@
+{
+  "private": {
+    "details": "manager-private",
+    "passed": 0,
+    "results_digest": "be3d77a3d7562bece060787ae3b8d39f80eaaeb81e1b99f7535ae3b6d44975d4",
+    "score": 0.0,
+    "total": 5
+  },
+  "private_receipt": {
+    "algorithm": "sha256",
+    "manager_path": "private/private_suite.json",
+    "sealed": true,
+    "suite_hash": "18d85c307b2e895bde9fc22cd8d3944e21d06472c246599320e23e59d5d97763",
+    "test_count": 5
+  },
+  "public": {
+    "declared_test": {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "-q"
+      ],
+      "duration_seconds": 0.1993,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+      "stderr_truncated": false,
+      "stdout_tail": "",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "hard_gate_errors": [
+      "required artifact missing: todo_cli/__init__.py",
+      "required artifact missing: todo_cli/__main__.py",
+      "required artifact missing: todo_cli/cli.py",
+      "required artifact missing: todo_cli/service.py",
+      "required artifact missing: todo_cli/storage.py",
+      "required artifact missing: tests/test_cli.py"
+    ],
+    "hard_gates": {
+      "declared_test_command": true,
+      "entrypoint_exists": true,
+      "manifest_valid": true,
+      "no_symlinks_or_escape": true,
+      "private_test_isolation": true,
+      "program_starts_and_protocol_valid": true,
+      "required_artifacts": false,
+      "workspace_budget": true
+    },
+    "hard_gates_passed": false,
+    "passed": 0,
+    "phase": "baseline-public",
+    "protocol": {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.2015,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"ouroboros health check\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "score": 0.0,
+    "test_results": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "todo_cli",
+          "--help"
+        ],
+        "description": "The argv entrypoint provides successful help covering every required command.",
+        "duration_seconds": 0.1409,
+        "exit_code": 1,
+        "id": "help-advertises-commands",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 0,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "exit 1 != 0",
+          "stdout missing 'add'",
+          "stdout missing 'list'",
+          "stdout missing 'done'",
+          "stdout missing 'stats'"
+        ],
+        "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "test_hash": "fc363f650322d3a5613cbdb0a85b519989a5c0fdc753bb75301629732d81751f",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "-m",
+          "todo_cli",
+          "--data-file",
+          ".contract-state/empty.json",
+          "list"
+        ],
+        "description": "Listing a fresh explicitly selected state file reports that there are no todos.",
+        "duration_seconds": 0.0465,
+        "exit_code": 1,
+        "id": "empty-list",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 1,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "exit 1 != 0",
+          "stdout missing 'No todos.'"
+        ],
+        "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "test_hash": "ae8a32caa553296f5fe9600b74f636f7214d893539e7beeafa47690fd112d035",
+        "timed_out": false
+      },
+      {
+        "description": "Separate CLI processes share default local JSON state while add, list, done, and stats preserve IDs and completion state.",
+        "id": "persistent-workflow",
+        "ordinal": 2,
+        "passed": false,
+        "reasons": [
+          "step 1: exit 1 != 0",
+          "step 1: stdout missing 'Added todo 1: Buy milk'",
+          "step 2: exit 1 != 0",
+          "step 2: stdout missing 'Added todo 2: Write tests'",
+          "step 3: exit 1 != 0",
+          "step 3: stdout missing '[ ] 1 Buy milk'",
+          "step 3: stdout missing '[ ] 2 Write tests'",
+          "step 4: exit 1 != 0",
+          "step 4: stdout missing 'Completed todo 1: Buy milk'",
+          "step 5: exit 1 != 0",
+          "step 5: stdout missing '[x] 1 Buy milk'",
+          "step 5: stdout missing '[ ] 2 Write tests'",
+          "step 6: exit 1 != 0",
+          "step 6: stdout missing 'Total: 2'",
+          "step 6: stdout missing 'Open: 1'",
+          "step 6: stdout missing 'Done: 1'"
+        ],
+        "steps": [
+          {
+            "exit_code": 1,
+            "ordinal": 0,
+            "passed": false,
+            "reasons": [
+              "exit 1 != 0",
+              "stdout missing 'Added todo 1: Buy milk'"
+            ],
+            "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+            "stdout_tail": ""
+          },
+          {
+            "exit_code": 1,
+            "ordinal": 1,
+            "passed": false,
+            "reasons": [
+              "exit 1 != 0",
+              "stdout missing 'Added todo 2: Write tests'"
+            ],
+            "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+            "stdout_tail": ""
+          },
+          {
+            "exit_code": 1,
+            "ordinal": 2,
+            "passed": false,
+            "reasons": [
+              "exit 1 != 0",
+              "stdout missing '[ ] 1 Buy milk'",
+              "stdout missing '[ ] 2 Write tests'"
+            ],
+            "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+            "stdout_tail": ""
+          },
+          {
+            "exit_code": 1,
+            "ordinal": 3,
+            "passed": false,
+            "reasons": [
+              "exit 1 != 0",
+              "stdout missing 'Completed todo 1: Buy milk'"
+            ],
+            "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+            "stdout_tail": ""
+          },
+          {
+            "exit_code": 1,
+            "ordinal": 4,
+            "passed": false,
+            "reasons": [
+              "exit 1 != 0",
+              "stdout missing '[x] 1 Buy milk'",
+              "stdout missing '[ ] 2 Write tests'"
+            ],
+            "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+            "stdout_tail": ""
+          },
+          {
+            "exit_code": 1,
+            "ordinal": 5,
+            "passed": false,
+            "reasons": [
+              "exit 1 != 0",
+              "stdout missing 'Total: 2'",
+              "stdout missing 'Open: 1'",
+              "stdout missing 'Done: 1'"
+            ],
+            "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+            "stdout_tail": ""
+          }
+        ],
+        "test_hash": "9ff8a89da76e738cd401ea38f7d2abe9a0992878f06a066d7ddacacbfa12b4d4"
+      },
+      {
+        "argv": [
+          "python",
+          "-m",
+          "todo_cli",
+          "--data-file",
+          ".contract-state/empty-text.json",
+          "add",
+          "   "
+        ],
+        "description": "Whitespace-only todo text is rejected with a helpful message and nonzero status.",
+        "duration_seconds": 0.0485,
+        "exit_code": 1,
+        "id": "reject-empty-text",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 3,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "exit 1 != 2",
+          "stdout missing 'Error:'",
+          "stdout missing 'text'"
+        ],
+        "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "test_hash": "69fb506fc37b9f316b55139e0eee3221b6d541461ce315b7c9ebc35fbbd74bad",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "-m",
+          "todo_cli",
+          "--data-file",
+          ".contract-state/missing.json",
+          "done",
+          "999"
+        ],
+        "description": "Completing an unknown ID fails clearly without exposing an internal traceback.",
+        "duration_seconds": 0.0849,
+        "exit_code": 1,
+        "id": "missing-todo-error",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 4,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "exit 1 != 2",
+          "stdout missing 'Error:'",
+          "stdout missing '999'",
+          "stdout missing 'not found'"
+        ],
+        "stderr_tail": "/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python: No module named todo_cli\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "test_hash": "283cb3a801e5989b361d42cf9e49158c1611bb0dc838533fbce52cb6b8e86266",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test*.py",
+          "-v"
+        ],
+        "description": "The submitted automated tests execute successfully using the standard-library unittest runner.",
+        "duration_seconds": 0.0743,
+        "exit_code": 1,
+        "id": "automated-test-suite",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 5,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "exit 1 != 0"
+        ],
+        "stderr_tail": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/__main__.py\", line 18, in <module>\n    main(module=None)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/main.py\", line 101, in __init__\n    self.parseArgs(argv)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/main.py\", line 127, in parseArgs\n    self._do_discovery(argv[2:])\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/main.py\", line 247, in _do_discovery\n    self.createTests(from_discovery=True, Loader=Loader)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/main.py\", line 157, in createTests\n    self.test = loader.discover(self.start, self.pattern, self.top)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/loader.py\", line 332, in discover\n    raise ImportError('Start directory is not importable: %r' % start_dir)\nImportError: Start directory is not importable: 'tests'\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "test_hash": "2b0bcf06ca5d906756385097277328ba2d6a3cad1ead211e6a10b813b3dfd436",
+        "timed_out": false
+      }
+    ],
+    "total": 6,
+    "tree": {
+      "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+      "files": [
+        {
+          "path": "MEMORY.md",
+          "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+          "size": 34
+        },
+        {
+          "path": "SELF.md",
+          "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+          "size": 215
+        },
+        {
+          "path": "agent.py",
+          "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+          "size": 276
+        },
+        {
+          "path": "ouroboros.json",
+          "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+          "size": 267
+        }
+      ],
+      "symlinks": [],
+      "total_bytes": 792
+    }
+  }
+}

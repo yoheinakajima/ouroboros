@@ -1,0 +1,32 @@
+{
+  "accepted_generations": 0,
+  "final_content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+  "finished_at": "2026-07-17T00:00:44.366199+00:00",
+  "generations_attempted": 0,
+  "objective": "Build a robust multi-file argv todo CLI with persistent local JSON state, add/list/done/stats commands, helpful errors, and real automated tests.",
+  "paths": {
+    "final_workspace": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/upgrade-openai-baseline-20260716/final_workspace",
+    "promotion": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/upgrade-openai-baseline-20260716/promotion.json",
+    "run_dir": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/upgrade-openai-baseline-20260716",
+    "trace": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/upgrade-openai-baseline-20260716/trace.sqlite",
+    "usage": "/Users/yoheinakajima/Documents/ouroboros/artifacts/live-runs/upgrade-openai-baseline-20260716/usage.json"
+  },
+  "reason": "generation limit is zero",
+  "rejected_generations": 0,
+  "run_id": "upgrade-openai-baseline-20260716",
+  "schema_version": 2,
+  "started_at": "2026-07-16T23:59:07.242982+00:00",
+  "status": "baseline_only",
+  "usage": {
+    "calls_by_phase": {
+      "contract": 1,
+      "private_suite": 1
+    },
+    "input_tokens": 9047,
+    "llm_calls": 2,
+    "max_cost_usd": 1.0,
+    "output_tokens": 6831,
+    "provider_estimated_cost_usd": "0.250165",
+    "resolved_model": "gpt-5.6-sol"
+  }
+}

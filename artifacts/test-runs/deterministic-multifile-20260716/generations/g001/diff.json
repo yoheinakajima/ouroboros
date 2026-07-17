@@ -1,0 +1,42 @@
+{
+  "changes": [
+    {
+      "after": "cffbea39cccf2b8c8585089783c6a47b51797130636314c67d31cb1a27d81bfb",
+      "before": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+      "change": "modified",
+      "path": "MEMORY.md"
+    },
+    {
+      "after": "2a40cf0a415d0d4f58a916da1023f4f9ba5dcdd150996349ad37262de90e0957",
+      "before": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+      "change": "modified",
+      "path": "SELF.md"
+    },
+    {
+      "after": null,
+      "before": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+      "change": "deleted",
+      "path": "agent.py"
+    },
+    {
+      "after": "7120f72cadbb88a1c0f96c79f143220ac03f9e393332aa4104ec3862151529e8",
+      "before": null,
+      "change": "added",
+      "path": "app.py"
+    },
+    {
+      "after": "57f7d026b8e1df582ef66f78e6887371ce2fc6df9c8e23fd102b3f65dcd8bcc2",
+      "before": null,
+      "change": "added",
+      "path": "logic.py"
+    },
+    {
+      "after": "badfcaa2a0da45e159584289971b3f97d268694fa6940c22f0c0bcadb11cfd35",
+      "before": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+      "change": "modified",
+      "path": "ouroboros.json"
+    }
+  ],
+  "from": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+  "to": "workspace-sha256-970906c4f200585a1fc1f6f98ccfb8df3b4adc161efd8d6a9ca73de68591076f"
+}

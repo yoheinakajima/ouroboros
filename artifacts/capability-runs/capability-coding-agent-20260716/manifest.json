@@ -1,0 +1,92 @@
+{
+  "budgets": {
+    "command_timeout": 45,
+    "generations": 1,
+    "max_cost_usd": 5.0,
+    "max_files": 2000,
+    "max_llm_calls": 42,
+    "max_tool_calls_per_turn": 4,
+    "max_tool_turns_per_generation": 35,
+    "max_workspace_bytes": 20971520,
+    "memory_mb": 1024,
+    "test_timeout": 30
+  },
+  "capability_flags": {
+    "allow_network": false,
+    "allow_pip": false
+  },
+  "cli_arguments": {
+    "allow_network": false,
+    "allow_pip": false,
+    "command_timeout": 45,
+    "describe": false,
+    "export_objective_contract": null,
+    "generations": 1,
+    "json": true,
+    "max_cost_usd": 5.0,
+    "max_files": 2000,
+    "max_llm_calls": 42,
+    "max_private_regression": 0.05,
+    "max_public_regression": 0.05,
+    "max_tool_calls_per_turn": 4,
+    "max_tool_turns": 35,
+    "max_workspace_mb": 20,
+    "memory_mb": 1024,
+    "model": "gpt-5.6-sol",
+    "objective": "Become a coding agent.",
+    "provider": "openai",
+    "quiet": false,
+    "run_id": "capability-coding-agent-20260716",
+    "run_root": "artifacts/capability-runs",
+    "seed_dir": null,
+    "test_timeout": 30,
+    "win_margin": 2.0
+  },
+  "contracts": {
+    "judge_contract_hash": "34e7bc94ccac10817248f53cfb6c89c9f6ce250e32040d91d22fb0d85d9a1eb8",
+    "objective_contract_hash": "4cf314966f37f82fb0df9b81446f3bcf869a2daa2e6b9dc8c4c1b334b581fb6b",
+    "private_suite_receipt": {
+      "algorithm": "sha256",
+      "manager_path": "private/private_suite.json",
+      "sealed": true,
+      "suite_hash": "cd1a64ae4689378d613f7237ad6cc5e365cb7a4bb0ac52d704a1485480e62a58",
+      "test_count": 5
+    },
+    "public_suite_hash": "09f564808cd89c4949f7e57fb26465990489ea48bd923285a084a675e708be53"
+  },
+  "created_at": "2026-07-17T00:32:57.682669+00:00",
+  "engine": {
+    "name": "ouroboros",
+    "protocol_version": 2,
+    "source_sha256": "c477b44a78e3fbdce15baab855ac26e97b9d668c7fc3ec4cacaa46957469c818",
+    "version": "1.1.0-workspace"
+  },
+  "git": {
+    "commit": null,
+    "dirty": true
+  },
+  "objective": "Become a coding agent.",
+  "parameters": {
+    "max_tool_turns": 35,
+    "temperature": {
+      "builder": 0.2,
+      "compiler": 0.0,
+      "judge": 0.0
+    }
+  },
+  "provider": {
+    "name": "openai",
+    "requested_model": "gpt-5.6-sol",
+    "resolved_model": "gpt-5.6-sol"
+  },
+  "run_id": "capability-coding-agent-20260716",
+  "runtime": {
+    "activegraph": "1.10.0",
+    "anthropic": "0.116.0",
+    "openai": "2.45.0",
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "pydantic": "2.13.4",
+    "python": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 21.0.0 (clang-2100.0.123.102)]"
+  },
+  "schema_version": 2
+}

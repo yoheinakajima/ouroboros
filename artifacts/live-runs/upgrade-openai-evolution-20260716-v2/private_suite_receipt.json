@@ -1,0 +1,7 @@
+{
+  "algorithm": "sha256",
+  "manager_path": "private/private_suite.json",
+  "sealed": true,
+  "suite_hash": "ca55cc55a2c6306310cc158c6515273519be404b2c8d4c6b8c8a57e0a761a0df",
+  "test_count": 5
+}

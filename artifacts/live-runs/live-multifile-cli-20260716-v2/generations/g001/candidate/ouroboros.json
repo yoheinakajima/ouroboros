@@ -1,0 +1,21 @@
+{
+  "entrypoint": [
+    "python",
+    "main.py"
+  ],
+  "environment": {},
+  "input_protocol": "json-stdin",
+  "language": "python",
+  "output_protocol": "json-stdout",
+  "schema_version": 1,
+  "test_command": [
+    "python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    ".",
+    "-p",
+    "test_*.py"
+  ]
+}

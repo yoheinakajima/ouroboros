@@ -1,0 +1,308 @@
+{
+  "capability_requirements": [],
+  "deliverable_kind": "multi-file Python argv CLI application",
+  "entrypoint_protocol": "argv CLI; execute `python -m todo_cli`, pass commands and options as argv, and evaluate the process exit status and stdout",
+  "objective": "Build a robust multi-file argv todo CLI with persistent local JSON state, add/list/done/stats commands, helpful errors, and real automated tests.",
+  "public_behavior_spec": [
+    "The CLI is invoked from the candidate root as `python -m todo_cli [--data-file PATH] COMMAND ...`.",
+    "When `--data-file` is omitted, state is stored in `.todo.json` in the current working directory. Parent directories for an explicitly selected data file are created as needed.",
+    "`add TEXT` rejects empty or whitespace-only text. A successful add assigns a stable positive integer ID, persists the todo, and prints `Added todo ID: TEXT`.",
+    "`list` prints every todo in ascending ID order as `[ ] ID TEXT` for open todos and `[x] ID TEXT` for completed todos. An empty list prints `No todos.`.",
+    "`done ID` marks an existing todo complete, persists the change, and prints `Completed todo ID: TEXT`. Completing an already completed todo is idempotent and does not create another item.",
+    "`stats` prints counts containing `Total: N`, `Open: N`, and `Done: N`.",
+    "State remains available across separate process invocations and is represented by valid JSON containing durable todo IDs, text, and completion state.",
+    "IDs are not renumbered when a todo is completed, and newly added todos receive an unused increasing ID.",
+    "Invalid commands, invalid IDs, missing todos, empty text, and unreadable or malformed state produce a concise message beginning with `Error:` or an argparse-style usage error and return a nonzero exit status without a traceback.",
+    "`--help` returns zero and identifies the add, list, done, and stats commands.",
+    "The implementation uses only the Python standard library and is split into CLI, service/domain, and JSON storage modules.",
+    "The repository includes automated tests that exercise the CLI and persistent state using isolated temporary data."
+  ],
+  "public_tests": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "todo_cli",
+        "--help"
+      ],
+      "description": "The argv entrypoint provides successful help covering every required command.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "help-advertises-commands",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "add",
+        "list",
+        "done",
+        "stats"
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "todo_cli",
+        "--data-file",
+        ".contract-state/empty.json",
+        "list"
+      ],
+      "description": "Listing a fresh explicitly selected state file reports that there are no todos.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "empty-list",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "No todos."
+      ],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [],
+      "description": "Separate CLI processes share default local JSON state while add, list, done, and stats preserve IDs and completion state.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "persistent-workflow",
+      "json_equals": {},
+      "kind": "state_persistence",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "add",
+            "Buy milk"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Added todo 1: Buy milk"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "add",
+            "Write tests"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Added todo 2: Write tests"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "list"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "[ ] 1 Buy milk",
+            "[ ] 2 Write tests"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "done",
+            "1"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Completed todo 1: Buy milk"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "list"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "[x] 1 Buy milk",
+            "[ ] 2 Write tests"
+          ],
+          "stdout_not_contains": []
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "todo_cli",
+            "stats"
+          ],
+          "expected_exit": 0,
+          "json_equals": {},
+          "stdin": null,
+          "stdout_contains": [
+            "Total: 2",
+            "Open: 1",
+            "Done: 1"
+          ],
+          "stdout_not_contains": []
+        }
+      ],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "todo_cli",
+        "--data-file",
+        ".contract-state/empty-text.json",
+        "add",
+        "   "
+      ],
+      "description": "Whitespace-only todo text is rejected with a helpful message and nonzero status.",
+      "expected_exit": 2,
+      "expected_status": 200,
+      "id": "reject-empty-text",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "Error:",
+        "text"
+      ],
+      "stdout_not_contains": [
+        "Traceback"
+      ],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "todo_cli",
+        "--data-file",
+        ".contract-state/missing.json",
+        "done",
+        "999"
+      ],
+      "description": "Completing an unknown ID fails clearly without exposing an internal traceback.",
+      "expected_exit": 2,
+      "expected_status": 200,
+      "id": "missing-todo-error",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [
+        "Error:",
+        "999",
+        "not found"
+      ],
+      "stdout_not_contains": [
+        "Traceback"
+      ],
+      "steps": [],
+      "url": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test*.py",
+        "-v"
+      ],
+      "description": "The submitted automated tests execute successfully using the standard-library unittest runner.",
+      "expected_exit": 0,
+      "expected_status": 200,
+      "id": "automated-test-suite",
+      "json_equals": {},
+      "kind": "command",
+      "method": "GET",
+      "path": "",
+      "request_body": null,
+      "script": "",
+      "server_argv": [],
+      "stdin": null,
+      "stdout_contains": [],
+      "stdout_not_contains": [],
+      "steps": [],
+      "url": ""
+    }
+  ],
+  "qualitative_rubric": [
+    "CLI parsing is centralized and keeps presentation concerns separate from todo operations and persistence.",
+    "JSON storage validates loaded data, reports malformed or inaccessible state helpfully, and avoids silently discarding existing data.",
+    "Writes use a safe replacement strategy or comparable technique to reduce the risk of leaving truncated JSON.",
+    "Domain and storage code have clear interfaces, sensible names, type hints or equivalent documentation, and no unnecessary global mutable state.",
+    "Automated tests contain meaningful assertions for success, failure, and cross-process persistence rather than merely smoke-running code.",
+    "The implementation remains portable across current Python 3 environments and does not rely on network access, third-party packages, shell-specific syntax, or machine-specific paths."
+  ],
+  "required_artifacts": [
+    "todo_cli/__init__.py",
+    "todo_cli/__main__.py",
+    "todo_cli/cli.py",
+    "todo_cli/service.py",
+    "todo_cli/storage.py",
+    "tests/test_cli.py"
+  ],
+  "stopping_condition": "Stop when all required artifacts exist, every public executable test passes from a clean isolated working directory, persistent behavior is demonstrated across separate invocations, and the qualitative rubric has no critical robustness or test-quality deficiency.",
+  "success_threshold": 85.0
+}

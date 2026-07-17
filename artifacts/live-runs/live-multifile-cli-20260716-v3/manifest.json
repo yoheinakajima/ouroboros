@@ -1,0 +1,84 @@
+{
+  "budgets": {
+    "command_timeout": 45,
+    "generations": 1,
+    "max_files": 2000,
+    "max_workspace_bytes": 20971520,
+    "memory_mb": 1024,
+    "test_timeout": 30
+  },
+  "capability_flags": {
+    "allow_network": false,
+    "allow_pip": false
+  },
+  "cli_arguments": {
+    "allow_network": false,
+    "allow_pip": false,
+    "command_timeout": 45,
+    "describe": false,
+    "export_objective_contract": null,
+    "generations": 1,
+    "json": true,
+    "max_files": 2000,
+    "max_private_regression": 0.05,
+    "max_public_regression": 0.05,
+    "max_tool_turns": 45,
+    "max_workspace_mb": 20,
+    "memory_mb": 1024,
+    "model": null,
+    "objective": "Build a multi-file JSON-stdin CLI that analyzes an input sentence and returns valid JSON containing word_count, unique_words, and longest_word, with real automated tests.",
+    "provider": "anthropic",
+    "quiet": false,
+    "run_id": "live-multifile-cli-20260716-v3",
+    "run_root": "artifacts/live-runs",
+    "seed_dir": null,
+    "test_timeout": 30,
+    "win_margin": 2.0
+  },
+  "contracts": {
+    "judge_contract_hash": "34e7bc94ccac10817248f53cfb6c89c9f6ce250e32040d91d22fb0d85d9a1eb8",
+    "objective_contract_hash": "62e8bf9acb9f06c2e95692e627e3fe8c6894e00e4d6ee966584506fcba14ebce",
+    "private_suite_receipt": {
+      "algorithm": "sha256",
+      "sealed": true,
+      "suite_hash": "6234e17f979c72b7df8c8c6b52d1f5293ea354eadba8fc894870211f03a49b22",
+      "test_count": 5
+    },
+    "public_suite_hash": "e549f365fa03bed98166d0d68d0a04482902353062ec0248d76f133f28724558"
+  },
+  "created_at": "2026-07-16T22:12:05.849355+00:00",
+  "engine": {
+    "name": "ouroboros",
+    "protocol_version": 2,
+    "source_sha256": "1b72390df6597a377abe1256e3b8f282bad5b3b2af7f5eb12c015b56aea51b69",
+    "version": "1.0.0-workspace"
+  },
+  "git": {
+    "commit": null,
+    "dirty": true
+  },
+  "objective": "Build a multi-file JSON-stdin CLI that analyzes an input sentence and returns valid JSON containing word_count, unique_words, and longest_word, with real automated tests.",
+  "parameters": {
+    "max_tool_turns": 45,
+    "temperature": {
+      "builder": 0.2,
+      "compiler": 0.0,
+      "judge": 0.0
+    }
+  },
+  "provider": {
+    "name": "anthropic",
+    "requested_model": null,
+    "resolved_model": "claude-sonnet-4-5"
+  },
+  "run_id": "live-multifile-cli-20260716-v3",
+  "runtime": {
+    "activegraph": "1.10.0",
+    "anthropic": "0.116.0",
+    "openai": "2.45.0",
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "pydantic": "2.13.4",
+    "python": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 21.0.0 (clang-2100.0.123.102)]"
+  },
+  "schema_version": 2
+}

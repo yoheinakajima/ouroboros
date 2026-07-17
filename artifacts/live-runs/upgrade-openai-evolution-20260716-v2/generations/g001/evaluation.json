@@ -1,0 +1,1326 @@
+{
+  "accepted": false,
+  "candidate": {
+    "private": {
+      "declared_test": {
+        "argv": [
+          "python",
+          "-m",
+          "unittest",
+          "discover",
+          "-v"
+        ],
+        "duration_seconds": 0.4363,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "policy_blocked": false,
+        "stderr_tail": "test_add_list_done_stats_persist (tests.test_cli.TodoCliTests.test_add_list_done_stats_persist) ... ok\ntest_empty_and_already_done (tests.test_cli.TodoCliTests.test_empty_and_already_done) ... ok\ntest_errors (tests.test_cli.TodoCliTests.test_errors) ... ok\ntest_invalid_arguments_are_usage_errors (tests.test_cli.TodoCliTests.test_invalid_arguments_are_usage_errors) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.345s\n\nOK\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "timed_out": false
+      },
+      "hard_gate_errors": [],
+      "hard_gates": {
+        "declared_test_command": true,
+        "entrypoint_exists": true,
+        "manifest_valid": true,
+        "no_symlinks_or_escape": true,
+        "private_test_isolation": true,
+        "program_starts_and_protocol_valid": true,
+        "required_artifacts": true,
+        "workspace_budget": true
+      },
+      "hard_gates_passed": true,
+      "passed": 5,
+      "phase": "candidate-private",
+      "protocol": {
+        "argv": [
+          "python",
+          "todo.py",
+          "--help"
+        ],
+        "duration_seconds": 0.0492,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "policy_blocked": false,
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "usage: todo [-h] [--data-file PATH] {add,list,done,stats} ...\n\nManage a persistent local todo list.\n\noptions:\n  -h, --help            show this help message and exit\n  --data-file PATH      JSON state file (default: .todo.json)\n\ncommands:\n  {add,list,done,stats}\n    add                 add a pending todo\n    list                list all todos\n    done                mark a todo completed\n    stats               show todo counts\n",
+        "stdout_truncated": false,
+        "timed_out": false
+      },
+      "score": 1.0,
+      "test_results": [
+        {
+          "ordinal": 0,
+          "passed": true,
+          "reasons": [],
+          "steps": [
+            {
+              "exit_code": 0,
+              "ordinal": 0,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "Added #1: Prepare release notes\n"
+            },
+            {
+              "exit_code": 0,
+              "ordinal": 1,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "Completed #1: Prepare release notes\n"
+            },
+            {
+              "exit_code": 0,
+              "ordinal": 2,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "Added #2: Archive artifacts\n"
+            },
+            {
+              "exit_code": 1,
+              "ordinal": 3,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "Error: todo #1 is already completed\n"
+            },
+            {
+              "exit_code": 0,
+              "ordinal": 4,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "[x] #1 Prepare release notes\n[ ] #2 Archive artifacts\n"
+            },
+            {
+              "exit_code": 0,
+              "ordinal": 5,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "Total: 2\nPending: 1\nCompleted: 1\n"
+            }
+          ],
+          "test_hash": "04467a7a407d12cad625ed29b90263d237a667305e3a86ab763d5a071b565de0"
+        },
+        {
+          "argv": [
+            "python",
+            "-c",
+            "import pathlib\nimport subprocess\nimport sys\nimport tempfile\n\nroot = pathlib.Path.cwd()\ncli = root / 'todo.py'\n\ndef run(path, command):\n    result = subprocess.run(\n        [sys.executable, str(cli), '--data-file', str(path), *command],\n        cwd=path.parent,\n        text=True,\n        capture_output=True,\n    )\n    output = result.stdout + result.stderr\n    assert result.returncode != 0, (result.returncode, output)\n    assert any(line.startswith('Error:') for line in output.splitlines()), output\n\nwith tempfile.TemporaryDirectory() as directory:\n    work = pathlib.Path(directory)\n    cases = [\n        ('broken.json', b'{not valid json\\n', ['list']),\n        ('incompatible.json', b'{\"todos\":\"not-a-list\",\"next_id\":9}\\n', ['add', 'Must not be written']),\n    ]\n    for name, original, command in cases:\n        state = work / name\n        state.write_bytes(original)\n        run(state, command)\n        assert state.read_bytes() == original, (name, state.read_bytes())\nprint('malformed state preserved')"
+          ],
+          "duration_seconds": 0.0912,
+          "exit_code": 0,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 1,
+          "passed": true,
+          "policy_blocked": false,
+          "reasons": [],
+          "stderr_tail": "",
+          "stderr_truncated": false,
+          "stdout_tail": "malformed state preserved\n",
+          "stdout_truncated": false,
+          "test_hash": "285167cf38b0ceab1de93859ccb40e57fe069bca4f68cb2100a5c41c6227d2ad",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "-c",
+            "import json\nimport pathlib\nimport subprocess\nimport sys\nimport tempfile\n\nroot = pathlib.Path.cwd()\ncli = root / 'todo.py'\n\ndef invoke(work, *args):\n    result = subprocess.run(\n        [sys.executable, str(cli), *args],\n        cwd=work,\n        text=True,\n        capture_output=True,\n    )\n    output = result.stdout + result.stderr\n    assert result.returncode == 0, (result.returncode, output)\n    return output\n\nwith tempfile.TemporaryDirectory() as directory:\n    work = pathlib.Path(directory)\n    added = invoke(work, 'add', '  Stored in cwd  ')\n    assert 'Added #1: Stored in cwd' in added, added\n    state = work / '.todo.json'\n    assert state.is_file(), list(work.iterdir())\n    json.loads(state.read_text(encoding='utf-8'))\n    listed = invoke(work, 'list')\n    assert '[ ] #1 Stored in cwd' in listed, listed\n    completed = invoke(work, 'done', '1')\n    assert 'Completed #1: Stored in cwd' in completed, completed\n    stats = invoke(work, 'stats')\n    assert 'Total: 1' in stats, stats\n    assert 'Pending: 0' in stats, stats\n    assert 'Completed: 1' in stats, stats\n    json.loads(state.read_text(encoding='utf-8'))\nprint('default store persisted')"
+          ],
+          "duration_seconds": 0.1513,
+          "exit_code": 0,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 2,
+          "passed": true,
+          "policy_blocked": false,
+          "reasons": [],
+          "stderr_tail": "",
+          "stderr_truncated": false,
+          "stdout_tail": "default store persisted\n",
+          "stdout_truncated": false,
+          "test_hash": "f0bea5a7878a78706acf4165aa1356f7c303bad26519878a310f0fd227069a6d",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "manager_missing_title_2a71.json",
+            "add"
+          ],
+          "duration_seconds": 0.0491,
+          "exit_code": 2,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 3,
+          "passed": true,
+          "policy_blocked": false,
+          "reasons": [],
+          "stderr_tail": "",
+          "stderr_truncated": false,
+          "stdout_tail": "usage: todo add [-h] title\nError: the following arguments are required: title\n",
+          "stdout_truncated": false,
+          "test_hash": "1c433edb214101b11ac6abf02a98e562d85ee224d4912641ce4a7c6d8ec0f2ba",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ],
+          "duration_seconds": 0.4513,
+          "exit_code": 0,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 4,
+          "passed": true,
+          "policy_blocked": false,
+          "reasons": [],
+          "stderr_tail": "test_add_list_done_stats_persist (test_cli.TodoCliTests.test_add_list_done_stats_persist) ... ok\ntest_empty_and_already_done (test_cli.TodoCliTests.test_empty_and_already_done) ... ok\ntest_errors (test_cli.TodoCliTests.test_errors) ... ok\ntest_invalid_arguments_are_usage_errors (test_cli.TodoCliTests.test_invalid_arguments_are_usage_errors) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.351s\n\nOK\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "e9752e81d5e48cc54a2f27bc3d681f0452e04f52d54b34201fa6a0ccbaaf2b30",
+          "timed_out": false
+        }
+      ],
+      "total": 5,
+      "tree": {
+        "content_id": "workspace-sha256-4baa0de1a4ac07366dfc87cc843557b8da6e379544770a77702cef7ba55e1d46",
+        "files": [
+          {
+            "path": "MEMORY.md",
+            "sha256": "9e84a8f2d888f17194fcfe427c0db4899a443219e3e498dc27f2b3c6eeba89bc",
+            "size": 428
+          },
+          {
+            "path": "SELF.md",
+            "sha256": "454c99e995351db39b6480b8a3c5cbe88a9f95015137fc4af1b99478c88f36a4",
+            "size": 730
+          },
+          {
+            "path": "agent.py",
+            "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+            "size": 276
+          },
+          {
+            "path": "ouroboros.json",
+            "sha256": "df8a5255c4cdb905cad0320712191a4c76d0e280b9d94c0ed5a3c55c9b809a23",
+            "size": 235
+          },
+          {
+            "path": "tests/__init__.py",
+            "sha256": "519d67c1b9dadb30c6a508e8e386f9673c8719ff34dfd04796e9be915fc0a0d3",
+            "size": 30
+          },
+          {
+            "path": "tests/test_cli.py",
+            "sha256": "c6ccbe6e3fef04289ff445fa486735eafc030927ac57be98a82a369f273a5bf4",
+            "size": 3087
+          },
+          {
+            "path": "todo.py",
+            "sha256": "b02495cb53cdb194c573b21053de5a109ceac522b0a22cbd0e08cd7a67c93e49",
+            "size": 146
+          },
+          {
+            "path": "todo_cli/__init__.py",
+            "sha256": "eecfdfec9abdbd3687d32c1524ba767beeaf8581cd84996f34f31cbcd9c90d8b",
+            "size": 64
+          },
+          {
+            "path": "todo_cli/cli.py",
+            "sha256": "c51d0b902f4994eb006ed13bdb105e2b2969289bd5054e110d73d8514d287b98",
+            "size": 3287
+          },
+          {
+            "path": "todo_cli/store.py",
+            "sha256": "f9b61adaf1a5058055a41b6d839ecd85e2eef8c4afc968bc3167db53a36148f6",
+            "size": 3143
+          }
+        ],
+        "symlinks": [],
+        "total_bytes": 11426
+      }
+    },
+    "public": {
+      "declared_test": {
+        "argv": [
+          "python",
+          "-m",
+          "unittest",
+          "discover",
+          "-v"
+        ],
+        "duration_seconds": 0.4509,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "policy_blocked": false,
+        "stderr_tail": "test_add_list_done_stats_persist (tests.test_cli.TodoCliTests.test_add_list_done_stats_persist) ... ok\ntest_empty_and_already_done (tests.test_cli.TodoCliTests.test_empty_and_already_done) ... ok\ntest_errors (tests.test_cli.TodoCliTests.test_errors) ... ok\ntest_invalid_arguments_are_usage_errors (tests.test_cli.TodoCliTests.test_invalid_arguments_are_usage_errors) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.384s\n\nOK\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "timed_out": false
+      },
+      "hard_gate_errors": [],
+      "hard_gates": {
+        "declared_test_command": true,
+        "entrypoint_exists": true,
+        "manifest_valid": true,
+        "no_symlinks_or_escape": true,
+        "private_test_isolation": true,
+        "program_starts_and_protocol_valid": true,
+        "required_artifacts": true,
+        "workspace_budget": true
+      },
+      "hard_gates_passed": true,
+      "passed": 6,
+      "phase": "candidate-public",
+      "protocol": {
+        "argv": [
+          "python",
+          "todo.py",
+          "--help"
+        ],
+        "duration_seconds": 0.0428,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "policy_blocked": false,
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "usage: todo [-h] [--data-file PATH] {add,list,done,stats} ...\n\nManage a persistent local todo list.\n\noptions:\n  -h, --help            show this help message and exit\n  --data-file PATH      JSON state file (default: .todo.json)\n\ncommands:\n  {add,list,done,stats}\n    add                 add a pending todo\n    list                list all todos\n    done                mark a todo completed\n    stats               show todo counts\n",
+        "stdout_truncated": false,
+        "timed_out": false
+      },
+      "score": 1.0,
+      "test_results": [
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--help"
+          ],
+          "description": "The argv entrypoint exposes all required commands in its help output.",
+          "duration_seconds": 0.0493,
+          "exit_code": 0,
+          "id": "cli-help",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 0,
+          "passed": true,
+          "policy_blocked": false,
+          "reasons": [],
+          "stderr_tail": "",
+          "stderr_truncated": false,
+          "stdout_tail": "usage: todo [-h] [--data-file PATH] {add,list,done,stats} ...\n\nManage a persistent local todo list.\n\noptions:\n  -h, --help            show this help message and exit\n  --data-file PATH      JSON state file (default: .todo.json)\n\ncommands:\n  {add,list,done,stats}\n    add                 add a pending todo\n    list                list all todos\n    done                mark a todo completed\n    stats               show todo counts\n",
+          "stdout_truncated": false,
+          "test_hash": "d7e9c7aadef554e40b0cf4adcfe888078c64dd963be2b5c2957521b9936aaf99",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "public_empty_state_6f92.json",
+            "list"
+          ],
+          "description": "Listing a fresh explicitly selected store produces a clear empty-state message.",
+          "duration_seconds": 0.0494,
+          "exit_code": 0,
+          "id": "empty-store-list",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 1,
+          "passed": true,
+          "policy_blocked": false,
+          "reasons": [],
+          "stderr_tail": "",
+          "stderr_truncated": false,
+          "stdout_tail": "No todos.\n",
+          "stdout_truncated": false,
+          "test_hash": "65182754836e043d69f2cc79a53eb8edcfe26b99881f88567a6c2b3c41945138",
+          "timed_out": false
+        },
+        {
+          "description": "Adds, completion state, listing, and statistics persist across independent CLI invocations.",
+          "id": "persistent-lifecycle",
+          "ordinal": 2,
+          "passed": true,
+          "reasons": [],
+          "steps": [
+            {
+              "exit_code": 0,
+              "ordinal": 0,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "Added #1: Buy milk\n"
+            },
+            {
+              "exit_code": 0,
+              "ordinal": 1,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "Added #2: Write tests\n"
+            },
+            {
+              "exit_code": 0,
+              "ordinal": 2,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "[ ] #1 Buy milk\n[ ] #2 Write tests\n"
+            },
+            {
+              "exit_code": 0,
+              "ordinal": 3,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "Completed #1: Buy milk\n"
+            },
+            {
+              "exit_code": 0,
+              "ordinal": 4,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "[x] #1 Buy milk\n[ ] #2 Write tests\n"
+            },
+            {
+              "exit_code": 0,
+              "ordinal": 5,
+              "passed": true,
+              "reasons": [],
+              "stderr_tail": "",
+              "stdout_tail": "Total: 2\nPending: 1\nCompleted: 1\n"
+            }
+          ],
+          "test_hash": "b1d02c6c6d09b010cdad5b5ddac89525d4a0db4becec983962fe9f0580681f52"
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "public_missing_state_b871.json",
+            "done",
+            "404"
+          ],
+          "description": "Completing an unknown ID fails with a specific helpful diagnostic.",
+          "duration_seconds": 0.049,
+          "exit_code": 1,
+          "id": "missing-id-error",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 3,
+          "passed": true,
+          "policy_blocked": false,
+          "reasons": [],
+          "stderr_tail": "",
+          "stderr_truncated": false,
+          "stdout_tail": "Error: todo #404 not found\n",
+          "stdout_truncated": false,
+          "test_hash": "b773e764e40d2e1b1eee8d0ae857847ef313fb08c4c370a707cbd8edb8478404",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "public_blank_state_18ce.json",
+            "add",
+            "   "
+          ],
+          "description": "A whitespace-only title is rejected as a usage error rather than persisted.",
+          "duration_seconds": 0.049,
+          "exit_code": 2,
+          "id": "blank-title-error",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 4,
+          "passed": true,
+          "policy_blocked": false,
+          "reasons": [],
+          "stderr_tail": "",
+          "stderr_truncated": false,
+          "stdout_tail": "Error: title must not be blank\n",
+          "stdout_truncated": false,
+          "test_hash": "24887e96e564bcfdff08a66e7097013b361abdb1dc52306ea98a5de2212a5adb",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "unittest",
+            "tests.test_cli.TodoCliTests.test_add_list_done_stats_persist",
+            "tests.test_cli.TodoCliTests.test_errors"
+          ],
+          "description": "Named integration tests supplied with the project execute successfully.",
+          "duration_seconds": 0.2525,
+          "exit_code": 0,
+          "id": "automated-tests",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 5,
+          "passed": true,
+          "policy_blocked": false,
+          "reasons": [],
+          "stderr_tail": "..\n----------------------------------------------------------------------\nRan 2 tests in 0.208s\n\nOK\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "ae86ff25ad6cf309f594c688855c4ba68c3384aee351bc20a5aa85737ad60083",
+          "timed_out": false
+        }
+      ],
+      "total": 6,
+      "tree": {
+        "content_id": "workspace-sha256-4baa0de1a4ac07366dfc87cc843557b8da6e379544770a77702cef7ba55e1d46",
+        "files": [
+          {
+            "path": "MEMORY.md",
+            "sha256": "9e84a8f2d888f17194fcfe427c0db4899a443219e3e498dc27f2b3c6eeba89bc",
+            "size": 428
+          },
+          {
+            "path": "SELF.md",
+            "sha256": "454c99e995351db39b6480b8a3c5cbe88a9f95015137fc4af1b99478c88f36a4",
+            "size": 730
+          },
+          {
+            "path": "agent.py",
+            "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+            "size": 276
+          },
+          {
+            "path": "ouroboros.json",
+            "sha256": "df8a5255c4cdb905cad0320712191a4c76d0e280b9d94c0ed5a3c55c9b809a23",
+            "size": 235
+          },
+          {
+            "path": "tests/__init__.py",
+            "sha256": "519d67c1b9dadb30c6a508e8e386f9673c8719ff34dfd04796e9be915fc0a0d3",
+            "size": 30
+          },
+          {
+            "path": "tests/test_cli.py",
+            "sha256": "c6ccbe6e3fef04289ff445fa486735eafc030927ac57be98a82a369f273a5bf4",
+            "size": 3087
+          },
+          {
+            "path": "todo.py",
+            "sha256": "b02495cb53cdb194c573b21053de5a109ceac522b0a22cbd0e08cd7a67c93e49",
+            "size": 146
+          },
+          {
+            "path": "todo_cli/__init__.py",
+            "sha256": "eecfdfec9abdbd3687d32c1524ba767beeaf8581cd84996f34f31cbcd9c90d8b",
+            "size": 64
+          },
+          {
+            "path": "todo_cli/cli.py",
+            "sha256": "c51d0b902f4994eb006ed13bdb105e2b2969289bd5054e110d73d8514d287b98",
+            "size": 3287
+          },
+          {
+            "path": "todo_cli/store.py",
+            "sha256": "f9b61adaf1a5058055a41b6d839ecd85e2eef8c4afc968bc3167db53a36148f6",
+            "size": 3143
+          }
+        ],
+        "symlinks": [],
+        "total_bytes": 11426
+      }
+    }
+  },
+  "generation": 1,
+  "incumbent": {
+    "private": {
+      "declared_test": {
+        "argv": [
+          "python",
+          "-m",
+          "unittest",
+          "-q"
+        ],
+        "duration_seconds": 0.0489,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "policy_blocked": false,
+        "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "timed_out": false
+      },
+      "hard_gate_errors": [
+        "required artifact missing: todo.py",
+        "required artifact missing: todo_cli/__init__.py",
+        "required artifact missing: todo_cli/cli.py",
+        "required artifact missing: todo_cli/store.py",
+        "required artifact missing: tests/__init__.py",
+        "required artifact missing: tests/test_cli.py"
+      ],
+      "hard_gates": {
+        "declared_test_command": true,
+        "entrypoint_exists": true,
+        "manifest_valid": true,
+        "no_symlinks_or_escape": true,
+        "private_test_isolation": true,
+        "program_starts_and_protocol_valid": true,
+        "required_artifacts": false,
+        "workspace_budget": true
+      },
+      "hard_gates_passed": false,
+      "passed": 0,
+      "phase": "incumbent-private",
+      "protocol": {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "duration_seconds": 0.0251,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "policy_blocked": false,
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"ouroboros health check\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "timed_out": false
+      },
+      "score": 0.0,
+      "test_results": [
+        {
+          "ordinal": 0,
+          "passed": false,
+          "reasons": [
+            "step 1: exit 2 != 0",
+            "step 1: stdout missing 'Added #1: Prepare release notes'",
+            "step 2: exit 2 != 0",
+            "step 2: stdout missing 'Completed #1: Prepare release notes'",
+            "step 3: exit 2 != 0",
+            "step 3: stdout missing 'Added #2: Archive artifacts'",
+            "step 4: exit 2 != 1",
+            "step 4: stdout missing 'Error:'",
+            "step 4: stdout missing '#1'",
+            "step 5: exit 2 != 0",
+            "step 5: stdout missing '[x] #1 Prepare release notes'",
+            "step 5: stdout missing '[ ] #2 Archive artifacts'",
+            "step 6: exit 2 != 0",
+            "step 6: stdout missing 'Total: 2'",
+            "step 6: stdout missing 'Pending: 1'",
+            "step 6: stdout missing 'Completed: 1'"
+          ],
+          "steps": [
+            {
+              "exit_code": 2,
+              "ordinal": 0,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing 'Added #1: Prepare release notes'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-lxx2rh88/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 1,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing 'Completed #1: Prepare release notes'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-lxx2rh88/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 2,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing 'Added #2: Archive artifacts'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-lxx2rh88/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 3,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 1",
+                "stdout missing 'Error:'",
+                "stdout missing '#1'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-lxx2rh88/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 4,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing '[x] #1 Prepare release notes'",
+                "stdout missing '[ ] #2 Archive artifacts'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-lxx2rh88/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 5,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing 'Total: 2'",
+                "stdout missing 'Pending: 1'",
+                "stdout missing 'Completed: 1'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-lxx2rh88/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            }
+          ],
+          "test_hash": "04467a7a407d12cad625ed29b90263d237a667305e3a86ab763d5a071b565de0"
+        },
+        {
+          "argv": [
+            "python",
+            "-c",
+            "import pathlib\nimport subprocess\nimport sys\nimport tempfile\n\nroot = pathlib.Path.cwd()\ncli = root / 'todo.py'\n\ndef run(path, command):\n    result = subprocess.run(\n        [sys.executable, str(cli), '--data-file', str(path), *command],\n        cwd=path.parent,\n        text=True,\n        capture_output=True,\n    )\n    output = result.stdout + result.stderr\n    assert result.returncode != 0, (result.returncode, output)\n    assert any(line.startswith('Error:') for line in output.splitlines()), output\n\nwith tempfile.TemporaryDirectory() as directory:\n    work = pathlib.Path(directory)\n    cases = [\n        ('broken.json', b'{not valid json\\n', ['list']),\n        ('incompatible.json', b'{\"todos\":\"not-a-list\",\"next_id\":9}\\n', ['add', 'Must not be written']),\n    ]\n    for name, original, command in cases:\n        state = work / name\n        state.write_bytes(original)\n        run(state, command)\n        assert state.read_bytes() == original, (name, state.read_bytes())\nprint('malformed state preserved')"
+          ],
+          "duration_seconds": 0.0457,
+          "exit_code": 1,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 1,
+          "passed": false,
+          "policy_blocked": false,
+          "reasons": [
+            "exit 1 != 0",
+            "stdout missing 'malformed state preserved'"
+          ],
+          "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 29, in <module>\n  File \"<string>\", line 18, in run\nAssertionError: /opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-lxx2rh88/workspace/todo.py': [Errno 2] No such file or directory\n\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "285167cf38b0ceab1de93859ccb40e57fe069bca4f68cb2100a5c41c6227d2ad",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "-c",
+            "import json\nimport pathlib\nimport subprocess\nimport sys\nimport tempfile\n\nroot = pathlib.Path.cwd()\ncli = root / 'todo.py'\n\ndef invoke(work, *args):\n    result = subprocess.run(\n        [sys.executable, str(cli), *args],\n        cwd=work,\n        text=True,\n        capture_output=True,\n    )\n    output = result.stdout + result.stderr\n    assert result.returncode == 0, (result.returncode, output)\n    return output\n\nwith tempfile.TemporaryDirectory() as directory:\n    work = pathlib.Path(directory)\n    added = invoke(work, 'add', '  Stored in cwd  ')\n    assert 'Added #1: Stored in cwd' in added, added\n    state = work / '.todo.json'\n    assert state.is_file(), list(work.iterdir())\n    json.loads(state.read_text(encoding='utf-8'))\n    listed = invoke(work, 'list')\n    assert '[ ] #1 Stored in cwd' in listed, listed\n    completed = invoke(work, 'done', '1')\n    assert 'Completed #1: Stored in cwd' in completed, completed\n    stats = invoke(work, 'stats')\n    assert 'Total: 1' in stats, stats\n    assert 'Pending: 0' in stats, stats\n    assert 'Completed: 1' in stats, stats\n    json.loads(state.read_text(encoding='utf-8'))\nprint('default store persisted')"
+          ],
+          "duration_seconds": 0.0486,
+          "exit_code": 1,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 2,
+          "passed": false,
+          "policy_blocked": false,
+          "reasons": [
+            "exit 1 != 0",
+            "stdout missing 'default store persisted'"
+          ],
+          "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 23, in <module>\n  File \"<string>\", line 18, in invoke\nAssertionError: (2, \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-lxx2rh88/workspace/todo.py': [Errno 2] No such file or directory\\n\")\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "f0bea5a7878a78706acf4165aa1356f7c303bad26519878a310f0fd227069a6d",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "manager_missing_title_2a71.json",
+            "add"
+          ],
+          "duration_seconds": 0.0492,
+          "exit_code": 2,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 3,
+          "passed": false,
+          "policy_blocked": false,
+          "reasons": [
+            "stdout missing 'Error:'",
+            "stdout missing 'title'"
+          ],
+          "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-lxx2rh88/workspace/todo.py': [Errno 2] No such file or directory\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "1c433edb214101b11ac6abf02a98e562d85ee224d4912641ce4a7c6d8ec0f2ba",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ],
+          "duration_seconds": 0.049,
+          "exit_code": 1,
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 4,
+          "passed": false,
+          "policy_blocked": false,
+          "reasons": [
+            "exit 1 != 0"
+          ],
+          "stderr_tail": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/__main__.py\", line 18, in <module>\n    main(module=None)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/main.py\", line 101, in __init__\n    self.parseArgs(argv)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/main.py\", line 127, in parseArgs\n    self._do_discovery(argv[2:])\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/main.py\", line 247, in _do_discovery\n    self.createTests(from_discovery=True, Loader=Loader)\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/main.py\", line 157, in createTests\n    self.test = loader.discover(self.start, self.pattern, self.top)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/loader.py\", line 332, in discover\n    raise ImportError('Start directory is not importable: %r' % start_dir)\nImportError: Start directory is not importable: 'tests'\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "e9752e81d5e48cc54a2f27bc3d681f0452e04f52d54b34201fa6a0ccbaaf2b30",
+          "timed_out": false
+        }
+      ],
+      "total": 5,
+      "tree": {
+        "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+        "files": [
+          {
+            "path": "MEMORY.md",
+            "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+            "size": 34
+          },
+          {
+            "path": "SELF.md",
+            "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+            "size": 215
+          },
+          {
+            "path": "agent.py",
+            "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+            "size": 276
+          },
+          {
+            "path": "ouroboros.json",
+            "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+            "size": 267
+          }
+        ],
+        "symlinks": [],
+        "total_bytes": 792
+      }
+    },
+    "public": {
+      "declared_test": {
+        "argv": [
+          "python",
+          "-m",
+          "unittest",
+          "-q"
+        ],
+        "duration_seconds": 0.0492,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "policy_blocked": false,
+        "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+        "stderr_truncated": false,
+        "stdout_tail": "",
+        "stdout_truncated": false,
+        "timed_out": false
+      },
+      "hard_gate_errors": [
+        "required artifact missing: todo.py",
+        "required artifact missing: todo_cli/__init__.py",
+        "required artifact missing: todo_cli/cli.py",
+        "required artifact missing: todo_cli/store.py",
+        "required artifact missing: tests/__init__.py",
+        "required artifact missing: tests/test_cli.py"
+      ],
+      "hard_gates": {
+        "declared_test_command": true,
+        "entrypoint_exists": true,
+        "manifest_valid": true,
+        "no_symlinks_or_escape": true,
+        "private_test_isolation": true,
+        "program_starts_and_protocol_valid": true,
+        "required_artifacts": false,
+        "workspace_budget": true
+      },
+      "hard_gates_passed": false,
+      "passed": 0,
+      "phase": "incumbent-public",
+      "protocol": {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "duration_seconds": 0.0507,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "policy_blocked": false,
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"ouroboros health check\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "timed_out": false
+      },
+      "score": 0.0,
+      "test_results": [
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--help"
+          ],
+          "description": "The argv entrypoint exposes all required commands in its help output.",
+          "duration_seconds": 0.0252,
+          "exit_code": 2,
+          "id": "cli-help",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 0,
+          "passed": false,
+          "policy_blocked": false,
+          "reasons": [
+            "exit 2 != 0",
+            "stdout missing 'add'",
+            "stdout missing 'list'",
+            "stdout missing 'done'",
+            "stdout missing 'stats'"
+          ],
+          "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "d7e9c7aadef554e40b0cf4adcfe888078c64dd963be2b5c2957521b9936aaf99",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "public_empty_state_6f92.json",
+            "list"
+          ],
+          "description": "Listing a fresh explicitly selected store produces a clear empty-state message.",
+          "duration_seconds": 0.0255,
+          "exit_code": 2,
+          "id": "empty-store-list",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 1,
+          "passed": false,
+          "policy_blocked": false,
+          "reasons": [
+            "exit 2 != 0",
+            "stdout missing 'No todos.'"
+          ],
+          "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "65182754836e043d69f2cc79a53eb8edcfe26b99881f88567a6c2b3c41945138",
+          "timed_out": false
+        },
+        {
+          "description": "Adds, completion state, listing, and statistics persist across independent CLI invocations.",
+          "id": "persistent-lifecycle",
+          "ordinal": 2,
+          "passed": false,
+          "reasons": [
+            "step 1: exit 2 != 0",
+            "step 1: stdout missing 'Added #1: Buy milk'",
+            "step 2: exit 2 != 0",
+            "step 2: stdout missing 'Added #2: Write tests'",
+            "step 3: exit 2 != 0",
+            "step 3: stdout missing '[ ] #1 Buy milk'",
+            "step 3: stdout missing '[ ] #2 Write tests'",
+            "step 4: exit 2 != 0",
+            "step 4: stdout missing 'Completed #1: Buy milk'",
+            "step 5: exit 2 != 0",
+            "step 5: stdout missing '[x] #1 Buy milk'",
+            "step 5: stdout missing '[ ] #2 Write tests'",
+            "step 6: exit 2 != 0",
+            "step 6: stdout missing 'Total: 2'",
+            "step 6: stdout missing 'Pending: 1'",
+            "step 6: stdout missing 'Completed: 1'"
+          ],
+          "steps": [
+            {
+              "exit_code": 2,
+              "ordinal": 0,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing 'Added #1: Buy milk'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 1,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing 'Added #2: Write tests'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 2,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing '[ ] #1 Buy milk'",
+                "stdout missing '[ ] #2 Write tests'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 3,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing 'Completed #1: Buy milk'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 4,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing '[x] #1 Buy milk'",
+                "stdout missing '[ ] #2 Write tests'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            },
+            {
+              "exit_code": 2,
+              "ordinal": 5,
+              "passed": false,
+              "reasons": [
+                "exit 2 != 0",
+                "stdout missing 'Total: 2'",
+                "stdout missing 'Pending: 1'",
+                "stdout missing 'Completed: 1'"
+              ],
+              "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+              "stdout_tail": ""
+            }
+          ],
+          "test_hash": "b1d02c6c6d09b010cdad5b5ddac89525d4a0db4becec983962fe9f0580681f52"
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "public_missing_state_b871.json",
+            "done",
+            "404"
+          ],
+          "description": "Completing an unknown ID fails with a specific helpful diagnostic.",
+          "duration_seconds": 0.025,
+          "exit_code": 2,
+          "id": "missing-id-error",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 3,
+          "passed": false,
+          "policy_blocked": false,
+          "reasons": [
+            "exit 2 != 1",
+            "stdout missing 'Error:'",
+            "stdout missing '#404'",
+            "stdout missing 'not found'"
+          ],
+          "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "b773e764e40d2e1b1eee8d0ae857847ef313fb08c4c370a707cbd8edb8478404",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "todo.py",
+            "--data-file",
+            "public_blank_state_18ce.json",
+            "add",
+            "   "
+          ],
+          "description": "A whitespace-only title is rejected as a usage error rather than persisted.",
+          "duration_seconds": 0.0251,
+          "exit_code": 2,
+          "id": "blank-title-error",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 4,
+          "passed": false,
+          "policy_blocked": false,
+          "reasons": [
+            "stdout missing 'Error:'",
+            "stdout missing 'title'"
+          ],
+          "stderr_tail": "/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/private/var/folders/wm/f4w59z5j2_j66yb0b58ymshh0000gn/T/ouro-eval-iz9f7190/workspace/todo.py': [Errno 2] No such file or directory\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "24887e96e564bcfdff08a66e7097013b361abdb1dc52306ea98a5de2212a5adb",
+          "timed_out": false
+        },
+        {
+          "argv": [
+            "python",
+            "-m",
+            "unittest",
+            "tests.test_cli.TodoCliTests.test_add_list_done_stats_persist",
+            "tests.test_cli.TodoCliTests.test_errors"
+          ],
+          "description": "Named integration tests supplied with the project execute successfully.",
+          "duration_seconds": 0.049,
+          "exit_code": 1,
+          "id": "automated-tests",
+          "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+          "ordinal": 5,
+          "passed": false,
+          "policy_blocked": false,
+          "reasons": [
+            "exit 1 != 0"
+          ],
+          "stderr_tail": "EE\n======================================================================\nERROR: tests (unittest.loader._FailedTest.tests)\n----------------------------------------------------------------------\nImportError: Failed to import test module: tests\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/loader.py\", line 162, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'tests'\n\n\n======================================================================\nERROR: tests (unittest.loader._FailedTest.tests)\n----------------------------------------------------------------------\nImportError: Failed to import test module: tests\nTraceback (most recent call last):\n  File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/loader.py\", line 162, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'tests'\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nFAILED (errors=2)\n",
+          "stderr_truncated": false,
+          "stdout_tail": "",
+          "stdout_truncated": false,
+          "test_hash": "ae86ff25ad6cf309f594c688855c4ba68c3384aee351bc20a5aa85737ad60083",
+          "timed_out": false
+        }
+      ],
+      "total": 6,
+      "tree": {
+        "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+        "files": [
+          {
+            "path": "MEMORY.md",
+            "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+            "size": 34
+          },
+          {
+            "path": "SELF.md",
+            "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+            "size": 215
+          },
+          {
+            "path": "agent.py",
+            "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+            "size": 276
+          },
+          {
+            "path": "ouroboros.json",
+            "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+            "size": 267
+          }
+        ],
+        "symlinks": [],
+        "total_bytes": 792
+      }
+    }
+  },
+  "judge": {
+    "average_delta": 62.166666666666664,
+    "candidate_score": 80.16666666666667,
+    "candidate_severe_regression": true,
+    "candidate_wins": 5,
+    "cases": [
+      {
+        "candidate_score": 100.0,
+        "case_id": "rubric-001",
+        "delta": 100.0,
+        "incumbent_score": 0.0,
+        "rationale": "Artifact A satisfies every hard gate and passes all executed command, lifecycle, error, and test checks using the required argv protocol. Artifact B lacks the required implementation and fails every public execution, so it provides no observable core CLI behavior."
+      },
+      {
+        "candidate_score": 95.0,
+        "case_id": "rubric-002",
+        "delta": 95.0,
+        "incumbent_score": 0.0,
+        "rationale": "Artifact B's executed multi-step lifecycle demonstrates state surviving separate invocations, sequential IDs, completion updates, and accurate persisted statistics. Its passing error and automated-test executions add support, though the supplied evidence does not explicitly expose every JSON-integrity and failure-preservation edge case. Artifact A cannot execute the lifecycle at all."
+      },
+      {
+        "candidate_score": 1.0,
+        "case_id": "rubric-003",
+        "delta": -97.0,
+        "incumbent_score": 98.0,
+        "rationale": "Artifact B passes representative ordinary-error checks with the expected nonzero status and concise, input-specific diagnostics for a missing ID and blank title, with no traceback shown. Artifact A returns the wrong status for the missing-ID case and emits none of the required diagnostics."
+      },
+      {
+        "candidate_score": 92.0,
+        "case_id": "rubric-004",
+        "delta": 92.0,
+        "incumbent_score": 0.0,
+        "rationale": "Artifact B has a small todo.py entrypoint plus a dedicated package containing CLI and storage modules, and the resulting implementation passes all behavioral executions. This strongly supports a compact separation of entrypoint, parsing/command behavior, and persistence, although source contents are not supplied to verify the finer boundaries directly. Artifact A contains no todo package or multi-file application architecture."
+      },
+      {
+        "candidate_score": 96.0,
+        "case_id": "rubric-005",
+        "delta": 96.0,
+        "incumbent_score": 0.0,
+        "rationale": "Artifact A includes a dedicated tests package and test_cli.py, declares unittest discovery, and the declared automated test execution passes alongside lifecycle and representative failure checks. The evidence strongly supports real CLI coverage, though the exact subprocess and temporary-file mechanics are not displayed. Artifact B has no test files and its declared test command fails."
+      },
+      {
+        "candidate_score": 97.0,
+        "case_id": "rubric-006",
+        "delta": 87.0,
+        "incumbent_score": 10.0,
+        "rationale": "Artifact B runs successfully under standard Python with an empty environment declaration, uses unittest, stays within the workspace constraints, and shows no network service, machine-specific path, or third-party dependency. Artifact A also declares standard Python tooling, but it does not provide the required argv todo implementation and every relevant execution fails, leaving little usable portability evidence for the requested program."
+      }
+    ],
+    "incumbent_score": 18.0,
+    "incumbent_wins": 1,
+    "scores": [
+      {
+        "a_score": 100.0,
+        "b_score": 0.0,
+        "case_id": "rubric-001",
+        "rationale": "Artifact A satisfies every hard gate and passes all executed command, lifecycle, error, and test checks using the required argv protocol. Artifact B lacks the required implementation and fails every public execution, so it provides no observable core CLI behavior.",
+        "severe_regression_side": "b"
+      },
+      {
+        "a_score": 0.0,
+        "b_score": 95.0,
+        "case_id": "rubric-002",
+        "rationale": "Artifact B's executed multi-step lifecycle demonstrates state surviving separate invocations, sequential IDs, completion updates, and accurate persisted statistics. Its passing error and automated-test executions add support, though the supplied evidence does not explicitly expose every JSON-integrity and failure-preservation edge case. Artifact A cannot execute the lifecycle at all.",
+        "severe_regression_side": "a"
+      },
+      {
+        "a_score": 1.0,
+        "b_score": 98.0,
+        "case_id": "rubric-003",
+        "rationale": "Artifact B passes representative ordinary-error checks with the expected nonzero status and concise, input-specific diagnostics for a missing ID and blank title, with no traceback shown. Artifact A returns the wrong status for the missing-ID case and emits none of the required diagnostics.",
+        "severe_regression_side": "a"
+      },
+      {
+        "a_score": 0.0,
+        "b_score": 92.0,
+        "case_id": "rubric-004",
+        "rationale": "Artifact B has a small todo.py entrypoint plus a dedicated package containing CLI and storage modules, and the resulting implementation passes all behavioral executions. This strongly supports a compact separation of entrypoint, parsing/command behavior, and persistence, although source contents are not supplied to verify the finer boundaries directly. Artifact A contains no todo package or multi-file application architecture.",
+        "severe_regression_side": "a"
+      },
+      {
+        "a_score": 96.0,
+        "b_score": 0.0,
+        "case_id": "rubric-005",
+        "rationale": "Artifact A includes a dedicated tests package and test_cli.py, declares unittest discovery, and the declared automated test execution passes alongside lifecycle and representative failure checks. The evidence strongly supports real CLI coverage, though the exact subprocess and temporary-file mechanics are not displayed. Artifact B has no test files and its declared test command fails.",
+        "severe_regression_side": "b"
+      },
+      {
+        "a_score": 10.0,
+        "b_score": 97.0,
+        "case_id": "rubric-006",
+        "rationale": "Artifact B runs successfully under standard Python with an empty environment declaration, uses unittest, stays within the workspace constraints, and shows no network service, machine-specific path, or third-party dependency. Artifact A also declares standard Python tooling, but it does not provide the required argv todo implementation and every relevant execution fails, leaving little usable portability evidence for the requested program.",
+        "severe_regression_side": "a"
+      }
+    ],
+    "summary": "The complete multi-file argv artifact is decisively superior across all six criteria: every public execution and automated-test check passes, persistence and errors are observable, and the file layout supports a clean, portable design. The opposing artifact is a JSON-stdin agent rather than the requested todo CLI, lacks required application and test files, and fails every public behavior check.",
+    "worst_delta": -97.0
+  },
+  "judge_called": true,
+  "metrics": {
+    "gate_win": true,
+    "judge_delta": 62.16666666666667,
+    "judge_worst_delta": -97.0,
+    "meaningful_losses": 1,
+    "meaningful_wins": 8,
+    "private_delta": 1.0,
+    "public_delta": 1.0
+  },
+  "reason": "judge found a severe worst-case regression in the candidate; qualitative worst-case regression exceeded 25 points; qualitative score below success threshold",
+  "submission": {
+    "evidence": [
+      "`python -m unittest discover -v` passed all 4 subprocess integration tests (lifecycle persistence, empty/already-done behavior, malformed state preservation, and usage errors).",
+      "The exact required named unittest invocation passed both `test_add_list_done_stats_persist` and `test_errors`.",
+      "`python todo.py --help` exited 0 and displayed add, list, done, and stats.",
+      "Direct command checks produced `No todos.` with exit 0, blank-title `Error:` with exit 2, and unknown `#404 not found` with exit 1.",
+      "`python -m py_compile` succeeded for the entrypoint, command, persistence, and test modules."
+    ],
+    "next_strategy": "Manager can evaluate for release; if extending later, add advisory inter-process locking for simultaneous writers while preserving the JSON schema and command output contract.",
+    "summary": "Implemented a portable multi-file Python todo CLI with strict argv parsing, configurable/default JSON persistence, monotonically increasing IDs, atomic state replacement, validated malformed-state handling, all required commands and diagnostics, plus real isolated subprocess tests. Updated manifest, SELF.md, and MEMORY.md."
+  },
+  "tree_changes": [
+    {
+      "after": "9e84a8f2d888f17194fcfe427c0db4899a443219e3e498dc27f2b3c6eeba89bc",
+      "before": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+      "change": "modified",
+      "path": "MEMORY.md"
+    },
+    {
+      "after": "454c99e995351db39b6480b8a3c5cbe88a9f95015137fc4af1b99478c88f36a4",
+      "before": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+      "change": "modified",
+      "path": "SELF.md"
+    },
+    {
+      "after": "df8a5255c4cdb905cad0320712191a4c76d0e280b9d94c0ed5a3c55c9b809a23",
+      "before": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+      "change": "modified",
+      "path": "ouroboros.json"
+    },
+    {
+      "after": "519d67c1b9dadb30c6a508e8e386f9673c8719ff34dfd04796e9be915fc0a0d3",
+      "before": null,
+      "change": "added",
+      "path": "tests/__init__.py"
+    },
+    {
+      "after": "c6ccbe6e3fef04289ff445fa486735eafc030927ac57be98a82a369f273a5bf4",
+      "before": null,
+      "change": "added",
+      "path": "tests/test_cli.py"
+    },
+    {
+      "after": "b02495cb53cdb194c573b21053de5a109ceac522b0a22cbd0e08cd7a67c93e49",
+      "before": null,
+      "change": "added",
+      "path": "todo.py"
+    },
+    {
+      "after": "eecfdfec9abdbd3687d32c1524ba767beeaf8581cd84996f34f31cbcd9c90d8b",
+      "before": null,
+      "change": "added",
+      "path": "todo_cli/__init__.py"
+    },
+    {
+      "after": "c51d0b902f4994eb006ed13bdb105e2b2969289bd5054e110d73d8514d287b98",
+      "before": null,
+      "change": "added",
+      "path": "todo_cli/cli.py"
+    },
+    {
+      "after": "f9b61adaf1a5058055a41b6d839ecd85e2eef8c4afc968bc3167db53a36148f6",
+      "before": null,
+      "change": "added",
+      "path": "todo_cli/store.py"
+    }
+  ]
+}

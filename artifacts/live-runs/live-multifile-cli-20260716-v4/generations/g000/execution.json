@@ -1,0 +1,329 @@
+{
+  "private_receipt": {
+    "algorithm": "sha256",
+    "score": 0.2,
+    "sealed": true,
+    "suite_hash": "3dce42bdce4138c3fd60bb1045ae34fbf07c21dd581c0e043957cdacd227908f",
+    "test_count": 5
+  },
+  "public": {
+    "declared_test": {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "-q"
+      ],
+      "duration_seconds": 0.0499,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+      "stderr_truncated": false,
+      "stdout_tail": "",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "hard_gate_errors": [
+      "required artifact missing: main.py",
+      "required artifact missing: test_analyzer.py",
+      "required artifact missing: README.md"
+    ],
+    "hard_gates": {
+      "declared_test_command": true,
+      "entrypoint_exists": true,
+      "manifest_valid": true,
+      "no_symlinks_or_escape": true,
+      "private_test_isolation": true,
+      "program_starts_and_protocol_valid": true,
+      "required_artifacts": false,
+      "workspace_budget": true
+    },
+    "hard_gates_passed": false,
+    "passed": 0,
+    "phase": "baseline-public",
+    "protocol": {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.0504,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"ouroboros health check\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "score": 0.0,
+    "test_results": [
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Analyze a simple sentence with distinct words",
+        "duration_seconds": 0.0254,
+        "exit_code": 0,
+        "id": "test_basic_sentence",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 0,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "fce19f27e2964e35d97e51eef279b2d7f55440beb698c090ff7606498a163596",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Handle repeated words correctly",
+        "duration_seconds": 0.0253,
+        "exit_code": 0,
+        "id": "test_repeated_words",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 1,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "489b2e7ae9700e8fbab463484f8bab3962acb1a8095886b15d87b75d2e07a82e",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Count unique words case-insensitively",
+        "duration_seconds": 0.0251,
+        "exit_code": 0,
+        "id": "test_case_insensitive",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 2,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "4928d7759e3a4262f9e860531825c6eaa5416db6d565dfab347625e88693d91b",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Handle empty sentence",
+        "duration_seconds": 0.0253,
+        "exit_code": 0,
+        "id": "test_empty_sentence",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 3,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "03b456d09975f4ff38cff92e4a34848fbdd024bbdc535d0836960fe7552711d7",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Handle whitespace-only input",
+        "duration_seconds": 0.0253,
+        "exit_code": 0,
+        "id": "test_whitespace_only",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 4,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "d558a53bf166c9b30855b24b72a8d0116b51d37bf04d83af4afe8304f775a8ac",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Handle single word input",
+        "duration_seconds": 0.0253,
+        "exit_code": 0,
+        "id": "test_single_word",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 5,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "0087af1be39983e0de65701dfb809ad99e4020600e3959c623c2eb8ae2135310",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Handle multiple spaces between words",
+        "duration_seconds": 0.0252,
+        "exit_code": 0,
+        "id": "test_multiple_spaces",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 6,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "a976da92f469239bbb318a9a5cce4f1f13080f1308c3167e5330d712f4c4aeab",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "description": "Handle words with attached punctuation",
+        "duration_seconds": 0.0253,
+        "exit_code": 0,
+        "id": "test_with_punctuation",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 7,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "ec9797b749dc9e0b8452b55eb1b5e80313dd809aff6c5b734140fe93ac5f3d87",
+        "timed_out": false
+      },
+      {
+        "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "description": "Verify automated test file exists",
+        "id": "test_automated_tests_exist",
+        "ordinal": 8,
+        "passed": false,
+        "path": "test_analyzer.py",
+        "reasons": [
+          "missing test_analyzer.py",
+          "file missing 'test_analyzer.py'"
+        ],
+        "test_hash": "e593b5fb2848300af1c2f2e374f49fcd219773902cd3afad8ab643379dbbbdff"
+      },
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pytest",
+          "test_analyzer.py",
+          "-v"
+        ],
+        "description": "Run automated tests successfully",
+        "duration_seconds": 0.2071,
+        "exit_code": 3,
+        "id": "test_automated_tests_run",
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 9,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "exit 3 != 0",
+          "stdout missing 'passed'"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "INTERNALERROR> Traceback (most recent call last):\nINTERNALERROR>   File \"/Users/yoheinakajima/Documents/activegraph-bridge/.venv/lib/python3.11/site-packages/_pytest/main.py\", line 326, in wrap_session\nINTERNALERROR>     config._do_configure()\nINTERNALERROR>   File \"/Users/yoheinakajima/Documents/activegraph-bridge/.venv/lib/python3.11/site-packages/_pytest/config/__init__.py\", line 1205, in _do_configure\nINTERNALERROR>     self.hook.pytest_configure.call_historic(kwargs=dict(config=self))\nINTERNALERROR>   File \"/Users/yoheinakajima/Documents/activegraph-bridge/.venv/lib/python3.11/site-packages/pluggy/_hooks.py\", line 534, in call_historic\nINTERNALERROR>     res = self._hookexec(self.name, self._hookimpls.copy(), kwargs, False)\nINTERNALERROR>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nINTERNALERROR>   File \"/Users/yoheinakajima/Documents/activegraph-bridge/.venv/lib/python3.11/site-packages/pluggy/_manager.py\", line 120, in _hookexec\nINTERNALERROR>     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\nINTERNALERROR>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nINTERNALERROR>   File \"/Users/yoheinakajima/Documents/activegraph-bridge/.venv/lib/python3.11/site-packages/pluggy/_callers.py\", line 167, in _multicall\nINTERNALERROR>     raise exception\nINTERNALERROR>   File \"/Users/yoheinakajima/Documents/activegraph-bridge/.venv/lib/python3.11/site-packages/pluggy/_callers.py\", line 121, in _multicall\nINTERNALERROR>     res = hook_impl.function(*args)\nINTERNALERROR>           ^^^^^^^^^^^^^^^^^^^^^^^^^\nINTERNALERROR>   File \"/Users/yoheinakajima/Documents/activegraph-bridge/.venv/lib/python3.11/site-packages/_pytest/logging.py\", line 653, in pytest_configure\nINTERNALERROR>     config.pluginmanager.register(LoggingPlugin(config), \"logging-plugin\")\nINTERNALERROR>                                   ^^^^^^^^^^^^^^^^^^^^^\nINTERNALERROR>   File \"/Users/yoheinakajima/Documents/activegraph-bridge/.venv/lib/python3.11/site-packages/_pytest/logging.py\", line 690, in __init__\nINTERNALERROR>     self.log_file_handler = _FileHandler(\nINTERNALERROR>                             ^^^^^^^^^^^^^\nINTERNALERROR>   File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/logging/__init__.py\", line 1181, in __init__\nINTERNALERROR>     StreamHandler.__init__(self, self._open())\nINTERNALERROR>                                  ^^^^^^^^^^^^\nINTERNALERROR>   File \"/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/logging/__init__.py\", line 1213, in _open\nINTERNALERROR>     return open_func(self.baseFilename, self.mode,\nINTERNALERROR>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nINTERNALERROR> PermissionError: [Errno 1] Operation not permitted: '/dev/null'\n",
+        "stdout_truncated": false,
+        "test_hash": "6d3085b4bdf60c6e4a432bbe685358176550dca540d9554777243fbed8aaab81",
+        "timed_out": false
+      },
+      {
+        "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "description": "Verify README exists",
+        "id": "test_readme_exists",
+        "ordinal": 10,
+        "passed": false,
+        "path": "README.md",
+        "reasons": [
+          "missing README.md",
+          "file missing 'README.md'"
+        ],
+        "test_hash": "d72d4e62429550aaa06483ee5e97b31c6350c543d9b4dcfe00b9afbdd0f0adf9"
+      }
+    ],
+    "total": 11,
+    "tree": {
+      "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+      "files": [
+        {
+          "path": "MEMORY.md",
+          "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+          "size": 34
+        },
+        {
+          "path": "SELF.md",
+          "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+          "size": 215
+        },
+        {
+          "path": "agent.py",
+          "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+          "size": 276
+        },
+        {
+          "path": "ouroboros.json",
+          "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+          "size": 267
+        }
+      ],
+      "symlinks": [],
+      "total_bytes": 792
+    }
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "candidate": {
+    "declared_test": {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "-q"
+      ],
+      "duration_seconds": 0.0416,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+      "stderr_truncated": false,
+      "stdout_tail": "",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "hard_gate_errors": [],
+    "hard_gates": {
+      "declared_test_command": true,
+      "entrypoint_exists": true,
+      "manifest_valid": true,
+      "no_symlinks_or_escape": true,
+      "private_test_isolation": true,
+      "program_starts_and_protocol_valid": true,
+      "required_artifacts": true,
+      "workspace_budget": true
+    },
+    "hard_gates_passed": true,
+    "passed": 2,
+    "phase": "candidate-private",
+    "protocol": {
+      "argv": [
+        "python",
+        "app.py"
+      ],
+      "duration_seconds": 0.0249,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"OUROBOROS HEALTH CHECK\"}\n",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "score": 1.0,
+    "test_results": [
+      {
+        "argv": [
+          "python",
+          "app.py"
+        ],
+        "duration_seconds": 0.025,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 0,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"OURO_PRIVATE_EE0EBF776ACD4A3F82A422688BC32392 \\u2014 CAF\\u00c9 \\u6771\\u4eac\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "4eb80640c8e3a8ae98f348a9056265ae75bea4dd948a465d1a5217c0da1aee19",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "app.py"
+        ],
+        "duration_seconds": 0.0249,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 1,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"HELLO\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "222a18dc6dcc516ddb7a1aa7a9da27b5441481e0db81a5c8f183d8fe0a32c8ea",
+        "timed_out": false
+      }
+    ],
+    "total": 2,
+    "tree": {
+      "content_id": "workspace-sha256-970906c4f200585a1fc1f6f98ccfb8df3b4adc161efd8d6a9ca73de68591076f",
+      "files": [
+        {
+          "path": "MEMORY.md",
+          "sha256": "cffbea39cccf2b8c8585089783c6a47b51797130636314c67d31cb1a27d81bfb",
+          "size": 60
+        },
+        {
+          "path": "SELF.md",
+          "sha256": "2a40cf0a415d0d4f58a916da1023f4f9ba5dcdd150996349ad37262de90e0957",
+          "size": 61
+        },
+        {
+          "path": "app.py",
+          "sha256": "7120f72cadbb88a1c0f96c79f143220ac03f9e393332aa4104ec3862151529e8",
+          "size": 195
+        },
+        {
+          "path": "logic.py",
+          "sha256": "57f7d026b8e1df582ef66f78e6887371ce2fc6df9c8e23fd102b3f65dcd8bcc2",
+          "size": 67
+        },
+        {
+          "path": "ouroboros.json",
+          "sha256": "badfcaa2a0da45e159584289971b3f97d268694fa6940c22f0c0bcadb11cfd35",
+          "size": 264
+        }
+      ],
+      "symlinks": [],
+      "total_bytes": 647
+    }
+  },
+  "incumbent": {
+    "declared_test": {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "-q"
+      ],
+      "duration_seconds": 0.0491,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nOK\n",
+      "stderr_truncated": false,
+      "stdout_tail": "",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "hard_gate_errors": [
+      "required artifact missing: app.py",
+      "required artifact missing: logic.py"
+    ],
+    "hard_gates": {
+      "declared_test_command": true,
+      "entrypoint_exists": true,
+      "manifest_valid": true,
+      "no_symlinks_or_escape": true,
+      "private_test_isolation": true,
+      "program_starts_and_protocol_valid": true,
+      "required_artifacts": false,
+      "workspace_budget": true
+    },
+    "hard_gates_passed": false,
+    "passed": 1,
+    "phase": "incumbent-private",
+    "protocol": {
+      "argv": [
+        "python",
+        "agent.py"
+      ],
+      "duration_seconds": 0.0247,
+      "exit_code": 0,
+      "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+      "policy_blocked": false,
+      "stderr_tail": "",
+      "stderr_truncated": false,
+      "stdout_tail": "{\"result\": \"ouroboros health check\", \"status\": \"seed\"}\n",
+      "stdout_truncated": false,
+      "timed_out": false
+    },
+    "score": 0.5,
+    "test_results": [
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "duration_seconds": 0.0253,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 0,
+        "passed": true,
+        "policy_blocked": false,
+        "reasons": [],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"  OURO_PRIVATE_ee0ebf776acd4a3f82a422688bc32392 \\u2014 caf\\u00e9 \\u6771\\u4eac  \", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "4eb80640c8e3a8ae98f348a9056265ae75bea4dd948a465d1a5217c0da1aee19",
+        "timed_out": false
+      },
+      {
+        "argv": [
+          "python",
+          "agent.py"
+        ],
+        "duration_seconds": 0.0243,
+        "exit_code": 0,
+        "isolation": "resource-limits+scrubbed-env+seatbelt-home-hidden+workspace-write-only+network-deny",
+        "ordinal": 1,
+        "passed": false,
+        "policy_blocked": false,
+        "reasons": [
+          "stdout missing 'HELLO'",
+          "stdout JSON did not contain expected values"
+        ],
+        "stderr_tail": "",
+        "stderr_truncated": false,
+        "stdout_tail": "{\"result\": \"hello\", \"status\": \"seed\"}\n",
+        "stdout_truncated": false,
+        "test_hash": "222a18dc6dcc516ddb7a1aa7a9da27b5441481e0db81a5c8f183d8fe0a32c8ea",
+        "timed_out": false
+      }
+    ],
+    "total": 2,
+    "tree": {
+      "content_id": "workspace-sha256-f49c3ade6563ef47bea8c63c18a2956e93b9217c1e027c97c3303213af0fda57",
+      "files": [
+        {
+          "path": "MEMORY.md",
+          "sha256": "ee7c97fcf30524069918ead3dfda8edc9af3c57cacb999850cf6c5b83583c788",
+          "size": 34
+        },
+        {
+          "path": "SELF.md",
+          "sha256": "bd93765d9e9003106fd814fc48cb40ea831726ce4713a74176c1d96c9dac2856",
+          "size": 215
+        },
+        {
+          "path": "agent.py",
+          "sha256": "7ccaa5cd046b239c6415fa8d3dcb892fc61943484f4b2a96aa006e8b598541a4",
+          "size": 276
+        },
+        {
+          "path": "ouroboros.json",
+          "sha256": "03b939d9043c2e0c911540846d0126d8629aee6e22a40c4b002522d625b41189",
+          "size": 267
+        }
+      ],
+      "symlinks": [],
+      "total_bytes": 792
+    }
+  },
+  "receipt": {
+    "algorithm": "sha256",
+    "sealed": true,
+    "suite_hash": "23d98590d543f7cf7ab442107189e8d2fb6cf4b802affb54dcbf99fc3e7af512",
+    "test_count": 2
+  }
+}
