@@ -1,9 +1,0 @@
-{
-  "findings": [
-    "Corrected stdin format for private tests to match JSON input requirement.",
-    "Ensured all expected outputs are in uppercase where applicable.",
-    "manager normalized 8 serialized JSON stdin fixture(s)"
-  ],
-  "private_suite_hash": "f9a71c23ebdba814dec7858ad3f42e956116fe400c5774130d2775c3f999d5cf",
-  "public_suite_hash": "09e45fa5d40e3ac27cd7f1c674b93812b6ddecfc60c738bd39be4ceb1746a9e1"
-}

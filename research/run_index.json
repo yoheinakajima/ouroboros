@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "curated_summary": "evidence/pilot_summary.json",
+  "raw_artifacts": "local_or_tagged_release_assets",
+  "runs": [
+    {
+      "id": "workspace-todo-gpt56-20260716",
+      "approach": "workspace_v1_lineage",
+      "task": "robust_todo_cli",
+      "validity": "valid_native_evidence",
+      "result": "artifacts/live-runs/upgrade-openai-evolution-20260716-v3/result.json",
+      "notes": "Promoted multi-file workspace; 5/5 manager-private tests and six declared tests. Run manifest reports engine 1.1.0-workspace."
+    },
+    {
+      "id": "workspace-chatbot-gpt56-20260716",
+      "approach": "workspace_v1_lineage",
+      "task": "vague_chatbot",
+      "validity": "valid_native_evidence",
+      "result": "artifacts/capability-runs/capability-chatbot-20260716/result.json",
+      "notes": "Promoted deterministic chatbot workspace; 6/6 public and 5/5 private."
+    },
+    {
+      "id": "workspace-coding-agent-gpt56-20260716",
+      "approach": "workspace_v1_lineage",
+      "task": "vague_coding_agent",
+      "validity": "valid_negative_evidence",
+      "result": "artifacts/capability-runs/capability-coding-agent-20260716/result.json",
+      "notes": "Rejected; 5/5 public but 2/5 private, exposing generalization failure."
+    },
+    {
+      "id": "minimal-live-suite-gpt56-20260716",
+      "approach": "minimal_v2",
+      "task": "coding_memory_and_slugify",
+      "validity": "valid_native_evidence",
+      "result": null,
+      "evidence": "TEST_REPORT.md",
+      "notes": "Three live demonstrations plus 13 deterministic tests; individual traces are local or release assets under artifacts/minimal-demo-20260716."
+    },
+    {
+      "id": "hybrid-usage-gpt56-v1",
+      "approach": "hybrid_docs_grounded_pack",
+      "task": "stateful_usage_tracker",
+      "validity": "invalid_manager_bug",
+      "result": "artifacts/research-runs/hybrid-stateful-usage-gpt56-20260716-v1/result.json",
+      "notes": "Retained failure: EmptySettings was not canonicalized into the generated manifest. This is manager failure evidence, not a model failure."
+    },
+    {
+      "id": "hybrid-usage-gpt56-v4",
+      "approach": "hybrid_docs_grounded_pack",
+      "task": "stateful_usage_tracker",
+      "validity": "valid_graph_audited_pilot",
+      "result": "artifacts/research-runs/hybrid-stateful-usage-gpt56-20260716-v4/result.json",
+      "notes": "3/3 public, 4/4 private, 3/3 post-restart transfer with typed object and version assertions."
+    },
+    {
+      "id": "minimal-normalizer-gpt56-v1",
+      "approach": "minimal_v2_pure_capability",
+      "task": "nested_record_normalizer",
+      "validity": "valid_portable_pilot",
+      "result": "artifacts/research-runs/minimal-nested-normalizer-gpt56-20260716-v1/result.json",
+      "notes": "4/4 public, 4/4 held out, exact-hash promotion, and 3/3 post-restart transfer."
+    },
+    {
+      "id": "hybrid-normalizer-gpt56-v1",
+      "approach": "hybrid_docs_grounded_pack",
+      "task": "nested_record_normalizer",
+      "validity": "invalid_manager_interface_bug",
+      "result": "artifacts/research-runs/hybrid-nested-normalizer-gpt56-20260716-v1/result.json",
+      "notes": "Retained failure: a root-module allowlist rejected collections.abc, and the output schema ambiguously described external capabilities. Candidate was never imported."
+    },
+    {
+      "id": "hybrid-normalizer-gpt56-v2",
+      "approach": "hybrid_docs_grounded_pack",
+      "task": "nested_record_normalizer",
+      "validity": "valid_portable_pilot",
+      "result": "artifacts/research-runs/hybrid-nested-normalizer-gpt56-20260716-v2/result.json",
+      "notes": "Corrected manager/interface; 4/4 public, 4/4 private, adoption/restart, and 3/3 transfer."
+    },
+    {
+      "id": "hybrid-dependencies-gpt56-v1",
+      "approach": "hybrid_docs_grounded_pack",
+      "task": "dependency_release_planner",
+      "validity": "valid_graph_audited_pilot",
+      "result": "artifacts/research-runs/hybrid-dependency-planner-gpt56-20260716-v1/result.json",
+      "notes": "5/5 public, 5/5 private, 4/4 post-restart transfer with typed node and relation assertions."
+    }
+  ]
+}

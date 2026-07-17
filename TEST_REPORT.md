@@ -1,220 +1,250 @@
-# Ouroboros v1.2 evaluator-hardening and release test report
+# Ouroboros minimal ActiveGraph prototype — test report
 
-Date: 2026-07-16  
-Host: macOS, Python 3.11.15  
-ActiveGraph: 1.10.0  
-Live providers/models: OpenAI / `gpt-5.6-sol`, `gpt-4o`
+Date: 2026-07-16
 
-## Recommendation
+Host: macOS, Python 3.11
 
-Work from this Codex-authored v1.2 kernel. It retains the v1.1 full live
-promotion and adds execution-contract hardening validated by current-source
-GPT-4o manager calls. The Claude version remains useful as a
-comparison artifact, but is not the stronger base: the Codex kernel has the
-broader tested evaluator, immutable evidence bundle, manager-only private suite,
-explicit capability gate, and durable cost/accounting path.
+Runtime: ActiveGraph 1.10.0
 
-## Outcome
+Live provider/model: OpenAI / `gpt-5.6-sol`
 
-The deterministic suite passes 31/31 tests. Ruff and Python compilation pass.
-The final v1.2 live baseline completed the contract, private-suite, and
-independent suite-review path in three GPT-4o calls. Its repaired private-suite
-call is explicitly marked unmetered because the provider adapter discarded
-token metadata when JSON parsing threw; the other calls recorded $0.0388450.
-All three public and five private JSON-stdin fixtures were normalized to JSON
-objects. The seed correctly failed required-artifact and nonzero-test-discovery
-gates instead of receiving a false pass.
+External pack library: not installed or imported
 
-- [v1.2 final result](artifacts/live-runs/hardening-openai-final-20260716-v2/result.json)
-- [v1.2 reviewed public contract](artifacts/live-runs/hardening-openai-final-20260716-v2/objective_contract.json)
-- [v1.2 manager suite review](artifacts/live-runs/hardening-openai-final-20260716-v2/private/suite_review.json)
-- [v1.2 trace](artifacts/live-runs/hardening-openai-final-20260716-v2/trace.sqlite)
+## Result
 
-### v1.2 versus v1.1
+The pack-free prototype works across all three target demonstrations:
 
-| Evaluator boundary | v1.1 | v1.2 |
-|---|---|---|
-| Deterministic regression suite | 25 tests | 31 tests |
-| Startup smoke | Generic protocol sample | Contract-valid typed smoke input |
-| Declared tests | Exit code only | Must prove at least one test ran |
-| Generated suite QA | Schema + semantic de-duplication | Separate LLM audit plus deterministic wrapper, contradiction, dependency, and feasibility checks |
-| Qualitative position control | Mirrored positions in one call | Two isolated calls with disjoint case batches |
-| Malformed suite output | Terminal parse failure | Non-executing bounded literal repair, then one bounded retry |
-| Usage evidence | Successful calls/tokens | Attempts, failures, repairs, unmetered calls, and per-phase totals |
+1. A real coding-agent task repaired a workspace and passed an independent
+   four-test check.
+2. A model-backed chatbot remembered two facts across a process restart.
+3. A live model authored a deterministic capability from three visible
+   examples; a key-free subprocess fork tested three hidden examples, promoted
+   the passing delta, and a fresh process reused the exact hash-verified code.
 
-The earlier v1.1 scratch live run attempted one generation and promoted one
-generation:
+The current Minimal-v2 regression suite passes 13/13 tests. Python compilation and
+`git diff --check` also pass.
 
-| Signal | Incumbent | Candidate |
-|---|---:|---:|
-| Public executable tests | 3/8 (0.375) | 8/8 (1.0) |
-| Manager-private tests | 1/5 (0.2) | 5/5 (1.0) |
-| Mirrored qualitative score | 10.0 | 96.5 |
-| Hard gates | fail | pass |
+## Architecture under test
 
-The kernel recorded `execution-grounded deterministic dominance`. The candidate
-won all six mirrored rubric aggregates, its worst qualitative delta was +62,
-and there were no meaningful losses. Its final content ID is
-`workspace-sha256-b9e29c93d1d614090d95e5847ddc7533f3b811f3ced489c7d8a18d1cb62802ba`.
+The public dependency is only:
 
-- [Final result](artifacts/live-runs/upgrade-openai-evolution-20260716-v3/result.json)
-- [Promotion record](artifacts/live-runs/upgrade-openai-evolution-20260716-v3/promotion.json)
-- [Evaluation](artifacts/live-runs/upgrade-openai-evolution-20260716-v3/generations/g001/evaluation.json)
-- [Trace](artifacts/live-runs/upgrade-openai-evolution-20260716-v3/trace.sqlite)
-- [Promoted workspace](artifacts/live-runs/upgrade-openai-evolution-20260716-v3/final_workspace/)
-
-## Replit finding closure
-
-| Finding | Resolution | Coverage/evidence |
-|---|---|---|
-| C1 manifest schema rejected valid argv/stdout candidates | Added `argv` and `stdout`, publishes the exact manifest contract to the builder, and validates submission early so it can self-correct | `test_14_argv_stdout_manifest_reaches_judge_and_promotes`; live candidate uses argv/stdout |
-| C2 tool budget assumed one tool per turn and was shared badly | Runtime budget is generations × turns × calls-per-turn; per-generation counters are separate | `test_17_runtime_budget_has_parallel_margin_and_cost_taxonomy` |
-| C3 builder could not see its budget | Initial request and every tool result contain live used/remaining counters | `test_05c_builder_receives_manifest_and_live_budget_contract`; 28/140 live tool calls |
-| C4 dead `behavior.failed` path/status ambiguity | Removed the dead subscriber; runtime failures are handled after ActiveGraph returns, recoverable builder failures reject only that generation, and cost exhaustion has its own terminal status | `test_08`, `test_16`, `test_17` |
-| C5 no cost cap or ledger | Added model-call, token, time, tool, and dollar controls plus durable `usage.json` accounting by phase | Final live run: 15 model calls, 206,561 input tokens, 12,703 output tokens, estimated $1.413895 under a $5 cap |
-| C6 capabilities were prose only | Compiler emits canonical capability flags and the kernel blocks unsupported network/package objectives before private-suite or builder spend | `test_15_capability_gate_stops_before_private_or_builder_spend` |
-| C7 private tests cloned public tests, leaked details, and influenced judge | Separate private-suite LLM behavior; semantic clone removal; exact suite and results only under manager `private/`; public artifacts use receipts/digests; judge receives no private pass rates | `test_03`, `test_05b`, `test_05d`; live semantic clone count 0 |
-| C8 preflight could leave empty history | Finalization always writes a non-empty auditable history row and complete top-level bundle | preflight/bundle tests |
-| C9 run collisions and dead code | Reused run IDs fail cleanly without a traceback or mutation; dead branch removed | `test_18_run_id_collision_is_clean_and_non_destructive` |
-
-The event namespace remains `ouro.v0` because that is the original protocol
-contract, not an implementation version. Engine version is independently
-reported as `1.2.0-workspace`; protocol version is 3.
-
-## Additional upgrades
-
-- Ordered `state_persistence` tests execute multiple processes in one isolated
-  workspace, making durable state observable instead of inferred.
-- Private tests are normalized to at least two distinct behaviors and capped at
-  eight; the live suite has five with zero public semantic clones.
-- Every qualitative criterion is presented in mirrored A/B and B/A views in
-  two isolated calls. The kernel unblinds and aggregates the pair, requiring
-  both views to confirm a severe regression.
-- Strict deterministic dominance is explicit. A hard-gate-passing candidate
-  that non-regressively improves executable public/private evidence cannot be
-  rejected solely by a contradictory qualitative label.
-- GPT-5.6 tool turns use a narrow Chat Completions compatibility adapter that
-  sets `reasoning_effort=none`; non-tool compiler/private/judge calls retain the
-  model default. Anthropic tool token counting is also fixed locally for
-  ActiveGraph 1.10 cost caps.
-- Candidate submission validates the manifest and entrypoint before ending the
-  builder session. Recoverable exhaustion/schema failures advance to the next
-  generation instead of terminating the campaign.
-
-## Commands and observed results
-
-Static and deterministic validation:
-
-```bash
-/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python -m py_compile ouroboros.py
-/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/ruff check ouroboros.py tests/test_ouroboros.py
-/Users/yoheinakajima/Documents/activegraph-bridge/.venv/bin/python -m unittest -v tests.test_ouroboros
+```text
+activegraph[llm]>=1.10,<2
 ```
 
-Observed for v1.2: compilation passed, Ruff reported `All checks passed!`, and
-unittest reported `Ran 31 tests ... OK`. Logged `llm.network_error`,
-`tool.max_turns_exhausted`, and `budget.cost_exhausted` lines are deliberate
-fault injections with asserted terminal/recovery behavior.
+The running organism is:
 
-Final live command:
-
-```bash
-python ouroboros.py \
-  "Build a robust multi-file argv todo CLI with persistent local JSON state, add/list/done/stats commands, helpful errors, and real automated tests." \
-  --provider openai --model gpt-5.6-sol \
-  --run-root artifacts/live-runs \
-  --run-id upgrade-openai-evolution-20260716-v3 \
-  --generations 1 --max-tool-turns 35 --max-tool-calls-per-turn 4 \
-  --max-llm-calls 42 --max-cost-usd 5 \
-  --command-timeout 45 --test-timeout 30 --memory-mb 1024 --json
+```text
+persistent ActiveGraph event log
+  + one generic model actor
+  + evaluated procedures
+  + promoted deterministic capabilities
+  + six host-owned tools
 ```
 
-Observed: completed in 4m23s; 12 builder calls, 28 tool calls, 15 total model
-calls, estimated $1.413895, one accepted generation, and one terminal event.
-The run-manifest engine hash equals that v1.1 `ouroboros.py` SHA-256:
-`c477b44a78e3fbdce15baab855ac26e97b9d668c7fc3ec4cacaa46957469c818`.
+Generated structural mutations use ActiveGraph's native `Pack` and manifest
+types internally as a trial/promotion ABI. No code is discovered or installed
+from `activegraph-packs`.
 
-Independent promoted-workspace verification:
+## Deterministic suite
+
+Command:
 
 ```bash
-cd artifacts/live-runs/upgrade-openai-evolution-20260716-v3/final_workspace
-python -m unittest discover -v
-python todo.py --data-file /tmp/audit.json add "Audit release"
-python todo.py --data-file /tmp/audit.json list
-python todo.py --data-file /tmp/audit.json done 1
-python todo.py --data-file /tmp/audit.json stats
+python -m unittest discover -v -s tests -p 'test_ouroboros.py'
 ```
 
-Observed: all six candidate tests passed. The real sequence added and listed one
-pending item, completed it, and reported total 1 / pending 0 / completed 1.
+Observed:
 
-## Immutable live debugging trail
+```text
+Ran 13 tests
+OK
+```
 
-The v1.2 evaluator-hardening trail is also preserved:
+Covered boundaries:
 
-| Bundle | Outcome | Defect exposed or verified |
-|---|---|---|
-| `hardening-openai-baseline-20260716` | failed | GPT-4o emitted a code expression inside JSON; failed calls were missing from the usage ledger |
-| `hardening-openai-retry-20260716` | failed after one retry | Bounded retry and honest 3-attempt/2-failure accounting worked; prompt-only JSON was insufficient |
-| `hardening-openai-repaired-20260716` | baseline-only | Non-executing literal repair reached the separate manager suite review |
-| `hardening-openai-final-20260716` | baseline-only | Current source normalized all eight JSON fixtures and enforced zero-test discovery |
-| `hardening-openai-final-20260716-v2` | baseline-only | Exact committed-source candidate; bounded pre-allocation checks, 31 tests, and matching engine hash |
+- Native model/tool turn loop edits a workspace.
+- A failing external check overrides an agent's success claim.
+- Procedures are stored only after passing evaluation.
+- Procedures survive restart and enter related future context.
+- A procedure cold ablation retains its audit history but excludes it from the
+  model's scoped graph view.
+- A promotion cold ablation retains its graph record but does not import the
+  promoted code.
+- `.env` and common credential files are hidden from file tools.
+- macOS command children cannot read workspace `.env`.
+- Command environments contain no provider credentials.
+- Offline inspection performs no model call or mutation-code import.
+- Unsafe generated imports fail the static mutation gate.
+- A memorized candidate passes visible cases but fails hidden cases and is not
+  promoted.
+- A general candidate passes a real subprocess fork, promotes, survives
+  restart, and is invoked by the generic agent.
 
-The earlier v1.1 generation trail:
+ActiveGraph reports its documented macOS limitation during mutation tests:
+Darwin cannot enforce `RLIMIT_AS`, so the child announces that the memory net
+is off. The subprocess boundary, parent wall-clock kill, and event budget
+remain active.
 
-| Bundle | Outcome | Defect exposed |
-|---|---|---|
-| `upgrade-openai-baseline-20260716` | baseline-only, complete | Validated GPT-5.6 contract/private path and accounting at $0.250165 |
-| `upgrade-openai-evolution-20260716` | failed, seed preserved | GPT-5.6 Chat Completions rejects tools with reasoning enabled; added the scoped compatibility client |
-| `upgrade-openai-evolution-20260716-v2` | completed, strong candidate rejected | 6/6 public, 5/5 private, 4/4 own tests; one judge row's prose and A/B score contradicted each other; added mirrored views and deterministic dominance |
-| `upgrade-openai-evolution-20260716-v3` | completed, promoted | Current source: 8/8 public, 5/5 private, 6/6 own tests, judge 96.5 vs 10.0 |
+## Live test 1: coding agent
 
-The failed/rejected bundles were intentionally retained rather than rewritten.
+Prompt:
 
-## Integrity and leakage audit
+```text
+Become a coding agent. Inspect this workspace, repair the implementation so
+every test passes, and verify the result.
+```
 
-Current-source v1.2 baseline:
+The seed `factorial(0)` incorrectly returned `0`. The agent:
 
-- SQLite `PRAGMA integrity_check`: `ok`; exactly one terminal event and one
-  audited literal-repair event.
-- Trace: three `llm.requested` and three `llm.responded` events covering the
-  contract, private suite, and independent suite review.
-- Final run-manifest source hash matches the current engine:
-  `029e24b2e8d445d849cd147f4103e7ebcdd6e8d18ca78d01a19f3914ecf5cfdc`.
-- Two credential values from `.env` were checked across all 417 live-artifact
-  files: zero hits. Values were never printed.
+- listed and read the workspace;
+- ran tests and observed three failures;
+- changed the base case to return `1`;
+- ran pytest and unittest;
+- passed the kernel's independent `python -m unittest -q` check.
 
-Earlier v1.1 promoted generation:
+Observed external result:
 
-- SQLite `PRAGMA integrity_check`: `ok`.
-- Trace: 321 events, 15 `llm.requested`, 28 `tool.requested`, one candidate
-  acceptance, zero runtime errors, and exactly one terminal event.
-- Exact provider credential values from `.env` were compared against every
-  bundle file, including SQLite: zero hits. Values were never printed.
-- Exact private-suite bytes do not occur in public contract, suite, or receipt
-  artifacts. Candidate-visible/public canary scan: zero hits.
-- Final tree: 10 files, 12,752 bytes, no symlinks, content-addressed promotion.
+```text
+Ran 4 tests
+OK
+```
+
+The first run recorded 34 events and retained an evidence-linked procedure.
+A later hardened restart reverified all four tests under macOS Seatbelt. The
+coding trace now contains 62 events, 9 model responses, and 12 tool calls.
+Recorded model cost across both coding turns: `$0.140770`.
+
+Evidence:
+
+- `artifacts/minimal-demo-20260716/coding-workspace/`
+- `artifacts/minimal-demo-20260716/coding-state/trace.sqlite`
+
+## Live test 2: persistent chatbot
+
+First prompt:
+
+```text
+Turn into a chatbot. My name is Ada and my favorite number is 17. Reply
+naturally and remember these facts.
+```
+
+Response:
+
+```text
+Hi Ada! Nice to meet you. I’ll remember that your favorite number is 17.
+```
+
+After exiting and starting a fresh Python process:
+
+```text
+User: What is my name and favorite number?
+Ouroboros: Your name is Ada, and your favorite number is 17.
+```
+
+The trace contains 22 events and two model responses. There were no tool calls,
+rules, or chatbot packs. Recorded model cost: `$0.021730`.
+
+Evidence: `artifacts/minimal-demo-20260716/chat-state/trace.sqlite`
+
+## Live test 3: structural self-improvement
+
+Prompt:
+
+```text
+Learn a reusable slugify capability that converts arbitrary text into
+lowercase hyphen-separated slugs.
+```
+
+Six examples were hash-sorted and split 3/3. Only the training half entered the
+author's graph event and model prompt. GPT-5.6 produced a general Unicode-aware
+implementation using `unicodedata`; it did not enumerate the examples.
+
+The generated bundle passed:
+
+- source-size and AST gates;
+- import allow-list and dynamic-execution bans;
+- manifest content-hash validation;
+- external bundle-hash validation including the manifest;
+- three training examples;
+- three model-hidden held-out examples;
+- subprocess wall/event limits;
+- zero behavior failures.
+
+ActiveGraph then dry-ran promotion, loaded the exact candidate surface, and
+promoted the fork's `mutation_trial_result`. Promotion ID: `promotion#7`.
+
+After process restart, Ouroboros reverified bundle
+`sha256:d24502796213a440fab746630cd74d5a3b186f86fa769df1eee7dac66e048478`
+and exposed `slugify_text`. The generic agent called it through the recorded
+`invoke_capability` tool and returned:
+
+```text
+recursive-improvement-works
+```
+
+The parent trace contains 34 events, three model responses, one
+`tool.requested`, and one `promote.applied`. Recorded model cost for authorship
+plus reuse: `$0.055335`.
+
+Evidence:
+
+- `artifacts/minimal-demo-20260716/mutation-state/trace.sqlite`
+- `artifacts/minimal-demo-20260716/mutation-state/mutations/agent_slugify_text_09a3959294/`
+
+## Security regression found and fixed during live testing
+
+The first implementation scrubbed provider keys from child environments but
+did not hide a `.env` physically located in the workspace. That would allow a
+command to read it directly.
+
+The final implementation now:
+
+- removes `.env*`, `.netrc`, `.npmrc`, `.pypirc`, and `credentials.json` from
+  file-tool visibility;
+- denies direct tool paths to those files;
+- uses a provider-key-free child environment;
+- denies package-install and common network commands;
+- applies macOS Seatbelt with home/state read denial, workspace-only writes,
+  explicit credential-file denial, and network denial;
+- permits `/dev/null` and workspace-local temp/home directories so pytest and
+  normal developer tools continue to work.
+
+Post-fix sandbox smoke:
+
+```text
+python -m pytest -q
+4 passed in 0.00s
+isolation: macos-seatbelt
+```
 
 ## Remaining limitations
 
-1. This remains constrained execution, not a universal hostile-code sandbox.
-   macOS Seatbelt provides the strongest tested boundary; use a disposable VM
-   or container for untrusted candidate code on other hosts.
-2. Public and private tests are LLM-compiled. Executable evaluation, semantic
-   de-duplication, manager separation, and mirrored judging reduce errors but do
-   not prove specification completeness.
-3. Private material is access-separated by bundle path and public redaction,
-   not encrypted. Anyone with manager-run-directory access can read it.
-4. Dollar totals are provider price-table estimates, not billing-system
-   receipts. The runtime still enforces its estimate before subsequent calls.
-5. The GPT-5.6 Chat Completions tool limitation means builder tool turns use
-   reasoning effort `none`; moving ActiveGraph's builder transport to the
-   Responses API would allow tool use with the model's reasoning mode.
-6. Mirrored judge views use isolated calls, but both calls may still use the
-   same model and prompt family. Deterministic evidence remains the release
-   authority when it strictly dominates.
-7. Bundle immutability is logical: exclusive run IDs and content hashes detect
-   mutation, but completed directories are not filesystem-locked or signed.
-8. This release live-tested a standard-library Python argv application. Network,
-   package-install, non-Python, and multi-generation live campaigns still need
-   broader release evidence.
+1. Without `--check`, task success is based on the actor's structured
+   `completed` status. This is appropriate for chat but weak evidence for
+   open-ended work; serious tasks should supply an executable check.
+2. Procedure synthesis is model-proposed and lexical retrieval is deliberately
+   simple. Evaluation gates whether a procedure is retained, but does not yet
+   measure whether it improves later outcomes.
+3. Structural mutations currently implement pure JSON-object-to-JSON-object
+   capabilities. They cannot create new external credentials, network access,
+   or host authorities.
+4. Static Python gates and subprocess limits contain common accidents, not a
+   determined malicious model. Non-macOS hostile runs still require a
+   container or VM.
+5. Low-risk pure mutations auto-promote after held-out success. There is no
+   owner review UI, signature system, concurrent writer protocol, or automatic
+   rollback yet.
+6. The implementation is 1,400+ lines because it includes the CLI, two model
+   providers, workspace safety, mutation materialization, and tests' public
+   contracts. The conceptual kernel is much smaller, but further reduction
+   should wait until the demo surface is chosen.
+
+## Assessment
+
+This is a materially cleaner initial demonstration than the previous workspace
+evolution manager. “Coding agent” and “chatbot” are behaviors of one persistent
+model actor rather than separately generated imitations. Actual structural
+improvement remains visible: a model-authored capability is tested against
+unseen evidence, promoted through ActiveGraph, survives restart, and becomes a
+new callable action.

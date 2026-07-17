@@ -1,8 +1,0 @@
-{
-  "findings": [
-    "Corrected the expected output for the long string test to match the fixture.",
-    "Removed code expressions from stdout_contains in the long string test."
-  ],
-  "private_suite_hash": "eae415ec0a63a2bfbd077c115bcbe21df417fd9c8f069eff14b76f2db6c58eac",
-  "public_suite_hash": "ae5d1a182b0a4473b9f84bd34dae599858810a530bb769f22e311a1dea46150f"
-}

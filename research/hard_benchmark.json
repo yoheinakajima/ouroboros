@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "protocol_version": "0.1-draft",
+  "execution_enabled": false,
+  "execution_lock_reason": "Task IDs, upstream revisions, adapters, and approach hashes must be frozen after calibration and before paid runs.",
+  "primary_model": "gpt-5.6-sol",
+  "replications": {
+    "calibration": 1,
+    "preliminary": 3,
+    "recursive_claim": 5
+  },
+  "common_budget": {
+    "max_cost_usd": 25.0,
+    "max_wall_seconds": 7200,
+    "max_model_calls": 80,
+    "max_output_tokens": 200000
+  },
+  "studies": [
+    {
+      "id": "common_outcome",
+      "question": "Given the same model, environment, tools, objective, and budget, which architecture completes more difficult real-world tasks?",
+      "required_arms": ["cold", "evolved"],
+      "primary_metric": "task-family score",
+      "secondary_metrics": ["cost", "wall time", "model calls", "tool calls", "regressions"]
+    },
+    {
+      "id": "recursive_uplift",
+      "question": "Does experience acquired on development tasks improve results on distinct held-out tasks?",
+      "required_arms": ["evolved", "cold_ablation", "sham_improvement_control"],
+      "primary_metric": "paired held-out score delta",
+      "secondary_metrics": ["paired cost delta", "paired latency delta", "retention after restart"]
+    },
+    {
+      "id": "native_ceiling",
+      "question": "What can each mutation unit express and safely retain when allowed to use its native strengths?",
+      "required_arms": ["native_evolved"],
+      "primary_metric": "native task score",
+      "secondary_metrics": ["authority requested", "artifact complexity", "auditability"]
+    }
+  ],
+  "suites": [
+    {
+      "id": "ouro_swe_50",
+      "study": "common_outcome",
+      "source": "https://github.com/SWE-bench/SWE-bench",
+      "upstream_revision": "UNPINNED",
+      "dataset": "SWE-bench Verified",
+      "development_instances": 20,
+      "evaluation_instances": 50,
+      "selection_status": "pending_calibration",
+      "score": "resolved instances / total, plus fail-to-pass and pass-to-pass test counts",
+      "isolation": "official Docker evaluator",
+      "why_hard": "Real GitHub issues in unfamiliar repositories; patches must satisfy official tests without regressions."
+    },
+    {
+      "id": "ouro_terminal_12",
+      "study": "common_outcome",
+      "source": "https://github.com/harbor-framework/terminal-bench",
+      "upstream_revision": "UNPINNED",
+      "dataset": "Terminal-Bench 2 verified task set",
+      "development_instances": 6,
+      "evaluation_instances": 12,
+      "selection_status": "pending_calibration",
+      "score": "official task pass rate",
+      "isolation": "Harbor task containers",
+      "why_hard": "End-to-end terminal work spanning builds, debugging, servers, data processing, and system configuration."
+    },
+    {
+      "id": "ouro_mle_6",
+      "study": "common_outcome",
+      "source": "https://github.com/openai/mle-bench",
+      "upstream_revision": "UNPINNED",
+      "dataset": "six low-size, non-leaky MLE-bench competitions",
+      "development_instances": 3,
+      "evaluation_instances": 6,
+      "selection_status": "pending_license_data_and_leakage_review",
+      "score": "normalized held-out competition score and improvement over supplied seed",
+      "isolation": "pinned MLE-bench container with hidden grading split",
+      "why_hard": "Agents must inspect data, build experiments, train models, and improve a continuous score rather than merely pass examples."
+    },
+    {
+      "id": "ouro_rebench_2",
+      "study": "native_ceiling",
+      "source": "https://github.com/METR/RE-Bench",
+      "upstream_revision": "UNPINNED",
+      "dataset": "two METR Task Standard R&D environments",
+      "development_instances": 1,
+      "evaluation_instances": 2,
+      "selection_status": "pending_protected_material_review",
+      "score": "official continuous task score",
+      "isolation": "METR-compatible task containers",
+      "why_hard": "Long-horizon autonomous AI R&D with measurable performance on held-out data."
+    },
+    {
+      "id": "ouro_paperbench_code_dev_2",
+      "study": "native_ceiling",
+      "source": "https://github.com/openai/frontier-evals/tree/main/project/paperbench",
+      "upstream_revision": "UNPINNED",
+      "dataset": "two PaperBench Code-Dev papers",
+      "development_instances": 1,
+      "evaluation_instances": 2,
+      "selection_status": "pending_paper_and_cost_calibration",
+      "score": "official hierarchical rubric score",
+      "isolation": "PaperBench agent and judge containers",
+      "why_hard": "Requires understanding a research paper and constructing a substantial replication codebase."
+    },
+    {
+      "id": "ouro_activegraph_50",
+      "study": "native_ceiling",
+      "source": "internal versioned task package",
+      "upstream_revision": "UNBUILT",
+      "dataset": "five multi-stage ActiveGraph systems with 50 sealed checks each",
+      "development_instances": 2,
+      "evaluation_instances": 5,
+      "selection_status": "task_authoring_required",
+      "score": "checks passed / 50, with hard authority and replay gates",
+      "isolation": "fresh container, sealed evaluator package, cold replay",
+      "why_hard": "Measures partial improvement from a deliberately incomplete 20/50 seed through schemas, relations, policies, replay, composition, and adversarial events."
+    }
+  ],
+  "global_rules": [
+    "The model, provider, task image, task prompt, brokered tools, and outer budget are identical across approaches.",
+    "Development and evaluation task identities are disjoint.",
+    "Official or sealed graders are never mounted into the agent-visible filesystem.",
+    "A direct cold baseline, evolved arm, cold ablation, and sham-improvement control are recorded separately.",
+    "No retry is silently discarded; failed attempts consume budget and remain in the trace.",
+    "All headline results report per-task outcomes and uncertainty, not only an aggregate mean.",
+    "No paid execution begins while execution_enabled is false."
+  ]
+}

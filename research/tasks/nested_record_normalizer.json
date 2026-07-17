@@ -1,0 +1,74 @@
+{
+  "id": "nested_record_normalizer",
+  "title": "Messy nested record normalizer",
+  "category": "pure_generalization",
+  "objective": "Author and adopt a deterministic capability that recursively normalizes messy JSON records without changing their information or shape.",
+  "behavior_contract": "For every hybrid.task.requested event, recursively normalize event.payload.record and emit hybrid.task.completed with the same request_id and output exactly {normalized: VALUE}. For mappings, normalize every key by trimming it, applying Unicode casefold, replacing each run of non-alphanumeric characters or underscores with one underscore, and stripping leading/trailing underscores; recursively normalize values. For lists, preserve order and recursively normalize items. For strings, trim leading/trailing whitespace and replace each run of Unicode whitespace with one ASCII space. Preserve numbers, booleans, and null exactly. The transformation must be idempotent.",
+  "constraints": [
+    "Use a deterministic pack-aware @behavior.",
+    "Do not store state; each result must depend only on the current record.",
+    "Do not use tools, LLM behaviors, external capabilities, module-global mutable state, or I/O.",
+    "Handle arbitrarily nested JSON-compatible mappings and lists."
+  ],
+  "public_cases": [
+    {
+      "id": "public-empty-containers",
+      "payload": {"record": {" Empty Text ": "   ", "Children": [], "Metadata": {}}},
+      "expected": {"normalized": {"empty_text": "", "children": [], "metadata": {}}}
+    },
+    {
+      "id": "public-scalars",
+      "payload": {"record": {"Count": 3, "Enabled?": true, "Missing Value": null, "Ratio": 1.5}},
+      "expected": {"normalized": {"count": 3, "enabled": true, "missing_value": null, "ratio": 1.5}}
+    },
+    {
+      "id": "public-nested-list",
+      "payload": {"record": {" Tags ": ["  graph native  ", "recursive\tagent", {" Skill Level ": "  high  "}]}},
+      "expected": {"normalized": {"tags": ["graph native", "recursive agent", {"skill_level": "high"}]}}
+    },
+    {
+      "id": "public-repeated-separators",
+      "payload": {"record": {"Already__Key": " value ", " many---separators ": " x  y "}},
+      "expected": {"normalized": {"already_key": "value", "many_separators": "x y"}}
+    }
+  ],
+  "private_cases": [
+    {
+      "id": "private-nested-contact",
+      "payload": {"record": {" First Name ": "  Ada   Lovelace ", "Contact-Info": {"Email Address": " Ada@Example.COM "}}},
+      "expected": {"normalized": {"first_name": "Ada Lovelace", "contact_info": {"email_address": "Ada@Example.COM"}}}
+    },
+    {
+      "id": "private-root-list",
+      "payload": {"record": [{" User ID ": 7, "Display Name": "  Lin   Q.  "}, {"User-ID": 8, "Display Name": "  Sam  "}]},
+      "expected": {"normalized": [{"user_id": 7, "display_name": "Lin Q."}, {"user_id": 8, "display_name": "Sam"}]}
+    },
+    {
+      "id": "private-punctuation-keys",
+      "payload": {"record": {"API / Token": "  abc-123  ", "Build.Version": "  1.2.0  "}},
+      "expected": {"normalized": {"api_token": "abc-123", "build_version": "1.2.0"}}
+    },
+    {
+      "id": "private-unicode",
+      "payload": {"record": {" Display Näme ": "  Zoë   Ångström ", "HOME CITY": "  São   Paulo  "}},
+      "expected": {"normalized": {"display_näme": "Zoë Ångström", "home_city": "São Paulo"}}
+    }
+  ],
+  "transfer_cases": [
+    {
+      "id": "transfer-deep-composition",
+      "payload": {"record": {" Outer Key ": [{" Inner.Key ": ["  a   b  ", {" Final-Key! ": " done "}]}]}},
+      "expected": {"normalized": {"outer_key": [{"inner_key": ["a b", {"final_key": "done"}]}]}}
+    },
+    {
+      "id": "transfer-unicode-whitespace",
+      "payload": {"record": {" Café Owner ": "  Renée\n\tDupont  ", "東京 店": "  open  "}},
+      "expected": {"normalized": {"café_owner": "Renée Dupont", "東京_店": "open"}}
+    },
+    {
+      "id": "transfer-idempotence",
+      "payload": {"record": {"already_normal": {"child_key": "clean value"}, "items": [1, false, null]}},
+      "expected": {"normalized": {"already_normal": {"child_key": "clean value"}, "items": [1, false, null]}}
+    }
+  ]
+}

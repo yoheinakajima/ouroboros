@@ -1,0 +1,50 @@
+[
+  {
+    "expected": {
+      "value": "hello-world"
+    },
+    "input": {
+      "text": "Hello World"
+    }
+  },
+  {
+    "expected": {
+      "value": "already-slug"
+    },
+    "input": {
+      "text": "Already-slug"
+    }
+  },
+  {
+    "expected": {
+      "value": "spaces-here"
+    },
+    "input": {
+      "text": "Spaces   Here"
+    }
+  },
+  {
+    "expected": {
+      "value": "symbols-more"
+    },
+    "input": {
+      "text": "Symbols & More!"
+    }
+  },
+  {
+    "expected": {
+      "value": "trim-me"
+    },
+    "input": {
+      "text": "  Trim Me  "
+    }
+  },
+  {
+    "expected": {
+      "value": "mixed-case"
+    },
+    "input": {
+      "text": "MIXED_case"
+    }
+  }
+]

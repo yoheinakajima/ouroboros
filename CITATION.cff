@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "Ouroboros: Minimal Recursive Self-Improvement Experiments on ActiveGraph"
+message: "If you use this software or research protocol, please cite it."
+type: software
+authors:
+  - family-names: Nakajima
+    given-names: Yohei
+version: 0.1.0
+date-released: 2026-07-16
+license: NOASSERTION

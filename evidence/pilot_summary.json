@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "status": "pilot_mechanism_evidence",
+  "date": "2026-07-16",
+  "primary_model": "gpt-5.6-sol",
+  "claim_limit": "Capability acquisition and restart transfer only; no recursive uplift established.",
+  "runs": [
+    {"id": "hybrid-normalizer-gpt56-v2", "approach": "hybrid_packs", "task": "nested_record_normalizer", "public": "4/4", "private": "4/4", "transfer": "3/3", "cost_usd": 0.154250},
+    {"id": "minimal-normalizer-gpt56-v1", "approach": "minimal_v2", "task": "nested_record_normalizer", "public": "4/4", "private": "4/4", "transfer": "3/3", "cost_usd": 0.046500},
+    {"id": "hybrid-usage-gpt56-v4", "approach": "hybrid_packs", "task": "stateful_usage_tracker", "public": "3/3", "private": "4/4", "transfer": "3/3", "cost_usd": 0.160610},
+    {"id": "hybrid-dependencies-gpt56-v1", "approach": "hybrid_packs", "task": "dependency_release_planner", "public": "5/5", "private": "5/5", "transfer": "4/4", "cost_usd": 0.187285},
+    {"id": "workspace-todo-gpt56-20260716", "approach": "workspace_v1_lineage", "task": "robust_todo_cli", "public": "6/6", "private": "5/5", "transfer": null, "cost_usd": 1.413895},
+    {"id": "workspace-chatbot-gpt56-20260716", "approach": "workspace_v1_lineage", "task": "vague_chatbot", "public": "6/6", "private": "5/5", "transfer": null, "cost_usd": 0.663070},
+    {"id": "workspace-coding-agent-gpt56-20260716", "approach": "workspace_v1_lineage", "task": "vague_coding_agent", "public": "5/5", "private": "2/5", "transfer": null, "cost_usd": 1.529720}
+  ]
+}

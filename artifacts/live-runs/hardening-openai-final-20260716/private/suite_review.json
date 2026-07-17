@@ -1,7 +1,0 @@
-{
-  "findings": [
-    "manager normalized 8 serialized JSON stdin fixture(s)"
-  ],
-  "private_suite_hash": "8793c92e01340a01509dce6e8607acd9173c4680f0843db43e34bbc2b50fc6bd",
-  "public_suite_hash": "15c2c0442cf659ef2b6e2ec367d0bf843b283cf62390c1fda1eee7a907db2f3b"
-}

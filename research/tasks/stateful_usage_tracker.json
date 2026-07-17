@@ -1,0 +1,124 @@
+{
+  "id": "stateful_usage_tracker",
+  "title": "Graph-native multi-tenant usage tracker",
+  "category": "stateful_graph_behavior",
+  "objective": "Author and adopt an ActiveGraph pack that tracks cumulative usage independently for each tenant using durable graph objects.",
+  "behavior_contract": "Subscribe to hybrid.task.requested. For operation=record_usage, read tenant (nonempty string), amount (nonnegative integer), and limit (nonnegative integer). Maintain exactly one typed usage_counter object per tenant in the ActiveGraph graph, patching its cumulative total on later events. Emit hybrid.task.completed with the same request_id and output exactly {tenant, total, over_limit}, where over_limit is total > limit. State must live in graph objects, not module globals.",
+  "constraints": [
+    "Use at least one Pydantic-backed ActiveGraph ObjectType.",
+    "Use a deterministic pack-aware @behavior.",
+    "Do not use tools, LLM behaviors, external capabilities, module-global mutable state, or I/O.",
+    "Treat different tenants independently and preserve state across the ordered event sequence."
+  ],
+  "public_cases": [
+    {
+      "id": "public-alpha-first",
+      "payload": {"operation": "record_usage", "tenant": "alpha", "amount": 3, "limit": 10},
+      "expected": {"tenant": "alpha", "total": 3, "over_limit": false},
+      "expected_graph": {
+        "objects": [{"type": "usage_counter", "where": {"tenant": "alpha"}, "data": {"total": 3}, "version": 1}],
+        "object_type_counts": {"usage_counter": 1}
+      }
+    },
+    {
+      "id": "public-beta-independent",
+      "payload": {"operation": "record_usage", "tenant": "beta", "amount": 7, "limit": 9},
+      "expected": {"tenant": "beta", "total": 7, "over_limit": false},
+      "expected_graph": {
+        "objects": [
+          {"type": "usage_counter", "where": {"tenant": "alpha"}, "data": {"total": 3}},
+          {"type": "usage_counter", "where": {"tenant": "beta"}, "data": {"total": 7}, "version": 1}
+        ],
+        "object_type_counts": {"usage_counter": 2}
+      }
+    },
+    {
+      "id": "public-alpha-accumulates",
+      "payload": {"operation": "record_usage", "tenant": "alpha", "amount": 8, "limit": 10},
+      "expected": {"tenant": "alpha", "total": 11, "over_limit": true},
+      "expected_graph": {
+        "objects": [
+          {"type": "usage_counter", "where": {"tenant": "alpha"}, "data": {"total": 11}, "version": 2},
+          {"type": "usage_counter", "where": {"tenant": "beta"}, "data": {"total": 7}}
+        ],
+        "object_type_counts": {"usage_counter": 2}
+      }
+    }
+  ],
+  "private_cases": [
+    {
+      "id": "private-acme-first",
+      "payload": {"operation": "record_usage", "tenant": "acme", "amount": 5, "limit": 7},
+      "expected": {"tenant": "acme", "total": 5, "over_limit": false},
+      "expected_graph": {
+        "objects": [{"type": "usage_counter", "where": {"tenant": "acme"}, "data": {"total": 5}, "version": 1}],
+        "object_type_counts": {"usage_counter": 1}
+      }
+    },
+    {
+      "id": "private-acme-crosses-limit",
+      "payload": {"operation": "record_usage", "tenant": "acme", "amount": 3, "limit": 7},
+      "expected": {"tenant": "acme", "total": 8, "over_limit": true},
+      "expected_graph": {
+        "objects": [{"type": "usage_counter", "where": {"tenant": "acme"}, "data": {"total": 8}, "version": 2}],
+        "object_type_counts": {"usage_counter": 1}
+      }
+    },
+    {
+      "id": "private-northstar-independent",
+      "payload": {"operation": "record_usage", "tenant": "northstar", "amount": 8, "limit": 10},
+      "expected": {"tenant": "northstar", "total": 8, "over_limit": false},
+      "expected_graph": {
+        "objects": [
+          {"type": "usage_counter", "where": {"tenant": "acme"}, "data": {"total": 8}},
+          {"type": "usage_counter", "where": {"tenant": "northstar"}, "data": {"total": 8}, "version": 1}
+        ],
+        "object_type_counts": {"usage_counter": 2}
+      }
+    },
+    {
+      "id": "private-acme-retains-state",
+      "payload": {"operation": "record_usage", "tenant": "acme", "amount": 4, "limit": 20},
+      "expected": {"tenant": "acme", "total": 12, "over_limit": false},
+      "expected_graph": {
+        "objects": [
+          {"type": "usage_counter", "where": {"tenant": "acme"}, "data": {"total": 12}, "version": 3},
+          {"type": "usage_counter", "where": {"tenant": "northstar"}, "data": {"total": 8}}
+        ],
+        "object_type_counts": {"usage_counter": 2}
+      }
+    }
+  ],
+  "transfer_cases": [
+    {
+      "id": "transfer-orion-first",
+      "payload": {"operation": "record_usage", "tenant": "orion", "amount": 2, "limit": 5},
+      "expected": {"tenant": "orion", "total": 2, "over_limit": false},
+      "expected_graph": {
+        "objects": [{"type": "usage_counter", "where": {"tenant": "orion"}, "data": {"total": 2}, "version": 1}],
+        "object_type_counts": {"usage_counter": 1}
+      }
+    },
+    {
+      "id": "transfer-orion-crosses-limit",
+      "payload": {"operation": "record_usage", "tenant": "orion", "amount": 4, "limit": 5},
+      "expected": {"tenant": "orion", "total": 6, "over_limit": true},
+      "expected_graph": {
+        "objects": [{"type": "usage_counter", "where": {"tenant": "orion"}, "data": {"total": 6}, "version": 2}],
+        "object_type_counts": {"usage_counter": 1}
+      }
+    },
+    {
+      "id": "transfer-vega-independent",
+      "payload": {"operation": "record_usage", "tenant": "vega", "amount": 1, "limit": 1},
+      "expected": {"tenant": "vega", "total": 1, "over_limit": false},
+      "expected_graph": {
+        "objects": [
+          {"type": "usage_counter", "where": {"tenant": "orion"}, "data": {"total": 6}},
+          {"type": "usage_counter", "where": {"tenant": "vega"}, "data": {"total": 1}, "version": 1}
+        ],
+        "object_type_counts": {"usage_counter": 2}
+      }
+    }
+  ]
+}

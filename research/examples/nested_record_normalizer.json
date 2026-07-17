@@ -1,0 +1,34 @@
+[
+  {
+    "input": {"record": {" First Name ": "  Ada   Lovelace ", "Contact-Info": {"Email Address": " Ada@Example.COM "}}},
+    "expected": {"normalized": {"first_name": "Ada Lovelace", "contact_info": {"email_address": "Ada@Example.COM"}}}
+  },
+  {
+    "input": {"record": {" Tags ": ["  graph native  ", "recursive\tagent", {" Skill Level ": "  high  "}]}},
+    "expected": {"normalized": {"tags": ["graph native", "recursive agent", {"skill_level": "high"}]}}
+  },
+  {
+    "input": {"record": {"Count": 3, "Enabled?": true, "Missing Value": null, "Ratio": 1.5}},
+    "expected": {"normalized": {"count": 3, "enabled": true, "missing_value": null, "ratio": 1.5}}
+  },
+  {
+    "input": {"record": {" Display Näme ": "  Zoë   Ångström ", "HOME CITY": "  São   Paulo  "}},
+    "expected": {"normalized": {"display_näme": "Zoë Ångström", "home_city": "São Paulo"}}
+  },
+  {
+    "input": {"record": {" Empty Text ": "   ", "Children": [], "Metadata": {}}},
+    "expected": {"normalized": {"empty_text": "", "children": [], "metadata": {}}}
+  },
+  {
+    "input": {"record": {"API / Token": "  abc-123  ", "Build.Version": "  1.2.0  "}},
+    "expected": {"normalized": {"api_token": "abc-123", "build_version": "1.2.0"}}
+  },
+  {
+    "input": {"record": {"Already__Key": " value ", " many---separators ": " x  y "}},
+    "expected": {"normalized": {"already_key": "value", "many_separators": "x y"}}
+  },
+  {
+    "input": {"record": [{" User ID ": 7, "Display Name": "  Lin   Q.  "}, {"User-ID": 8, "Display Name": "  Sam  "}]},
+    "expected": {"normalized": [{"user_id": 7, "display_name": "Lin Q."}, {"user_id": 8, "display_name": "Sam"}]}
+  }
+]

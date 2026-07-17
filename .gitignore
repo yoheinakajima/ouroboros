@@ -3,4 +3,19 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .ouroboros/
-.env
+.venv/
+dist/
+build/
+*.egg-info/
+.DS_Store
+.env*
+!.env.example
+
+# Raw run directories are local evidence. Publish curated summaries in
+# evidence/ and attach full immutable bundles to releases instead of Git.
+artifacts/**
+!artifacts/README.md
+
+# External benchmark images, datasets, caches, and paid run outputs.
+benchmark/.cache/
+benchmark/runs/

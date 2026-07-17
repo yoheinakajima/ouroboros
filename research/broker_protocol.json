@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "protocol_version": "0.1-draft",
+  "implementation_status": "contract_only",
+  "purpose": "Give every approach the same host-owned task authority without putting credentials or graders inside evolved code.",
+  "operations": [
+    {"name": "list_files", "authority": "read_workspace", "recorded": true},
+    {"name": "read_file", "authority": "read_workspace", "recorded": true},
+    {"name": "write_file", "authority": "write_workspace", "recorded": true},
+    {"name": "replace_file", "authority": "write_workspace", "recorded": true},
+    {"name": "run_command", "authority": "execute_in_task_container", "recorded": true, "shell": false},
+    {"name": "model_complete", "authority": "host_owned_model_inference", "recorded": true}
+  ],
+  "invariants": [
+    "The task container, mounted repository, visible prompt, and operation schemas are identical across approaches.",
+    "Provider credentials remain in the broker process and are never present in task or candidate environments.",
+    "Evaluator-private files, task IDs, tests, expected outputs, and grader logs are never broker-readable.",
+    "Every request, response, error, duration, token count, tool count, and cost is appended to the attempt trace.",
+    "Budget denial is a recorded task outcome and cannot be retried outside the attempt.",
+    "Commands use argv without a shell and execute only inside the pinned task container.",
+    "Network is denied unless a suite preregisters the same scoped network capability for every approach."
+  ],
+  "budget_fields": [
+    "max_cost_usd",
+    "max_wall_seconds",
+    "max_model_calls",
+    "max_output_tokens",
+    "max_tool_calls"
+  ],
+  "forbidden_surfaces": [
+    "process_environment",
+    "provider_credentials",
+    "host_filesystem_outside_attempt",
+    "evaluator_container",
+    "manager_private_material",
+    "unrecorded_network"
+  ]
+}

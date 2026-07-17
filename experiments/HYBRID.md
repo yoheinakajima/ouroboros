@@ -1,7 +1,7 @@
 # Hybrid Ouroboros experiment
 
-This is the first pack-level hybrid, kept separate from `ouroboros.py` so the
-v1.2 evaluator remains an independent reference.
+This is the pack-level hybrid, kept separate from `ouroboros.py` so Minimal v2
+and recovered workspace v1.2 remain independent references.
 
 The mutation unit is a complete ActiveGraph `Pack`. The organism's durable
 identity is:
@@ -40,6 +40,21 @@ Run its tests:
 python -m unittest -v tests.test_hybrid_ouroboros
 ```
 
+Run the real documentation-grounded author with a recorded task:
+
+```bash
+python -m research.hybrid_author \
+  --task research/tasks/dependency_release_planner.json \
+  --run-dir artifacts/research-runs/dependency-planner \
+  --docs-root /path/to/activegraph/docs \
+  --model gpt-5.6-sol
+```
+
+The LLM proposes complete source from a hash-recorded ActiveGraph documentation
+snapshot. It does not possess release authority or receive manager-private
+cases. See `research/RESULTS.md` for the three successful live pilots and their
+costs.
+
 ## What this proves
 
 - A whole behavior pack can be the unit of recursive improvement.
@@ -51,9 +66,9 @@ python -m unittest -v tests.test_hybrid_ouroboros
 
 ## What this does not prove yet
 
-The demo author is scripted, not an LLM. The `PackDraft` boundary is the seam
-for an LLM author, while deterministic code remains release authority. The
-fresh process and AST gate are accident-containment mechanisms, not a hostile
-code sandbox; production execution still needs container/syscall/network
-confinement. Qualitative independent judging and the richer v1.2 evaluator
-matrix are also not wired into this experiment yet.
+The three one-shot pilots are too easy to establish reliability or comparative
+advantage. No acquired Pack has yet improved later Pack authorship, and the
+author has no general brokered repository/tool surface. The fresh process and
+AST gate are accident-containment mechanisms, not a hostile-code sandbox;
+production evaluation still needs container/syscall/network confinement. The
+hard benchmark remains locked until those gaps are closed.

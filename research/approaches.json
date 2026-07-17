@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "freeze_status": "development",
+  "approaches": [
+    {
+      "id": "workspace_v1_2",
+      "label": "Workspace evolution v1.2",
+      "mutation_unit": "arbitrary workspace tree",
+      "sources": [
+        {"path": "recovered/v1.2/ouroboros.py", "sha256": "029e24b2e8d445d849cd147f4103e7ebcdd6e8d18ca78d01a19f3914ecf5cfdc"}
+      ],
+      "adapter_status": "missing_common_external_adapter",
+      "hardening": {
+        "official_external_grader_adapter": false,
+        "brokered_model_inference_for_evolved_artifacts": false,
+        "cold_ablation": false,
+        "container_execution": false
+      }
+    },
+    {
+      "id": "minimal_v2",
+      "label": "Minimal persistent organism v2",
+      "mutation_unit": "evaluated procedure or pure deterministic capability",
+      "sources": [
+        {"path": "ouroboros.py", "sha256": "e49a28b5af2f99815b277d174e11ffa98a7c7ac6eefcf083f5430d07cc709a80"}
+      ],
+      "adapter_status": "partial_pure_capability_adapter",
+      "hardening": {
+        "official_external_grader_adapter": false,
+        "procedure_ablation": true,
+        "promotion_ablation": true,
+        "container_execution": false
+      }
+    },
+    {
+      "id": "hybrid_packs",
+      "label": "Documentation-grounded Hybrid Packs",
+      "mutation_unit": "complete hash-pinned ActiveGraph Pack",
+      "sources": [
+        {"path": "experiments/hybrid_ouroboros.py", "sha256": "7b4597fd7f96bcb8128627857a5feb2ada2bef8e356962d48f3d883e99a8737c"},
+        {"path": "research/hybrid_author.py", "sha256": "5ca7c9f1e588c12055a8aedbd4a1cf7bb02072d4dff426ec87b451388982bcb9"}
+      ],
+      "adapter_status": "pack_native_only",
+      "hardening": {
+        "official_external_grader_adapter": false,
+        "author_repair_loop": true,
+        "brokered_workspace_tools": false,
+        "brokered_model_inference": false,
+        "atomic_multi_pack_proposal": false,
+        "container_execution": false
+      }
+    }
+  ]
+}

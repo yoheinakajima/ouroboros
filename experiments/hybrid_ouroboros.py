@@ -21,6 +21,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 import uuid
 from dataclasses import asdict, dataclass
 from pathlib import Path, PurePosixPath
@@ -85,6 +86,7 @@ class Case:
     id: str
     payload: dict[str, Any]
     expected: Any
+    expected_graph: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -108,7 +110,7 @@ class ReleasePolicy:
     """The capability envelope inside which adoption may be autonomous."""
 
     allowed_imports: frozenset[str] = frozenset(
-        {"__future__", "activegraph.packs", "collections", "dataclasses", "json", "math", "re", "statistics", "typing", "unicodedata"}
+        {"__future__", "activegraph.packs", "collections", "dataclasses", "json", "math", "pydantic", "re", "statistics", "typing", "unicodedata"}
     )
     allowed_tools: frozenset[str] = frozenset()
     allowed_capabilities: frozenset[str] = frozenset()
@@ -129,6 +131,7 @@ class EvolutionReport:
     private_candidate: str
     private_incumbent: str
     restart_required: bool
+    author_feedback: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -136,6 +139,13 @@ class EvolutionReport:
 
 def _canonical(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def _write_json(path: Path, value: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + ".tmp")
+    temporary.write_text(json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+    temporary.replace(path)
 
 
 def _digest(value: Any) -> str:
@@ -206,6 +216,12 @@ def _safe_relative_path(raw: str) -> PurePosixPath:
     return path
 
 
+def _import_allowed(module: str, allowed: frozenset[str]) -> bool:
+    """Allow an explicitly listed module and its submodules, never siblings."""
+
+    return any(module == item or module.startswith(item + ".") for item in allowed)
+
+
 def _materialize_draft(draft: PackDraft, destination: Path) -> str:
     if not _NAME.fullmatch(draft.name):
         raise ValueError(f"invalid pack name: {draft.name!r}")
@@ -265,11 +281,11 @@ def _static_gate(root: Path, policy: ReleasePolicy) -> list[str]:
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
                 for alias in node.names:
-                    if alias.name not in policy.allowed_imports:
+                    if not _import_allowed(alias.name, policy.allowed_imports):
                         errors.append(f"{path.name}:{node.lineno}: import {alias.name!r} denied")
             elif isinstance(node, ast.ImportFrom):
                 module = node.module or ""
-                if node.level == 0 and module not in policy.allowed_imports:
+                if node.level == 0 and not _import_allowed(module, policy.allowed_imports):
                     errors.append(f"{path.name}:{node.lineno}: import from {module!r} denied")
             elif isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in _DENIED_CALLS:
                 errors.append(f"{path.name}:{node.lineno}: call {node.func.id!r} denied")
@@ -320,6 +336,110 @@ def _emit(graph: Graph, event_type: str, payload: dict[str, Any], *, actor: str)
     )
 
 
+def _contains(actual: Any, expected: Any) -> bool:
+    """Recursive subset comparison used only by explicit graph assertions."""
+
+    if isinstance(expected, dict):
+        return isinstance(actual, dict) and all(
+            key in actual and _contains(actual[key], value) for key, value in expected.items()
+        )
+    if isinstance(expected, list):
+        return isinstance(actual, list) and actual == expected
+    return actual == expected
+
+
+def _matching_objects(graph: Graph, selector: dict[str, Any]) -> list[Any]:
+    object_type = selector.get("type")
+    where = selector.get("where", {})
+    if not isinstance(object_type, str) or not isinstance(where, dict):
+        raise ValueError("object selector requires string type and mapping where")
+    return [item for item in graph.objects(type=object_type) if _contains(item.data, where)]
+
+
+def evaluate_graph_assertions(graph: Graph, expected: dict[str, Any] | None) -> dict[str, Any]:
+    """Evaluate inspectable graph state without relying on generated ids.
+
+    Object selectors match a type plus a recursive subset of ``data``. Relation
+    selectors identify endpoints through those same logical object selectors,
+    so benchmark fixtures never need framework-generated object ids.
+    """
+
+    if not expected:
+        return {"all_passed": True, "checks": []}
+    checks: list[dict[str, Any]] = []
+    try:
+        for assertion in expected.get("objects", []):
+            matches = _matching_objects(graph, assertion)
+            wanted_count = int(assertion.get("count", 1))
+            wanted_data = assertion.get("data", {})
+            wanted_version = assertion.get("version")
+            data_matches = [item for item in matches if _contains(item.data, wanted_data)]
+            if wanted_version is not None:
+                data_matches = [item for item in data_matches if item.version == int(wanted_version)]
+            passed = len(matches) == wanted_count and len(data_matches) == wanted_count
+            checks.append(
+                {
+                    "kind": "object",
+                    "type": assertion.get("type"),
+                    "where": assertion.get("where", {}),
+                    "expected_count": wanted_count,
+                    "actual_count": len(matches),
+                    "passed": passed,
+                    "actual": [item.to_dict() for item in matches],
+                }
+            )
+        for object_type, wanted_count in expected.get("object_type_counts", {}).items():
+            actual_count = len(graph.objects(type=str(object_type)))
+            checks.append(
+                {
+                    "kind": "object_type_count",
+                    "type": object_type,
+                    "expected_count": int(wanted_count),
+                    "actual_count": actual_count,
+                    "passed": actual_count == int(wanted_count),
+                }
+            )
+        for assertion in expected.get("relations", []):
+            relation_type = assertion.get("type")
+            source_ids = {item.id for item in _matching_objects(graph, assertion.get("source", {}))}
+            target_ids = {item.id for item in _matching_objects(graph, assertion.get("target", {}))}
+            wanted_count = int(assertion.get("count", 1))
+            wanted_data = assertion.get("data", {})
+            matches = [
+                item
+                for item in graph.relations(type=relation_type)
+                if item.source in source_ids and item.target in target_ids and _contains(item.data, wanted_data)
+            ]
+            checks.append(
+                {
+                    "kind": "relation",
+                    "type": relation_type,
+                    "expected_count": wanted_count,
+                    "actual_count": len(matches),
+                    "passed": len(matches) == wanted_count,
+                    "actual": [item.to_dict() for item in matches],
+                }
+            )
+        for relation_type, wanted_count in expected.get("relation_type_counts", {}).items():
+            actual_count = len(graph.relations(type=str(relation_type)))
+            checks.append(
+                {
+                    "kind": "relation_type_count",
+                    "type": relation_type,
+                    "expected_count": int(wanted_count),
+                    "actual_count": actual_count,
+                    "passed": actual_count == int(wanted_count),
+                }
+            )
+    except (AttributeError, TypeError, ValueError) as exc:
+        return {
+            "all_passed": False,
+            "checks": checks,
+            "error": f"invalid graph assertion: {type(exc).__name__}: {exc}",
+        }
+    return {"all_passed": all(item["passed"] for item in checks), "checks": checks}
+
+
 def _trial_worker(payload: dict[str, Any]) -> dict[str, Any]:
     """Fresh-process trial. Exact cases enter over stdin and are never stored."""
 
@@ -339,8 +459,20 @@ def _trial_worker(payload: dict[str, Any]) -> dict[str, Any]:
             for event in graph.events[start:]
             if event.type == RESULT_EVENT and event.payload.get("request_id") == request_id
         ]
-        passed = len(outputs) == 1 and outputs[0] == raw["expected"]
-        rows.append({"id": raw["id"], "passed": passed, "result_count": len(outputs)})
+        output_passed = len(outputs) == 1 and outputs[0] == raw["expected"]
+        graph_evidence = evaluate_graph_assertions(graph, raw.get("expected_graph"))
+        passed = output_passed and graph_evidence["all_passed"]
+        rows.append(
+            {
+                "id": raw["id"],
+                "passed": passed,
+                "output_passed": output_passed,
+                "result_count": len(outputs),
+                "actual_output": outputs[0] if len(outputs) == 1 else outputs,
+                "expected_output": raw["expected"],
+                "graph": graph_evidence,
+            }
+        )
     failures = len(runtime.trace.failures())
     passed = sum(1 for row in rows if row["passed"])
     return {
@@ -357,15 +489,31 @@ def _trial_worker(payload: dict[str, Any]) -> dict[str, Any]:
 
 def _worker_entry() -> int:
     try:
-        result = _trial_worker(json.loads(sys.stdin.read()))
+        payload = json.loads(sys.stdin.read())
+        result = _trial_worker(payload)
     except Exception as exc:  # The parent treats this as failed evidence.
-        result = {"worker_ok": False, "error": f"{type(exc).__name__}: {exc}"}
+        case_count = len(payload.get("cases", [])) if isinstance(locals().get("payload"), dict) else 0
+        result = {
+            "worker_ok": False,
+            "error": f"{type(exc).__name__}: {exc}",
+            "passed": 0,
+            "total": case_count,
+            "all_passed": False,
+        }
     print(_canonical({"hybrid_trial": result}), flush=True)
     return 0 if result.get("worker_ok") else 2
 
 
 def _case_payload(cases: Iterable[Case]) -> list[dict[str, Any]]:
-    return [{"id": case.id, "payload": case.payload, "expected": case.expected} for case in cases]
+    return [
+        {
+            "id": case.id,
+            "payload": case.payload,
+            "expected": case.expected,
+            "expected_graph": case.expected_graph,
+        }
+        for case in cases
+    ]
 
 
 def _run_suite(
@@ -379,6 +527,7 @@ def _run_suite(
     env["HOME"] = str(home)
     payload = {"packs": packs, "cases": _case_payload(cases)}
     try:
+        started = time.monotonic()
         process = subprocess.run(
             [sys.executable, str(Path(__file__).resolve()), "worker"],
             input=_canonical(payload),
@@ -389,24 +538,64 @@ def _run_suite(
             check=False,
         )
     except subprocess.TimeoutExpired:
-        return {"worker_ok": False, "error": "trial timed out", "passed": 0, "total": len(cases)}
+        return {
+            "worker_ok": False,
+            "error": "trial timed out",
+            "passed": 0,
+            "total": len(cases),
+            "all_passed": False,
+            "process": {"timed_out": True, "timeout_seconds": timeout},
+        }
+    process_evidence = {
+        "return_code": process.returncode,
+        "elapsed_seconds": round(time.monotonic() - started, 6),
+        "stdout": process.stdout[-100_000:],
+        "stderr": process.stderr[-100_000:],
+        "timed_out": False,
+    }
     for line in reversed(process.stdout.splitlines()):
         try:
             parsed = json.loads(line)
         except json.JSONDecodeError:
             continue
         if isinstance(parsed, dict) and "hybrid_trial" in parsed:
-            return parsed["hybrid_trial"]
+            return {**parsed["hybrid_trial"], "process": process_evidence}
     return {
         "worker_ok": False,
         "error": f"trial exited {process.returncode} without a report",
         "passed": 0,
         "total": len(cases),
+        "all_passed": False,
+        "process": process_evidence,
     }
 
 
 def _score(result: dict[str, Any]) -> str:
     return f"{int(result.get('passed', 0))}/{int(result.get('total', 0))}"
+
+
+def _public_repair_feedback(result: dict[str, Any]) -> list[str]:
+    """Return diagnostics that contain public evidence only."""
+
+    if not result.get("worker_ok"):
+        return [f"Public trial worker failed: {str(result.get('error', 'unknown error'))[:2_000]}"]
+    feedback: list[str] = []
+    for row in result.get("case_results", []):
+        if row.get("passed"):
+            continue
+        feedback.append(
+            "Public case "
+            + str(row.get("id", "<unknown>"))
+            + " failed: expected "
+            + repr(row.get("expected_output"))
+            + ", got "
+            + repr(row.get("actual_output"))
+            + "; graph="
+            + _canonical(row.get("graph", {}))[:4_000]
+        )
+    if result.get("behavior_failures"):
+        feedback.append(f"Public trial recorded {result['behavior_failures']} behavior failure(s).")
+    return feedback[:20]
 
 
 class HybridOuroboros:
@@ -515,6 +704,37 @@ class HybridOuroboros:
             candidate_specs, private, timeout=self.policy.trial_timeout_seconds, home=self.home
         )
 
+        trial_root = self.root / "trials" / proposal_id
+        _write_json(
+            trial_root / "public.json",
+            {
+                "suite_hash": _digest(_case_payload(public)),
+                "cases": _case_payload(public),
+                "incumbent": incumbent_public,
+                "candidate": candidate_public,
+            },
+        )
+        _write_json(
+            self.root / "manager" / "private_trials" / f"{proposal_id}.json",
+            {
+                "suite_hash": _digest(_case_payload(private)),
+                "cases": _case_payload(private),
+                "incumbent": incumbent_private,
+                "candidate": candidate_private,
+            },
+        )
+        _write_json(
+            trial_root / "private_receipt.json",
+            {
+                "suite_hash": _digest(_case_payload(private)),
+                "case_count": len(private),
+                "candidate_score": _score(candidate_private),
+                "incumbent_score": _score(incumbent_private),
+                "candidate_worker_ok": bool(candidate_private.get("worker_ok")),
+                "incumbent_worker_ok": bool(incumbent_private.get("worker_ok")),
+            },
+        )
+
         self._record_trial("public", public, candidate_public, incumbent_public, proposal_id)
         self._record_trial("private", private, candidate_private, incumbent_private, proposal_id)
         reports = (incumbent_public, candidate_public, incumbent_private, candidate_private)
@@ -533,7 +753,8 @@ class HybridOuroboros:
                 draft,
                 "isolated trial failed",
                 bundle_hash,
-                [],
+                _public_repair_feedback(candidate_public)
+                + [f"Manager-private trial score: {_score(candidate_private)}; exact cases and failures remain sealed."],
                 scores=(candidate_public, incumbent_public, candidate_private, incumbent_private),
             )
         if not candidate_clean:
@@ -541,7 +762,8 @@ class HybridOuroboros:
                 draft,
                 "candidate did not pass every public and private case",
                 bundle_hash,
-                [],
+                _public_repair_feedback(candidate_public)
+                + [f"Manager-private trial score: {_score(candidate_private)}; exact cases and failures remain sealed."],
                 scores=(candidate_public, incumbent_public, candidate_private, incumbent_private),
             )
         if not no_regression:
@@ -549,7 +771,8 @@ class HybridOuroboros:
                 draft,
                 "candidate regressed against the adopted pack set",
                 bundle_hash,
-                [],
+                _public_repair_feedback(candidate_public)
+                + ["The candidate regressed against the incumbent on a sealed comparison."],
                 scores=(candidate_public, incumbent_public, candidate_private, incumbent_private),
             )
         if not improvement:
@@ -557,7 +780,7 @@ class HybridOuroboros:
                 draft,
                 "behavioral no-op: candidate did not improve on the incumbent",
                 bundle_hash,
-                [],
+                ["The candidate was a behavioral no-op relative to the incumbent."],
                 scores=(candidate_public, incumbent_public, candidate_private, incumbent_private),
             )
 
@@ -597,6 +820,7 @@ class HybridOuroboros:
             private_candidate=_score(candidate_private),
             private_incumbent=_score(incumbent_private),
             restart_required=True,
+            author_feedback=(),
         )
 
     def _record_trial(
@@ -618,6 +842,8 @@ class HybridOuroboros:
                 "incumbent_score": _score(incumbent),
                 "candidate_worker_ok": bool(candidate.get("worker_ok")),
                 "incumbent_worker_ok": bool(incumbent.get("worker_ok")),
+                "candidate_error": str(candidate.get("error", ""))[:2_000],
+                "incumbent_error": str(incumbent.get("error", ""))[:2_000],
             },
         )
 
@@ -652,6 +878,7 @@ class HybridOuroboros:
             private_candidate=_score(candidate_private),
             private_incumbent=_score(incumbent_private),
             restart_required=False,
+            author_feedback=tuple(errors[:20]),
         )
 
     def restart(self) -> "HybridOuroboros":

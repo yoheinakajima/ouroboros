@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ouroboros-activegraph"
+version = "0.1.0"
+description = "A minimal self-improving ActiveGraph agent and comparative research harness"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "activegraph[llm]>=1.10,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.15,<1",
+]
+
+[project.scripts]
+ouroboros = "ouroboros:main"
+ouroboros-research-ready = "research.readiness:main"
+ouroboros-benchmark = "research.benchmark_runner:main"
+
+[tool.setuptools]
+py-modules = ["ouroboros"]
+
+[tool.setuptools.packages.find]
+include = ["experiments*", "research*"]
+
+[tool.setuptools.package-data]
+research = ["*.json", "tasks/*.json"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

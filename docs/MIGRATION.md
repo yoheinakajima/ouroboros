@@ -1,54 +1,51 @@
-# Migration: text-policy mutation to workspace evolution
+# Migration to the minimal ActiveGraph organism
 
-The historical v0 engine evolved one existing Python function inside a marked
-text-policy region. It provided useful manager-facing infrastructure—unique
-runs, content identity, hidden probes, blinded judging, immutable evidence, and
-`promotion.json`—but its organism could not grow beyond a single constrained
-text transformer.
+Ouroboros has explored three mutable units:
 
-The canonical root `ouroboros.py` now treats an arbitrary workspace tree as the
-organism. This is a redesign, not an incremental extension of the mutable
-function region.
-
-## What changed
-
-| Area | Historical v0 | Workspace engine |
+| Generation | Mutable unit | Main limitation |
 |---|---|---|
-| Mutable unit | One existing function | Any files and directories |
-| Seed | Mutable region in the engine | Embedded `agent.py`, manifest, self, memory |
-| Builder output | One replacement function | Multi-turn runtime-owned tool session |
-| Architecture | Fixed text policy | Candidate-controlled manifest and entrypoint |
-| Evaluation | Text probes | Startup/protocol gates, commands, imports, HTTP, files, sealed tests, blinded judge |
-| Identity | Source SHA-256 | Canonical sorted tree/content SHA-256 |
-| Self-improvement | Advice inside policy | Promoted `SELF.md`/`MEMORY.md`; manager-only `next_ouroboros.py` |
+| Text-policy prototype | One marked Python function | Could not grow into general software |
+| Workspace evolution manager | Arbitrary generated project tree | Large evaluator dominated the idea; outputs imitated agents without retaining live model intelligence |
+| Minimal ActiveGraph organism | Procedures plus promoted deterministic capabilities | Pure local capabilities only; production governance intentionally deferred |
 
-## What was retained
+The canonical `ouroboros.py` now uses ActiveGraph directly and has no
+`activegraph-packs` dependency. The organism is the persistent event graph,
+model actor, evaluated procedures, promoted capability source, and host tool
+boundary—not a generated workspace.
 
-- ActiveGraph as the authoritative event log;
-- unique run IDs and one `trace.sqlite` per invocation;
-- exact lineage plus content-addressed versions;
-- public development evidence and sealed validation;
-- blinded qualitative comparison and deterministic acceptance;
-- complete finalization on success and failure;
-- `promotion.json` as a handoff, never an automatic source rewrite.
+## What remains from the workspace engine
 
-Application events remain under `ouro.v0.*` so the historical and new runs can
-coexist without using framework-reserved lifecycle names. The graph projection
-now models `objective_contract`, `workspace_version`, `file_blob`,
-`build_session`, `file_change`, `command_run`, test suites/results,
-`evaluation`, `history_summary`, `release_candidate`, and `run_summary`.
+- Strong model/tool loops for real coding work
+- Provider credentials owned only by the host
+- Execution-grounded checks
+- Content-addressed artifacts
+- Cost and trace evidence
+- Exact source retention for rejected and promoted candidates
 
-## Compatibility and release handling
+## What ActiveGraph now owns
 
-Existing manager code should consume `result.json` and `promotion.json` as
-before, but must expect `final_workspace/` rather than `final.py`. Cross-run
-identity is now `final_content_id` with the
-`workspace-sha256-<canonical-tree-digest>` form. The old implementation remains
-unchanged at `experiments/baselines/text_policy_v0.py` (SHA-256
-`6cb2790dfb8aeda193694ce43e22e4796d986f832323c987520c70fd035213e0`) so old
-manager reports and traces retain a reproducible engine snapshot.
+- Event persistence and restart
+- Model and tool trace pairs
+- Budgets and behavior failures
+- Forked subprocess trials
+- Manifest and bundle hashes
+- Structural dry-run and promotion
 
-A produced `next_ouroboros.py` is only a release candidate. A manager should run
-the full deterministic and live suite, inspect its bundle, and promote it in a
-later version-control commit. The currently executing kernel is never replaced
-in place.
+## Compatibility
+
+Prior raw run bundles remain local under ignored `artifacts/` and are not
+consumed by the new organism. Curated evidence lives under `evidence/`. The
+exact recovered workspace v1.2 source is under `recovered/v1.2/`; the
+historical text mutator remains under `experiments/baselines/`. New Minimal-v2
+state lives by default in:
+
+```text
+.ouroboros/organism/
+  organism.json
+  trace.sqlite
+  mutations/
+```
+
+There is no automatic migration of earlier workspace histories because their
+ontology and promotion unit are different. Importing selected successful
+procedures later should be an explicit, auditable graph operation.

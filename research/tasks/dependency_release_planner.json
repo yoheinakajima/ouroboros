@@ -1,0 +1,155 @@
+{
+  "id": "dependency_release_planner",
+  "title": "Dependency-aware release planner",
+  "category": "typed_relational_workflow",
+  "objective": "Author and adopt an ActiveGraph pack that builds a durable task dependency graph and reports which blocked work becomes ready when a prerequisite completes.",
+  "behavior_contract": "Subscribe to hybrid.task.requested and support two operations. add_task receives task_id, title, and depends_on (a list of existing logical task ids). Create exactly one typed workflow_task object with data {task_id, title, status: pending}; create one typed depends_on relation from the new task object to each prerequisite object; emit hybrid.task.completed with output exactly {task_id, state, dependency_count}, where state is ready if every prerequisite is already done and blocked otherwise. complete_task receives task_id, patches that task status to done, then emits output exactly {completed, ready}, where ready is a lexicographically sorted list of every still-pending task whose dependency relations all target done tasks after this completion. Preserve all nodes and edges in the graph.",
+  "constraints": [
+    "Use a Pydantic-backed ActiveGraph ObjectType named workflow_task.",
+    "Declare an ActiveGraph RelationType named depends_on and create real graph relations, not dependency lists embedded in task objects.",
+    "Use a deterministic pack-aware @behavior and ctx.view for reads.",
+    "Do not use tools, LLM behaviors, external capabilities, module-global mutable state, or I/O.",
+    "All add_task dependencies in this benchmark refer to tasks created earlier in the same ordered suite."
+  ],
+  "public_cases": [
+    {
+      "id": "public-add-spec",
+      "payload": {"operation": "add_task", "task_id": "spec", "title": "Write specification", "depends_on": []},
+      "expected": {"task_id": "spec", "state": "ready", "dependency_count": 0},
+      "expected_graph": {
+        "objects": [{"type": "workflow_task", "where": {"task_id": "spec"}, "data": {"status": "pending"}, "version": 1}],
+        "object_type_counts": {"workflow_task": 1},
+        "relation_type_counts": {"depends_on": 0}
+      }
+    },
+    {
+      "id": "public-add-implementation",
+      "payload": {"operation": "add_task", "task_id": "implementation", "title": "Build implementation", "depends_on": ["spec"]},
+      "expected": {"task_id": "implementation", "state": "blocked", "dependency_count": 1},
+      "expected_graph": {
+        "objects": [{"type": "workflow_task", "where": {"task_id": "implementation"}, "data": {"status": "pending"}}],
+        "relations": [{
+          "type": "depends_on",
+          "source": {"type": "workflow_task", "where": {"task_id": "implementation"}},
+          "target": {"type": "workflow_task", "where": {"task_id": "spec"}}
+        }],
+        "object_type_counts": {"workflow_task": 2},
+        "relation_type_counts": {"depends_on": 1}
+      }
+    },
+    {
+      "id": "public-complete-spec",
+      "payload": {"operation": "complete_task", "task_id": "spec"},
+      "expected": {"completed": "spec", "ready": ["implementation"]},
+      "expected_graph": {
+        "objects": [{"type": "workflow_task", "where": {"task_id": "spec"}, "data": {"status": "done"}, "version": 2}],
+        "object_type_counts": {"workflow_task": 2},
+        "relation_type_counts": {"depends_on": 1}
+      }
+    },
+    {
+      "id": "public-add-deploy",
+      "payload": {"operation": "add_task", "task_id": "deploy", "title": "Deploy release", "depends_on": ["implementation", "spec"]},
+      "expected": {"task_id": "deploy", "state": "blocked", "dependency_count": 2},
+      "expected_graph": {
+        "relations": [
+          {
+            "type": "depends_on",
+            "source": {"type": "workflow_task", "where": {"task_id": "deploy"}},
+            "target": {"type": "workflow_task", "where": {"task_id": "implementation"}}
+          },
+          {
+            "type": "depends_on",
+            "source": {"type": "workflow_task", "where": {"task_id": "deploy"}},
+            "target": {"type": "workflow_task", "where": {"task_id": "spec"}}
+          }
+        ],
+        "object_type_counts": {"workflow_task": 3},
+        "relation_type_counts": {"depends_on": 3}
+      }
+    },
+    {
+      "id": "public-complete-implementation",
+      "payload": {"operation": "complete_task", "task_id": "implementation"},
+      "expected": {"completed": "implementation", "ready": ["deploy"]},
+      "expected_graph": {
+        "objects": [
+          {"type": "workflow_task", "where": {"task_id": "implementation"}, "data": {"status": "done"}, "version": 2},
+          {"type": "workflow_task", "where": {"task_id": "deploy"}, "data": {"status": "pending"}}
+        ],
+        "object_type_counts": {"workflow_task": 3},
+        "relation_type_counts": {"depends_on": 3}
+      }
+    }
+  ],
+  "private_cases": [
+    {
+      "id": "private-add-ingest",
+      "payload": {"operation": "add_task", "task_id": "ingest", "title": "Ingest data", "depends_on": []},
+      "expected": {"task_id": "ingest", "state": "ready", "dependency_count": 0},
+      "expected_graph": {"object_type_counts": {"workflow_task": 1}, "relation_type_counts": {"depends_on": 0}}
+    },
+    {
+      "id": "private-add-validate",
+      "payload": {"operation": "add_task", "task_id": "validate", "title": "Validate data", "depends_on": ["ingest"]},
+      "expected": {"task_id": "validate", "state": "blocked", "dependency_count": 1},
+      "expected_graph": {"object_type_counts": {"workflow_task": 2}, "relation_type_counts": {"depends_on": 1}}
+    },
+    {
+      "id": "private-add-publish",
+      "payload": {"operation": "add_task", "task_id": "publish", "title": "Publish data", "depends_on": ["validate", "ingest"]},
+      "expected": {"task_id": "publish", "state": "blocked", "dependency_count": 2},
+      "expected_graph": {"object_type_counts": {"workflow_task": 3}, "relation_type_counts": {"depends_on": 3}}
+    },
+    {
+      "id": "private-complete-ingest",
+      "payload": {"operation": "complete_task", "task_id": "ingest"},
+      "expected": {"completed": "ingest", "ready": ["validate"]},
+      "expected_graph": {
+        "objects": [{"type": "workflow_task", "where": {"task_id": "ingest"}, "data": {"status": "done"}, "version": 2}],
+        "object_type_counts": {"workflow_task": 3},
+        "relation_type_counts": {"depends_on": 3}
+      }
+    },
+    {
+      "id": "private-complete-validate",
+      "payload": {"operation": "complete_task", "task_id": "validate"},
+      "expected": {"completed": "validate", "ready": ["publish"]},
+      "expected_graph": {
+        "objects": [{"type": "workflow_task", "where": {"task_id": "validate"}, "data": {"status": "done"}, "version": 2}],
+        "object_type_counts": {"workflow_task": 3},
+        "relation_type_counts": {"depends_on": 3}
+      }
+    }
+  ],
+  "transfer_cases": [
+    {
+      "id": "transfer-add-design",
+      "payload": {"operation": "add_task", "task_id": "design", "title": "Design API", "depends_on": []},
+      "expected": {"task_id": "design", "state": "ready", "dependency_count": 0},
+      "expected_graph": {"object_type_counts": {"workflow_task": 1}, "relation_type_counts": {"depends_on": 0}}
+    },
+    {
+      "id": "transfer-add-code",
+      "payload": {"operation": "add_task", "task_id": "code", "title": "Write code", "depends_on": ["design"]},
+      "expected": {"task_id": "code", "state": "blocked", "dependency_count": 1},
+      "expected_graph": {"object_type_counts": {"workflow_task": 2}, "relation_type_counts": {"depends_on": 1}}
+    },
+    {
+      "id": "transfer-add-docs",
+      "payload": {"operation": "add_task", "task_id": "docs", "title": "Write docs", "depends_on": ["design"]},
+      "expected": {"task_id": "docs", "state": "blocked", "dependency_count": 1},
+      "expected_graph": {"object_type_counts": {"workflow_task": 3}, "relation_type_counts": {"depends_on": 2}}
+    },
+    {
+      "id": "transfer-complete-design",
+      "payload": {"operation": "complete_task", "task_id": "design"},
+      "expected": {"completed": "design", "ready": ["code", "docs"]},
+      "expected_graph": {
+        "objects": [{"type": "workflow_task", "where": {"task_id": "design"}, "data": {"status": "done"}, "version": 2}],
+        "object_type_counts": {"workflow_task": 3},
+        "relation_type_counts": {"depends_on": 2}
+      }
+    }
+  ]
+}
