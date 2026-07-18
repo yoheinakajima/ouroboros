@@ -61,6 +61,29 @@ Adoption requires a strict improvement over the incumbent, every public and
 private case, no behavior failures, and no release-policy violation. Research
 success additionally requires every transfer case after restart.
 
+## Development-lineage boundary
+
+Hard-suite work happens in two phases. First, the shared outer agent acts in
+the official task environment and the external grader writes its result after
+the agent exits. Second, the lineage builder may expose only the public task,
+the agent's own trajectory-derived summary and submission, and one scalar
+score receipt to a recorded reflection model. Exact grader tests, expected
+outputs, logs, component diagnostics, manager cases, and oracle artifacts are
+not valid lineage inputs.
+
+The common reflection controls the information surface; it does not erase the
+architectural difference. Workspace v1.2 may evolve an arbitrary seed tree,
+Minimal v2 may import only a passing evaluated procedure, and Hybrid must
+author and adopt an executable hash-pinned Pack that retrieves retained
+guidance through ActiveGraph. Failed development attempts remain provenance;
+Minimal does not promote them as procedures, while broader mutation units may
+encode them as cautions. Every step produces a new immutable state directory
+whose manifest includes all parent run ids. In-place lineage mutation is not
+allowed. Scored lineages may inherit only their own approach's development
+runs. Reusing one approach's evidence to exercise another architecture is
+rejected by default and requires an explicit cross-approach calibration flag;
+such a run is unscored and must be labeled as builder calibration.
+
 ## What is measured
 
 No weighted “intelligence score” is reported. Each run produces a vector:

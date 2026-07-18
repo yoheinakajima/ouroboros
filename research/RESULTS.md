@@ -49,6 +49,45 @@ harness-motivated retry. Exact public hashes are in
 `../evidence/swe_canary_workspace_v1_2.json`; full traces and patches remain in
 the ignored artifact tree.
 
+## First native-lineage builder canary
+
+The resolved Matplotlib development experience above was sanitized to the
+public task, the agent's own summary and patch, and one scalar official score
+receipt. One recorded `gpt-5.6-sol` ActiveGraph reflection converted it into a
+transfer lesson for 2,555 input / 592 output tokens, one call, $0.030535, and
+20.28 seconds. The exact same sanitized experience and lesson were then fanned
+out to all three native builders solely to test their mechanics:
+
+| Builder | Native retained result | Calls | Input / output | Cost |
+|---|---|---:|---:|---:|
+| Minimal v2 | Passing external receipt became one retrieved procedure; immutable state 212,235 bytes | 0 | 0 / 0 | $0 |
+| Hybrid Packs | `development_playbook@1.0.0` passed public/private/transfer 1/1 each, hash-adopted, cold-loaded, and executed as typed ActiveGraph context | 1 | 24,139 / 3,206 | $0.216875 |
+| Workspace v1.2 | Native kernel promoted a multi-file lesson compiler from 1/4 to 4/4 public and private checks; six declared tests passed | 14 | 134,859 / 17,342 | $1.194555 |
+
+The first Workspace attempt exposed a real harness limit: its 180-second LLM
+timeout produced four timed-out requests and no retained state. One metered
+response cost $0.114370. The recovered kernel now exposes a 600-second
+per-call ceiling; the retry completed with no failed requests. The failed
+attempt remains in the paid total rather than being erased.
+
+Lineage-only spend was $1.556335: reflection $0.030535, Hybrid $0.216875,
+invalid Workspace attempt $0.114370, valid Workspace retry $1.194555, and
+Minimal $0. Including the earlier source-task canary, cumulative spend was
+$2.788550.
+
+Hybrid context execution now occurs in a fresh subprocess whose environment
+contains no provider credentials; the retained state was unchanged by the
+query. Minimal exposes 2,415 bytes of retrieved context, Hybrid 3,689, and
+Workspace 20,847, each with a recorded hash. Exact curated hashes are in
+`../evidence/lineage_builder_canary.json`; full traces and native outputs remain
+under the ignored `artifacts/lineage-canary-matplotlib-25960/` tree.
+
+This is **not** an architecture comparison, a held-out score, or evidence of
+recursive uplift. The source experience was produced by Workspace and shared
+deliberately to isolate builder behavior. Protocol 0.6 rejects such
+cross-approach inheritance by default; scored development lineages must use
+independent parent runs from the matching approach.
+
 ## Docs-grounded Hybrid Packs
 
 Three capability acquisitions have valid clean runs; two require materialized

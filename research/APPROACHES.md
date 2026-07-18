@@ -1,24 +1,24 @@
 # Architecture comparison
 
-Snapshot: 2026-07-16. Line counts include comments and CLI code and are useful
+Snapshot: 2026-07-17. Line counts include comments and CLI code and are useful
 only as an order-of-magnitude measure.
 
 ## The three ideas in plain language
 
 **Workspace v1.2 is a city rebuilder.** Give it land, a goal, and inspectors;
 it can replace nearly every building. This makes it broadly powerful, costly,
-and difficult to prove safe. The recovered kernel is 3,564 lines plus 1,354
+and difficult to prove safe. The recovered kernel is 3,587 lines plus 1,364
 test lines.
 
 **Minimal v2 is an apprentice with a notebook and tool belt.** One persistent
 model actor performs work, remembers successful procedures, and can add small
 deterministic tools. It feels most like one continuing agent and is easiest to
-demo conversationally. The current kernel is 1,531 lines plus 478 test lines.
+demo conversationally. The current kernel is 1,602 lines plus 478 test lines.
 
 **Hybrid Packs is an organism that grows hash-pinned organs.** A powerful model
 may propose a complete ActiveGraph Pack—types, relations, and behaviors—but an
 immune-system-like manager decides whether the organ is safe and actually
-improves behavior. The pack manager is 1,167 lines; the docs-grounded author
+improves behavior. The pack manager is 1,257 lines; the docs-grounded author
 and recorder add 724 lines; their focused tests total 584 lines. The shared
 broker, agent, grader, sandbox, and runner are research infrastructure and are
 reported separately from all three kernels.
@@ -102,6 +102,9 @@ Weaknesses:
   proof against adversarial Python.
 - Native adopted Packs remain deterministic and local; model and workspace
   authority are available only through the outer host broker.
+- The hard-suite lineage now uses a real Pack as the retrieval behavior and
+  executes it in a fresh credential-free subprocess at evaluation, rather than
+  treating Pack source text alone as the acquired capability.
 - Atomic multi-Pack proposals now support coordinated graph behavior, but the
   manager and authoring algorithm themselves are still outside that mutation unit.
 - Three successful pilots show acquisition, not reliability or recursion.
@@ -122,6 +125,8 @@ Weaknesses:
 - Structural mutations are intentionally limited to pure JSON functions.
 - Learned procedures are retained after success, but their causal value on
   future tasks is not yet measured.
+- External benchmark receipts now have a narrow import bridge: failures are
+  recorded, while only passing attempts may become retrieved procedures.
 - Without an external check, open-ended completion rests on the actor's claim.
 - The dual mutation story—soft procedures plus hard capabilities—is less
   visually dramatic than whole-Pack growth.

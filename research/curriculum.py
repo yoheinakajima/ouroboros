@@ -110,7 +110,7 @@ def export_minimal_state(root: str | Path) -> Path:
                     "name": str(data.get("name", "")),
                     "trigger_terms": [str(value) for value in data.get("trigger_terms", [])],
                     "steps": [str(value) for value in data.get("steps", [])],
-                    "evidence": str(data.get("evidence", "")),
+                    "evidence": str(data.get("evidence", data.get("evidence_receipt", ""))),
                 }
             )
         elif item.type == "promotion" and data.get("status") == "active":
@@ -122,7 +122,7 @@ def export_minimal_state(root: str | Path) -> Path:
                     "bundle_hash": str(data.get("bundle_hash", "")),
                 }
             )
-        elif item.type == "mutation_trial":
+        elif item.type in {"mutation_trial", "external_evaluation"}:
             receipt = str(data.get("evaluation_receipt", ""))
             if receipt:
                 evidence_receipts.append(receipt)

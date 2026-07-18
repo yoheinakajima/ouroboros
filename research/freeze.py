@@ -41,6 +41,7 @@ LOCK_INPUTS = (
     "research/harbor_agent.py",
     "research/harbor_jobs.py",
     "research/hybrid_author.py",
+    "research/lineage.py",
     "research/readiness.py",
     "research/sandbox.py",
     "research/smoke.py",

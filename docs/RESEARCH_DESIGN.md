@@ -1,7 +1,9 @@
 # Comparative research design
 
-Status: local no-account profile oracle-calibrated and frozen; no scored hard
-benchmark has been run.
+Status: local no-account profile oracle-calibrated and frozen; one paid
+development canary has validated the SWE path and all three native lineage
+builders. The latter reused one source experience as an explicitly unscored
+builder calibration; no held-out comparative benchmark has been run.
 
 ## Claim under test
 

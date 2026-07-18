@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "purpose": "Paid shared-evidence calibration of all three native lineage builders; not a held-out, comparative, or recursive-uplift result.",
+  "headline_eligible": false,
+  "protocol_version": "0.6-local-frozen",
+  "protocol_root_sha256": "a70921db5e05875a0eacf18d535c560bc82d02f46c71b729f7308c503452dad0",
+  "provider": "openai",
+  "model": "gpt-5.6-sol",
+  "source_experience": {
+    "suite_id": "ouro_swe_50",
+    "task_id": "matplotlib__matplotlib-25960",
+    "split": "development",
+    "source_approach_id": "workspace_v1_2",
+    "parent_run_id": "development-workspace-v12-r1-swe-001-v3-testbed",
+    "shared_across_builders": true,
+    "shared_builder_calibration_only": true,
+    "official_score": 1.0,
+    "official_passed": true,
+    "score_receipt_sha256": "e7562f8352989310975d0795219b11072309a2fdae37117541886608ca94ca67",
+    "sanitized_evidence_canonical_sha256": "52557bbe9896f9c1a7081a29e3a8f5beaf88003dd421cb35fb1d6ce5e1390625",
+    "sanitized_evidence_file_sha256": "d955b1cc4e8b66343b03c57fc801fbd19123e0f69c758893a3a49a8fa1d37d26",
+    "hidden_evaluator_content_exposed": false
+  },
+  "reflection": {
+    "title": "Reserve grid gap space before normalizing ratio-based child bounds",
+    "model_calls": 1,
+    "input_tokens": 2555,
+    "output_tokens": 592,
+    "cost_usd": 0.030535,
+    "elapsed_seconds": 20.27983,
+    "lesson_canonical_sha256": "8bbc6a397b245b3b19839ac78ef791bcdbb9ba0e6ccb130f93945cc07851ca6a",
+    "lesson_file_sha256": "978e230c06d7cf116379018740b84be4728b68bcaf3e45cf64d450bb47ee23d0",
+    "summary_file_sha256": "27d212b29d111565ba900b872591634169ee48dcf41668eb87e737891e318fd7",
+    "behavior_failures": 0
+  },
+  "builders": {
+    "minimal_v2": {
+      "native_result": "one passing externally evaluated procedure retained; score receipt preserved",
+      "additional_model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0.0,
+      "retained_procedures": 1,
+      "retained_evidence_receipts": 1,
+      "artifact_sha256": "5d3081f8d4ad2d70d999bd20ee7c44084b9fc8c32516432e38e26fa205a65477",
+      "artifact_bytes": 212235,
+      "manifest_file_sha256": "75edc5b11390c483433f249b0104432d59a0a61946cd75a9f2e55323e4d44d7d",
+      "exposed_context_sha256": "sha256:f68146b6406e9c9a993c5a26efc58410d7c0cf9d3e7b15dd1c0f56d173a03c22",
+      "exposed_context_bytes": 2415
+    },
+    "hybrid_packs": {
+      "native_result": "one docs-grounded executable ActiveGraph guidance Pack adopted by exact hash and cold-loaded",
+      "model_calls": 1,
+      "input_tokens": 24139,
+      "output_tokens": 3206,
+      "cost_usd": 0.216875,
+      "author_attempts": 1,
+      "public": {"passed": 1, "total": 1},
+      "private": {"passed": 1, "total": 1},
+      "post_restart_transfer": {"passed": 1, "total": 1},
+      "pack": {
+        "name": "development_playbook",
+        "version": "1.0.0",
+        "bundle_hash": "sha256:b3b40b60ead7555cc1153601bc606d3ccf15f15a20be379e533e62af4aae34a4"
+      },
+      "artifact_sha256": "58bb5effc591cd15eb9de696c3f4f1634deafcf59546a871074d43110fc4b02d",
+      "artifact_bytes": 25789,
+      "manifest_file_sha256": "1fc5a9163acb9ba95bd9f2e5981da6e30590e3787a599cd7c2f8d61e5fd5ce88",
+      "exposed_context_sha256": "sha256:36fb03cb0a8905cb3119dc01847885916cc6f5216676a2a339b78a52c0afdd73",
+      "exposed_context_bytes": 3689,
+      "isolated_query_behavior_failures": 0,
+      "credentials_forwarded_to_pack_process": false,
+      "retained_state_changed_by_query": false,
+      "result_file_sha256": "472ac302bcb32f742e25739afd7abb8626b571fecc41a424eff05d2a091dec9a",
+      "proposal_file_sha256": "4f83d865ec37ea8fa8016277954d1193d450b378bd6b099026c32e24f6d90166"
+    },
+    "workspace_v1_2": {
+      "invalid_timeout_attempt": {
+        "run_id": "lineage-workspace-1-3b338aec",
+        "status": "failed",
+        "reason": "compile_private_suite: llm.network_error",
+        "llm_attempts": 5,
+        "metered_model_calls": 1,
+        "failed_llm_attempts": 4,
+        "input_tokens": 3968,
+        "output_tokens": 3151,
+        "cost_usd": 0.11437,
+        "retained_state_promoted": false,
+        "result_file_sha256": "e9f77eb86cb3b34ece6a3541c5bbc8d04f1bf96512fb4891a8007a55601ca91e"
+      },
+      "hardening": "raised the recovered kernel's explicit per-call LLM timeout from the inherited 180-second behavior default to a configurable 600 seconds",
+      "valid_retry": {
+        "run_id": "lineage-workspace-1-57ab99c0",
+        "status": "completed",
+        "accepted_generations": 1,
+        "model_calls": 14,
+        "failed_llm_attempts": 0,
+        "input_tokens": 134859,
+        "output_tokens": 17342,
+        "cost_usd": 1.194555,
+        "baseline_public": {"passed": 1, "total": 4, "hard_gates_passed": false},
+        "baseline_private": {"passed": 1, "total": 4, "hard_gates_passed": false},
+        "candidate_public": {"passed": 4, "total": 4, "hard_gates_passed": true},
+        "candidate_private": {"passed": 4, "total": 4, "hard_gates_passed": true},
+        "declared_tests_discovered": 6,
+        "declared_tests_passed": 6,
+        "artifact_sha256": "747ab0610c3df2a17c1d247300775051f15283c1a7fe0c50c5d20e578b283cda",
+        "artifact_bytes": 24847,
+        "manifest_file_sha256": "bdda69cd2e9134b4869cbb0da9c9322909ce12c87a777e627e130fa9f3854e53",
+        "exposed_context_sha256": "sha256:d6ea607db16620f09cca53394162db8d0e9cc8bfd7629eb35d27a9e4f027620b",
+        "exposed_context_bytes": 20847,
+        "result_file_sha256": "4171945e291b5c1409cece15ee97b45f024613e768eda7d5772573d138b27aae",
+        "promotion_file_sha256": "f8dd0406015b22945005b3810214b12d1d33593ad0999244e4b21c7d274f15e6"
+      }
+    }
+  },
+  "paid_totals": {
+    "lineage_only_model_calls": 17,
+    "lineage_only_input_tokens": 165521,
+    "lineage_only_output_tokens": 24291,
+    "lineage_only_cost_usd": 1.556335,
+    "prior_source_task_cost_usd": 1.232215,
+    "source_plus_lineage_cost_usd": 2.78855
+  },
+  "security": {
+    "provider_credentials_forwarded_to_pack_process": false,
+    "hidden_evaluator_content_entered_retained_state": false,
+    "private_cases_entered_reflection": false,
+    "generated_pack_is_hostile_code_security_proof": false,
+    "detail": "The subprocess and static membrane contain ordinary generated-code accidents; deliberately hostile Python still requires a VM or container boundary."
+  },
+  "reproducibility_limit": {
+    "raw_artifacts_hash_pinned": true,
+    "generated_from_clean_protocol_commit": false,
+    "detail": "This was an in-development builder calibration. The final protocol adds an explicit default-deny cross-approach lineage gate after the artifacts were created; scored protocol-0.6 runs must originate from clean matching-approach parent runs."
+  },
+  "interpretation": "All three native construction paths can turn the same bounded successful experience into their intended retained mutation unit. Because the source experience came from Workspace, was shared, and was not evaluated for future-task uplift, this does not rank architectures or demonstrate recursive self-improvement.",
+  "raw_artifacts": "ignored artifacts/lineage-canary-matplotlib-25960/"
+}

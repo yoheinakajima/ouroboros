@@ -7,7 +7,7 @@
       "label": "Workspace evolution v1.2",
       "mutation_unit": "arbitrary workspace tree",
       "sources": [
-        {"path": "recovered/v1.2/ouroboros.py", "sha256": "029e24b2e8d445d849cd147f4103e7ebcdd6e8d18ca78d01a19f3914ecf5cfdc"}
+        {"path": "recovered/v1.2/ouroboros.py", "sha256": "87eb4e8719f01a504e6058b2e5b63d5de74b6b94c8e6eea743888471b69f7322"}
       ],
       "adapter_status": "ready",
       "hardening": {
@@ -17,6 +17,9 @@
         "bounded_hash_receipted_sham_context": true,
         "cold_ablation": true,
         "sham_control": true,
+        "immutable_public_evidence_lineage_builder": true,
+        "native_development_kernel_invocation": true,
+        "cross_approach_lineage_gate": true,
         "common_outer_container_execution": true,
         "persistent_harbor_task_environment": true
       }
@@ -26,7 +29,7 @@
       "label": "Minimal persistent organism v2",
       "mutation_unit": "evaluated procedure or pure deterministic capability",
       "sources": [
-        {"path": "ouroboros.py", "sha256": "5acde325a027c53eee7bda3e6f9a856c2c3e2494cb2ac49d17da8954a9a4da1a"}
+        {"path": "ouroboros.py", "sha256": "0efc3ba623a978f68f763080875886bbf8126ff4fca0a91f1bd217f73bb86bc0"}
       ],
       "adapter_status": "ready",
       "hardening": {
@@ -37,6 +40,9 @@
         "sham_control": true,
         "procedure_ablation": true,
         "promotion_ablation": true,
+        "external_score_receipt_import_gate": true,
+        "immutable_public_evidence_lineage_builder": true,
+        "cross_approach_lineage_gate": true,
         "common_outer_container_execution": true,
         "persistent_harbor_task_environment": true
       }
@@ -46,7 +52,7 @@
       "label": "Documentation-grounded Hybrid Packs",
       "mutation_unit": "atomic set of one to six complete hash-pinned ActiveGraph Packs",
       "sources": [
-        {"path": "experiments/hybrid_ouroboros.py", "sha256": "f4b6bcdfe18f02e4d30376cec64531404259d4f7f70044479234615fa603eed8"},
+        {"path": "experiments/hybrid_ouroboros.py", "sha256": "ff8b949ca895445a796df117182671c281e8d883cf632de98d5c9228af1deab4"},
         {"path": "research/hybrid_author.py", "sha256": "09cd590c5722d0c8d58cec37fb5277b1bef089cb34eceb0ece917772eb2a0997"}
       ],
       "adapter_status": "ready",
@@ -60,6 +66,10 @@
         "atomic_multi_pack_proposal": true,
         "bounded_retained_pack_source_context": true,
         "bounded_hash_receipted_sham_context": true,
+        "activegraph_context_pack_execution": true,
+        "docs_grounded_development_pack_builder": true,
+        "immutable_public_evidence_lineage_builder": true,
+        "cross_approach_lineage_gate": true,
         "common_outer_container_execution": true,
         "persistent_harbor_task_environment": true
       }

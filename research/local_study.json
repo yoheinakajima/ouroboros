@@ -59,7 +59,13 @@
   "curriculum_rules": {
     "task_order": "The committed order in each suite selection manifest; suites run SWE-bench, Terminal-Bench, then ActiveGraph.",
     "lineages": "Build one independent retained-state lineage per approach and downstream replication seed.",
-    "feedback": "Only public task material and the frozen feedback policy in evolution_manifest.json; sealed evaluator content is never exposed.",
+    "feedback": "Only the public task, the agent's own summary/evidence/submission, and a scalar score receipt may enter research/lineage.py; exact tests, expected outputs, grader logs, component diagnostics, manager cases, and oracles are never exposed.",
+    "reflection": "One recorded ActiveGraph reflection distills each sanitized attempt before architecture-native adoption; actual calls, tokens, cost, evidence hash, and lesson hash are retained.",
+    "native_construction": {
+      "workspace_v1_2": "Run the recovered workspace kernel over the prior tree plus sanitized evidence and require its native evaluator bundle.",
+      "minimal_v2": "Record every external receipt but retain a retrieved procedure only when the scalar receipt passed.",
+      "hybrid_packs": "Author from pinned ActiveGraph docs, privately trial, hash-adopt, cold-reload, and execute a typed development-guidance Pack."
+    },
     "fairness": "The model, task order, per-task outer budget, and feedback surface are identical across approaches.",
     "artifact_gate": "Every retained state must pass evolution_manifest.json validation before either evolved or cold-ablation evaluation."
   },

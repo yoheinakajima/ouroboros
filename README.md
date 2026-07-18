@@ -28,9 +28,11 @@ documentation-grounded author under `research/`. None depends on the separate
 See [the research design](docs/RESEARCH_DESIGN.md), [benchmark feasibility
 audit](docs/BENCHMARK_AUDIT.md), [current pilot results](research/RESULTS.md),
 and [the readiness gate](research/readiness.py). The no-account benchmark
-selections are oracle-calibrated and frozen; no scored hard-benchmark result is
-claimed yet. Execution still requires the committed hash lock and a clean
-checkout.
+selections are oracle-calibrated and frozen; one development canary has passed
+the official SWE grader, and that sanitized experience has passed all three
+native lineage-builder paths. This was a shared unscored builder calibration;
+no held-out comparative result is claimed yet.
+Execution still requires the committed hash lock and a clean checkout.
 
 The no-account study has three locally runnable families: 50 held-out
 SWE-bench Verified issues, 12 held-out Terminal-Bench 2 tasks, and three

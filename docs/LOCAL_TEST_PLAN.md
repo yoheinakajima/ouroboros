@@ -39,6 +39,30 @@ the approach, development suites/tasks, parent run ids, feedback policy,
 artifact byte count, and artifact hash. Private/grader paths are rejected and
 any mutation after manifest creation invalidates the state before evaluation.
 
+The development boundary is also explicit. `research/lineage.py` creates a
+strict allowlisted record containing only the public instruction, the agent's
+own summary/evidence/submission, and a scalar grader receipt. Exact hidden
+tests, expected values, grader logs, oracle patches, and manager cases cannot
+be represented by that schema. A recorded ActiveGraph reflection distills one
+transfer lesson, after which each approach uses a genuinely different native
+path:
+
+- Workspace v1.2 receives the evidence as seed material and may rewrite the
+  entire retained workspace under its own public/private evaluator.
+- Minimal v2 records every external receipt but promotes a procedure only
+  after a passing score.
+- Hybrid authors a complete documentation-grounded ActiveGraph Pack, passes
+  public and manager-private event/typed-state trials, adopts it by exact hash,
+  cold-restarts it, and answers future context queries by executing the Pack
+  in a fresh credential-free subprocess.
+
+This is the first point at which the approach labels have distinct causal
+meaning. Repeating cold labels does not compare architectures because they all
+use the same outer agent by design. Likewise, sharing one development receipt
+across approaches is permitted only with the explicit unscored calibration
+flag. Scored lineages reject cross-approach evidence and use independently
+generated parent runs.
+
 The decisive number is paired held-out uplift:
 
 `score(evolved with retained improvement) - score(same history, improvement hidden)`

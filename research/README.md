@@ -50,6 +50,14 @@ the pinned official SWE-bench harness. A gold-patch end-to-end handoff has been
 recorded before scored execution. The agent shell also activates the official
 image's prebuilt `testbed` environment so every architecture can run the same
 repository tests the evaluator will later invoke.
+Development attempts now cross a strict public-evidence boundary into an
+immutable lineage builder. Minimal imports only passing evaluated procedures;
+Workspace runs its native tree evolution; Hybrid authors, privately trials,
+hash-adopts, cold-reloads, and executes a real documentation-grounded
+ActiveGraph guidance Pack.
+One paid shared-evidence builder canary has exercised all three paths. It is
+explicitly unscored: the frozen study rejects cross-approach inheritance by
+default and will build independent lineages for comparative runs.
 
 ## Run a recorded hybrid experiment
 
@@ -112,6 +120,7 @@ research/
   activegraph_benchmark.py  five generated 20/50 ActiveGraph systems
   comparison.py             paired family-level uplift and uncertainty analysis
   curriculum.py             evolved-state provenance and hash validation
+  lineage.py                sanitized evidence → native immutable state lineage
   run_index.json            provenance and validity of recorded runs
   hybrid_author.py          docs-grounded LLM Pack author and recorder
   tasks/                    executable public/private/transfer contracts

@@ -331,6 +331,7 @@ def make_config(
         max_workspace_bytes=5 * 1024 * 1024,
         command_timeout=20,
         test_timeout=10,
+        llm_timeout=600,
         memory_mb=1024,
         max_public_regression=0.05,
         max_private_regression=0.05,
@@ -929,6 +930,7 @@ class TodoTest(unittest.TestCase):
             budget = ouro.derived_runtime_budget(cfg)
             self.assertEqual(budget["max_tool_calls"], 40)
             self.assertEqual(budget["max_llm_calls"], 22)
+            self.assertGreaterEqual(budget["max_seconds"], cfg.llm_timeout * 12)
 
             class ExpensiveProvider(ScriptedProvider):
                 def estimate_cost(self, **kwargs):
@@ -939,6 +941,14 @@ class TodoTest(unittest.TestCase):
             self.assertEqual(result["status"], "budget_exhausted")
             self.assertEqual(result["usage"]["llm_calls"], 0)
             self.assertEqual(len(json.loads((cfg.run_dir / "history.json").read_text())), 1)
+            for behavior in (
+                ouro.compile_objective,
+                ouro.compile_private_suite,
+                ouro.review_test_suites,
+                ouro.build_workspace,
+                ouro.judge_workspace,
+            ):
+                self.assertEqual(behavior.timeout_seconds, cfg.llm_timeout)
 
     def test_18_run_id_collision_is_clean_and_non_destructive(self):
         with tempfile.TemporaryDirectory(prefix="ouro-collision-") as temporary:

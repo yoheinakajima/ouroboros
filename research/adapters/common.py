@@ -125,7 +125,7 @@ class StateAdapter(ApproachAdapter):
         if arm in {"evolved", "native_evolved"}:
             if not state_present:
                 raise ValueError(f"{arm} requires a retained architecture state")
-            context = self._render_context(self.retained_state)  # type: ignore[arg-type]
+            context = self._render_context(self.retained_state, task)  # type: ignore[arg-type]
             exposed = True
         elif arm == "sham_improvement_control":
             if self.sham_context is None or not self.sham_context.is_file():
@@ -153,7 +153,7 @@ class StateAdapter(ApproachAdapter):
             raise ValueError("prepared attempt belongs to a different architecture")
         return self.agent.run(prepared, broker)
 
-    def _render_context(self, root: Path) -> str:
+    def _render_context(self, root: Path, task: dict[str, Any]) -> str:
         raise NotImplementedError
 
 
@@ -161,7 +161,7 @@ class WorkspaceV12Adapter(StateAdapter):
     approach_id = "workspace_v1_2"
     mutation_unit = "arbitrary workspace tree"
 
-    def _render_context(self, root: Path) -> str:
+    def _render_context(self, root: Path, task: dict[str, Any]) -> str:
         sections: list[str] = []
         workspace = root / "final_workspace" if (root / "final_workspace").is_dir() else root
         rows = _safe_text_files(workspace)
@@ -175,7 +175,7 @@ class MinimalV2Adapter(StateAdapter):
     approach_id = "minimal_v2"
     mutation_unit = "evaluated procedure or pure deterministic capability"
 
-    def _render_context(self, root: Path) -> str:
+    def _render_context(self, root: Path, task: dict[str, Any]) -> str:
         export = root / "state_export.json"
         if not export.is_file():
             raise FileNotFoundError("minimal retained state requires state_export.json")
@@ -192,7 +192,7 @@ class HybridPacksAdapter(StateAdapter):
     approach_id = "hybrid_packs"
     mutation_unit = "atomic set of complete hash-pinned ActiveGraph Packs"
 
-    def _render_context(self, root: Path) -> str:
+    def _render_context(self, root: Path, task: dict[str, Any]) -> str:
         registry_path = root / "registry.json"
         if not registry_path.is_file():
             raise FileNotFoundError("Hybrid retained state requires registry.json")
@@ -210,4 +210,38 @@ class HybridPacksAdapter(StateAdapter):
                     "files": [{"path": relative, "text": text} for relative, text in _safe_text_files(pack_root)],
                 }
             )
-        return json.dumps({"adopted_pack_set": rows}, indent=2, sort_keys=True)[:CONTEXT_LIMIT]
+        context: dict[str, Any] = {}
+        interface = registry.get("research_context_interface")
+        if interface:
+            expected = {
+                "schema_version": 1,
+                "request_event": "hybrid.task.requested",
+                "result_event": "hybrid.task.completed",
+                "operation": "development_guidance",
+                "query_field": "query",
+            }
+            if interface != expected:
+                raise ValueError("Hybrid retained state has an unknown research context interface")
+            from experiments.hybrid_ouroboros import invoke_pack_set_isolated
+
+            invocation = invoke_pack_set_isolated(
+                root,
+                {
+                    "operation": interface["operation"],
+                    interface["query_field"]: str(task.get("prompt", "")),
+                    "limit": 3,
+                },
+            )
+            context["activegraph_query_output"] = invocation["output"]
+            context["activegraph_query_receipt"] = {
+                "loaded_packs": invocation["loaded_packs"],
+                "credentials_forwarded": invocation["credentials_forwarded"],
+                "behavior_failures": invocation["behavior_failures"],
+            }
+            context["adopted_pack_set"] = [
+                {"name": row["name"], "version": row["version"], "bundle_hash": row["bundle_hash"]}
+                for row in rows
+            ]
+        else:
+            context["adopted_pack_set"] = rows
+        return json.dumps(context, indent=2, sort_keys=True)[:CONTEXT_LIMIT]

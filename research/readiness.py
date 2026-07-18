@@ -40,6 +40,7 @@ def inspect_readiness(root: str | Path, *, profile: str = "local_no_account") ->
         "research/approaches.json",
         "research/broker_protocol.json",
         "research/environment.lock.json",
+        "research/lineage.py",
         "research/PROTOCOL.md",
     ]
     for relative in required:

@@ -244,6 +244,7 @@ class RunConfig:
     max_workspace_bytes: int
     command_timeout: int
     test_timeout: int
+    llm_timeout: int
     memory_mb: int
     max_public_regression: float
     max_private_regression: float
@@ -3266,6 +3267,7 @@ def prepare_manifest(cfg: RunConfig) -> None:
                 "max_workspace_bytes": cfg.max_workspace_bytes,
                 "command_timeout": cfg.command_timeout,
                 "test_timeout": cfg.test_timeout,
+                "llm_timeout": cfg.llm_timeout,
                 "memory_mb": cfg.memory_mb,
             },
             "cli_arguments": cfg.cli_args,
@@ -3322,7 +3324,7 @@ def derived_runtime_budget(cfg: RunConfig) -> dict[str, Any]:
         "max_behavior_calls": max(200, generations * 40 + 80),
         "max_tool_calls": max_tool_calls,
         "max_llm_calls": max_llm_calls,
-        "max_seconds": max(600, generations * 900),
+        "max_seconds": max(1_800, generations * 1_800, cfg.llm_timeout * (6 + generations * 3)),
     }
     if cfg.max_cost_usd is not None:
         budget["max_cost_usd"] = cfg.max_cost_usd
@@ -3342,6 +3344,14 @@ def run_engine(cfg: RunConfig, llm_provider: Any | None = None) -> tuple[dict[st
     review_test_suites.model = cfg.model
     build_workspace.model = cfg.model
     judge_workspace.model = cfg.model
+    for item in (
+        compile_objective,
+        compile_private_suite,
+        review_test_suites,
+        build_workspace,
+        judge_workspace,
+    ):
+        item.timeout_seconds = cfg.llm_timeout
     # ActiveGraph counts the final non-tool response as a loop turn. Reserve
     # one response turn beyond the user-visible tool-turn budget so a builder
     # that calls submit_candidate on its last allowed tool turn can still
@@ -3475,6 +3485,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-workspace-mb", type=int, default=20)
     parser.add_argument("--command-timeout", type=int, default=45)
     parser.add_argument("--test-timeout", type=int, default=30)
+    parser.add_argument("--llm-timeout", type=int, default=600)
     parser.add_argument("--memory-mb", type=int, default=1024)
     parser.add_argument("--max-public-regression", type=float, default=0.05)
     parser.add_argument("--max-private-regression", type=float, default=0.05)
@@ -3484,7 +3495,18 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--quiet", action="store_true")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
-    for name in ("generations", "max_llm_calls", "max_tool_turns", "max_tool_calls_per_turn", "max_files", "max_workspace_mb", "command_timeout", "test_timeout", "memory_mb"):
+    for name in (
+        "generations",
+        "max_llm_calls",
+        "max_tool_turns",
+        "max_tool_calls_per_turn",
+        "max_files",
+        "max_workspace_mb",
+        "command_timeout",
+        "test_timeout",
+        "llm_timeout",
+        "memory_mb",
+    ):
         if getattr(args, name) < (0 if name == "generations" else 1):
             if name == "max_llm_calls" and args.max_llm_calls == 0:
                 continue
@@ -3528,6 +3550,7 @@ def main(argv: list[str] | None = None) -> int:
         max_workspace_bytes=args.max_workspace_mb * 1024 * 1024,
         command_timeout=args.command_timeout,
         test_timeout=args.test_timeout,
+        llm_timeout=args.llm_timeout,
         memory_mb=args.memory_mb,
         max_public_regression=args.max_public_regression,
         max_private_regression=args.max_private_regression,

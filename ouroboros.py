@@ -1096,6 +1096,77 @@ class Ouroboros:
         ranked.sort(key=lambda row: (row[0], row[1]), reverse=True)
         return [data for _, _, data in ranked[:limit]]
 
+    def adopt_evaluated_procedure(
+        self,
+        *,
+        name: str,
+        trigger_terms: list[str],
+        steps: list[str],
+        evidence_receipt: str,
+        parent_run_id: str,
+        passed: bool,
+    ) -> dict[str, Any]:
+        """Ingest one externally graded experience under manager authority.
+
+        Hard benchmark graders run outside this process, so ``run_goal`` cannot
+        directly observe their result. This narrow bridge records the receipt
+        without importing grader details and retains a procedure only when the
+        external outcome passed. Failures remain event-sourced evidence but do
+        not become advice.
+        """
+
+        cleaned_name = name.strip()
+        cleaned_terms = list(dict.fromkeys(term.strip().lower() for term in trigger_terms if term.strip()))
+        cleaned_steps = list(dict.fromkeys(step.strip() for step in steps if step.strip()))
+        if not cleaned_name or not cleaned_terms or not cleaned_steps:
+            raise ValueError("evaluated procedure requires a name, trigger terms, and steps")
+        if not re.fullmatch(r"sha256:[0-9a-f]{64}", evidence_receipt):
+            raise ValueError("external evaluation receipt must be a sha256 digest")
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", parent_run_id):
+            raise ValueError("external parent run id is invalid")
+        evaluation = self.runtime.graph.add_object(
+            "external_evaluation",
+            {
+                "parent_run_id": parent_run_id,
+                "passed": bool(passed),
+                "evaluation_receipt": evidence_receipt,
+                "details_exposed": False,
+                "created_at": utc_now(),
+            },
+            actor="external_evaluator",
+        )
+        procedure_id = ""
+        duplicate = False
+        if passed:
+            fingerprint = sha256_json({"name": cleaned_name, "steps": cleaned_steps})
+            existing = {
+                item.data.get("fingerprint") for item in graph_objects(self.runtime, "procedure")
+            }
+            duplicate = fingerprint in existing
+            if not duplicate:
+                procedure = self.runtime.graph.add_object(
+                    "procedure",
+                    {
+                        "name": cleaned_name,
+                        "trigger_terms": cleaned_terms[:24],
+                        "steps": cleaned_steps[:16],
+                        "fingerprint": fingerprint,
+                        "evidence_evaluation_id": evaluation.id,
+                        "evidence_receipt": evidence_receipt,
+                        "created_at": utc_now(),
+                    },
+                    actor="ouroboros",
+                )
+                procedure_id = procedure.id
+        self.runtime.run_until_idle()
+        return {
+            "evaluation_id": evaluation.id,
+            "procedure_id": procedure_id,
+            "retained": bool(procedure_id),
+            "duplicate": duplicate,
+            "passed": bool(passed),
+        }
+
     def context_goal(self, goal: str, mode: str) -> str:
         procedures = self.relevant_procedures(goal)
         history = [

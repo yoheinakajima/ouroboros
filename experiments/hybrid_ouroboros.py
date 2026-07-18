@@ -21,6 +21,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 import uuid
 from dataclasses import asdict, dataclass
@@ -517,10 +518,43 @@ def _trial_worker(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _invoke_worker(payload: dict[str, Any]) -> dict[str, Any]:
+    """Invoke a hash-pinned Pack set in a fresh, credential-free process."""
+
+    graph = Graph(run_id="context_" + uuid.uuid4().hex)
+    runtime = Runtime(graph, behaviors=[], budget={"max_events": 500, "max_behavior_calls": 100})
+    for item in payload["packs"]:
+        runtime.load_pack(_load_pack_bundle(Path(item["root"]), item["bundle_hash"]))
+    request_id = uuid.uuid4().hex
+    _emit(
+        graph,
+        REQUEST_EVENT,
+        {**dict(payload["request"]), "request_id": request_id},
+        actor="research_adapter",
+    )
+    runtime.run_until_idle()
+    outputs = [
+        event.payload.get("output")
+        for event in graph.events
+        if event.type == RESULT_EVENT and event.payload.get("request_id") == request_id
+    ]
+    failures = len(runtime.trace.failures())
+    return {
+        "worker_ok": len(outputs) == 1 and failures == 0,
+        "output": outputs[0] if len(outputs) == 1 else outputs,
+        "result_count": len(outputs),
+        "behavior_failures": failures,
+        "loaded_packs": [f"{pack.name}@{pack.version}" for pack in runtime.loaded_packs()],
+        "event_count": len(graph.events),
+        "credentials_forwarded": False,
+    }
+
+
 def _worker_entry() -> int:
     try:
         payload = json.loads(sys.stdin.read())
-        result = _trial_worker(payload)
+        invoke = payload.get("mode") == "invoke"
+        result = _invoke_worker(payload) if invoke else _trial_worker(payload)
     except Exception as exc:  # The parent treats this as failed evidence.
         case_count = len(payload.get("cases", [])) if isinstance(locals().get("payload"), dict) else 0
         result = {
@@ -530,7 +564,8 @@ def _worker_entry() -> int:
             "total": case_count,
             "all_passed": False,
         }
-    print(_canonical({"hybrid_trial": result}), flush=True)
+        invoke = bool(isinstance(locals().get("payload"), dict) and payload.get("mode") == "invoke")
+    print(_canonical({"hybrid_invoke" if invoke else "hybrid_trial": result}), flush=True)
     return 0 if result.get("worker_ok") else 2
 
 
@@ -598,6 +633,61 @@ def _run_suite(
         "all_passed": False,
         "process": process_evidence,
     }
+
+
+def invoke_pack_set_isolated(
+    root: str | Path,
+    request: dict[str, Any],
+    *,
+    timeout: float = 30.0,
+) -> dict[str, Any]:
+    """Return one Pack result without importing generated code into the caller.
+
+    The subprocess receives only PATH/LANG and an empty temporary HOME. It has
+    no provider credentials. The static membrane is still accident containment,
+    not a hostile-code security proof, so production use should add a VM.
+    """
+
+    state = Path(root).resolve(strict=True)
+    registry_path = state / "registry.json"
+    if not registry_path.is_file() or registry_path.is_symlink():
+        raise ValueError("isolated Hybrid invocation requires a regular registry.json")
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    packs: list[dict[str, str]] = []
+    for entry in registry.get("adopted", []):
+        relative = Path(str(entry["path"]))
+        pack_root = (state / relative).resolve(strict=True)
+        if relative.is_absolute() or ".." in relative.parts or state not in pack_root.parents:
+            raise ValueError("Hybrid registry path escapes retained state")
+        packs.append({"root": str(pack_root), "bundle_hash": str(entry["bundle_hash"])})
+    if not packs:
+        raise ValueError("isolated Hybrid invocation requires at least one adopted Pack")
+    with tempfile.TemporaryDirectory(prefix="ouro-hybrid-invoke-") as home:
+        environment = {key: os.environ[key] for key in ("PATH", "LANG") if key in os.environ}
+        environment["HOME"] = home
+        process = subprocess.run(
+            [sys.executable, str(Path(__file__).resolve()), "worker"],
+            input=_canonical({"mode": "invoke", "packs": packs, "request": request}),
+            text=True,
+            capture_output=True,
+            timeout=timeout,
+            env=environment,
+            check=False,
+        )
+    for line in reversed(process.stdout.splitlines()):
+        try:
+            parsed = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(parsed, dict) and "hybrid_invoke" in parsed:
+            result = dict(parsed["hybrid_invoke"])
+            result["process_return_code"] = process.returncode
+            if not result.get("worker_ok"):
+                raise RuntimeError(f"isolated Hybrid Pack invocation failed: {result}")
+            return result
+    raise RuntimeError(
+        f"isolated Hybrid Pack invocation exited {process.returncode} without a report: {process.stderr[-2_000:]}"
+    )
 
 
 def _score(result: dict[str, Any]) -> str:

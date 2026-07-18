@@ -34,3 +34,10 @@ one development SWE task. It retains an aborted pre-inference run, a valid
 negative attempt that exposed missing test-environment parity, and the matched
 protocol-0.5 retry that resolved under the official evaluator. It is explicitly
 not a held-out score, reliability estimate, or architecture comparison.
+
+`lineage_builder_canary.json` records the paid native-lineage builder
+calibration that fanned the resolved development experience out to Workspace,
+Minimal, and Hybrid. It preserves calls, tokens, cost, state/context hashes,
+the invalid Workspace timeout attempt, and the credential-free Hybrid query
+receipt. Because the experience was shared across approaches, it is explicitly
+unscored and ineligible for comparative or recursive-improvement claims.
