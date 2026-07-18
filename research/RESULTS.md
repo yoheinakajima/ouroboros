@@ -129,6 +129,30 @@ The candidate was never imported. The manager now permits only exact allowed
 module roots and their submodules, while the schema explicitly reserves
 `capabilities` for external authority. The corrected v2 run above passed.
 
+### Faster-model calibration
+
+After crash recovery, a separate `gpt-5.6-terra` model-tier check was run to
+test whether the lower-cost GPT-5.6 model is viable for the current portable
+ActiveGraph lane. This is **not** part of the frozen `gpt-5.6-sol` headline
+study.
+
+| Approach | Task | Public | Private | Transfer | Calls | Input / output tokens | Cost | Author time |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| Minimal v2 | Nested record normalizer | n/a | 4/4 | 3/3 | 1 | 1,573 / 588 | $0.012753 | 6.26s |
+| Hybrid Packs | Nested record normalizer | 4/4 | 4/4 | 3/3 | 1 | 23,734 / 1,482 | $0.081565 | 14.48s |
+| Hybrid Packs | Stateful usage tracker | 3/3 | 4/4 | 3/3 | 1 | 23,869 / 1,262 | $0.078603 | 10.12s |
+| Hybrid Packs | Dependency release planner | 5/5 | 5/5 | 4/4 | 1 | 24,504 / 2,600 | $0.100260 | 21.73s |
+
+All four Terra runs adopted in a single author attempt and passed post-restart
+transfer. Total spend was $0.273180 for 73,680 input and 5,932 output tokens.
+The Hybrid subset cost $0.260428 and passed all three existing graph-audited
+tasks. The evidence supports using Terra for exploratory ActiveGraph authoring
+calibration where speed/cost matter, while keeping Sol as the primary model for
+SWE-bench, Terminal-Bench, and the frozen comparison until Terra is separately
+validated there.
+
+Evidence: `../evidence/terra_model_tier_calibration.json`
+
 ### What this establishes
 
 - A real strongest-model author can use recorded ActiveGraph documentation to

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "purpose": "Quick model-tier calibration after crash recovery; not a headline architecture comparison or recursive-uplift result.",
+  "headline_eligible": false,
+  "date": "2026-07-17",
+  "provider": "openai",
+  "candidate_model": "gpt-5.6-terra",
+  "primary_study_model": "gpt-5.6-sol",
+  "model_selection_basis": {
+    "official_guidance_summary": "OpenAI docs identify GPT-5.6 Sol as the flagship model for complex reasoning and coding, and GPT-5.6 Terra as the balance point for intelligence and cost.",
+    "official_urls": [
+      "https://developers.openai.com/api/docs/models",
+      "https://developers.openai.com/api/docs/guides/latest-model"
+    ]
+  },
+  "interpretation": "Terra is viable for the current small and medium ActiveGraph capability-authoring calibration lane. This does not prove it is strong enough for SWE-bench, Terminal-Bench, or the frozen Sol headline study.",
+  "runs": [
+    {
+      "approach": "minimal_v2_pure_capability",
+      "task_id": "nested_record_normalizer",
+      "raw_artifact": "artifacts/research-runs/minimal-nested-normalizer-terra-20260717-v1/",
+      "research_success": true,
+      "author_attempts": 1,
+      "model_calls": 1,
+      "input_tokens": 1573,
+      "output_tokens": 588,
+      "cost_usd": 0.0127525,
+      "elapsed_seconds": 6.259116,
+      "private": {"passed": 4, "total": 4},
+      "post_restart_transfer": {"passed": 3, "total": 3},
+      "bundle_hash": "sha256:20730c4b772af8230587b6bc4ca2ef7ece4c4108e9e23ad4efeefb9f77469660",
+      "result_file_sha256": "7e56d8efcd88bf72188fed53f83b32286bf9e75e71ea2e8e588e78cc2cacd28c",
+      "artifact_file_sha256": "07a93d7c91c3b6785ca66c441d75a2a852141f67e7ebaa62107c85698edf6837"
+    },
+    {
+      "approach": "hybrid_docs_grounded_pack",
+      "task_id": "nested_record_normalizer",
+      "raw_artifact": "artifacts/research-runs/hybrid-nested-normalizer-terra-20260717-v1/",
+      "research_success": true,
+      "author_attempts": 1,
+      "model_calls": 1,
+      "input_tokens": 23734,
+      "output_tokens": 1482,
+      "cost_usd": 0.081565,
+      "elapsed_seconds": 14.481009,
+      "public": {"passed": 4, "total": 4},
+      "private": {"passed": 4, "total": 4},
+      "post_restart_transfer": {"passed": 3, "total": 3},
+      "bundle_hash": "sha256:e8143ebf5cb67e7f69eda96b00fa271d493ea4bc376a6a3e860bdc46eb28475f",
+      "result_file_sha256": "f799831cda8e444ffc6c4f7e40bb376b5fa60cf58bbf70bb05d5537473e8d029",
+      "proposal_file_sha256": "5bd34d2ffff111d4c05914fd96e1557265201e846f0531cfb3bbf1924f0daf97"
+    },
+    {
+      "approach": "hybrid_docs_grounded_pack",
+      "task_id": "stateful_usage_tracker",
+      "raw_artifact": "artifacts/research-runs/hybrid-stateful-usage-terra-20260717-v1/",
+      "research_success": true,
+      "author_attempts": 1,
+      "model_calls": 1,
+      "input_tokens": 23869,
+      "output_tokens": 1262,
+      "cost_usd": 0.0786025,
+      "elapsed_seconds": 10.117359,
+      "public": {"passed": 3, "total": 3},
+      "private": {"passed": 4, "total": 4},
+      "post_restart_transfer": {"passed": 3, "total": 3},
+      "bundle_hash": "sha256:85aa6f0329e853e683dd91f5b547a6d1b0568ba0089c6cebfdc8ee10aa99225f",
+      "result_file_sha256": "f301d2b223c4734a4b0a76fd4ddf9280d1e558cdfccd85fb5f4396d172aa8f0e",
+      "proposal_file_sha256": "e322b61a9c5ca0ef4fb856d138963c72f39bb7f522b6b4d28f541a2a2a1460ee"
+    },
+    {
+      "approach": "hybrid_docs_grounded_pack",
+      "task_id": "dependency_release_planner",
+      "raw_artifact": "artifacts/research-runs/hybrid-dependency-planner-terra-20260717-v1/",
+      "research_success": true,
+      "author_attempts": 1,
+      "model_calls": 1,
+      "input_tokens": 24504,
+      "output_tokens": 2600,
+      "cost_usd": 0.10026,
+      "elapsed_seconds": 21.728452,
+      "public": {"passed": 5, "total": 5},
+      "private": {"passed": 5, "total": 5},
+      "post_restart_transfer": {"passed": 4, "total": 4},
+      "bundle_hash": "sha256:e371efb02b56c95864c29053a60700a12a59332afeb6e4e7cbf86157c0c64ccf",
+      "result_file_sha256": "29d971e250b64c88c38c0e55ca58f55eb40d51aec66210e60cf5c0012a40ca33",
+      "proposal_file_sha256": "ad1b5a7442202ff875646ad266682a35a6504e443c3b5a65e23f2246e8e45b55"
+    }
+  ],
+  "totals": {
+    "model_calls": 4,
+    "input_tokens": 73680,
+    "output_tokens": 5932,
+    "cost_usd": 0.27318,
+    "elapsed_seconds": 52.585936
+  },
+  "hybrid_subset_totals": {
+    "model_calls": 3,
+    "input_tokens": 72107,
+    "output_tokens": 5344,
+    "cost_usd": 0.2604275,
+    "elapsed_seconds": 46.32682
+  },
+  "raw_artifacts_ignored": true
+}
