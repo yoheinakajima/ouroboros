@@ -115,6 +115,7 @@ research/
   broker_protocol.json      equal outer tools, inference, and authority contract
   adapters/                 common outer-interface contract
   attempt_runner.py         one adapter → broker → grader → audit execution path
+  study_runner.py           resumable frozen Sol study and result aggregation
   selections/               score-blind task IDs, revisions, and image hashes
   readiness.py              no-spend execution and release preflight
   activegraph_benchmark.py  five generated 20/50 ActiveGraph systems

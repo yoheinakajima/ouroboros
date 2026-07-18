@@ -98,3 +98,30 @@ same committed development curriculum and writes a hash-pinned state lineage.
 Then run one replication on the fixed 19-task recursive probe. Only after that
 bundle audits cleanly do we run the three-replication full comparison or
 five-replication recursive claim.
+
+## Resumable Sol execution
+
+The complete local preliminary study is driven by `research/study_runner.py`.
+It fixes the model to `gpt-5.6-sol`, verifies the freeze root and exact local
+ActiveGraph image before every stage, and checkpoints each task attempt,
+official grade, sanitized evidence record, reflection, native state generation,
+and held-out result row independently.
+
+For three independent replications, the frozen plan contains 252 development
+attempts (28 ordered generations for each of three approaches and three
+replications), a 228-attempt one-replication causal probe, and 1,170 preliminary
+held-out attempts across all 65 evaluation tasks. The probe must be complete and
+free of infrastructure-invalid rows before the preliminary stage begins.
+
+```bash
+python -m research.study_runner plan --replications 3
+python -m research.study_runner run \
+  --run-root artifacts/sol-full-study-v1 \
+  --replications 3 \
+  --concurrency 3 \
+  --through preliminary
+```
+
+Re-running the same command resumes from completed receipts. It never treats a
+model failure as an infrastructure retry; partial task directories stop the
+runner for inspection so paid attempts are not silently overwritten.

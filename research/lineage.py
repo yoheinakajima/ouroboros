@@ -371,6 +371,87 @@ def extract_swe_evidence(
     )
 
 
+def extract_terminal_evidence(
+    repository: str | Path,
+    *,
+    job_dir: str | Path,
+    task_id: str,
+) -> DevelopmentEvidence:
+    """Create a strict public-only record from one Terminal-Bench development job."""
+
+    root = Path(repository).resolve(strict=True)
+    job = Path(job_dir).resolve(strict=True)
+    selection = json.loads((root / "research/selections/terminal_bench_2.json").read_text(encoding="utf-8"))
+    development_ids = {str(row["id"]) for row in selection["development"]}
+    if task_id not in development_ids:
+        raise ValueError("Terminal lineage evidence must come from the frozen development split")
+    trial = _one_trial_dir(job, task_id)
+    instruction_path = root / "benchmark/.cache/terminal2" / task_id / "instruction.md"
+    summary_path = trial / "agent/ouroboros-summary.json"
+    trace_path = trial / "agent/trace.jsonl"
+    result_path = trial / "result.json"
+    for path in (instruction_path, summary_path, trace_path, result_path):
+        if not path.is_file() or path.is_symlink():
+            raise FileNotFoundError(path)
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    recorded_task = str(result.get("task_name", "")).rsplit("/", 1)[-1]
+    if recorded_task != task_id:
+        raise ValueError("Terminal result does not match the requested task")
+    approach_id = str(summary.get("approach_id", ""))
+    if approach_id not in APPROACHES:
+        raise ValueError("agent summary has an unknown approach")
+    rewards = result.get("verifier_result", {}).get("rewards", {})
+    reward = rewards.get("reward")
+    if not isinstance(reward, (int, float)):
+        raise ValueError("Terminal verifier did not produce a scalar reward")
+    primary_score = float(reward)
+    if not 0 <= primary_score <= 1:
+        raise ValueError("Terminal verifier reward must be within [0, 1]")
+    public_receipt = {
+        "schema_version": 1,
+        "suite_id": "ouro_terminal_12",
+        "task_id": task_id,
+        "run_id": job.name,
+        "grader_id": "official_terminal_bench_2_harbor_verifier",
+        "grader_revision": str(selection["harness"]["revision"]),
+        "primary_score": primary_score,
+        "passed": primary_score == 1.0,
+        "completed": result.get("finished_at") is not None,
+        "infrastructure_error": result.get("exception_info") is not None,
+    }
+    receipt_digest = sha256_json(public_receipt)
+    status = str(summary.get("status", "failed"))
+    if status not in {"completed", "blocked", "failed", "timed_out", "budget_exhausted"}:
+        status = "failed"
+    return DevelopmentEvidence(
+        suite_id="ouro_terminal_12",
+        task_id=task_id,
+        parent_run_id=job.name,
+        approach_id=approach_id,  # type: ignore[arg-type]
+        arm=str(summary.get("arm", "cold")),  # type: ignore[arg-type]
+        public_instruction=instruction_path.read_text(encoding="utf-8"),
+        agent_status=status,  # type: ignore[arg-type]
+        agent_summary=str(summary.get("summary", "")),
+        agent_evidence=[str(value) for value in summary.get("evidence", [])],
+        score=PublicScoreReceipt(
+            grader_id=str(public_receipt["grader_id"]),
+            grader_revision=str(public_receipt["grader_revision"]),
+            primary_score=primary_score,
+            passed=primary_score == 1.0,
+            receipt_sha256=receipt_digest,
+        ),
+        source_hashes={
+            "agent_summary": sha256_bytes(summary_path.read_bytes()),
+            "agent_trace": sha256_bytes(trace_path.read_bytes()),
+            "public_instruction": sha256_bytes(instruction_path.read_bytes()),
+            "score_receipt": receipt_digest,
+        },
+        hidden_evaluator_content_exposed=False,
+        created_at=utc_now(),
+    )
+
+
 def _bounded_artifact_excerpt(path: Path) -> tuple[str, str, int]:
     raw = path.read_bytes()
     truncation_note = "\n[artifact excerpt truncated; full bytes are hash-pinned]\n"
@@ -1012,6 +1093,13 @@ def main(argv: list[str] | None = None) -> int:
     extract.add_argument("--task-id", required=True)
     extract.add_argument("--output", type=Path, required=True)
 
+    extract_terminal = subparsers.add_parser(
+        "extract-terminal", help="sanitize one completed Terminal-Bench development job"
+    )
+    extract_terminal.add_argument("--job-dir", type=Path, required=True)
+    extract_terminal.add_argument("--task-id", required=True)
+    extract_terminal.add_argument("--output", type=Path, required=True)
+
     extract_attempt = subparsers.add_parser("extract-attempt", help="sanitize one brokered local attempt bundle")
     extract_attempt.add_argument("--run-dir", type=Path, required=True)
     extract_attempt.add_argument("--task", type=Path, required=True)
@@ -1045,6 +1133,11 @@ def main(argv: list[str] | None = None) -> int:
     repository = Path(__file__).resolve().parents[1]
     if args.command == "extract-swe":
         evidence = extract_swe_evidence(repository, job_dir=args.job_dir, task_id=args.task_id)
+        write_json(args.output, evidence.model_dump(mode="json"))
+        print(evidence.model_dump_json(indent=2))
+        return 0
+    if args.command == "extract-terminal":
+        evidence = extract_terminal_evidence(repository, job_dir=args.job_dir, task_id=args.task_id)
         write_json(args.output, evidence.model_dump(mode="json"))
         print(evidence.model_dump_json(indent=2))
         return 0

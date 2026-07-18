@@ -24,6 +24,7 @@ from research.lineage import (
     _sanitize_hybrid_organism,
     apply_minimal_lesson,
     extract_attempt_evidence,
+    extract_terminal_evidence,
     reflect_evidence,
 )
 
@@ -214,6 +215,65 @@ class DevelopmentEvidenceTests(unittest.TestCase):
         self.assertEqual(extracted.owned_artifact_excerpt, "PACK = object()\n")
         self.assertNotIn("components", extracted.model_dump_json())
         self.assertNotIn("sealed_detail", extracted.model_dump_json())
+
+    def test_extract_terminal_evidence_reduces_verifier_to_scalar_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            selection = root / "research/selections/terminal_bench_2.json"
+            selection.parent.mkdir(parents=True)
+            selection.write_text(
+                json.dumps(
+                    {
+                        "development": [{"id": "terminal-dev"}],
+                        "harness": {"revision": "harbor-revision"},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            instruction = root / "benchmark/.cache/terminal2/terminal-dev/instruction.md"
+            instruction.parent.mkdir(parents=True)
+            instruction.write_text("Repair the terminal system.", encoding="utf-8")
+            job = root / "job-terminal-dev"
+            trial = job / "terminal-dev__abc123"
+            agent = trial / "agent"
+            agent.mkdir(parents=True)
+            (agent / "ouroboros-summary.json").write_text(
+                json.dumps(
+                    {
+                        "approach_id": "workspace_v1_2",
+                        "arm": "native_evolved",
+                        "status": "completed",
+                        "summary": "Implemented and checked the repair.",
+                        "evidence": ["public command passed"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (agent / "trace.jsonl").write_text('{"operation":"model_complete"}\n', encoding="utf-8")
+            (trial / "result.json").write_text(
+                json.dumps(
+                    {
+                        "task_name": "terminal-bench/terminal-dev",
+                        "finished_at": "2026-07-17T00:01:00Z",
+                        "exception_info": None,
+                        "verifier_result": {
+                            "rewards": {"reward": 1.0},
+                            "hidden_diagnostics": "must not cross the boundary",
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            extracted = extract_terminal_evidence(root, job_dir=job, task_id="terminal-dev")
+
+        encoded = extracted.model_dump_json()
+        self.assertEqual(extracted.score.primary_score, 1.0)
+        self.assertTrue(extracted.score.passed)
+        self.assertEqual(extracted.arm, "native_evolved")
+        self.assertEqual(extracted.owned_artifact_bytes, 0)
+        self.assertNotIn("hidden_diagnostics", encoded)
+        self.assertNotIn("verifier_result", encoded)
 
 
 class NativeLineageTests(unittest.TestCase):
