@@ -153,6 +153,46 @@ validated there.
 
 Evidence: `../evidence/terra_model_tier_calibration.json`
 
+## Terra ActiveGraph-50 exploratory slice
+
+A Terra-only ActiveGraph-50 slice was run after the faster-model calibration.
+It is exploratory, not headline-eligible, because the frozen local image digest
+was not present in Docker and the run used the current local
+`ouroboros-activegraph-50:1` image id instead. The sealed task cases and grader
+code were unchanged.
+
+Development attempts on the two ActiveGraph development systems produced
+partial but useful experiences: `incident_coordination` scored 38/50 for all
+three approach labels; `approval_workflow` scored 44/50 for Workspace, 30/50
+for Minimal, and 44/50 for Hybrid. Each parent run was converted into
+architecture-matched public evidence and reflected once with Terra.
+
+The resulting retained states were:
+
+| Approach | Retained state | Native lineage calls | Native lineage cost |
+|---|---|---:|---:|
+| Workspace v1.2 | whole retained workspace, 44,354 bytes | 31 | $1.281025 |
+| Minimal v2 | receipts only; no promoted procedure because no development task fully passed | 0 | $0 |
+| Hybrid Packs | two hash-pinned development-guidance Packs, 32,682 bytes | 2 | $0.211045 |
+
+Held-out evolved scores compared with the cold Terra baseline:
+
+| Approach | Quota scheduler | Provenance pipeline | Delegated access | Mean delta |
+|---|---:|---:|---:|---:|
+| Cold baseline | 24 | 47 | 44 | n/a |
+| Workspace evolved | 24 | 47 | 44 | +0.0 |
+| Minimal evolved | 38 | 47 | 36 | +2.0, mixed |
+| Hybrid evolved | 24 | 47 | 44 | +0.0 |
+
+No approach showed a clear retained-state uplift in this slice. Workspace and
+Hybrid matched the cold mean while often exhausting the evolved 12-call budget.
+Minimal improved quota but regressed delegated access, and had no promoted
+procedure in its retained state, so this is not evidence of recursive
+improvement. Total Terra spend for the slice was $6.503770 across 180 model
+calls.
+
+Evidence: `../evidence/terra_activegraph50_probe.json`
+
 ### What this establishes
 
 - A real strongest-model author can use recorded ActiveGraph documentation to

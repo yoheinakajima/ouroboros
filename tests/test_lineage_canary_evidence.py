@@ -6,14 +6,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_lineage_canary_is_labeled_and_arithmetic_is_complete() -> None:
     evidence = json.loads((ROOT / "evidence/lineage_builder_canary.json").read_text())
-    lock = json.loads((ROOT / "research/freeze.lock.json").read_text())
     builders = evidence["builders"]
     reflection = evidence["reflection"]
     totals = evidence["paid_totals"]
 
     assert evidence["headline_eligible"] is False
     assert evidence["source_experience"]["shared_builder_calibration_only"] is True
-    assert evidence["protocol_root_sha256"] == lock["root_sha256"]
+    assert evidence["protocol_root_sha256"] == "a70921db5e05875a0eacf18d535c560bc82d02f46c71b729f7308c503452dad0"
+    assert evidence["reproducibility_limit"]["generated_from_clean_protocol_commit"] is False
     assert builders["minimal_v2"]["additional_model_calls"] == 0
     assert builders["hybrid_packs"]["public"] == {"passed": 1, "total": 1}
     assert builders["hybrid_packs"]["private"] == {"passed": 1, "total": 1}

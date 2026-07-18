@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "purpose": "Exploratory Terra-only ActiveGraph-50 development-lineage and evolved-probe slice.",
+  "headline_eligible": false,
+  "date": "2026-07-17",
+  "provider": "openai",
+  "model": "gpt-5.6-terra",
+  "suite_id": "ouro_activegraph_50",
+  "raw_artifacts": "artifacts/terra-probe/activegraph50/",
+  "frozen_sol_study_overwritten": false,
+  "local_image_deviation": {
+    "reason": "The frozen local image id recorded in the selection manifest was not present in Docker, while the current local ouroboros-activegraph-50:1 image was available.",
+    "manifest_image": "sha256:0c767296ab2e999b0daca91dc8d7a8f63dcf279ec2778bcddfc54e377f442ae5",
+    "used_local_image": "sha256:b78ba6d07422d550473c661a3a4f3f47916a73f688bc1e5f110171d56a477a64",
+    "interpretation": "This makes the run exploratory rather than headline-eligible, even though the same sealed grader code and task cases were used."
+  },
+  "cold_baseline": {
+    "note": "Cold labels share the same outer agent and no retained context; one cold held-out baseline was run under the hybrid_packs label and regraded with the local image.",
+    "scores": {
+      "quota_scheduler": 24,
+      "provenance_pipeline": 47,
+      "delegated_access_control": 44
+    },
+    "mean_score": 38.333333333333336
+  },
+  "development_attempts": [
+    {"approach": "workspace_v1_2", "task_id": "incident_coordination", "score": 38, "cost_usd": 0.13861, "model_calls": 6},
+    {"approach": "workspace_v1_2", "task_id": "approval_workflow", "score": 44, "cost_usd": 0.192355, "model_calls": 7},
+    {"approach": "minimal_v2", "task_id": "incident_coordination", "score": 38, "cost_usd": 0.14883, "model_calls": 6},
+    {"approach": "minimal_v2", "task_id": "approval_workflow", "score": 30, "cost_usd": 0.15308, "model_calls": 6},
+    {"approach": "hybrid_packs", "task_id": "incident_coordination", "score": 38, "cost_usd": 0.100485, "model_calls": 5},
+    {"approach": "hybrid_packs", "task_id": "approval_workflow", "score": 44, "cost_usd": 0.1923175, "model_calls": 7}
+  ],
+  "retained_states": {
+    "workspace_v1_2": {
+      "state": "artifacts/terra-probe/activegraph50/states/workspace_v1_2/gen2-approval/",
+      "artifact_sha256": "d645a1519f46082c2872bde360abafca31eb534b5f5b0aa4a3d52ccbadb64c90",
+      "artifact_bytes": 44354,
+      "native_lineage_model_calls": 31,
+      "native_lineage_cost_usd": 1.281025
+    },
+    "minimal_v2": {
+      "state": "artifacts/terra-probe/activegraph50/states/minimal_v2/gen2-approval/",
+      "artifact_sha256": "aef94fe7850369e929d0a42e82af730e06284650372c9afa1365a7226cc1d8a1",
+      "artifact_bytes": 233956,
+      "native_lineage_model_calls": 0,
+      "native_lineage_cost_usd": 0.0,
+      "note": "Both development attempts were partial scores, so Minimal retained receipts but no promoted procedure."
+    },
+    "hybrid_packs": {
+      "state": "artifacts/terra-probe/activegraph50/states/hybrid_packs/gen2-approval/",
+      "artifact_sha256": "09837c560035cf61e09e07d28e6df03e2e534152098cfed8f6ccf5f0a8823235",
+      "artifact_bytes": 32682,
+      "native_lineage_model_calls": 2,
+      "native_lineage_cost_usd": 0.211045
+    }
+  },
+  "evolved_scores": {
+    "workspace_v1_2": {
+      "quota_scheduler": {"score": 24, "status": "budget_exhausted", "cost_usd": 0.740775, "model_calls": 12},
+      "provenance_pipeline": {"score": 47, "status": "completed", "cost_usd": 0.42445, "model_calls": 8},
+      "delegated_access_control": {"score": 44, "status": "budget_exhausted", "cost_usd": 0.7203075, "model_calls": 12},
+      "mean_score": 38.333333333333336,
+      "mean_delta_vs_cold": 0.0
+    },
+    "minimal_v2": {
+      "quota_scheduler": {"score": 38, "status": "completed", "cost_usd": 0.1734625, "model_calls": 9},
+      "provenance_pipeline": {"score": 47, "status": "completed", "cost_usd": 0.1671175, "model_calls": 7},
+      "delegated_access_control": {"score": 36, "status": "completed", "cost_usd": 0.19929, "model_calls": 7},
+      "mean_score": 40.333333333333336,
+      "mean_delta_vs_cold": 2.0
+    },
+    "hybrid_packs": {
+      "quota_scheduler": {"score": 24, "status": "budget_exhausted", "cost_usd": 0.45917, "model_calls": 12},
+      "provenance_pipeline": {"score": 47, "status": "completed", "cost_usd": 0.1725025, "model_calls": 6},
+      "delegated_access_control": {"score": 44, "status": "budget_exhausted", "cost_usd": 0.4967375, "model_calls": 12},
+      "mean_score": 38.333333333333336,
+      "mean_delta_vs_cold": 0.0
+    }
+  },
+  "interpretation": {
+    "detected_recursive_uplift": false,
+    "summary": "No approach showed a clear positive retained-state effect on this first Terra ActiveGraph slice. Workspace and Hybrid matched the cold mean while using more context and frequently exhausting the 12-call evolved budget. Minimal had a mixed result: quota improved over the cold baseline but delegated access regressed, and its retained state contained no promoted procedure because development attempts did not pass.",
+    "next_step": "Run cold_ablation with the same retained-state history hidden, or raise/standardize evolved budgets before making any architecture claim."
+  },
+  "totals": {
+    "attempt_model_calls": 141,
+    "attempt_cost_usd": 4.900535,
+    "reflection_model_calls": 6,
+    "reflection_cost_usd": 0.111165,
+    "native_lineage_model_calls": 33,
+    "native_lineage_cost_usd": 1.49207,
+    "total_model_calls": 180,
+    "total_cost_usd": 6.50377
+  },
+  "raw_artifacts_ignored": true
+}
