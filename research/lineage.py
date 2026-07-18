@@ -29,6 +29,7 @@ from activegraph import Graph, Runtime, llm_behavior
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from ouroboros import Config, OfflineProvider, Ouroboros
+from research.contracts import AttemptRecord, ScoreRecord
 from research.curriculum import (
     EXPECTED_MUTATION_UNITS,
     EvolutionManifest,
@@ -365,6 +366,92 @@ def extract_swe_evidence(
             receipt_sha256=sha256_bytes(receipt_path.read_bytes()),
         ),
         source_hashes=source_hashes,
+        hidden_evaluator_content_exposed=False,
+        created_at=utc_now(),
+    )
+
+
+def _bounded_artifact_excerpt(path: Path) -> tuple[str, str, int]:
+    raw = path.read_bytes()
+    truncation_note = "\n[artifact excerpt truncated; full bytes are hash-pinned]\n"
+    excerpt_limit = MAX_ARTIFACT_EXCERPT - len(truncation_note)
+    excerpt = raw[:excerpt_limit].decode("utf-8", errors="replace")
+    if len(raw) > MAX_ARTIFACT_EXCERPT:
+        excerpt += truncation_note
+    return excerpt, sha256_bytes(raw), len(raw)
+
+
+def extract_attempt_evidence(
+    repository: str | Path,
+    *,
+    run_dir: str | Path,
+    task_json: str | Path,
+    score_json: str | Path | None = None,
+    artifact: str | Path | None = None,
+) -> DevelopmentEvidence:
+    """Create a strict public-only record from one brokered local attempt bundle."""
+
+    Path(repository).resolve(strict=True)
+    run = Path(run_dir).resolve(strict=True)
+    task_path = Path(task_json).resolve(strict=True)
+    attempt_path = run / "attempt.json"
+    outcome_path = run / "outcome.json"
+    trace_path = run / "trace.jsonl"
+    score_path = Path(score_json).resolve(strict=True) if score_json else run / "grader" / "score.json"
+    for path in (task_path, attempt_path, outcome_path, trace_path, score_path):
+        if not path.is_file() or path.is_symlink():
+            raise FileNotFoundError(path)
+    task = json.loads(task_path.read_text(encoding="utf-8"))
+    attempt = AttemptRecord.model_validate_json(attempt_path.read_text(encoding="utf-8"))
+    outcome = json.loads(outcome_path.read_text(encoding="utf-8"))
+    score = ScoreRecord.model_validate_json(score_path.read_text(encoding="utf-8"))
+    if score.run_id != attempt.run_id:
+        raise ValueError("score receipt does not match attempt run id")
+    if task.get("suite_id") != attempt.suite_id or task.get("task_id") != attempt.task_id:
+        raise ValueError("task public spec does not match attempt record")
+    if attempt.approach_id not in APPROACHES:
+        raise ValueError("attempt has an unknown approach")
+    artifact_path = (
+        Path(artifact).resolve(strict=True)
+        if artifact
+        else run / "workspace" / "candidate_pack" / "__init__.py"
+    )
+    if not artifact_path.is_file() or artifact_path.is_symlink():
+        raise FileNotFoundError(artifact_path)
+    workspace = (run / "workspace").resolve(strict=True)
+    if workspace != artifact_path and workspace not in artifact_path.parents:
+        raise ValueError("owned artifact must live inside the attempt workspace")
+    excerpt, artifact_digest, artifact_bytes = _bounded_artifact_excerpt(artifact_path)
+    status = str(outcome.get("status", attempt.status))
+    if status not in {"completed", "blocked", "failed", "timed_out", "budget_exhausted"}:
+        status = "failed"
+    return DevelopmentEvidence(
+        suite_id=attempt.suite_id,
+        task_id=attempt.task_id,
+        parent_run_id=attempt.run_id,
+        approach_id=attempt.approach_id,  # type: ignore[arg-type]
+        arm=attempt.arm,
+        public_instruction=str(task.get("prompt", "")),
+        agent_status=status,  # type: ignore[arg-type]
+        agent_summary=str(outcome.get("summary", "")),
+        agent_evidence=[str(value) for value in outcome.get("evidence", [])],
+        owned_artifact_excerpt=excerpt,
+        owned_artifact_sha256=artifact_digest,
+        owned_artifact_bytes=artifact_bytes,
+        score=PublicScoreReceipt(
+            grader_id=score.grader_id,
+            grader_revision=score.grader_revision,
+            primary_score=score.primary_score,
+            passed=score.passed,
+            receipt_sha256=sha256_bytes(score_path.read_bytes()),
+        ),
+        source_hashes={
+            "attempt_record": sha256_bytes(attempt_path.read_bytes()),
+            "agent_trace": sha256_bytes(trace_path.read_bytes()),
+            "public_instruction": sha256_bytes(task_path.read_bytes()),
+            "score_receipt": sha256_bytes(score_path.read_bytes()),
+            "submission_artifact": artifact_digest,
+        },
         hidden_evaluator_content_exposed=False,
         created_at=utc_now(),
     )
@@ -925,6 +1012,13 @@ def main(argv: list[str] | None = None) -> int:
     extract.add_argument("--task-id", required=True)
     extract.add_argument("--output", type=Path, required=True)
 
+    extract_attempt = subparsers.add_parser("extract-attempt", help="sanitize one brokered local attempt bundle")
+    extract_attempt.add_argument("--run-dir", type=Path, required=True)
+    extract_attempt.add_argument("--task", type=Path, required=True)
+    extract_attempt.add_argument("--score", type=Path)
+    extract_attempt.add_argument("--artifact", type=Path)
+    extract_attempt.add_argument("--output", type=Path, required=True)
+
     reflect = subparsers.add_parser("reflect", help="distill public evidence with one recorded LLM call")
     reflect.add_argument("--evidence", type=Path, required=True)
     reflect.add_argument("--run-dir", type=Path, required=True)
@@ -951,6 +1045,17 @@ def main(argv: list[str] | None = None) -> int:
     repository = Path(__file__).resolve().parents[1]
     if args.command == "extract-swe":
         evidence = extract_swe_evidence(repository, job_dir=args.job_dir, task_id=args.task_id)
+        write_json(args.output, evidence.model_dump(mode="json"))
+        print(evidence.model_dump_json(indent=2))
+        return 0
+    if args.command == "extract-attempt":
+        evidence = extract_attempt_evidence(
+            repository,
+            run_dir=args.run_dir,
+            task_json=args.task,
+            score_json=args.score,
+            artifact=args.artifact,
+        )
         write_json(args.output, evidence.model_dump(mode="json"))
         print(evidence.model_dump_json(indent=2))
         return 0

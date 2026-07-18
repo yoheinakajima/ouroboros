@@ -23,6 +23,7 @@ from research.lineage import (
     _hybrid_task,
     _sanitize_hybrid_organism,
     apply_minimal_lesson,
+    extract_attempt_evidence,
     reflect_evidence,
 )
 
@@ -131,6 +132,88 @@ class DevelopmentEvidenceTests(unittest.TestCase):
         self.assertEqual(reflected, expected)
         self.assertEqual(summary["usage"]["model_calls"], 1)
         self.assertEqual(len(provider.calls), 1)
+
+    def test_extract_attempt_evidence_uses_only_public_attempt_surfaces(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            run = root / "run"
+            workspace = run / "workspace/candidate_pack"
+            workspace.mkdir(parents=True)
+            artifact = workspace / "__init__.py"
+            artifact.write_text("PACK = object()\n", encoding="utf-8")
+            task = {
+                "suite_id": "ouro_activegraph_50",
+                "task_id": "incident_coordination",
+                "prompt": "Public task prompt",
+                "image": "sha256:" + "0" * 64,
+            }
+            (root / "task.json").write_text(json.dumps(task), encoding="utf-8")
+            (run / "trace.jsonl").write_text('{"type":"model_complete"}\n', encoding="utf-8")
+            (run / "outcome.json").write_text(
+                json.dumps(
+                    {
+                        "status": "completed",
+                        "summary": "Implemented a candidate.",
+                        "evidence": ["public tests passed"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (run / "attempt.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "run_id": "incident-r1",
+                        "approach_id": "hybrid_packs",
+                        "study_id": "common_outcome",
+                        "suite_id": "ouro_activegraph_50",
+                        "task_id": "incident_coordination",
+                        "arm": "cold",
+                        "replication": 1,
+                        "seed": 101,
+                        "model": "gpt-5.6-terra",
+                        "task_image_digest": "sha256:" + "0" * 64,
+                        "approach_source_hashes": {},
+                        "started_at": "2026-07-17T00:00:00+00:00",
+                        "finished_at": "2026-07-17T00:00:01+00:00",
+                        "status": "completed",
+                        "usage": {},
+                        "trace_path": "trace.jsonl",
+                        "submission_path": "workspace",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            score = run / "score.json"
+            score.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "run_id": "incident-r1",
+                        "grader_id": "ouro_activegraph_50",
+                        "grader_revision": "1.0.0",
+                        "primary_score": 42.0,
+                        "passed": False,
+                        "components": {"sealed_detail_that_must_not_enter_prompt": "hidden-ish"},
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            extracted = extract_attempt_evidence(
+                root,
+                run_dir=run,
+                task_json=root / "task.json",
+                score_json=score,
+            )
+
+        self.assertEqual(extracted.suite_id, "ouro_activegraph_50")
+        self.assertEqual(extracted.approach_id, "hybrid_packs")
+        self.assertEqual(extracted.public_instruction, "Public task prompt")
+        self.assertEqual(extracted.score.primary_score, 42.0)
+        self.assertEqual(extracted.owned_artifact_excerpt, "PACK = object()\n")
+        self.assertNotIn("components", extracted.model_dump_json())
+        self.assertNotIn("sealed_detail", extracted.model_dump_json())
 
 
 class NativeLineageTests(unittest.TestCase):
