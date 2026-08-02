@@ -24,3 +24,8 @@ benchmark/runs/
 # Harbor's default output when a caller omits --jobs-dir. Curated receipts
 # belong in evidence/; complete local job trees may contain model transcripts.
 jobs/
+
+# Local render intermediates. Canonical paper source and final PDF are tracked.
+paper/tmp/
+/output/
+/tmp/

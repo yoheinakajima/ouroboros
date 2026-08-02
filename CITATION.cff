@@ -1,11 +1,19 @@
 cff-version: 1.2.0
-title: "Ouroboros: Minimal Recursive Self-Improvement Experiments on ActiveGraph"
-message: "If you use this software or research protocol, please cite it."
+title: "Ouroboros: Audited Self-Improvement Experiments on ActiveGraph"
+message: "If you use this software, paper, or research protocol, please cite it."
 type: software
 authors:
   - family-names: Nakajima
     given-names: Yohei
-version: 0.1.0
-date-released: 2026-07-16
+version: 0.2.0
+date-released: 2026-07-23
 license: MIT
 repository-code: "https://github.com/yoheinakajima/ouroboros"
+preferred-citation:
+  type: article
+  title: "When Self-Modification Becomes Memory: An Audited Comparison of Three Self-Improving Agent Substrates"
+  authors:
+    - family-names: Nakajima
+      given-names: Yohei
+  year: 2026
+  repository-code: "https://github.com/yoheinakajima/ouroboros"

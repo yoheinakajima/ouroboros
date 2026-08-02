@@ -1,0 +1,1149 @@
+{
+  "disagreements": [
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "procedure",
+      "field": "primary_update_target",
+      "masked_id": "mutation-05dd1ea6851d"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "procedure",
+      "field": "primary_update_target",
+      "masked_id": "mutation-14dee970666c"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "procedure",
+      "field": "primary_update_target",
+      "masked_id": "mutation-41e28c3476d3"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "procedure",
+      "field": "primary_update_target",
+      "masked_id": "mutation-71dd3bf04c67"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "procedure",
+      "field": "primary_update_target",
+      "masked_id": "mutation-aad1747df62b"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "procedure",
+      "field": "primary_update_target",
+      "masked_id": "mutation-b1cca5ef3e15"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "procedure",
+      "field": "primary_update_target",
+      "masked_id": "mutation-b40d5e1ff985"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "procedure",
+      "field": "primary_update_target",
+      "masked_id": "mutation-f4c22a3640c5"
+    },
+    {
+      "coder_a": "procedure",
+      "coder_b": "validation_asset",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-05dd1ea6851d"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-0cd352fcabe1"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-0e8bcd3fd0ce"
+    },
+    {
+      "coder_a": "procedure",
+      "coder_b": "validation_asset",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-14dee970666c"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-1d9ffc60d1f2"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-1e265c5e1b46"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-28ae47316719"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-315cd1148138"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-3cf292e3b733"
+    },
+    {
+      "coder_a": "procedure",
+      "coder_b": "validation_asset",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-41e28c3476d3"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-495e80263e22"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-4e57e9548efa"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-50bce01dc423"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-5822db565840"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-5f497185635c"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-61283f5d66f4"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-62780b7e940d"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-6baa0f41c764"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-6e312a0afa91"
+    },
+    {
+      "coder_a": "procedure",
+      "coder_b": "validation_asset",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-71dd3bf04c67"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-7e7c4ff99055"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-8789c97f877c"
+    },
+    {
+      "coder_a": "procedure",
+      "coder_b": "validation_asset",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-aad1747df62b"
+    },
+    {
+      "coder_a": "procedure",
+      "coder_b": "validation_asset",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-b1cca5ef3e15"
+    },
+    {
+      "coder_a": "procedure",
+      "coder_b": "validation_asset",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-b40d5e1ff985"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-bdfd22b8646d"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "configuration",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-c6b8e5971bb2"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-d2bbe3766205"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-db85527b4ba5"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-e76588ff0b46"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-eda99b29c240"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-ee7b36fc09e2"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-f16be783a078"
+    },
+    {
+      "coder_a": "procedure",
+      "coder_b": "validation_asset",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-f4c22a3640c5"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-f64b98c0906d"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-f711c00047e1"
+    },
+    {
+      "coder_a": "validation_asset",
+      "coder_b": "none",
+      "field": "secondary_update_target",
+      "masked_id": "mutation-fbc68c84c062"
+    },
+    {
+      "coder_a": "cross_task",
+      "coder_b": "self_improvement_process",
+      "field": "transfer_scope",
+      "masked_id": "mutation-05dd1ea6851d"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-0cd352fcabe1"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-1cd3a3a36370"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-1e265c5e1b46"
+    },
+    {
+      "coder_a": "cross_task",
+      "coder_b": "repository_family",
+      "field": "transfer_scope",
+      "masked_id": "mutation-24d680e9cf2a"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-2d1f03ab69d4"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-315cd1148138"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-3cf292e3b733"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-495e80263e22"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-59b90f15e9ab"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-62780b7e940d"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-8789c97f877c"
+    },
+    {
+      "coder_a": "cross_task",
+      "coder_b": "repository_family",
+      "field": "transfer_scope",
+      "masked_id": "mutation-885a869973b0"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-9884d42e058d"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-a8077d492459"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "self_improvement_process",
+      "field": "transfer_scope",
+      "masked_id": "mutation-b40d5e1ff985"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-be59a2361589"
+    },
+    {
+      "coder_a": "cross_task",
+      "coder_b": "repository_family",
+      "field": "transfer_scope",
+      "masked_id": "mutation-c6b8e5971bb2"
+    },
+    {
+      "coder_a": "cross_task",
+      "coder_b": "repository_family",
+      "field": "transfer_scope",
+      "masked_id": "mutation-cd23efe359db"
+    },
+    {
+      "coder_a": "cross_task",
+      "coder_b": "repository_family",
+      "field": "transfer_scope",
+      "masked_id": "mutation-d2bbe3766205"
+    },
+    {
+      "coder_a": "repository_family",
+      "coder_b": "cross_task",
+      "field": "transfer_scope",
+      "masked_id": "mutation-fbc68c84c062"
+    },
+    {
+      "coder_a": "prescription",
+      "coder_b": "mechanism",
+      "field": "abstraction_level",
+      "masked_id": "mutation-111eb898f743"
+    },
+    {
+      "coder_a": "policy",
+      "coder_b": "mechanism",
+      "field": "abstraction_level",
+      "masked_id": "mutation-24d680e9cf2a"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-26123e9b51a2"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "policy",
+      "field": "abstraction_level",
+      "masked_id": "mutation-28ae47316719"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-371465c687c7"
+    },
+    {
+      "coder_a": "prescription",
+      "coder_b": "mechanism",
+      "field": "abstraction_level",
+      "masked_id": "mutation-380d8136d08d"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "policy",
+      "field": "abstraction_level",
+      "masked_id": "mutation-56912d48390f"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-58c47f0121f6"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "policy",
+      "field": "abstraction_level",
+      "masked_id": "mutation-59b90f15e9ab"
+    },
+    {
+      "coder_a": "policy",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-5cf2f6348753"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "policy",
+      "field": "abstraction_level",
+      "masked_id": "mutation-5f497185635c"
+    },
+    {
+      "coder_a": "prescription",
+      "coder_b": "mechanism",
+      "field": "abstraction_level",
+      "masked_id": "mutation-6181daa7264b"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-6e312a0afa91"
+    },
+    {
+      "coder_a": "policy",
+      "coder_b": "mechanism",
+      "field": "abstraction_level",
+      "masked_id": "mutation-7e7c4ff99055"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-8789c97f877c"
+    },
+    {
+      "coder_a": "prescription",
+      "coder_b": "mechanism",
+      "field": "abstraction_level",
+      "masked_id": "mutation-97942133ab08"
+    },
+    {
+      "coder_a": "prescription",
+      "coder_b": "mechanism",
+      "field": "abstraction_level",
+      "masked_id": "mutation-9cf0c8f0a827"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-be59a2361589"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-cadaf60111fc"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-d3a2828b22ca"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-daae1f8656ce"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-db85527b4ba5"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "policy",
+      "field": "abstraction_level",
+      "masked_id": "mutation-e9d985c7e753"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "policy",
+      "field": "abstraction_level",
+      "masked_id": "mutation-eda99b29c240"
+    },
+    {
+      "coder_a": "mechanism",
+      "coder_b": "prescription",
+      "field": "abstraction_level",
+      "masked_id": "mutation-f4d1ab333133"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-05dd1ea6851d"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_unvalidated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-0cd352fcabe1"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-14dee970666c"
+    },
+    {
+      "coder_a": "direct_unvalidated",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-1cd3a3a36370"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-3efe97729ba0"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-41e28c3476d3"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-4e57e9548efa"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-56912d48390f"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-5822db565840"
+    },
+    {
+      "coder_a": "direct_validated",
+      "coder_b": "inferred",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-5f497185635c"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-61283f5d66f4"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-6e312a0afa91"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-71dd3bf04c67"
+    },
+    {
+      "coder_a": "direct_validated",
+      "coder_b": "direct_unvalidated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-7e7c4ff99055"
+    },
+    {
+      "coder_a": "direct_unvalidated",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-85696405cdc8"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-885a869973b0"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-9884d42e058d"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-aad1747df62b"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-b1cca5ef3e15"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-b40d5e1ff985"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_unvalidated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-be59a2361589"
+    },
+    {
+      "coder_a": "direct_unvalidated",
+      "coder_b": "inferred",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-cd23efe359db"
+    },
+    {
+      "coder_a": "inferred",
+      "coder_b": "direct_validated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-e9d985c7e753"
+    },
+    {
+      "coder_a": "direct_validated",
+      "coder_b": "inferred",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-eda99b29c240"
+    },
+    {
+      "coder_a": "direct_validated",
+      "coder_b": "direct_unvalidated",
+      "field": "evidence_grounding",
+      "masked_id": "mutation-ee7b36fc09e2"
+    },
+    {
+      "coder_a": "preventive_safeguard",
+      "coder_b": "recovery_procedure",
+      "field": "failure_specificity",
+      "masked_id": "mutation-be59a2361589"
+    },
+    {
+      "coder_a": "integration_test",
+      "coder_b": "focused_test",
+      "field": "validation_strategy",
+      "masked_id": "mutation-be59a2361589"
+    },
+    {
+      "coder_a": "multiple_levels",
+      "coder_b": "focused_test",
+      "field": "validation_strategy",
+      "masked_id": "mutation-eb271b82a81b"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-14dee970666c"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-24d680e9cf2a"
+    },
+    {
+      "coder_a": "high",
+      "coder_b": "medium",
+      "field": "confidence",
+      "masked_id": "mutation-380d8136d08d"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-3efe97729ba0"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-41e28c3476d3"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-4e57e9548efa"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-56912d48390f"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-5822db565840"
+    },
+    {
+      "coder_a": "high",
+      "coder_b": "medium",
+      "field": "confidence",
+      "masked_id": "mutation-5f497185635c"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-61283f5d66f4"
+    },
+    {
+      "coder_a": "high",
+      "coder_b": "medium",
+      "field": "confidence",
+      "masked_id": "mutation-62780b7e940d"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-6e312a0afa91"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-71dd3bf04c67"
+    },
+    {
+      "coder_a": "high",
+      "coder_b": "medium",
+      "field": "confidence",
+      "masked_id": "mutation-81a1dd0381e1"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-885a869973b0"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-9884d42e058d"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-aad1747df62b"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-b1cca5ef3e15"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-b40d5e1ff985"
+    },
+    {
+      "coder_a": "high",
+      "coder_b": "medium",
+      "field": "confidence",
+      "masked_id": "mutation-eda99b29c240"
+    },
+    {
+      "coder_a": "medium",
+      "coder_b": "high",
+      "field": "confidence",
+      "masked_id": "mutation-f4c22a3640c5"
+    }
+  ],
+  "fields": {
+    "abstraction_level": {
+      "agreements": 59,
+      "coder_a_counts": {
+        "mechanism": 46,
+        "policy": 16,
+        "prescription": 22
+      },
+      "coder_b_counts": {
+        "mechanism": 36,
+        "policy": 19,
+        "prescription": 29
+      },
+      "cohen_expected_agreement": 0.3681972789115646,
+      "cohen_kappa": 0.528936742934051,
+      "disagreements": 25,
+      "gwet_ac1": 0.647140366721976,
+      "gwet_expected_agreement": 0.1565511621315193,
+      "items": 84,
+      "raw_agreement": 0.7023809523809523
+    },
+    "anticipated_activation": {
+      "agreements": 84,
+      "coder_a_counts": {
+        "not_specified": 84
+      },
+      "coder_b_counts": {
+        "not_specified": 84
+      },
+      "cohen_expected_agreement": 1.0,
+      "cohen_kappa": null,
+      "disagreements": 0,
+      "gwet_ac1": 1.0,
+      "gwet_expected_agreement": 0.0,
+      "items": 84,
+      "raw_agreement": 1.0
+    },
+    "confidence": {
+      "agreements": 63,
+      "coder_a_counts": {
+        "high": 55,
+        "medium": 29
+      },
+      "coder_b_counts": {
+        "high": 66,
+        "medium": 18
+      },
+      "cohen_expected_agreement": 0.58843537414966,
+      "cohen_kappa": 0.39256198347107424,
+      "disagreements": 21,
+      "gwet_ac1": 0.6869148511336912,
+      "gwet_expected_agreement": 0.2014951814058957,
+      "items": 84,
+      "raw_agreement": 0.75
+    },
+    "consolidation_operation": {
+      "agreements": 84,
+      "coder_a_counts": {
+        "append": 84
+      },
+      "coder_b_counts": {
+        "append": 84
+      },
+      "cohen_expected_agreement": 1.0,
+      "cohen_kappa": null,
+      "disagreements": 0,
+      "gwet_ac1": 1.0,
+      "gwet_expected_agreement": 0.0,
+      "items": 84,
+      "raw_agreement": 1.0
+    },
+    "counterfactual_actionability": {
+      "agreements": 84,
+      "coder_a_counts": {
+        "operational": 84
+      },
+      "coder_b_counts": {
+        "operational": 84
+      },
+      "cohen_expected_agreement": 1.0,
+      "cohen_kappa": null,
+      "disagreements": 0,
+      "gwet_ac1": 1.0,
+      "gwet_expected_agreement": 0.0,
+      "items": 84,
+      "raw_agreement": 1.0
+    },
+    "evidence_grounding": {
+      "agreements": 59,
+      "coder_a_counts": {
+        "direct_unvalidated": 5,
+        "direct_validated": 46,
+        "inferred": 33
+      },
+      "coder_b_counts": {
+        "direct_unvalidated": 6,
+        "direct_validated": 60,
+        "inferred": 18
+      },
+      "cohen_expected_agreement": 0.4795918367346939,
+      "cohen_kappa": 0.4281045751633985,
+      "disagreements": 25,
+      "gwet_ac1": 0.6689107162564838,
+      "gwet_expected_agreement": 0.10109126984126984,
+      "items": 84,
+      "raw_agreement": 0.7023809523809523
+    },
+    "executable_status": {
+      "agreements": 84,
+      "coder_a_counts": {
+        "nonexecutable": 84
+      },
+      "coder_b_counts": {
+        "nonexecutable": 84
+      },
+      "cohen_expected_agreement": 1.0,
+      "cohen_kappa": null,
+      "disagreements": 0,
+      "gwet_ac1": 1.0,
+      "gwet_expected_agreement": 0.0,
+      "items": 84,
+      "raw_agreement": 1.0
+    },
+    "failure_specificity": {
+      "agreements": 83,
+      "coder_a_counts": {
+        "preventive_safeguard": 83,
+        "recovery_procedure": 1
+      },
+      "coder_b_counts": {
+        "preventive_safeguard": 82,
+        "recovery_procedure": 2
+      },
+      "cohen_expected_agreement": 0.9648526077097507,
+      "cohen_kappa": 0.6612903225806454,
+      "disagreements": 1,
+      "gwet_ac1": 0.9880252325457073,
+      "gwet_expected_agreement": 0.005846088435374139,
+      "items": 84,
+      "raw_agreement": 0.9880952380952381
+    },
+    "novelty_relative_to_prior_state": {
+      "agreements": 84,
+      "coder_a_counts": {
+        "not_coded": 84
+      },
+      "coder_b_counts": {
+        "not_coded": 84
+      },
+      "cohen_expected_agreement": 1.0,
+      "cohen_kappa": null,
+      "disagreements": 0,
+      "gwet_ac1": 1.0,
+      "gwet_expected_agreement": 0.0,
+      "items": 84,
+      "raw_agreement": 1.0
+    },
+    "primary_update_target": {
+      "agreements": 76,
+      "coder_a_counts": {
+        "procedure": 76,
+        "validation_asset": 8
+      },
+      "coder_b_counts": {
+        "procedure": 84
+      },
+      "cohen_expected_agreement": 0.9047619047619048,
+      "cohen_kappa": 0.0,
+      "disagreements": 8,
+      "gwet_ac1": 0.9038901601830663,
+      "gwet_expected_agreement": 0.009070294784580503,
+      "items": 84,
+      "raw_agreement": 0.9047619047619048
+    },
+    "representational_form": {
+      "agreements": 84,
+      "coder_a_counts": {
+        "natural_language": 84
+      },
+      "coder_b_counts": {
+        "natural_language": 84
+      },
+      "cohen_expected_agreement": 1.0,
+      "cohen_kappa": null,
+      "disagreements": 0,
+      "gwet_ac1": 1.0,
+      "gwet_expected_agreement": 0.0,
+      "items": 84,
+      "raw_agreement": 1.0
+    },
+    "secondary_update_target": {
+      "agreements": 47,
+      "coder_a_counts": {
+        "procedure": 8,
+        "validation_asset": 76
+      },
+      "coder_b_counts": {
+        "configuration": 1,
+        "none": 28,
+        "validation_asset": 55
+      },
+      "cohen_expected_agreement": 0.5924036281179138,
+      "cohen_kappa": -0.08066759388038933,
+      "disagreements": 37,
+      "gwet_ac1": 0.5429848617411571,
+      "gwet_expected_agreement": 0.0361890589569161,
+      "items": 84,
+      "raw_agreement": 0.5595238095238095
+    },
+    "transfer_scope": {
+      "agreements": 63,
+      "coder_a_counts": {
+        "cross_task": 52,
+        "repository_family": 30,
+        "self_improvement_process": 2
+      },
+      "coder_b_counts": {
+        "cross_task": 60,
+        "repository_family": 20,
+        "self_improvement_process": 4
+      },
+      "cohen_expected_agreement": 0.528344671201814,
+      "cohen_kappa": 0.4699519230769231,
+      "disagreements": 21,
+      "gwet_ac1": 0.7170583045953965,
+      "gwet_expected_agreement": 0.11642573696145124,
+      "items": 84,
+      "raw_agreement": 0.75
+    },
+    "validation_strategy": {
+      "agreements": 82,
+      "coder_a_counts": {
+        "integration_test": 2,
+        "multiple_levels": 82
+      },
+      "coder_b_counts": {
+        "focused_test": 2,
+        "integration_test": 1,
+        "multiple_levels": 81
+      },
+      "cohen_expected_agreement": 0.9416099773242631,
+      "cohen_kappa": 0.5922330097087369,
+      "disagreements": 2,
+      "gwet_ac1": 0.9759573529236383,
+      "gwet_expected_agreement": 0.009696239606953894,
+      "items": 84,
+      "raw_agreement": 0.9761904761904762
+    }
+  },
+  "items": 84,
+  "labels_a": {
+    "coder_ids": [
+      "masked-sol-a"
+    ],
+    "models": [
+      "gpt-5.6-sol"
+    ],
+    "path": "data/taxonomy/coder-sol-a/labels.csv",
+    "sha256": "9290e7358b1b2d384805e75be7cc612d1dce6a0d8699ed27ac4f7193e433a667"
+  },
+  "labels_b": {
+    "coder_ids": [
+      "masked-terra-b"
+    ],
+    "models": [
+      "gpt-5.6-terra"
+    ],
+    "path": "data/taxonomy/coder-terra-b/labels.csv",
+    "sha256": "61a5a859f63f58df313fbde0fd77a8e6ae69e38a37f6c232754d561cf1e21d80"
+  },
+  "limitations": [
+    "Both coding passes were produced by language models from the same frozen prompt and codebook.",
+    "Agreement measures prompt and cross-model sensitivity; it is not independent human inter-rater reliability.",
+    "Architecture masking may be incomplete because representational form can reveal substrate.",
+    "Prevalence can make Cohen's kappa undefined or unstable; raw agreement and Gwet's AC1 are also reported.",
+    "No disagreement was adjudicated before these results were frozen."
+  ],
+  "post_unblinding": {
+    "evidence_grounding_by_development_outcome": {
+      "coder_a": {
+        "false": {
+          "direct_unvalidated": 5,
+          "direct_validated": 7,
+          "inferred": 30
+        },
+        "true": {
+          "direct_validated": 39,
+          "inferred": 3
+        }
+      },
+      "coder_b": {
+        "false": {
+          "direct_unvalidated": 6,
+          "direct_validated": 21,
+          "inferred": 15
+        },
+        "true": {
+          "direct_validated": 39,
+          "inferred": 3
+        }
+      }
+    }
+  },
+  "recorded_at": "2026-07-23T22:51:13.205625+00:00",
+  "status": "exploratory cross-model architecture-masked reliability check"
+}

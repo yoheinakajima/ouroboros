@@ -1,0 +1,597 @@
+{
+  "by_approach": {
+    "hybrid_packs": {
+      "fields": {
+        "abstraction_level": {
+          "counts": {
+            "mechanism": 16,
+            "policy": 6,
+            "prescription": 6
+          },
+          "rates": {
+            "mechanism": 0.5714285714285714,
+            "policy": 0.21428571428571427,
+            "prescription": 0.21428571428571427
+          }
+        },
+        "anticipated_activation": {
+          "counts": {
+            "not_specified": 28
+          },
+          "rates": {
+            "not_specified": 1.0
+          }
+        },
+        "confidence": {
+          "counts": {
+            "high": 19,
+            "medium": 9
+          },
+          "rates": {
+            "high": 0.6785714285714286,
+            "medium": 0.32142857142857145
+          }
+        },
+        "consolidation_operation": {
+          "counts": {
+            "append": 28
+          },
+          "rates": {
+            "append": 1.0
+          }
+        },
+        "counterfactual_actionability": {
+          "counts": {
+            "operational": 28
+          },
+          "rates": {
+            "operational": 1.0
+          }
+        },
+        "evidence_grounding": {
+          "counts": {
+            "direct_unvalidated": 1,
+            "direct_validated": 18,
+            "inferred": 9
+          },
+          "rates": {
+            "direct_unvalidated": 0.03571428571428571,
+            "direct_validated": 0.6428571428571429,
+            "inferred": 0.32142857142857145
+          }
+        },
+        "executable_status": {
+          "counts": {
+            "nonexecutable": 28
+          },
+          "rates": {
+            "nonexecutable": 1.0
+          }
+        },
+        "failure_specificity": {
+          "counts": {
+            "preventive_safeguard": 27,
+            "recovery_procedure": 1
+          },
+          "rates": {
+            "preventive_safeguard": 0.9642857142857143,
+            "recovery_procedure": 0.03571428571428571
+          }
+        },
+        "novelty_relative_to_prior_state": {
+          "counts": {
+            "not_coded": 28
+          },
+          "rates": {
+            "not_coded": 1.0
+          }
+        },
+        "primary_update_target": {
+          "counts": {
+            "procedure": 24,
+            "validation_asset": 4
+          },
+          "rates": {
+            "procedure": 0.8571428571428571,
+            "validation_asset": 0.14285714285714285
+          }
+        },
+        "representational_form": {
+          "counts": {
+            "natural_language": 28
+          },
+          "rates": {
+            "natural_language": 1.0
+          }
+        },
+        "secondary_update_target": {
+          "counts": {
+            "procedure": 4,
+            "validation_asset": 24
+          },
+          "rates": {
+            "procedure": 0.14285714285714285,
+            "validation_asset": 0.8571428571428571
+          }
+        },
+        "transfer_scope": {
+          "counts": {
+            "cross_task": 18,
+            "repository_family": 10
+          },
+          "rates": {
+            "cross_task": 0.6428571428571429,
+            "repository_family": 0.35714285714285715
+          }
+        },
+        "validation_strategy": {
+          "counts": {
+            "multiple_levels": 28
+          },
+          "rates": {
+            "multiple_levels": 1.0
+          }
+        }
+      },
+      "items": 28,
+      "mutation_accepted": {
+        "false": 3,
+        "rate": 0.8928571428571429,
+        "true": 25
+      },
+      "score_passed": {
+        "false": 13,
+        "rate": 0.5357142857142857,
+        "true": 15
+      }
+    },
+    "minimal_v2": {
+      "fields": {
+        "abstraction_level": {
+          "counts": {
+            "mechanism": 16,
+            "policy": 6,
+            "prescription": 6
+          },
+          "rates": {
+            "mechanism": 0.5714285714285714,
+            "policy": 0.21428571428571427,
+            "prescription": 0.21428571428571427
+          }
+        },
+        "anticipated_activation": {
+          "counts": {
+            "not_specified": 28
+          },
+          "rates": {
+            "not_specified": 1.0
+          }
+        },
+        "confidence": {
+          "counts": {
+            "high": 17,
+            "medium": 11
+          },
+          "rates": {
+            "high": 0.6071428571428571,
+            "medium": 0.39285714285714285
+          }
+        },
+        "consolidation_operation": {
+          "counts": {
+            "append": 28
+          },
+          "rates": {
+            "append": 1.0
+          }
+        },
+        "counterfactual_actionability": {
+          "counts": {
+            "operational": 28
+          },
+          "rates": {
+            "operational": 1.0
+          }
+        },
+        "evidence_grounding": {
+          "counts": {
+            "direct_unvalidated": 2,
+            "direct_validated": 13,
+            "inferred": 13
+          },
+          "rates": {
+            "direct_unvalidated": 0.07142857142857142,
+            "direct_validated": 0.4642857142857143,
+            "inferred": 0.4642857142857143
+          }
+        },
+        "executable_status": {
+          "counts": {
+            "nonexecutable": 28
+          },
+          "rates": {
+            "nonexecutable": 1.0
+          }
+        },
+        "failure_specificity": {
+          "counts": {
+            "preventive_safeguard": 28
+          },
+          "rates": {
+            "preventive_safeguard": 1.0
+          }
+        },
+        "novelty_relative_to_prior_state": {
+          "counts": {
+            "not_coded": 28
+          },
+          "rates": {
+            "not_coded": 1.0
+          }
+        },
+        "primary_update_target": {
+          "counts": {
+            "procedure": 26,
+            "validation_asset": 2
+          },
+          "rates": {
+            "procedure": 0.9285714285714286,
+            "validation_asset": 0.07142857142857142
+          }
+        },
+        "representational_form": {
+          "counts": {
+            "natural_language": 28
+          },
+          "rates": {
+            "natural_language": 1.0
+          }
+        },
+        "secondary_update_target": {
+          "counts": {
+            "procedure": 2,
+            "validation_asset": 26
+          },
+          "rates": {
+            "procedure": 0.07142857142857142,
+            "validation_asset": 0.9285714285714286
+          }
+        },
+        "transfer_scope": {
+          "counts": {
+            "cross_task": 18,
+            "repository_family": 9,
+            "self_improvement_process": 1
+          },
+          "rates": {
+            "cross_task": 0.6428571428571429,
+            "repository_family": 0.32142857142857145,
+            "self_improvement_process": 0.03571428571428571
+          }
+        },
+        "validation_strategy": {
+          "counts": {
+            "integration_test": 1,
+            "multiple_levels": 27
+          },
+          "rates": {
+            "integration_test": 0.03571428571428571,
+            "multiple_levels": 0.9642857142857143
+          }
+        }
+      },
+      "items": 28,
+      "mutation_accepted": {
+        "false": 15,
+        "rate": 0.4642857142857143,
+        "true": 13
+      },
+      "score_passed": {
+        "false": 15,
+        "rate": 0.4642857142857143,
+        "true": 13
+      }
+    },
+    "workspace_v1_2": {
+      "fields": {
+        "abstraction_level": {
+          "counts": {
+            "mechanism": 14,
+            "policy": 4,
+            "prescription": 10
+          },
+          "rates": {
+            "mechanism": 0.5,
+            "policy": 0.14285714285714285,
+            "prescription": 0.35714285714285715
+          }
+        },
+        "anticipated_activation": {
+          "counts": {
+            "not_specified": 28
+          },
+          "rates": {
+            "not_specified": 1.0
+          }
+        },
+        "confidence": {
+          "counts": {
+            "high": 19,
+            "medium": 9
+          },
+          "rates": {
+            "high": 0.6785714285714286,
+            "medium": 0.32142857142857145
+          }
+        },
+        "consolidation_operation": {
+          "counts": {
+            "append": 28
+          },
+          "rates": {
+            "append": 1.0
+          }
+        },
+        "counterfactual_actionability": {
+          "counts": {
+            "operational": 28
+          },
+          "rates": {
+            "operational": 1.0
+          }
+        },
+        "evidence_grounding": {
+          "counts": {
+            "direct_unvalidated": 2,
+            "direct_validated": 15,
+            "inferred": 11
+          },
+          "rates": {
+            "direct_unvalidated": 0.07142857142857142,
+            "direct_validated": 0.5357142857142857,
+            "inferred": 0.39285714285714285
+          }
+        },
+        "executable_status": {
+          "counts": {
+            "nonexecutable": 28
+          },
+          "rates": {
+            "nonexecutable": 1.0
+          }
+        },
+        "failure_specificity": {
+          "counts": {
+            "preventive_safeguard": 28
+          },
+          "rates": {
+            "preventive_safeguard": 1.0
+          }
+        },
+        "novelty_relative_to_prior_state": {
+          "counts": {
+            "not_coded": 28
+          },
+          "rates": {
+            "not_coded": 1.0
+          }
+        },
+        "primary_update_target": {
+          "counts": {
+            "procedure": 26,
+            "validation_asset": 2
+          },
+          "rates": {
+            "procedure": 0.9285714285714286,
+            "validation_asset": 0.07142857142857142
+          }
+        },
+        "representational_form": {
+          "counts": {
+            "natural_language": 28
+          },
+          "rates": {
+            "natural_language": 1.0
+          }
+        },
+        "secondary_update_target": {
+          "counts": {
+            "procedure": 2,
+            "validation_asset": 26
+          },
+          "rates": {
+            "procedure": 0.07142857142857142,
+            "validation_asset": 0.9285714285714286
+          }
+        },
+        "transfer_scope": {
+          "counts": {
+            "cross_task": 16,
+            "repository_family": 11,
+            "self_improvement_process": 1
+          },
+          "rates": {
+            "cross_task": 0.5714285714285714,
+            "repository_family": 0.39285714285714285,
+            "self_improvement_process": 0.03571428571428571
+          }
+        },
+        "validation_strategy": {
+          "counts": {
+            "integration_test": 1,
+            "multiple_levels": 27
+          },
+          "rates": {
+            "integration_test": 0.03571428571428571,
+            "multiple_levels": 0.9642857142857143
+          }
+        }
+      },
+      "items": 28,
+      "mutation_accepted": {
+        "false": 3,
+        "rate": 0.8928571428571429,
+        "true": 25
+      },
+      "score_passed": {
+        "false": 14,
+        "rate": 0.5,
+        "true": 14
+      }
+    }
+  },
+  "coder_id": [
+    "masked-sol-a"
+  ],
+  "items": 84,
+  "labels_sha256_before_unblinding": "9290e7358b1b2d384805e75be7cc612d1dce6a0d8699ed27ac4f7193e433a667",
+  "limitations": [
+    "Architecture-masked, not double-blind; mutation form can reveal substrate.",
+    "One model coder; no inter-rater reliability estimate.",
+    "The unit is the reflection/update proposal, not every native file-level mutation.",
+    "Architecture and task are confounded because each lineage used independent stochastic development runs.",
+    "Labels are descriptive and do not establish downstream causal effects."
+  ],
+  "metadata_key_sha256": "3f3619ae16144b498795270b01a2e815bd2e79ce3fec226a2814225f6296e44c",
+  "model": [
+    "gpt-5.6-sol"
+  ],
+  "overall": {
+    "abstraction_level": {
+      "counts": {
+        "mechanism": 46,
+        "policy": 16,
+        "prescription": 22
+      },
+      "rates": {
+        "mechanism": 0.5476190476190477,
+        "policy": 0.19047619047619047,
+        "prescription": 0.2619047619047619
+      }
+    },
+    "anticipated_activation": {
+      "counts": {
+        "not_specified": 84
+      },
+      "rates": {
+        "not_specified": 1.0
+      }
+    },
+    "confidence": {
+      "counts": {
+        "high": 55,
+        "medium": 29
+      },
+      "rates": {
+        "high": 0.6547619047619048,
+        "medium": 0.34523809523809523
+      }
+    },
+    "consolidation_operation": {
+      "counts": {
+        "append": 84
+      },
+      "rates": {
+        "append": 1.0
+      }
+    },
+    "counterfactual_actionability": {
+      "counts": {
+        "operational": 84
+      },
+      "rates": {
+        "operational": 1.0
+      }
+    },
+    "evidence_grounding": {
+      "counts": {
+        "direct_unvalidated": 5,
+        "direct_validated": 46,
+        "inferred": 33
+      },
+      "rates": {
+        "direct_unvalidated": 0.05952380952380952,
+        "direct_validated": 0.5476190476190477,
+        "inferred": 0.39285714285714285
+      }
+    },
+    "executable_status": {
+      "counts": {
+        "nonexecutable": 84
+      },
+      "rates": {
+        "nonexecutable": 1.0
+      }
+    },
+    "failure_specificity": {
+      "counts": {
+        "preventive_safeguard": 83,
+        "recovery_procedure": 1
+      },
+      "rates": {
+        "preventive_safeguard": 0.9880952380952381,
+        "recovery_procedure": 0.011904761904761904
+      }
+    },
+    "novelty_relative_to_prior_state": {
+      "counts": {
+        "not_coded": 84
+      },
+      "rates": {
+        "not_coded": 1.0
+      }
+    },
+    "primary_update_target": {
+      "counts": {
+        "procedure": 76,
+        "validation_asset": 8
+      },
+      "rates": {
+        "procedure": 0.9047619047619048,
+        "validation_asset": 0.09523809523809523
+      }
+    },
+    "representational_form": {
+      "counts": {
+        "natural_language": 84
+      },
+      "rates": {
+        "natural_language": 1.0
+      }
+    },
+    "secondary_update_target": {
+      "counts": {
+        "procedure": 8,
+        "validation_asset": 76
+      },
+      "rates": {
+        "procedure": 0.09523809523809523,
+        "validation_asset": 0.9047619047619048
+      }
+    },
+    "transfer_scope": {
+      "counts": {
+        "cross_task": 52,
+        "repository_family": 30,
+        "self_improvement_process": 2
+      },
+      "rates": {
+        "cross_task": 0.6190476190476191,
+        "repository_family": 0.35714285714285715,
+        "self_improvement_process": 0.023809523809523808
+      }
+    },
+    "validation_strategy": {
+      "counts": {
+        "integration_test": 2,
+        "multiple_levels": 82
+      },
+      "rates": {
+        "integration_test": 0.023809523809523808,
+        "multiple_levels": 0.9761904761904762
+      }
+    }
+  },
+  "recorded_at": "2026-07-23T22:07:39.998075+00:00",
+  "status": "exploratory single-coder architecture-masked pilot"
+}

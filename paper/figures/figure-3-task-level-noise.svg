@@ -1,0 +1,285 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="1850" viewBox="0 0 1900 1850" role="img" aria-labelledby="title desc">
+<title id="title">Figure 3. Evolved outcomes versus task-specific duplicate-execution clouds</title>
+<desc id="desc">Nineteen task-level clouds of six equivalent no-context outcomes with three evolved architecture outcomes overlaid.</desc>
+<defs>
+<marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#62666A"/></marker>
+</defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#202124}.title{font-size:30px;font-weight:700}.subtitle{font-size:17px;fill:#62666A}.panel{font-size:21px;font-weight:700}.label{font-size:16px}.small{font-size:13px;fill:#62666A}.tiny{font-size:11px;fill:#62666A}.value{font-size:15px;font-weight:700}.axis{stroke:#62666A;stroke-width:1}.grid{stroke:#D8DADD;stroke-width:1}</style>
+<rect width="1900" height="1850" fill="#FFFFFF"/>
+<text x="60.0" y="55.0" class="title" text-anchor="start">Figure 3. Evolved outcomes versus task-specific duplicate-execution clouds</text>
+<text x="60.0" y="84.0" class="subtitle" text-anchor="start">Six byte-identical no-context requests define each gray cloud; Minimal/scikit-learn is the only evolved result outside a cloud.</text>
+<text x="60.0" y="150.0" class="panel" text-anchor="start">SWE-bench Verified subset</text>
+<text x="1840.0" y="150.0" class="small" text-anchor="end">maximum equivalent-label |Δ|=0.200; design MDE=0.307</text>
+<line x1="165.0" y1="535.0" x2="1715.0" y2="535.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="540.0" class="small" text-anchor="end">0.00</text>
+<line x1="165.0" y1="447.5" x2="1715.0" y2="447.5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="452.5" class="small" text-anchor="end">0.25</text>
+<line x1="165.0" y1="360.0" x2="1715.0" y2="360.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="365.0" class="small" text-anchor="end">0.50</text>
+<line x1="165.0" y1="272.5" x2="1715.0" y2="272.5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="277.5" class="small" text-anchor="end">0.75</text>
+<line x1="165.0" y1="185.0" x2="1715.0" y2="185.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="190.0" class="small" text-anchor="end">1.00</text>
+<line x1="165.0" y1="185.0" x2="165.0" y2="535.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<rect x="183.6" y="176.0" width="117.8" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="227.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="233.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="239.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="245.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="251.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="257.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="230.5,177.0 222.5,193.0 238.5,193.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="242.5,177.0 250.5,185.0 242.5,193.0 234.5,185.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="246.5" y="177.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="242.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 242.5 561)">astropy 14539</text>
+<rect x="338.6" y="176.0" width="117.8" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="382.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="388.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="394.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="400.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="406.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="412.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="385.5,177.0 377.5,193.0 393.5,193.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="397.5,177.0 405.5,185.0 397.5,193.0 389.5,185.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="401.5" y="177.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="397.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 397.5 561)">astropy 14995</text>
+<rect x="493.6" y="176.0" width="117.8" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="537.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="543.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="549.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="555.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="561.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="567.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="540.5,177.0 532.5,193.0 548.5,193.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="552.5,177.0 560.5,185.0 552.5,193.0 544.5,185.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="556.5" y="177.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="552.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 552.5 561)">django 17087</text>
+<rect x="648.6" y="176.0" width="117.8" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="692.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="698.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="704.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="710.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="716.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="722.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="695.5,177.0 687.5,193.0 703.5,193.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="707.5,177.0 715.5,185.0 707.5,193.0 699.5,185.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="711.5" y="177.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="707.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 707.5 561)">matplotlib 26291</text>
+<line x1="862.5" y1="535.0" x2="862.5" y2="185.0" stroke="#62666A" stroke-width="8" opacity="0.18"/>
+<circle cx="847.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="853.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="859.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="865.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="871.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="877.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="850.5,177.0 842.5,193.0 858.5,193.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="862.5,177.0 870.5,185.0 862.5,193.0 854.5,185.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="866.5" y="177.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="862.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 862.5 561)">pydata 3305</text>
+<line x1="1017.5" y1="535.0" x2="1017.5" y2="185.0" stroke="#62666A" stroke-width="8" opacity="0.18"/>
+<circle cx="1002.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1008.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1014.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1020.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1026.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1032.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="1005.5,527.0 997.5,543.0 1013.5,543.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="1017.5,177.0 1025.5,185.0 1017.5,193.0 1009.5,185.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="1021.5" y="177.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="1017.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 1017.5 561)">pylint 6386</text>
+<rect x="1113.6" y="176.0" width="117.8" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="1157.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1163.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1169.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1175.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1181.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1187.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="1160.5,177.0 1152.5,193.0 1168.5,193.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="1172.5,177.0 1180.5,185.0 1172.5,193.0 1164.5,185.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="1176.5" y="177.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="1172.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 1172.5 561)">pytest 5809</text>
+<rect x="1268.6" y="176.0" width="117.8" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="1312.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1318.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1324.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1330.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1336.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1342.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="1315.5,177.0 1307.5,193.0 1323.5,193.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="1327.5,527.0 1335.5,535.0 1327.5,543.0 1319.5,535.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<circle cx="1327.5" cy="535.0" r="15.0" fill="none" stroke="#CC79A7" stroke-width="3" opacity="1.0"/>
+<text x="1345.5" y="523.0" class="tiny" text-anchor="start" fill="#CC79A7">only outside-range result</text>
+<rect x="1331.5" y="177.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="1327.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 1327.5 561)">scikit 13124</text>
+<rect x="1423.6" y="526.0" width="117.8" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="1467.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1473.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1479.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1485.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1491.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1497.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="1470.5,527.0 1462.5,543.0 1478.5,543.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="1482.5,527.0 1490.5,535.0 1482.5,543.0 1474.5,535.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="1486.5" y="527.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="1482.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 1482.5 561)">sphinx 9461</text>
+<line x1="1637.5" y1="535.0" x2="1637.5" y2="185.0" stroke="#62666A" stroke-width="8" opacity="0.18"/>
+<circle cx="1622.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1628.5" cy="185.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1634.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1640.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1646.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1652.5" cy="535.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="1625.5,177.0 1617.5,193.0 1633.5,193.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="1637.5,527.0 1645.5,535.0 1637.5,543.0 1629.5,535.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="1641.5" y="527.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="1637.5" y="561.0" class="small" text-anchor="end" transform="rotate(-48 1637.5 561)">sympy 19040</text>
+<text x="1760.0" y="188.0" class="tiny" text-anchor="start">Family-mean</text>
+<text x="1760.0" y="203.0" class="tiny" text-anchor="start">dispersion</text>
+<line x1="1760.0" y1="220.0" x2="1855.0" y2="220.0" stroke="#D8DADD" stroke-width="5" opacity="1.0"/>
+<line x1="1760.0" y1="220.0" x2="1798.0" y2="220.0" stroke="#62666A" stroke-width="7" opacity="1.0"/>
+<line x1="1818.3" y1="211.0" x2="1818.3" y2="229.0" stroke="#CC79A7" stroke-width="3" opacity="1.0"/>
+<text x="60.0" y="695.0" class="panel" text-anchor="start">Terminal tasks</text>
+<text x="1840.0" y="695.0" class="small" text-anchor="end">maximum equivalent-label |Δ|=0.167; design MDE=0.451</text>
+<line x1="165.0" y1="1080.0" x2="1715.0" y2="1080.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="1085.0" class="small" text-anchor="end">0.00</text>
+<line x1="165.0" y1="992.5" x2="1715.0" y2="992.5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="997.5" class="small" text-anchor="end">0.25</text>
+<line x1="165.0" y1="905.0" x2="1715.0" y2="905.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="910.0" class="small" text-anchor="end">0.50</text>
+<line x1="165.0" y1="817.5" x2="1715.0" y2="817.5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="822.5" class="small" text-anchor="end">0.75</text>
+<line x1="165.0" y1="730.0" x2="1715.0" y2="730.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="735.0" class="small" text-anchor="end">1.00</text>
+<line x1="165.0" y1="730.0" x2="165.0" y2="1080.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<line x1="294.2" y1="1080.0" x2="294.2" y2="730.0" stroke="#62666A" stroke-width="8" opacity="0.18"/>
+<circle cx="279.2" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="285.2" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="291.2" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="297.2" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="303.2" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="309.2" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="282.2,722.0 274.2,738.0 290.2,738.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="294.2,1072.0 302.2,1080.0 294.2,1088.0 286.2,1080.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="298.2" y="722.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="294.2" y="1106.0" class="small" text-anchor="end" transform="rotate(-48 294.16666666666663 1106)">bn-fit-modify</text>
+<rect x="454.3" y="721.0" width="196.3" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="537.5" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="543.5" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="549.5" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="555.5" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="561.5" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="567.5" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="540.5,722.0 532.5,738.0 548.5,738.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="552.5,722.0 560.5,730.0 552.5,738.0 544.5,730.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="556.5" y="722.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="552.5" y="1106.0" class="small" text-anchor="end" transform="rotate(-48 552.5 1106)">custom-memory</text>
+<rect x="712.7" y="721.0" width="196.3" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="795.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="801.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="807.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="813.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="819.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="825.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="798.8,722.0 790.8,738.0 806.8,738.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="810.8,722.0 818.8,730.0 810.8,738.0 802.8,730.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="814.8" y="722.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="810.8" y="1106.0" class="small" text-anchor="end" transform="rotate(-48 810.8333333333333 1106)">fix-code-vuln</text>
+<rect x="971.0" y="1071.0" width="196.3" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="1054.2" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1060.2" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1066.2" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1072.2" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1078.2" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1084.2" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="1057.2,1072.0 1049.2,1088.0 1065.2,1088.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="1069.2,1072.0 1077.2,1080.0 1069.2,1088.0 1061.2,1080.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="1073.2" y="1072.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="1069.2" y="1106.0" class="small" text-anchor="end" transform="rotate(-48 1069.1666666666665 1106)">install-windo</text>
+<line x1="1327.5" y1="1080.0" x2="1327.5" y2="730.0" stroke="#62666A" stroke-width="8" opacity="0.18"/>
+<circle cx="1312.5" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1318.5" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1324.5" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1330.5" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1336.5" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1342.5" cy="1080.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="1315.5,722.0 1307.5,738.0 1323.5,738.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="1327.5,1072.0 1335.5,1080.0 1327.5,1088.0 1319.5,1080.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="1331.5" y="1072.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="1327.5" y="1106.0" class="small" text-anchor="end" transform="rotate(-48 1327.5 1106)">batching</text>
+<rect x="1487.7" y="721.0" width="196.3" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="1570.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1576.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1582.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1588.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1594.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1600.8" cy="730.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="1573.8,722.0 1565.8,738.0 1581.8,738.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="1585.8,722.0 1593.8,730.0 1585.8,738.0 1577.8,730.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="1589.8" y="722.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="1585.8" y="1106.0" class="small" text-anchor="end" transform="rotate(-48 1585.8333333333333 1106)">portfolio-opt</text>
+<text x="1760.0" y="733.0" class="tiny" text-anchor="start">Family-mean</text>
+<text x="1760.0" y="748.0" class="tiny" text-anchor="start">dispersion</text>
+<line x1="1760.0" y1="765.0" x2="1855.0" y2="765.0" stroke="#D8DADD" stroke-width="5" opacity="1.0"/>
+<line x1="1760.0" y1="765.0" x2="1791.7" y2="765.0" stroke="#62666A" stroke-width="7" opacity="1.0"/>
+<line x1="1845.7" y1="756.0" x2="1845.7" y2="774.0" stroke="#CC79A7" stroke-width="3" opacity="1.0"/>
+<text x="60.0" y="1240.0" class="panel" text-anchor="start">ActiveGraph tasks</text>
+<text x="1840.0" y="1240.0" class="small" text-anchor="end">maximum equivalent-label |Δ|=0.213; design MDE=0.287</text>
+<line x1="165.0" y1="1625.0" x2="1715.0" y2="1625.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="1630.0" class="small" text-anchor="end">0.00</text>
+<line x1="165.0" y1="1537.5" x2="1715.0" y2="1537.5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="1542.5" class="small" text-anchor="end">0.25</text>
+<line x1="165.0" y1="1450.0" x2="1715.0" y2="1450.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="1455.0" class="small" text-anchor="end">0.50</text>
+<line x1="165.0" y1="1362.5" x2="1715.0" y2="1362.5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="1367.5" class="small" text-anchor="end">0.75</text>
+<line x1="165.0" y1="1275.0" x2="1715.0" y2="1275.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="151.0" y="1280.0" class="small" text-anchor="end">1.00</text>
+<line x1="165.0" y1="1275.0" x2="165.0" y2="1625.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<line x1="423.3" y1="1317.0" x2="423.3" y2="1275.0" stroke="#62666A" stroke-width="8" opacity="0.18"/>
+<circle cx="408.3" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="414.3" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="420.3" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="426.3" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="432.3" cy="1317.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="438.3" cy="1310.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="411.3,1267.0 403.3,1283.0 419.3,1283.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="423.3,1302.0 431.3,1310.0 423.3,1318.0 415.3,1310.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="427.3" y="1267.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="423.3" y="1651.0" class="small" text-anchor="end" transform="rotate(-48 423.3333333333333 1651)">delegated_acc</text>
+<rect x="743.7" y="1266.0" width="392.7" height="18.0" rx="7.0" fill="#F2F4F5" stroke="none" stroke-width="1" opacity="1.0"/>
+<circle cx="925.0" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="931.0" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="937.0" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="943.0" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="949.0" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="955.0" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="928.0,1267.0 920.0,1283.0 936.0,1283.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="940.0,1267.0 948.0,1275.0 940.0,1283.0 932.0,1275.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="944.0" y="1267.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="940.0" y="1651.0" class="small" text-anchor="end" transform="rotate(-48 940.0 1651)">provenance_pi</text>
+<line x1="1456.7" y1="1457.0" x2="1456.7" y2="1275.0" stroke="#62666A" stroke-width="8" opacity="0.18"/>
+<circle cx="1441.7" cy="1317.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1447.7" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1453.7" cy="1275.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1459.7" cy="1401.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1465.7" cy="1457.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<circle cx="1471.7" cy="1317.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<polygon points="1444.7,1449.0 1436.7,1465.0 1452.7,1465.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<polygon points="1456.7,1267.0 1464.7,1275.0 1456.7,1283.0 1448.7,1275.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<rect x="1460.7" y="1449.0" width="16.0" height="16.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="1456.7" y="1651.0" class="small" text-anchor="end" transform="rotate(-48 1456.6666666666665 1651)">quota</text>
+<text x="1760.0" y="1278.0" class="tiny" text-anchor="start">Family-mean</text>
+<text x="1760.0" y="1293.0" class="tiny" text-anchor="start">dispersion</text>
+<line x1="1760.0" y1="1310.0" x2="1855.0" y2="1310.0" stroke="#D8DADD" stroke-width="5" opacity="1.0"/>
+<line x1="1760.0" y1="1310.0" x2="1800.5" y2="1310.0" stroke="#62666A" stroke-width="7" opacity="1.0"/>
+<line x1="1814.5" y1="1301.0" x2="1814.5" y2="1319.0" stroke="#CC79A7" stroke-width="3" opacity="1.0"/>
+<circle cx="80.0" cy="1800.0" r="5.0" fill="#62666A" stroke="none" stroke-width="1" opacity="0.5"/>
+<text x="95.0" y="1805.0" class="small" text-anchor="start">equivalent no-context</text>
+<polygon points="300.0,1793.0 293.0,1807.0 307.0,1807.0" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.5"/>
+<text x="315.0" y="1805.0" class="small" text-anchor="start">Workspace evolved</text>
+<polygon points="480.0,1793.0 487.0,1800.0 480.0,1807.0 473.0,1800.0" fill="#E69F00" stroke="#FFFFFF" stroke-width="1.5"/>
+<text x="495.0" y="1805.0" class="small" text-anchor="start">Minimal evolved</text>
+<rect x="653.0" y="1793.0" width="14.0" height="14.0" rx="1.5" fill="#009E73" stroke="#FFFFFF" stroke-width="1.5" opacity="1.0"/>
+<text x="675.0" y="1805.0" class="small" text-anchor="start">Hybrid evolved</text>
+<text x="1830.0" y="1805.0" class="small" text-anchor="end">Maximum |Δ| uses 15 dependent pairwise label deltas; descriptive reference, not a formal significance test.</text>
+</svg>

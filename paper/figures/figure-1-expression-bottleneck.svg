@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="790" viewBox="0 0 1600 790" role="img" aria-labelledby="title desc">
+<title id="title">Figure 1. The expression bottleneck</title>
+<desc id="desc">Three native self-modifying states pass through a shared evaluation interface before a shared agent and external grader.</desc>
+<defs>
+<marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#62666A"/></marker>
+</defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#202124}.title{font-size:30px;font-weight:700}.subtitle{font-size:17px;fill:#62666A}.panel{font-size:21px;font-weight:700}.label{font-size:16px}.small{font-size:13px;fill:#62666A}.tiny{font-size:11px;fill:#62666A}.value{font-size:15px;font-weight:700}.axis{stroke:#62666A;stroke-width:1}.grid{stroke:#D8DADD;stroke-width:1}</style>
+<rect width="1600" height="790" fill="#FFFFFF"/>
+<text x="60.0" y="55.0" class="title" text-anchor="start">Figure 1. The expression bottleneck</text>
+<text x="60.0" y="84.0" class="subtitle" text-anchor="start">Persistent change is filtered before it can affect action; each arrow is a distinct empirical claim.</text>
+<rect x="70.0" y="125.0" width="230.0" height="76.0" rx="10.0" fill="#F2F4F5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="185.0" y="157.0" class="panel" text-anchor="middle">Development</text>
+<text x="185.0" y="178.0" class="panel" text-anchor="middle">experience</text>
+<rect x="350.0" y="125.0" width="270.0" height="76.0" rx="10.0" fill="#F2F4F5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="485.0" y="157.0" class="panel" text-anchor="middle">Native retained state</text>
+<rect x="710.0" y="125.0" width="230.0" height="76.0" rx="10.0" fill="#F2F4F5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="825.0" y="157.0" class="panel" text-anchor="middle">Evaluation</text>
+<text x="825.0" y="178.0" class="panel" text-anchor="middle">adapter</text>
+<rect x="1010.0" y="125.0" width="240.0" height="76.0" rx="10.0" fill="#F2F4F5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="1130.0" y="157.0" class="panel" text-anchor="middle">Task-visible</text>
+<text x="1130.0" y="178.0" class="panel" text-anchor="middle">surface</text>
+<rect x="1315.0" y="125.0" width="210.0" height="76.0" rx="10.0" fill="#F2F4F5" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="1420.0" y="157.0" class="panel" text-anchor="middle">Shared agent</text>
+<text x="1420.0" y="178.0" class="panel" text-anchor="middle">+ grader</text>
+<text x="80.0" y="290.0" class="panel" text-anchor="start" fill="#0072B2">Workspace</text>
+<line x1="300.0" y1="270.0" x2="345.0" y2="270.0" stroke="#0072B2" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="350.0" y="228.0" width="270.0" height="84.0" rx="10.0" fill="#FFFFFF" stroke="#0072B2" stroke-width="3" opacity="1.0"/>
+<text x="485.0" y="265.0" class="panel" text-anchor="middle">Arbitrary workspace</text>
+<text x="485.0" y="292.0" class="small" text-anchor="middle">85 eligible files</text>
+<line x1="620.0" y1="270.0" x2="705.0" y2="270.0" stroke="#0072B2" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="710.0" y="222.0" width="230.0" height="96.0" rx="10.0" fill="#F2F4F5" stroke="#0072B2" stroke-width="2" opacity="1.0"/>
+<text x="825.0" y="258.0" class="label" text-anchor="middle">Priority + alphabetical</text>
+<text x="825.0" y="279.0" class="label" text-anchor="middle">64 KB serialization</text>
+<text x="825.0" y="306.0" class="small" text-anchor="middle">static</text>
+<line x1="940.0" y1="270.0" x2="1005.0" y2="270.0" stroke="#0072B2" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="1010.0" y="228.0" width="240.0" height="84.0" rx="10.0" fill="#FFFFFF" stroke="#0072B2" stroke-width="3" opacity="1.0"/>
+<text x="1130.0" y="265.0" class="panel" text-anchor="middle">18/85 files</text>
+<text x="1130.0" y="292.0" class="small" text-anchor="middle">text only</text>
+<line x1="1250.0" y1="270.0" x2="1310.0" y2="270.0" stroke="#0072B2" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="1315.0" y="228.0" width="210.0" height="84.0" rx="10.0" fill="#FFFFFF" stroke="#202124" stroke-width="1" opacity="1.0"/>
+<text x="1420.0" y="265.0" class="label" text-anchor="middle">Sol outer agent</text>
+<text x="1420.0" y="292.0" class="small" text-anchor="middle">external grader</text>
+<text x="80.0" y="450.0" class="panel" text-anchor="start" fill="#E69F00">Minimal</text>
+<line x1="300.0" y1="430.0" x2="345.0" y2="430.0" stroke="#E69F00" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="350.0" y="388.0" width="270.0" height="84.0" rx="10.0" fill="#FFFFFF" stroke="#E69F00" stroke-width="3" opacity="1.0"/>
+<text x="485.0" y="425.0" class="panel" text-anchor="middle">Procedure store</text>
+<text x="485.0" y="452.0" class="small" text-anchor="middle">13 procedures + 28 receipts</text>
+<line x1="620.0" y1="430.0" x2="705.0" y2="430.0" stroke="#E69F00" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="710.0" y="382.0" width="230.0" height="96.0" rx="10.0" fill="#F2F4F5" stroke="#E69F00" stroke-width="2" opacity="1.0"/>
+<text x="825.0" y="418.0" class="label" text-anchor="middle">Full semantic export</text>
+<text x="825.0" y="466.0" class="small" text-anchor="middle">static</text>
+<line x1="940.0" y1="430.0" x2="1005.0" y2="430.0" stroke="#E69F00" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="1010.0" y="388.0" width="240.0" height="84.0" rx="10.0" fill="#FFFFFF" stroke="#E69F00" stroke-width="3" opacity="1.0"/>
+<text x="1130.0" y="425.0" class="panel" text-anchor="middle">41/41 items</text>
+<text x="1130.0" y="452.0" class="small" text-anchor="middle">text only</text>
+<line x1="1250.0" y1="430.0" x2="1310.0" y2="430.0" stroke="#E69F00" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="1315.0" y="388.0" width="210.0" height="84.0" rx="10.0" fill="#FFFFFF" stroke="#202124" stroke-width="1" opacity="1.0"/>
+<text x="1420.0" y="425.0" class="label" text-anchor="middle">Sol outer agent</text>
+<text x="1420.0" y="452.0" class="small" text-anchor="middle">external grader</text>
+<text x="80.0" y="610.0" class="panel" text-anchor="start" fill="#009E73">Hybrid</text>
+<line x1="300.0" y1="590.0" x2="345.0" y2="590.0" stroke="#009E73" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="350.0" y="548.0" width="270.0" height="84.0" rx="10.0" fill="#FFFFFF" stroke="#009E73" stroke-width="3" opacity="1.0"/>
+<text x="485.0" y="585.0" class="panel" text-anchor="middle">ActiveGraph Pack</text>
+<text x="485.0" y="612.0" class="small" text-anchor="middle">25 embedded lessons</text>
+<line x1="620.0" y1="590.0" x2="705.0" y2="590.0" stroke="#009E73" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="710.0" y="542.0" width="230.0" height="96.0" rx="10.0" fill="#F2F4F5" stroke="#009E73" stroke-width="2" opacity="1.0"/>
+<text x="825.0" y="578.0" class="label" text-anchor="middle">Automatic top-3</text>
+<text x="825.0" y="599.0" class="label" text-anchor="middle">lexical retrieval</text>
+<text x="825.0" y="626.0" class="small" text-anchor="middle">task-adaptive</text>
+<line x1="940.0" y1="590.0" x2="1005.0" y2="590.0" stroke="#009E73" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="1010.0" y="548.0" width="240.0" height="84.0" rx="10.0" fill="#FFFFFF" stroke="#009E73" stroke-width="3" opacity="1.0"/>
+<text x="1130.0" y="585.0" class="panel" text-anchor="middle">3/25 lessons</text>
+<text x="1130.0" y="612.0" class="small" text-anchor="middle">Pack executes, then text</text>
+<line x1="1250.0" y1="590.0" x2="1310.0" y2="590.0" stroke="#009E73" stroke-width="4" opacity="1.0" marker-end="url(#arrow)"/>
+<rect x="1315.0" y="548.0" width="210.0" height="84.0" rx="10.0" fill="#FFFFFF" stroke="#202124" stroke-width="1" opacity="1.0"/>
+<text x="1420.0" y="585.0" class="label" text-anchor="middle">Sol outer agent</text>
+<text x="1420.0" y="612.0" class="small" text-anchor="middle">external grader</text>
+<rect x="686.0" y="215.0" width="278.0" height="430.0" rx="18.0" fill="none" stroke="#CC79A7" stroke-width="3" opacity="1.0"/>
+<text x="825.0" y="678.0" class="panel" text-anchor="middle" fill="#CC79A7">EXPRESSION BOTTLENECK</text>
+<text x="825.0" y="706.0" class="subtitle" text-anchor="middle">Native structure becomes a narrower observation/action surface</text>
+<text x="430.0" y="758.0" class="small" text-anchor="middle">self-modification</text>
+<text x="760.0" y="758.0" class="small" text-anchor="middle">expression</text>
+<text x="1070.0" y="758.0" class="small" text-anchor="middle">behavior</text>
+<text x="1380.0" y="758.0" class="small" text-anchor="middle">task score</text>
+</svg>

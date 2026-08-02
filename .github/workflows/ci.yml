@@ -25,4 +25,6 @@ jobs:
       - run: python -m unittest discover -s tests -p 'test_*.py'
       - run: python -m research.validate_research
       - run: python -m research.readiness --development
+      - run: python paper/scripts/scan_release.py --root paper --check
+      - run: python paper/scripts/verify_manifest.py paper/provenance-manifest.json
       - run: python -m build

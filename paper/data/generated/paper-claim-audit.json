@@ -1,0 +1,338 @@
+{
+  "all_passed": true,
+  "checks": 53,
+  "passed": 53,
+  "recorded_at": "2026-07-24T00:39:40.532694+00:00",
+  "rows": [
+    {
+      "claim": "held-out rows",
+      "expected": 228,
+      "observed": 228,
+      "ok": true
+    },
+    {
+      "claim": "final valid rows",
+      "expected": 228,
+      "observed": 228,
+      "ok": true
+    },
+    {
+      "claim": "raw immediately valid rows",
+      "expected": 215,
+      "observed": 215,
+      "ok": true
+    },
+    {
+      "claim": "held-out model cost",
+      "expected": 194.068625,
+      "observed": 194.06862500000003,
+      "ok": true
+    },
+    {
+      "claim": "adjudicated dataset hash",
+      "expected": "c83e750719972d2e0dcb5e3514f190c372eb984ab305f00883480fa36ef28afa",
+      "observed": "c83e750719972d2e0dcb5e3514f190c372eb984ab305f00883480fa36ef28afa",
+      "ok": true
+    },
+    {
+      "claim": "hybrid_packs strong evidence threshold",
+      "expected": false,
+      "observed": false,
+      "ok": true
+    },
+    {
+      "claim": "minimal_v2 strong evidence threshold",
+      "expected": false,
+      "observed": false,
+      "ok": true
+    },
+    {
+      "claim": "workspace_v1_2 strong evidence threshold",
+      "expected": false,
+      "observed": false,
+      "ok": true
+    },
+    {
+      "claim": "held-out tasks",
+      "expected": 19,
+      "observed": 19,
+      "ok": true
+    },
+    {
+      "claim": "stable equivalent-input tasks",
+      "expected": 12,
+      "observed": 12,
+      "ok": true
+    },
+    {
+      "claim": "variable equivalent-input tasks",
+      "expected": 7,
+      "observed": 7,
+      "ok": true
+    },
+    {
+      "claim": "fixed equivalent passes",
+      "expected": 10,
+      "observed": 10,
+      "ok": true
+    },
+    {
+      "claim": "fixed equivalent failures",
+      "expected": 2,
+      "observed": 2,
+      "ok": true
+    },
+    {
+      "claim": "evolved outcomes outside exact task range",
+      "expected": 1,
+      "observed": 1,
+      "ok": true
+    },
+    {
+      "claim": "outside-range architecture",
+      "expected": "minimal_v2",
+      "observed": "minimal_v2",
+      "ok": true
+    },
+    {
+      "claim": "outside-range task",
+      "expected": "scikit-learn__scikit-learn-13124",
+      "observed": "scikit-learn__scikit-learn-13124",
+      "ok": true
+    },
+    {
+      "claim": "outside-range evolved score",
+      "expected": 0.0,
+      "observed": 0.0,
+      "ok": true
+    },
+    {
+      "claim": "outside-range equivalent minimum",
+      "expected": 1.0,
+      "observed": 1.0,
+      "ok": true
+    },
+    {
+      "claim": "Workspace per-task reach",
+      "expected": 0.21176470588235294,
+      "observed": 0.21176470588235294,
+      "ok": true
+    },
+    {
+      "claim": "Workspace corpus reach",
+      "expected": 0.21176470588235294,
+      "observed": 0.21176470588235294,
+      "ok": true
+    },
+    {
+      "claim": "Minimal per-task reach",
+      "expected": 1.0,
+      "observed": 1.0,
+      "ok": true
+    },
+    {
+      "claim": "Minimal procedures",
+      "expected": 13,
+      "observed": 13,
+      "ok": true
+    },
+    {
+      "claim": "Minimal receipts",
+      "expected": 28,
+      "observed": 28,
+      "ok": true
+    },
+    {
+      "claim": "Minimal capabilities",
+      "expected": 0,
+      "observed": 0,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid per-task reach",
+      "expected": 0.12,
+      "observed": 0.12,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid corpus reach",
+      "expected": 0.68,
+      "observed": 0.68,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid adaptivity gap",
+      "expected": 0.56,
+      "observed": 0.56,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid failure retrieval slots",
+      "expected": 37,
+      "observed": 37,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid retrieval slots",
+      "expected": 57,
+      "observed": 57,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid vocabulary Spearman",
+      "expected": 0.7529810985482163,
+      "observed": 0.7529810985482163,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid adjusted vocabulary coefficient",
+      "expected": 0.19419237749546506,
+      "observed": 0.19419237749546506,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid adjusted failure coefficient",
+      "expected": -0.09310344827588779,
+      "observed": -0.09310344827588779,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid stratified permutation draws",
+      "expected": 50000,
+      "observed": 50000,
+      "ok": true
+    },
+    {
+      "claim": "taxonomy items",
+      "expected": 84,
+      "observed": 84,
+      "ok": true
+    },
+    {
+      "claim": "taxonomy label freeze hash",
+      "expected": "9290e7358b1b2d384805e75be7cc612d1dce6a0d8699ed27ac4f7193e433a667",
+      "observed": "9290e7358b1b2d384805e75be7cc612d1dce6a0d8699ed27ac4f7193e433a667",
+      "ok": true
+    },
+    {
+      "claim": "natural-language proposals",
+      "expected": {
+        "natural_language": 84
+      },
+      "observed": {
+        "natural_language": 84
+      },
+      "ok": true
+    },
+    {
+      "claim": "append proposals",
+      "expected": {
+        "append": 84
+      },
+      "observed": {
+        "append": 84
+      },
+      "ok": true
+    },
+    {
+      "claim": "nonexecutable proposals",
+      "expected": {
+        "nonexecutable": 84
+      },
+      "observed": {
+        "nonexecutable": 84
+      },
+      "ok": true
+    },
+    {
+      "claim": "procedure targets",
+      "expected": 76,
+      "observed": 76,
+      "ok": true
+    },
+    {
+      "claim": "validation-asset targets",
+      "expected": 8,
+      "observed": 8,
+      "ok": true
+    },
+    {
+      "claim": "all citation and local links resolve",
+      "expected": true,
+      "observed": true,
+      "ok": true
+    },
+    {
+      "claim": "Figure 1 exists exactly once",
+      "expected": 1,
+      "observed": 1,
+      "ok": true
+    },
+    {
+      "claim": "Figure 1 is nonempty",
+      "expected": true,
+      "observed": true,
+      "ok": true
+    },
+    {
+      "claim": "Figure 2 exists exactly once",
+      "expected": 1,
+      "observed": 1,
+      "ok": true
+    },
+    {
+      "claim": "Figure 2 is nonempty",
+      "expected": true,
+      "observed": true,
+      "ok": true
+    },
+    {
+      "claim": "Figure 3 exists exactly once",
+      "expected": 1,
+      "observed": 1,
+      "ok": true
+    },
+    {
+      "claim": "Figure 3 is nonempty",
+      "expected": true,
+      "observed": true,
+      "ok": true
+    },
+    {
+      "claim": "Figure 4 exists exactly once",
+      "expected": 1,
+      "observed": 1,
+      "ok": true
+    },
+    {
+      "claim": "Figure 4 is nonempty",
+      "expected": true,
+      "observed": true,
+      "ok": true
+    },
+    {
+      "claim": "Figure 5 exists exactly once",
+      "expected": 1,
+      "observed": 1,
+      "ok": true
+    },
+    {
+      "claim": "Figure 5 is nonempty",
+      "expected": true,
+      "observed": true,
+      "ok": true
+    },
+    {
+      "claim": "retired concept name absent",
+      "expected": false,
+      "observed": false,
+      "ok": true
+    },
+    {
+      "claim": "empirical pairwise values not called assumption-free null",
+      "expected": false,
+      "observed": false,
+      "ok": true
+    }
+  ]
+}

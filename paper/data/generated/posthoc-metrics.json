@@ -1,0 +1,361 @@
+{
+  "development_process": {
+    "hybrid_packs": {
+      "accepted": 25,
+      "accepted_after_failure": 10,
+      "accepted_after_pass": 15,
+      "failing_tasks": 13,
+      "first_five_mean_author_cost": 0.249016,
+      "first_five_mean_author_requests": 1,
+      "last_five_mean_author_cost": 2.114271,
+      "last_five_mean_author_requests": 3.2,
+      "note": "Sequence is confounded with task identity and difficulty.",
+      "passing_tasks": 15,
+      "records": 28,
+      "rejected": 3,
+      "score_passed": 15
+    },
+    "minimal_v2": {
+      "accepted": 13,
+      "accepted_after_failure": 0,
+      "accepted_after_pass": 13,
+      "failing_tasks": 15,
+      "first_five_mean_author_cost": 0.0,
+      "first_five_mean_author_requests": 0,
+      "last_five_mean_author_cost": 0.0,
+      "last_five_mean_author_requests": 0,
+      "note": "Sequence is confounded with task identity and difficulty.",
+      "passing_tasks": 13,
+      "records": 28,
+      "rejected": 15,
+      "score_passed": 13
+    },
+    "workspace_v1_2": {
+      "accepted": 25,
+      "accepted_after_failure": 12,
+      "accepted_after_pass": 13,
+      "failing_tasks": 14,
+      "first_five_mean_author_cost": 1.741495,
+      "first_five_mean_author_requests": 16.4,
+      "last_five_mean_author_cost": 2.9544129999999997,
+      "last_five_mean_author_requests": 20.6,
+      "note": "Sequence is confounded with task identity and difficulty.",
+      "passing_tasks": 14,
+      "records": 28,
+      "rejected": 3,
+      "score_passed": 14
+    }
+  },
+  "equivalent_control_noise": {
+    "all_families": {
+      "evolved_task_architecture_results_outside_task_specific_equivalent_range": 1,
+      "fixed_fail_tasks": 2,
+      "fixed_pass_tasks": 10,
+      "interpretation": "Variable tasks estimate baseline instability. Stable pass/fail tasks are not information-free: they provide one-sided opportunities to detect regressions or gains.",
+      "outside_range_results": [
+        {
+          "approach_id": "minimal_v2",
+          "arm": "evolved",
+          "condition_type": "evolved",
+          "departure_from_equivalent_range": -1.0,
+          "equivalent_maximum": 1.0,
+          "equivalent_minimum": 1.0,
+          "first_request_sha256": "d2ef68c5affdfef5a76d4015475e23aa76391a089f116990b8526a56122d9d22",
+          "inside_equivalent_range": false,
+          "score": 0.0,
+          "suite_id": "ouro_swe_50",
+          "task_id": "scikit-learn__scikit-learn-13124"
+        }
+      ],
+      "stable_tasks": 12,
+      "tasks": 19,
+      "variable_tasks": 7
+    },
+    "ouro_activegraph_50": {
+      "approximate_80pct_power_mde": 0.2869656484246729,
+      "empirical_null_maximum_absolute_delta": 0.21333333333333337,
+      "empirical_null_maximum_mean": 1.0,
+      "empirical_null_minimum_mean": 0.7866666666666666,
+      "empirical_null_p95_absolute_delta": 0.21333333333333337,
+      "empirical_null_p95_method": "nearest-rank over 15 absolute pairwise label deltas",
+      "equivalent_condition_means": {
+        "hybrid_packs/cold": 0.7866666666666666,
+        "hybrid_packs/cold_ablation": 0.9266666666666666,
+        "minimal_v2/cold": 1.0,
+        "minimal_v2/cold_ablation": 0.88,
+        "workspace_v1_2/cold": 0.96,
+        "workspace_v1_2/cold_ablation": 1.0
+      },
+      "icc_1_1": 0.31264962795211904,
+      "icc_mean_square_between_tasks": 0.05868888888888889,
+      "icc_mean_square_within_tasks": 0.015737777777777778,
+      "identical_first_requests_for_every_task": true,
+      "minimum_two_sided_sign_test_p_if_all_tasks_favor_one_arm": 0.25,
+      "note": "MDE is a post-hoc normal approximation from within-task variance across six equivalent arms.",
+      "paired_standard_error_from_equivalent_arms": 0.10242974105137558,
+      "pairwise_task_discordance": 0.4888888888888889,
+      "tasks": 3,
+      "variable_task_fraction": 0.6666666666666666,
+      "variable_tasks": 2
+    },
+    "ouro_swe_50": {
+      "approximate_80pct_power_mde": 0.3068982841467008,
+      "empirical_null_maximum_absolute_delta": 0.20000000000000007,
+      "empirical_null_maximum_mean": 0.8,
+      "empirical_null_minimum_mean": 0.6,
+      "empirical_null_p95_absolute_delta": 0.20000000000000007,
+      "empirical_null_p95_method": "nearest-rank over 15 absolute pairwise label deltas",
+      "equivalent_condition_means": {
+        "hybrid_packs/cold": 0.7,
+        "hybrid_packs/cold_ablation": 0.7,
+        "minimal_v2/cold": 0.8,
+        "minimal_v2/cold_ablation": 0.6,
+        "workspace_v1_2/cold": 0.8,
+        "workspace_v1_2/cold_ablation": 0.8
+      },
+      "icc_1_1": 0.7166180758017492,
+      "icc_mean_square_between_tasks": 0.9703703703703704,
+      "icc_mean_square_within_tasks": 0.06000000000000001,
+      "identical_first_requests_for_every_task": true,
+      "minimum_two_sided_sign_test_p_if_all_tasks_favor_one_arm": 0.001953125,
+      "note": "MDE is a post-hoc normal approximation from within-task variance across six equivalent arms.",
+      "paired_standard_error_from_equivalent_arms": 0.10954451150103324,
+      "pairwise_task_discordance": 0.12,
+      "tasks": 10,
+      "variable_task_fraction": 0.3,
+      "variable_tasks": 3
+    },
+    "ouro_terminal_12": {
+      "approximate_80pct_power_mde": 0.4510980764692259,
+      "empirical_null_maximum_absolute_delta": 0.16666666666666674,
+      "empirical_null_maximum_mean": 0.8333333333333334,
+      "empirical_null_minimum_mean": 0.6666666666666666,
+      "empirical_null_p95_absolute_delta": 0.16666666666666674,
+      "empirical_null_p95_method": "nearest-rank over 15 absolute pairwise label deltas",
+      "equivalent_condition_means": {
+        "hybrid_packs/cold": 0.8333333333333334,
+        "hybrid_packs/cold_ablation": 0.6666666666666666,
+        "minimal_v2/cold": 0.6666666666666666,
+        "minimal_v2/cold_ablation": 0.8333333333333334,
+        "workspace_v1_2/cold": 0.6666666666666666,
+        "workspace_v1_2/cold_ablation": 0.6666666666666666
+      },
+      "icc_1_1": 0.6585365853658537,
+      "icc_mean_square_between_tasks": 0.9777777777777776,
+      "icc_mean_square_within_tasks": 0.07777777777777778,
+      "identical_first_requests_for_every_task": true,
+      "minimum_two_sided_sign_test_p_if_all_tasks_favor_one_arm": 0.03125,
+      "note": "MDE is a post-hoc normal approximation from within-task variance across six equivalent arms.",
+      "paired_standard_error_from_equivalent_arms": 0.16101529717988264,
+      "pairwise_task_discordance": 0.15555555555555556,
+      "tasks": 6,
+      "variable_task_fraction": 0.3333333333333333,
+      "variable_tasks": 2
+    }
+  },
+  "expression_profiles": [
+    {
+      "actor_invocable_retained_capabilities": 0,
+      "adaptivity_gap": 0.0,
+      "approach_id": "workspace_v1_2",
+      "artifact_bytes": 429731,
+      "corpus_unit_reach_across_probe": 0.21176470588235294,
+      "corpus_units_exposed_across_probe": 18,
+      "delivered_context_bytes": 64000,
+      "eligible_payload_bytes": 247411,
+      "eligible_payload_reach": 0.25867887846538756,
+      "expression_mode": "static: same retained files are serialized for every task",
+      "fully_visible_units": 17,
+      "notes": "File is the semantic unit. One of the 18 exposed files is partial.",
+      "runtime_activation": "none",
+      "semantic_unit_reach_per_task": 0.21176470588235294,
+      "semantic_units_exposed_per_task": 18,
+      "semantic_units_total": 85,
+      "storage_reach": 0.14893037737561404
+    },
+    {
+      "actor_invocable_retained_capabilities": 0,
+      "adaptivity_gap": 0.0,
+      "approach_id": "minimal_v2",
+      "artifact_bytes": 1839823,
+      "capabilities": 0,
+      "corpus_unit_reach_across_probe": 1.0,
+      "corpus_units_exposed_across_probe": 41,
+      "delivered_context_bytes": 24767,
+      "eligible_payload_bytes": 24865,
+      "eligible_payload_reach": 0.9960587170721898,
+      "evidence_receipts": 28,
+      "expression_mode": "static: full semantic export is serialized for every task",
+      "fully_visible_units": 41,
+      "notes": "Procedure, capability, or receipt is the semantic unit. Database bytes mostly encode provenance.",
+      "procedures": 13,
+      "runtime_activation": "none",
+      "semantic_unit_reach_per_task": 1.0,
+      "semantic_units_exposed_per_task": 41,
+      "semantic_units_total": 41,
+      "storage_reach": 0.013461621036371434
+    },
+    {
+      "actor_invocable_retained_capabilities": 0,
+      "adaptivity_gap": 0.56,
+      "approach_id": "hybrid_packs",
+      "artifact_bytes": 266265,
+      "corpus_unit_reach_across_probe": 0.68,
+      "corpus_units_exposed_across_probe": 17,
+      "delivered_context_bytes": 10677.315789473685,
+      "eligible_payload_bytes": 62319,
+      "eligible_payload_reach": 0.17133323367630554,
+      "expression_mode": "adaptive: task-dependent top-three retrieval",
+      "fully_visible_units": 3,
+      "notes": "Lesson is the semantic unit. The Pack runs before the actor, but is not an actor-callable tool.",
+      "runtime_activation": "automatic pre-task ActiveGraph retrieval",
+      "semantic_unit_reach_per_task": 0.12,
+      "semantic_units_exposed_per_task": 3,
+      "semantic_units_total": 25,
+      "storage_reach": 0.04010033534063315
+    }
+  ],
+  "generated_tables": [
+    "behavior-mediation.csv",
+    "development-process.csv",
+    "empirical-null-pairwise-deltas.csv",
+    "equivalent-control-tasks.csv",
+    "expression-profile.csv",
+    "hybrid-lesson-corpus.csv",
+    "hybrid-retrieval-slots.csv",
+    "sham-control.csv",
+    "state-growth.csv",
+    "task-level-noise-and-evolved.csv"
+  ],
+  "hybrid_memory": {
+    "corpus_coverage_across_probe": 0.68,
+    "corpus_lessons": 25,
+    "failing_corpus_fraction": 0.4,
+    "failing_index_vocabulary_retrieval_spearman": 0.7633324815834825,
+    "failing_lesson_task_selection_rate": 0.19473684210526315,
+    "failing_lessons": 10,
+    "failing_mean_characters": 2897.7,
+    "failing_mean_index_vocabulary": 72,
+    "failing_mean_retrievals_per_lesson": 3.7,
+    "failing_mean_words": 390.5,
+    "failing_retrieval_fraction": 0.6491228070175439,
+    "failing_retrieval_slots": 37,
+    "failing_to_passing_character_ratio": 1.3036260572251213,
+    "failing_to_passing_index_vocabulary_ratio": 1.2134831460674156,
+    "failure_retrieval_enrichment": 1.6228070175438596,
+    "failure_to_passing_selection_rate_ratio": 2.775,
+    "index_vocabulary_retrieval_pearson": 0.6179348441725439,
+    "index_vocabulary_retrieval_spearman": 0.7529810985482163,
+    "mechanism_note": "The Pack ranks set overlap over suite, task id, title, scope, and trigger terms. Longer indexed vocabulary increases opportunities for overlap but does not add term-frequency weight.",
+    "passing_index_vocabulary_retrieval_spearman": 0.7430613807340632,
+    "passing_lesson_task_selection_rate": 0.07017543859649122,
+    "passing_lessons": 15,
+    "passing_mean_characters": 2222.8,
+    "passing_mean_index_vocabulary": 59.333333333333336,
+    "passing_mean_retrievals_per_lesson": 1.3333333333333333,
+    "passing_mean_words": 305.2,
+    "retrieval_effective_number_of_lessons": 8.950413223140497,
+    "retrieval_hhi": 0.11172668513388732,
+    "retrieval_on_index_vocabulary_and_failure_ols": {
+      "failure_flag_coefficient": -0.09310344827588779,
+      "index_vocabulary_coefficient": 0.19419237749546506,
+      "intercept": -10.188747731397596,
+      "permutations": 50000,
+      "r_squared": 0.3819783086395986,
+      "seed": 20260723,
+      "standardized_failure_flag_coefficient": -0.014939159209274265,
+      "standardized_index_vocabulary_coefficient": 0.6273338590585628,
+      "two_sided_p_value": 0.004539909201815964
+    },
+    "retrieval_slots": 57,
+    "same_repository_retrieval_slots": 5,
+    "same_suite_retrieval_slots": 28,
+    "top_two_lessons": [
+      [
+        "pylint-dev__pylint-7080",
+        11
+      ],
+      [
+        "pylint-dev__pylint-4661",
+        11
+      ]
+    ],
+    "top_two_retrieval_fraction": 0.38596491228070173,
+    "unique_lessons_retrieved": 17
+  },
+  "hybrid_retrieval_counterfactuals": {
+    "bm25": {
+      "failure_fraction": 0.49122807017543857,
+      "failure_slots": 28,
+      "retrieval_slots": 57,
+      "top_two_fraction": 0.17543859649122806,
+      "top_two_lessons": [
+        [
+          "db-wal-recovery",
+          5
+        ],
+        [
+          "pylint-dev__pylint-7080",
+          5
+        ]
+      ],
+      "unique_lessons": 22
+    },
+    "cosine": {
+      "failure_fraction": 0.47368421052631576,
+      "failure_slots": 27,
+      "retrieval_slots": 57,
+      "top_two_fraction": 0.24561403508771928,
+      "top_two_lessons": [
+        [
+          "pylint-dev__pylint-7080",
+          8
+        ],
+        [
+          "pydata__xarray-3677",
+          6
+        ]
+      ],
+      "unique_lessons": 19
+    },
+    "interpretation": "Offline re-ranking only. It measures retrieval composition under the same 19 prompts; it does not estimate downstream task performance.",
+    "jaccard": {
+      "failure_fraction": 0.5789473684210527,
+      "failure_slots": 33,
+      "retrieval_slots": 57,
+      "top_two_fraction": 0.3333333333333333,
+      "top_two_lessons": [
+        [
+          "pylint-dev__pylint-4661",
+          10
+        ],
+        [
+          "pylint-dev__pylint-7080",
+          9
+        ]
+      ],
+      "unique_lessons": 17
+    },
+    "overlap": {
+      "failure_fraction": 0.6491228070175439,
+      "failure_slots": 37,
+      "retrieval_slots": 57,
+      "top_two_fraction": 0.38596491228070173,
+      "top_two_lessons": [
+        [
+          "pylint-dev__pylint-7080",
+          11
+        ],
+        [
+          "pylint-dev__pylint-4661",
+          11
+        ]
+      ],
+      "unique_lessons": 17
+    }
+  },
+  "run_root": "<RELEASE_ROOT>",
+  "source_dataset": "results-probe-adjudicated.jsonl",
+  "source_dataset_sha256": "c83e750719972d2e0dcb5e3514f190c372eb984ab305f00883480fa36ef28afa",
+  "status": "exploratory_posthoc"
+}

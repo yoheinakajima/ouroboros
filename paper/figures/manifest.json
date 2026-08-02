@@ -1,0 +1,20 @@
+{
+  "figures": [
+    "figure-1-expression-bottleneck.svg",
+    "figure-2-expression-profile.svg",
+    "figure-3-task-level-noise.svg",
+    "figure-4-failure-memory-stickiness.svg",
+    "figure-5-accumulation-saturation.svg"
+  ],
+  "generator": "analysis/make_figures.py",
+  "numeric_sources": [
+    "data/generated/expression-profile.csv",
+    "data/generated/hybrid-lesson-corpus.csv",
+    "data/generated/development-process.csv",
+    "data/generated/state-growth.csv",
+    "data/generated/task-level-noise-and-evolved.csv",
+    "data/generated/empirical-null-pairwise-deltas.csv",
+    "data/generated/posthoc-metrics.json"
+  ],
+  "status": "exploratory paper figures"
+}

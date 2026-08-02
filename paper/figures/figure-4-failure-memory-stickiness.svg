@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1040" viewBox="0 0 1600 1040" role="img" aria-labelledby="title desc">
+<title id="title">Figure 4. Failure-memory stickiness is a vocabulary-coverage mechanism</title>
+<desc id="desc">Corpus and retrieval composition, per-lesson vocabulary versus retrieval counts, and offline ranker diagnostics.</desc>
+<defs>
+<marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#62666A"/></marker>
+</defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#202124}.title{font-size:30px;font-weight:700}.subtitle{font-size:17px;fill:#62666A}.panel{font-size:21px;font-weight:700}.label{font-size:16px}.small{font-size:13px;fill:#62666A}.tiny{font-size:11px;fill:#62666A}.value{font-size:15px;font-weight:700}.axis{stroke:#62666A;stroke-width:1}.grid{stroke:#D8DADD;stroke-width:1}</style>
+<rect width="1600" height="1040" fill="#FFFFFF"/>
+<text x="60.0" y="55.0" class="title" text-anchor="start">Figure 4. Failure-memory stickiness is a vocabulary-coverage mechanism</text>
+<text x="60.0" y="84.0" class="subtitle" text-anchor="start">Failures are 40% of memory but 64.9% of retrievals; vocabulary predicts selection within both outcome groups.</text>
+<text x="60.0" y="145.0" class="panel" text-anchor="start">A  Composition shift</text>
+<text x="180.0" y="190.0" class="label" text-anchor="start">Retained corpus</text>
+<rect x="180.0" y="205.0" width="270.0" height="34.0" rx="0.0" fill="#56B4E9" stroke="none" stroke-width="1" opacity="1.0"/>
+<rect x="450.0" y="205.0" width="180.0" height="34.0" rx="0.0" fill="#D55E00" stroke="none" stroke-width="1" opacity="1.0"/>
+<text x="315.0" y="228.0" class="value" text-anchor="middle">60.0% pass</text>
+<text x="540.0" y="228.0" class="value" text-anchor="middle" fill="#FFFFFF">40.0% failure</text>
+<text x="180.0" y="285.0" class="label" text-anchor="start">Retrieved slots</text>
+<rect x="180.0" y="300.0" width="157.9" height="34.0" rx="0.0" fill="#56B4E9" stroke="none" stroke-width="1" opacity="1.0"/>
+<rect x="337.9" y="300.0" width="292.1" height="34.0" rx="0.0" fill="#D55E00" stroke="none" stroke-width="1" opacity="1.0"/>
+<text x="258.9" y="323.0" class="value" text-anchor="middle">35.1% pass</text>
+<text x="483.9" y="323.0" class="value" text-anchor="middle" fill="#FFFFFF">64.9% failure</text>
+<text x="180.0" y="405.0" class="subtitle" text-anchor="start">Failure lessons are selected 2.77× as often per lesson-task opportunity.</text>
+<text x="780.0" y="145.0" class="panel" text-anchor="start">B  Indexed vocabulary versus retrieval count</text>
+<line x1="850.0" y1="490.0" x2="1490.0" y2="490.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="838.0" y="495.0" class="small" text-anchor="end">0</text>
+<line x1="850.0" y1="440.0" x2="1490.0" y2="440.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="838.0" y="445.0" class="small" text-anchor="end">2</text>
+<line x1="850.0" y1="390.0" x2="1490.0" y2="390.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="838.0" y="395.0" class="small" text-anchor="end">4</text>
+<line x1="850.0" y1="340.0" x2="1490.0" y2="340.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="838.0" y="345.0" class="small" text-anchor="end">6</text>
+<line x1="850.0" y1="290.0" x2="1490.0" y2="290.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="838.0" y="295.0" class="small" text-anchor="end">8</text>
+<line x1="850.0" y1="240.0" x2="1490.0" y2="240.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="838.0" y="245.0" class="small" text-anchor="end">10</text>
+<line x1="850.0" y1="190.0" x2="1490.0" y2="190.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="838.0" y="195.0" class="small" text-anchor="end">12</text>
+<line x1="909.3" y1="190.0" x2="909.3" y2="490.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="909.3" y="514.0" class="small" text-anchor="middle">40</text>
+<line x1="1027.8" y1="190.0" x2="1027.8" y2="490.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="1027.8" y="514.0" class="small" text-anchor="middle">50</text>
+<line x1="1146.3" y1="190.0" x2="1146.3" y2="490.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="1146.3" y="514.0" class="small" text-anchor="middle">60</text>
+<line x1="1264.8" y1="190.0" x2="1264.8" y2="490.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="1264.8" y="514.0" class="small" text-anchor="middle">70</text>
+<line x1="1383.3" y1="190.0" x2="1383.3" y2="490.0" stroke="#D8DADD" stroke-width="1" opacity="1.0"/>
+<text x="1383.3" y="514.0" class="small" text-anchor="middle">80</text>
+<line x1="850.0" y1="190.0" x2="850.0" y2="490.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<line x1="850.0" y1="490.0" x2="1490.0" y2="490.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<circle cx="1300.4" cy="490.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1004.1" cy="465.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1063.3" cy="490.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1205.6" cy="440.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1193.7" cy="315.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1134.4" cy="490.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1276.7" cy="415.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1312.2" cy="215.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<text x="1320.2" y="207.0" class="tiny" text-anchor="start">pylint-4661</text>
+<circle cx="1276.7" cy="440.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1300.4" cy="440.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1098.9" cy="490.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1217.4" cy="465.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1063.3" cy="490.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1300.4" cy="415.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1063.3" cy="490.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1217.4" cy="465.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1181.9" cy="465.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1312.2" cy="390.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1395.2" cy="215.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<text x="1403.2" y="207.0" class="tiny" text-anchor="start">pylint-7080</text>
+<circle cx="1430.7" cy="390.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1229.3" cy="440.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1110.7" cy="465.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1229.3" cy="465.0" r="7.0" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1027.8" cy="490.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<circle cx="1015.9" cy="490.0" r="7.0" fill="#56B4E9" stroke="#FFFFFF" stroke-width="1.5" opacity="0.88"/>
+<polyline points="1057.0,490.0 1490.0,312.6" fill="none" stroke="#56B4E9" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="1062.7,490.0 1490.0,315.0" fill="none" stroke="#D55E00" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="1170.0" y="542.0" class="label" text-anchor="middle">Indexed vocabulary (unique terms)</text>
+<text x="792.0" y="340.0" class="label" text-anchor="middle" transform="rotate(-90 792 340.0)">Retrieval count</text>
+<text x="850.0" y="572.0" class="small" text-anchor="start">Within-group Spearman ρ: pass .743; failure .763. Adjusted vocabulary β=.194; descriptive pMC≈.0045.</text>
+<text x="60.0" y="555.0" class="panel" text-anchor="start">C  Offline ranking diagnostic on the same 19 prompts</text>
+<line x1="350.0" y1="920.0" x2="1400.0" y2="920.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<line x1="350.0" y1="914.0" x2="350.0" y2="926.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<text x="350.0" y="945.0" class="small" text-anchor="middle">0%</text>
+<line x1="650.0" y1="914.0" x2="650.0" y2="926.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<text x="650.0" y="945.0" class="small" text-anchor="middle">20%</text>
+<line x1="950.0" y1="914.0" x2="950.0" y2="926.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<text x="950.0" y="945.0" class="small" text-anchor="middle">40%</text>
+<line x1="1250.0" y1="914.0" x2="1250.0" y2="926.0" stroke="#62666A" stroke-width="1" opacity="1.0"/>
+<text x="1250.0" y="945.0" class="small" text-anchor="middle">60%</text>
+<line x1="950.0" y1="600.0" x2="950.0" y2="920.0" stroke="#62666A" stroke-width="2" opacity="1.0" stroke-dasharray="7 6"/>
+<text x="950.0" y="590.0" class="small" text-anchor="middle">40% corpus baseline</text>
+<text x="330.0" y="631.0" class="label" text-anchor="end">Raw overlap</text>
+<rect x="350.0" y="608.0" width="973.7" height="20.0" rx="3.0" fill="#D55E00" stroke="none" stroke-width="1" opacity="1.0"/>
+<rect x="350.0" y="634.0" width="578.9" height="13.0" rx="3.0" fill="#CC79A7" stroke="none" stroke-width="1" opacity="1.0"/>
+<text x="1331.7" y="624.0" class="value" text-anchor="start">64.9% failure slots</text>
+<text x="936.9" y="646.0" class="small" text-anchor="start">38.6% top-two share</text>
+<text x="330.0" y="698.0" class="label" text-anchor="end">Jaccard</text>
+<rect x="350.0" y="675.0" width="868.4" height="20.0" rx="3.0" fill="#D55E00" stroke="none" stroke-width="1" opacity="1.0"/>
+<rect x="350.0" y="701.0" width="500.0" height="13.0" rx="3.0" fill="#CC79A7" stroke="none" stroke-width="1" opacity="1.0"/>
+<text x="1226.4" y="691.0" class="value" text-anchor="start">57.9% failure slots</text>
+<text x="858.0" y="713.0" class="small" text-anchor="start">33.3% top-two share</text>
+<text x="330.0" y="765.0" class="label" text-anchor="end">Binary cosine</text>
+<rect x="350.0" y="742.0" width="710.5" height="20.0" rx="3.0" fill="#D55E00" stroke="none" stroke-width="1" opacity="1.0"/>
+<rect x="350.0" y="768.0" width="368.4" height="13.0" rx="3.0" fill="#CC79A7" stroke="none" stroke-width="1" opacity="1.0"/>
+<text x="1068.5" y="758.0" class="value" text-anchor="start">47.4% failure slots</text>
+<text x="726.4" y="780.0" class="small" text-anchor="start">24.6% top-two share</text>
+<text x="330.0" y="832.0" class="label" text-anchor="end">BM25</text>
+<rect x="350.0" y="809.0" width="736.8" height="20.0" rx="3.0" fill="#D55E00" stroke="none" stroke-width="1" opacity="1.0"/>
+<rect x="350.0" y="835.0" width="263.2" height="13.0" rx="3.0" fill="#CC79A7" stroke="none" stroke-width="1" opacity="1.0"/>
+<text x="1094.8" y="825.0" class="value" text-anchor="start">49.1% failure slots</text>
+<text x="621.2" y="847.0" class="small" text-anchor="start">17.5% top-two share</text>
+<text x="350.0" y="1000.0" class="subtitle" text-anchor="start">Offline composition only; this figure does not estimate downstream task performance.</text>
+</svg>

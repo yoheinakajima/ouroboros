@@ -1,0 +1,10 @@
+{
+  "codebook": "UPDATE_PROPOSAL_TAXONOMY_CODEBOOK.md",
+  "items": 84,
+  "note": "The metadata key must not be supplied to the primary coder. The excerpts are architecture-masked, not guaranteed architecture-anonymous.",
+  "packet_sha256": "7b13a1ab2ffccaf5dc9917962f828720690f74856ff20a272b163858065105af",
+  "shuffle_seed": 20260723,
+  "status": "architecture-masked taxonomy packet; labels not yet assigned",
+  "total_redactions": 39,
+  "truncated_items": 0
+}

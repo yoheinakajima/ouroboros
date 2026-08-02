@@ -1,0 +1,22 @@
+{
+  "created_at": "2026-07-24T00:39:44.088584+00:00",
+  "findings": [],
+  "kind": "release-secret-pii-scan",
+  "patterns": [
+    "aws_access_key",
+    "email_address",
+    "environment_secret_assignment",
+    "github_token",
+    "ipv4_address",
+    "linux_home_path",
+    "macos_user_path",
+    "openai_key",
+    "private_key",
+    "windows_user_path"
+  ],
+  "root": ".",
+  "scanner_sha256": "a4ff24706d872ceecf25785b6b04c0d4be268a4135977c5b1fcd344f9ab53dff",
+  "schema_version": 1,
+  "status": "passed",
+  "text_files_scanned": 69
+}

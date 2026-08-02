@@ -1,0 +1,58 @@
+heldout_suite_id,heldout_task_id,rank,source_suite_id,source_task_id,score_passed,title,same_suite,same_repository_prefix,heldout_score
+ouro_activegraph_50,delegated_access_control,1,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,False,False,1.0
+ouro_activegraph_50,delegated_access_control,2,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,False,False,1.0
+ouro_activegraph_50,delegated_access_control,3,ouro_swe_50,scikit-learn__scikit-learn-14496,True,Normalize fractional counts before integer-only downstream APIs,False,False,1.0
+ouro_activegraph_50,provenance_pipeline,1,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,False,False,1.0
+ouro_activegraph_50,provenance_pipeline,2,ouro_swe_50,psf__requests-1142,False,Pair behavior-matrix tests with a strict submitted-diff audit,False,False,1.0
+ouro_activegraph_50,provenance_pipeline,3,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,False,False,1.0
+ouro_activegraph_50,quota_scheduler,1,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,False,False,0.48
+ouro_activegraph_50,quota_scheduler,2,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,False,False,0.48
+ouro_activegraph_50,quota_scheduler,3,ouro_swe_50,pytest-dev__pytest-5262,True,Make wrapper metadata reflect the wrapper contract,False,False,0.48
+ouro_swe_50,astropy__astropy-14539,1,ouro_swe_50,pydata__xarray-6721,True,Inspect lazy-array metadata without crossing materializing accessors,True,False,1.0
+ouro_swe_50,astropy__astropy-14539,2,ouro_swe_50,sympy__sympy-19495,False,Validate binder-aware substitution with a true/false/unknown behavior matrix,True,False,1.0
+ouro_swe_50,astropy__astropy-14539,3,ouro_swe_50,pydata__xarray-3677,True,Normalize broader method inputs to the existing canonical representation,True,False,1.0
+ouro_swe_50,astropy__astropy-14995,1,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,True,False,1.0
+ouro_swe_50,astropy__astropy-14995,2,ouro_swe_50,pydata__xarray-3677,True,Normalize broader method inputs to the existing canonical representation,True,False,1.0
+ouro_swe_50,astropy__astropy-14995,3,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,True,False,1.0
+ouro_swe_50,django__django-17087,1,ouro_swe_50,pydata__xarray-3677,True,Normalize broader method inputs to the existing canonical representation,True,False,1.0
+ouro_swe_50,django__django-17087,2,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,True,False,1.0
+ouro_swe_50,django__django-17087,3,ouro_swe_50,django__django-15629,False,Require focused end-to-end tests for inherited schema metadata,True,True,1.0
+ouro_swe_50,matplotlib__matplotlib-26291,1,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,True,False,1.0
+ouro_swe_50,matplotlib__matplotlib-26291,2,ouro_swe_50,psf__requests-6028,False,Validate runtime-specific boundary fixes with behavioral integration tests,True,False,1.0
+ouro_swe_50,matplotlib__matplotlib-26291,3,ouro_swe_50,mwaskom__seaborn-3187,False,"Preserve formatter metadata with an explicit, integration-tested display policy",True,False,1.0
+ouro_swe_50,pydata__xarray-3305,1,ouro_terminal_12,configure-git-webserver,True,Validate push-to-deploy systems through the full Git-to-HTTP path,False,False,1.0
+ouro_swe_50,pydata__xarray-3305,2,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,True,False,1.0
+ouro_swe_50,pydata__xarray-3305,3,ouro_terminal_12,polyglot-rust-c,False,Prove lexical isolation before implementing a cross-language polyglot,False,False,1.0
+ouro_swe_50,pylint-dev__pylint-6386,1,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,True,True,1.0
+ouro_swe_50,pylint-dev__pylint-6386,2,ouro_swe_50,pydata__xarray-3677,True,Normalize broader method inputs to the existing canonical representation,True,False,1.0
+ouro_swe_50,pylint-dev__pylint-6386,3,ouro_terminal_12,configure-git-webserver,True,Validate push-to-deploy systems through the full Git-to-HTTP path,False,False,1.0
+ouro_swe_50,pytest-dev__pytest-5809,1,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,True,False,1.0
+ouro_swe_50,pytest-dev__pytest-5809,2,ouro_swe_50,pytest-dev__pytest-7324,True,"Encode opaque expression names as lookup keys, not AST identifiers",True,True,1.0
+ouro_swe_50,pytest-dev__pytest-5809,3,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,True,False,1.0
+ouro_swe_50,scikit-learn__scikit-learn-13124,1,ouro_swe_50,psf__requests-6028,False,Validate runtime-specific boundary fixes with behavioral integration tests,True,False,1.0
+ouro_swe_50,scikit-learn__scikit-learn-13124,2,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,True,False,1.0
+ouro_swe_50,scikit-learn__scikit-learn-13124,3,ouro_swe_50,scikit-learn__scikit-learn-14496,True,Normalize fractional counts before integer-only downstream APIs,True,True,1.0
+ouro_swe_50,sphinx-doc__sphinx-9461,1,ouro_swe_50,psf__requests-1142,False,Pair behavior-matrix tests with a strict submitted-diff audit,True,False,0.0
+ouro_swe_50,sphinx-doc__sphinx-9461,2,ouro_swe_50,sphinx-doc__sphinx-9230,True,Split structured fields only at top-level whitespace,True,True,0.0
+ouro_swe_50,sphinx-doc__sphinx-9461,3,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,True,False,0.0
+ouro_swe_50,sympy__sympy-19040,1,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,True,False,0.0
+ouro_swe_50,sympy__sympy-19040,2,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,True,False,0.0
+ouro_swe_50,sympy__sympy-19040,3,ouro_swe_50,mwaskom__seaborn-3187,False,"Preserve formatter metadata with an explicit, integration-tested display policy",True,False,0.0
+ouro_terminal_12,bn-fit-modify,1,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,False,False,1.0
+ouro_terminal_12,bn-fit-modify,2,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,False,False,1.0
+ouro_terminal_12,bn-fit-modify,3,ouro_swe_50,mwaskom__seaborn-3069,True,Apply semantic axis conventions after artist-driven autoscaling,False,False,1.0
+ouro_terminal_12,custom-memory-heap-crash,1,ouro_swe_50,pylint-dev__pylint-4661,False,Validate directory-standard migrations with a complete environment precedence matrix,False,False,1.0
+ouro_terminal_12,custom-memory-heap-crash,2,ouro_swe_50,pydata__xarray-3677,True,Normalize broader method inputs to the existing canonical representation,False,False,1.0
+ouro_terminal_12,custom-memory-heap-crash,3,ouro_swe_50,mwaskom__seaborn-3187,False,"Preserve formatter metadata with an explicit, integration-tested display policy",False,False,1.0
+ouro_terminal_12,fix-code-vulnerability,1,ouro_swe_50,pytest-dev__pytest-7324,True,"Encode opaque expression names as lookup keys, not AST identifiers",False,False,1.0
+ouro_terminal_12,fix-code-vulnerability,2,ouro_swe_50,psf__requests-1142,False,Pair behavior-matrix tests with a strict submitted-diff audit,False,False,1.0
+ouro_terminal_12,fix-code-vulnerability,3,ouro_swe_50,pydata__xarray-3677,True,Normalize broader method inputs to the existing canonical representation,False,False,1.0
+ouro_terminal_12,install-windows-3.11,1,ouro_swe_50,pylint-dev__pylint-7080,False,Validate late-loaded configuration through the real public workflow,False,False,0.0
+ouro_terminal_12,install-windows-3.11,2,ouro_swe_50,pydata__xarray-3677,True,Normalize broader method inputs to the existing canonical representation,False,False,0.0
+ouro_terminal_12,install-windows-3.11,3,ouro_swe_50,mwaskom__seaborn-3069,True,Apply semantic axis conventions after artist-driven autoscaling,False,False,0.0
+ouro_terminal_12,llm-inference-batching-scheduler,1,ouro_swe_50,pytest-dev__pytest-7324,True,"Encode opaque expression names as lookup keys, not AST identifiers",False,False,0.0
+ouro_terminal_12,llm-inference-batching-scheduler,2,ouro_terminal_12,extract-moves-from-video,False,Create and validate the required artifact early in video-to-command extraction,True,False,0.0
+ouro_terminal_12,llm-inference-batching-scheduler,3,ouro_swe_50,mwaskom__seaborn-3187,False,"Preserve formatter metadata with an explicit, integration-tested display policy",False,False,0.0
+ouro_terminal_12,portfolio-optimization,1,ouro_swe_50,mwaskom__seaborn-3069,True,Apply semantic axis conventions after artist-driven autoscaling,False,False,1.0
+ouro_terminal_12,portfolio-optimization,2,ouro_swe_50,django__django-15629,False,Require focused end-to-end tests for inherited schema metadata,False,False,1.0
+ouro_terminal_12,portfolio-optimization,3,ouro_swe_50,psf__requests-1142,False,Pair behavior-matrix tests with a strict submitted-diff audit,False,False,1.0
