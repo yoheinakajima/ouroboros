@@ -34,6 +34,7 @@ from the included compact artifacts:
 
 ```bash
 python paper/analysis/make_figures.py
+python paper/analysis/reanalyze_equivalent_controls.py
 python paper/analysis/audit_manuscript_style.py
 python paper/analysis/audit_paper_links.py
 python paper/analysis/audit_paper_claims.py

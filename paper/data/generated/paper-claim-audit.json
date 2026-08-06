@@ -1,8 +1,8 @@
 {
   "all_passed": true,
-  "checks": 53,
-  "passed": 53,
-  "recorded_at": "2026-07-24T00:39:40.532694+00:00",
+  "checks": 61,
+  "passed": 61,
+  "recorded_at": "2026-08-06T17:34:05.013364+00:00",
   "rows": [
     {
       "claim": "held-out rows",
@@ -110,6 +110,42 @@
       "claim": "outside-range equivalent minimum",
       "expected": 1.0,
       "observed": 1.0,
+      "ok": true
+    },
+    {
+      "claim": "tie-aware expected outside-range count",
+      "expected": "12/7",
+      "observed": "12/7",
+      "ok": true
+    },
+    {
+      "claim": "tie-aware observed outside-range count",
+      "expected": 1,
+      "observed": 1,
+      "ok": true
+    },
+    {
+      "claim": "equivalent-control sensitivity cells",
+      "expected": 9,
+      "observed": 9,
+      "ok": true
+    },
+    {
+      "claim": "Workspace SWE pooled-six delta",
+      "expected": 0.06666666666666667,
+      "observed": 0.06666666666666676,
+      "ok": true
+    },
+    {
+      "claim": "Minimal Terminal pooled-six delta",
+      "expected": -0.2222222222222222,
+      "observed": -0.2222222222222222,
+      "ok": true
+    },
+    {
+      "claim": "Hybrid ActiveGraph pooled-six delta",
+      "expected": -0.09888888888888892,
+      "observed": -0.09888888888888892,
       "ok": true
     },
     {
@@ -332,6 +368,18 @@
       "claim": "empirical pairwise values not called assumption-free null",
       "expected": false,
       "observed": false,
+      "ok": true
+    },
+    {
+      "claim": "actor-visible control collapse disclosed",
+      "expected": true,
+      "observed": true,
+      "ok": true
+    },
+    {
+      "claim": "model self-coding disclosed",
+      "expected": true,
+      "observed": true,
       "ok": true
     }
   ]

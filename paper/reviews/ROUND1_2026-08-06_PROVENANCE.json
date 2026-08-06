@@ -1,0 +1,38 @@
+{
+  "canonical_paper_title": "When Self-Modification Becomes Memory",
+  "canonical_subtitle": "An Audited Comparison of Three Self-Improving Agent Substrates",
+  "frozen_commit": "8bdff502cc08be968b21bbe5ebf177d49879a0fb",
+  "frozen_pdf_sha256": "ae49238e37140011e3c8656cdabdf3c1b4783133d3c54e69d7a5558c7b170df1",
+  "frozen_source_sha256": "ddbf7dd166716e4ccbf80ffd0db2b888e19db14c4c23cac8f7bad3b621a019b6",
+  "manager_packet_metadata_error": {
+    "contaminated_header": "When Self-Modification Becomes Memory: Governance, Legibility, and the Boundary of Identity in Adaptive Agents",
+    "disposition": "Preserved as a manager-created metadata discrepancy. Governance and identity expansion rejected. Round 2 must use the canonical title and empirical measurement/auditability frame."
+  },
+  "review_bundle": {
+    "provenance_sha256": "45bb1ccba7d1d87c654775fe39b757c6de60e8f574470ecfd800f5e4b95615db",
+    "chatgpt": {
+      "model": "ChatGPT Medium",
+      "session_reference": "manager-held isolated session; not included in the public paper package",
+      "sha256": "3d5b0e328b37611e2f14627dc5eff9b6866922dc8cba36b89f6a824121b08fca",
+      "verdict": "minor revision"
+    },
+    "claude": {
+      "model": "Claude Opus 5 High",
+      "session_reference": "manager-held isolated session; not included in the public paper package",
+      "sha256": "d19a0c0e83af85fbb3e143afab252a2c9bf33c655ee0e6cf6885b41f269b6370",
+      "verdict": "major revision"
+    },
+    "gemini": {
+      "model": "Gemini Pro temporary chat",
+      "session_reference": "manager-held isolated temporary session; not included in the public paper package",
+      "sha256": "834ecd1a7154fa7c5aafc2e615297db038382f4ee65db5007a34b5978aa0c47b",
+      "verdict": "not ready"
+    },
+    "grok": {
+      "model": "Grok Expert private chat",
+      "session_reference": "manager-held isolated private session; not included in the public paper package",
+      "sha256": "4fffe5df0399b523940bc83afac501614c295b8c425ebfe8b1a9fbd32496ed80",
+      "verdict": "minor revision"
+    }
+  }
+}

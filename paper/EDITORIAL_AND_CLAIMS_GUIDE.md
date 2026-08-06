@@ -1,15 +1,16 @@
 # Editorial and claims guide
 
-Status: locked for the manuscript draft  
-Version: 1.2  
-Date: 2026-07-23
+Status: revised after isolated Round 1 review
+Version: 1.3
+Date: 2026-08-06
 
-Change note for version 1.2: construct five is named recursive improvement,
-with descendant productivity as its operationalization. The expression-profile
-dimensions are synchronized with the manuscript's computable definitions,
-selection adaptivity is separated from coverage expansion, and the
-equivalent-duplicate reference is reported as an observed maximum rather than
-a percentile threshold.
+Change note for version 1.3: outcome claims now name the evaluated object as a
+substrate-proposal-acceptance-interface configuration. Cold and state-hidden
+ablation are recorded as actor-visible-equivalent in this implementation; the
+frozen labeled-ablation rule is preserved alongside pooled-six and
+leave-one-out sensitivities. Model coding is a cross-model consistency check,
+one coder is disclosed as the proposal-generating model, and compact-package
+reproducibility is separated from the pending complete trace archive.
 
 ## Paper identity
 
@@ -25,6 +26,8 @@ Central thesis:
 
 The paper is an audited measurement study. It does not claim reliable
 recursive self-improvement or rank the three substrates by capability.
+Outcome comparisons concern recorded substrate-proposal-acceptance-interface
+configurations; retained-state properties may still use substrate names.
 
 ## Narrative spine
 
@@ -89,24 +92,24 @@ Exclude:
 - a universal auditability-expressivity law;
 - causal harm from failure-memory retrieval;
 - architecture ranking from cold or cold-ablation labels;
+- a separable matched-lineage intervention from the recorded cold-ablation
+  label;
 - leaderboard superiority from the small external benchmark probes;
 - semantic equivalence of the native mutation spaces;
 - formal significance from the 15 dependent equivalent-label deltas.
 
-The sentence below may appear exactly once in the introduction and at most
-once more in the discussion:
-
-> It is currently unknown how many published self-improvement effects would
-> survive them.
+Do not insinuate that the recorded controls overturn external published
+effects. Propose direct independent applications of the instruments instead.
 
 ## Numerical precision
 
 - A percentage from a binary family with ten or fewer tasks must include its
   fraction and nearby equivalent-duplicate context.
 - The 84-item taxonomy must retain an exploratory qualifier until independent
-  human reliability is available. A second model-coding pass may assess
-  prompt and model sensitivity, but does not become human inter-rater
-  reliability.
+  human reliability is available. The two current model passes assess prompt
+  and model sensitivity; one coder generated the proposals it later coded, so
+  their agreement is a cross-model consistency check rather than independent
+  human inter-rater reliability.
 - The proposal layer was homogeneous natural-language guidance. The native
   modification surfaces were not homogeneous, and native Workspace churn
   included non-text artifacts and metadata.

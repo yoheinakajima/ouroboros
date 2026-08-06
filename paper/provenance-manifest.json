@@ -4,7 +4,7 @@
     "host": "Zenodo planned; GitHub release fallback",
     "note": "Do not replace with a DOI until the external deposit exists."
   },
-  "created_at": "2026-07-24T00:40:02.507091+00:00",
+  "created_at": "2026-08-06T17:34:05.234060+00:00",
   "excluded_from_manifest": [
     "provenance-manifest.json",
     "tmp/**"
@@ -16,9 +16,9 @@
       "sha256": "5161ecb0c93527e3e1c0d077ffdc924a4ce0bd03a903f402006dc961f90e984d"
     },
     {
-      "bytes": 4856,
+      "bytes": 7792,
       "path": "APPENDIX.md",
-      "sha256": "17df39f6e903ee1a4a1821915b6852fd4a073426608e60a65a23017870df3dd5"
+      "sha256": "95aa7c0e3d940509770e556d1ff1a82454f1839904edcc25c35bf62562790e07"
     },
     {
       "bytes": 104,
@@ -31,9 +31,9 @@
       "sha256": "f771cdd3fd76283ca092ab9b2b8d4e503829001f2daf9c8d1852b51a44b57200"
     },
     {
-      "bytes": 1002,
+      "bytes": 1006,
       "path": "ARXIV_METADATA.md",
-      "sha256": "16c8e053b3c9a138d0fc42bdc1c27fd0c7ec69a462382f097ac3541701be42d1"
+      "sha256": "b0ab627b34758ba9bf0a695e3c9dc1e8b329a16036f4f7d98ba61712fce28010"
     },
     {
       "bytes": 9757,
@@ -46,9 +46,9 @@
       "sha256": "dd4e676be9da695e1610d73d42804485de810501824b0d50903a555cc261abf8"
     },
     {
-      "bytes": 7431,
+      "bytes": 7855,
       "path": "EDITORIAL_AND_CLAIMS_GUIDE.md",
-      "sha256": "21b2f7ac856ef5f499ef019afc7a09b443d9571fcd3f93e5ee0636b1d994adf5"
+      "sha256": "ea60831d9ba83a4bfd37fb8e5377d95c845238fa661c98954ca8000f2488e271"
     },
     {
       "bytes": 2240,
@@ -56,9 +56,9 @@
       "sha256": "ebb6a04b09ebc165f30291547a5650f98c4b607cc2750b56c2a900e31058266a"
     },
     {
-      "bytes": 2401,
+      "bytes": 2892,
       "path": "FIGURE_CAPTIONS.md",
-      "sha256": "3a6232765c9feac97333c13cd89d00dba0a6c5fc348305c86b4599712ac1a221"
+      "sha256": "dff1ec5b4c9963c7c9a93b8d87b9b17b0660e4dea68b20eba4b3bf394648fc6e"
     },
     {
       "bytes": 634,
@@ -66,9 +66,9 @@
       "sha256": "9b545ca2908133a4ecad9ee3d4f6feb7f6e00ca7f73f11948c0ac81aa9d79a3c"
     },
     {
-      "bytes": 46366,
+      "bytes": 54235,
       "path": "MANUSCRIPT.md",
-      "sha256": "845ecddac0b3302bca600bf1a889547c30b9a27bec3a92a2aec57043b1c28f45"
+      "sha256": "62a1111c39095ec9513c08ec79df308d3d55f301fa7a6fbd5deea4bc8b3acd35"
     },
     {
       "bytes": 17624,
@@ -91,9 +91,9 @@
       "sha256": "5945b1af3fdf02503cdf8b013dc155448ade1a54217dea1976b0aa33bb2330e2"
     },
     {
-      "bytes": 2967,
+      "bytes": 3022,
       "path": "README.md",
-      "sha256": "e6fe1a0178a0161f2d1278e896d58d300c72e79e69b45c94406a0f8d6fb76dbd"
+      "sha256": "bfac9e7e16f7d5605d82afb51d5b8524160834146521d9f8fab2abb37857c064"
     },
     {
       "bytes": 1572,
@@ -121,19 +121,29 @@
       "sha256": "938af8ffe00ab72694105d3bd7509be5a33fa85ded459c67754cd62b5cbfa419"
     },
     {
-      "bytes": 1814,
+      "bytes": 1921,
       "path": "abstract.txt",
-      "sha256": "ec5eedd153f53a7997513e834afd1a7b4e8b6e3856dcbf82b0f2dbe3ccf9424e"
+      "sha256": "3f3deda44cfcb3d4a416cdbf0ce488560c8140eae7ffb526e9d872da41fea343"
     },
     {
-      "bytes": 3816,
+      "bytes": 8388,
+      "path": "analysis/__pycache__/audit_paper_claims.cpython-39.pyc",
+      "sha256": "c58b8c260b9ecd7c99f9be872936464b8a279ecf7300591ad581b4cfe28524f3"
+    },
+    {
+      "bytes": 7648,
+      "path": "analysis/__pycache__/reanalyze_equivalent_controls.cpython-39.pyc",
+      "sha256": "ded925d492ce283dd1a6b96697864c49826245e9a8e7ce7ae176f6b44c26bb17"
+    },
+    {
+      "bytes": 3808,
       "path": "analysis/audit_manuscript_style.py",
-      "sha256": "e6954b55a8827efd75bc93cfd5fac1c5258581cd32ebef9648b79e05d3e6410b"
+      "sha256": "68cb8dc63dd4e8fba5f1a466294d910be20980cc6330235b9b93767ed451f356"
     },
     {
-      "bytes": 7034,
+      "bytes": 8673,
       "path": "analysis/audit_paper_claims.py",
-      "sha256": "c9d7070e8af3d9a700634a272eeadfc88c4bb45fad68830f592266a93080aa3f"
+      "sha256": "d1ffe6802f0638683a1da8c65d2847f0c8f25557fcc979029e451c0215bba541"
     },
     {
       "bytes": 3341,
@@ -171,6 +181,11 @@
       "sha256": "d96de432f357ad0c53b427ddd1b1da40c24e0fc63b9ea4e0839551239cdbeefd"
     },
     {
+      "bytes": 8805,
+      "path": "analysis/reanalyze_equivalent_controls.py",
+      "sha256": "6bf8f2a864068a30d956313149ed18a4136835b0ff951621b018ee879fbc4f1b"
+    },
+    {
       "bytes": 5130,
       "path": "analysis/summarize_mutation_taxonomy.py",
       "sha256": "81b329540cc69a37cab184902d15507907ca2f2ad99729bc6586386963413cb9"
@@ -186,9 +201,9 @@
       "sha256": "e5b554c9f99ceffa4c164885da125a79954f3bee0b02b4174b7ec42d59ad6ba4"
     },
     {
-      "bytes": 13957,
+      "bytes": 15349,
       "path": "data/generated/citation-link-audit.json",
-      "sha256": "5ba335e69625fe0fda070982cea2cb4fb94f4b756eb8adb9d5149ef638ee3e29"
+      "sha256": "4f63845623f3b3f6c1d54d1e4cc6698efe3a2d455bba72dfcabb78367f981381"
     },
     {
       "bytes": 9006,
@@ -199,6 +214,11 @@
       "bytes": 5204,
       "path": "data/generated/empirical-null-pairwise-deltas.csv",
       "sha256": "e2c6872b2e84b9a47b64967292fb8b3f24865dc8cf273c8b03d4c63beaea7578"
+    },
+    {
+      "bytes": 1594,
+      "path": "data/generated/equivalent-control-sensitivity.csv",
+      "sha256": "2de8d11c29dcffb865604a37f8cd09c443a191a5ad76ae660dabf382c0895dcb"
     },
     {
       "bytes": 1979,
@@ -221,9 +241,14 @@
       "sha256": "bd33959744073828f2cc97aaef2cbecb71d492ca030943dbcacf013fc2ffbed9"
     },
     {
-      "bytes": 7208,
+      "bytes": 1612,
+      "path": "data/generated/outside-range-exchangeability.json",
+      "sha256": "8334fea028c76d35b3f2c0faf6cafa271508d2292c49d1d0cc06e61fe9bdcf79"
+    },
+    {
+      "bytes": 8345,
       "path": "data/generated/paper-claim-audit.json",
-      "sha256": "87d35039b367c13becfe1efae37182dea3da1b554ca515b0be3fd5de4a962616"
+      "sha256": "2de88edce4127619c3f6de00b00d9512283718ef6e36d4034708fe8b4ea9a3d5"
     },
     {
       "bytes": 13871,
@@ -351,19 +376,19 @@
       "sha256": "f98019d5a9b28e3abc9f2d8edc8633753540cad296d0aae48b82fe27ddafb19a"
     },
     {
-      "bytes": 14431,
+      "bytes": 14897,
       "path": "latex_filter.lua",
-      "sha256": "b05f1251f16f6530bb6474151393fb8120bc2659a2d63cd024dadd8fb02acc69"
+      "sha256": "f39dc6baf91b1e7edf8d3edb273eb735b62640701368063f6027fc9f4da4036e"
     },
     {
-      "bytes": 53651,
+      "bytes": 64582,
       "path": "main.tex",
-      "sha256": "ddbf7dd166716e4ccbf80ffd0db2b888e19db14c4c23cac8f7bad3b621a019b6"
+      "sha256": "ecb23bf5fc5d1bcc2b222cd81011154b34465c49c990185e1a867fafb2d2eae5"
     },
     {
-      "bytes": 308649,
+      "bytes": 318403,
       "path": "output/pdf/when-self-modification-becomes-memory.pdf",
-      "sha256": "ae49238e37140011e3c8656cdabdf3c1b4783133d3c54e69d7a5558c7b170df1"
+      "sha256": "f7c9a78b87cd10ceeab944ddfd75153993dbd1453fe030d6f12831268303ce71"
     },
     {
       "bytes": 4811,
@@ -381,6 +406,21 @@
       "sha256": "a4d75c1bdaee131c56fba0d8562772127956cab8f6d2addba96cbfe575eec56a"
     },
     {
+      "bytes": 13309,
+      "path": "reviews/ROUND1_2026-08-06_DISPOSITION.md",
+      "sha256": "f6892dbfc0bdc547a56563300361f716a895ebf0687a14d826b05b772871f069"
+    },
+    {
+      "bytes": 2052,
+      "path": "reviews/ROUND1_2026-08-06_PROVENANCE.json",
+      "sha256": "c5b1ad24ca5cefc73e9e881f3f60fc62810a5143239acdc13a9468ba3ccd1df6"
+    },
+    {
+      "bytes": 5638,
+      "path": "reviews/ROUND2_REVIEW_PACKET_DRAFT.md",
+      "sha256": "eb9ab03477a01e6ae515e97a9eecdd90aea2dd85f3cc4346f21e6be856489c6b"
+    },
+    {
       "bytes": 3237,
       "path": "reviews/STATISTICAL_REVIEW.md",
       "sha256": "919e042dd01578dec72fa25ad2b18ede8ee5a0c53b4966cd48421eda0cc26cb8"
@@ -393,7 +433,7 @@
     {
       "bytes": 534,
       "path": "scan-report.json",
-      "sha256": "d5d62d443539736f962a81163d0c58c401dc282e1e442ada027292c9374f5355"
+      "sha256": "e7aaa47b8f345b3f932177ed4a72a327c9184a8691c2721baf673a5576d95f1e"
     },
     {
       "bytes": 3241,
@@ -445,7 +485,7 @@
     "findings": 0,
     "path": "scan-report.json",
     "status": "passed",
-    "text_files_scanned": 69
+    "text_files_scanned": 75
   },
   "unlisted_files_allowed": false
 }

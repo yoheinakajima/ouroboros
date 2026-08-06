@@ -1,0 +1,45 @@
+{
+  "all_cases": {
+    "cases": 57,
+    "conditional_expected_outside": 1.7142857142857142,
+    "conditional_expected_outside_fraction": "12/7",
+    "observed_outside": 1
+  },
+  "by_control_task_class": {
+    "stable": {
+      "cases": 36,
+      "conditional_expected_outside": 0.14285714285714285,
+      "conditional_expected_outside_fraction": "1/7",
+      "observed_outside": 1
+    },
+    "variable": {
+      "cases": 21,
+      "conditional_expected_outside": 1.5714285714285714,
+      "conditional_expected_outside_fraction": "11/7",
+      "observed_outside": 0
+    }
+  },
+  "by_family": {
+    "ouro_activegraph_50": {
+      "cases": 9,
+      "conditional_expected_outside": 0.5714285714285714,
+      "conditional_expected_outside_fraction": "4/7",
+      "observed_outside": 0
+    },
+    "ouro_swe_50": {
+      "cases": 30,
+      "conditional_expected_outside": 0.8571428571428571,
+      "conditional_expected_outside_fraction": "6/7",
+      "observed_outside": 1
+    },
+    "ouro_terminal_12": {
+      "cases": 18,
+      "conditional_expected_outside": 0.2857142857142857,
+      "conditional_expected_outside_fraction": "2/7",
+      "observed_outside": 0
+    }
+  },
+  "input": "data/generated/task-level-noise-and-evolved.csv",
+  "method": "For each configuration-task case, condition on the observed six actor-visible-equivalent no-context scores plus the evolved score. Uniformly relabel which of the seven scores is focal. A focal score is strictly outside the range of the other six only when it is a unique minimum or unique maximum; tied extrema contribute zero probability.",
+  "schema_version": 1
+}
