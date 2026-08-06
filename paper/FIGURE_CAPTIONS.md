@@ -33,7 +33,7 @@ calculation expected 1.71 outside-range results and observed one. Neither the
 bar nor the continuous-approximation planning diagnostic is a decision
 threshold.
 
-## Figure 4: Failure-memory stickiness and lexical coverage
+## Figure 4: Vocabulary-mediated retrieval concentration
 
 Hybrid's retained corpus was 40% failure-derived, but failures occupied 64.9%
 of retrieval slots. Retrieval count increased with indexed vocabulary within
@@ -47,7 +47,7 @@ effect on held-out score.
 Panel A shows Workspace artifact growth and authoring cost; panel B shows
 Minimal's universal receipts and success-gated procedures; panel C shows
 Hybrid Pack growth and rejected updates at the 64,000-byte source policy.
-Hybrid generation 25 succeeded only after repair and generations 26–28
+Hybrid generation 25 succeeded only after repair and generations 26-28
 produced no within-cap candidate. The accompanying cost trend is descriptive
 because generation order is confounded with task identity and difficulty.
 The saturation claim is limited to the 64,000-byte policy under this

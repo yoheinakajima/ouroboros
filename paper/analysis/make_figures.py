@@ -476,13 +476,13 @@ def figure_3() -> None:
     svg = SVG(
         1600,
         1040,
-        "Figure 4. Failure-memory stickiness is a vocabulary-coverage mechanism",
+        "Figure 4. Vocabulary-mediated retrieval concentration",
         "Corpus and retrieval composition, per-lesson vocabulary versus retrieval counts, and offline ranker diagnostics.",
     )
     figure_header(
         svg,
         4,
-        "Failure-memory stickiness is a vocabulary-coverage mechanism",
+        "Vocabulary-mediated retrieval concentration",
         "Failures are 40% of memory but 64.9% of retrievals; vocabulary predicts selection within both outcome groups.",
     )
 

@@ -1,8 +1,8 @@
 {
   "all_resolved": true,
-  "occurrences": 70,
+  "occurrences": 71,
   "paper_directory": ".",
-  "recorded_at": "2026-08-06T17:34:04.935181+00:00",
+  "recorded_at": "2026-08-06T18:07:07.822029+00:00",
   "rows": [
     {
       "kind": "local",
@@ -30,7 +30,7 @@
     },
     {
       "kind": "local",
-      "line": 105,
+      "line": 107,
       "ok": true,
       "resolved": "data/taxonomy/coder-agreement.json",
       "source": "APPENDIX.md",
@@ -38,7 +38,7 @@
     },
     {
       "kind": "local",
-      "line": 135,
+      "line": 160,
       "ok": true,
       "resolved": "data/generated/equivalent-control-sensitivity.csv",
       "source": "APPENDIX.md",
@@ -46,7 +46,7 @@
     },
     {
       "kind": "local",
-      "line": 137,
+      "line": 162,
       "ok": true,
       "resolved": "data/generated/outside-range-exchangeability.json",
       "source": "APPENDIX.md",
@@ -87,7 +87,7 @@
     {
       "final_url": "https://arxiv.org/abs/2310.02304",
       "kind": "http",
-      "line": 41,
+      "line": 49,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -96,7 +96,7 @@
     {
       "final_url": "https://arxiv.org/abs/2504.15228",
       "kind": "http",
-      "line": 42,
+      "line": 50,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -105,7 +105,7 @@
     {
       "final_url": "https://arxiv.org/abs/2505.22954",
       "kind": "http",
-      "line": 44,
+      "line": 52,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -114,7 +114,7 @@
     {
       "final_url": "https://arxiv.org/abs/2510.21614",
       "kind": "http",
-      "line": 46,
+      "line": 54,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -122,7 +122,7 @@
     },
     {
       "kind": "local",
-      "line": 316,
+      "line": 354,
       "ok": true,
       "resolved": "../research/local_study.json",
       "source": "MANUSCRIPT.md",
@@ -130,7 +130,7 @@
     },
     {
       "kind": "local",
-      "line": 376,
+      "line": 434,
       "ok": true,
       "resolved": "data/generated/equivalent-control-sensitivity.csv",
       "source": "MANUSCRIPT.md",
@@ -138,16 +138,24 @@
     },
     {
       "kind": "local",
-      "line": 484,
+      "line": 548,
       "ok": true,
       "resolved": "data/generated/outside-range-exchangeability.json",
       "source": "MANUSCRIPT.md",
       "target": "data/generated/outside-range-exchangeability.json"
     },
     {
+      "kind": "local",
+      "line": 593,
+      "ok": true,
+      "resolved": "data/generated/behavior-mediation.csv",
+      "source": "MANUSCRIPT.md",
+      "target": "data/generated/behavior-mediation.csv"
+    },
+    {
       "final_url": "https://arxiv.org/abs/2410.04444",
       "kind": "http",
-      "line": 666,
+      "line": 746,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -156,7 +164,7 @@
     {
       "final_url": "https://arxiv.org/abs/2303.11366",
       "kind": "http",
-      "line": 683,
+      "line": 763,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -165,7 +173,7 @@
     {
       "final_url": "https://arxiv.org/abs/2407.01502",
       "kind": "http",
-      "line": 684,
+      "line": 764,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -174,7 +182,7 @@
     {
       "final_url": "https://arxiv.org/abs/2512.06710",
       "kind": "http",
-      "line": 686,
+      "line": 766,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -183,7 +191,7 @@
     {
       "final_url": "https://arxiv.org/abs/2606.08106",
       "kind": "http",
-      "line": 688,
+      "line": 768,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -192,7 +200,7 @@
     {
       "final_url": "https://arxiv.org/abs/2605.12978",
       "kind": "http",
-      "line": 688,
+      "line": 768,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -201,7 +209,7 @@
     {
       "final_url": "https://arxiv.org/abs/2606.03083",
       "kind": "http",
-      "line": 691,
+      "line": 771,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -210,7 +218,7 @@
     {
       "final_url": "https://arxiv.org/abs/2310.02304",
       "kind": "http",
-      "line": 714,
+      "line": 797,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -219,7 +227,7 @@
     {
       "final_url": "https://arxiv.org/abs/2410.04444",
       "kind": "http",
-      "line": 715,
+      "line": 798,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -228,7 +236,7 @@
     {
       "final_url": "https://arxiv.org/abs/2504.15228",
       "kind": "http",
-      "line": 716,
+      "line": 799,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -237,7 +245,7 @@
     {
       "final_url": "https://arxiv.org/abs/2505.22954",
       "kind": "http",
-      "line": 717,
+      "line": 800,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -246,7 +254,7 @@
     {
       "final_url": "https://arxiv.org/abs/2510.21614",
       "kind": "http",
-      "line": 718,
+      "line": 801,
       "ok": true,
       "source": "MANUSCRIPT.md",
       "status": 200,
@@ -254,7 +262,7 @@
     },
     {
       "kind": "local",
-      "line": 836,
+      "line": 939,
       "ok": true,
       "resolved": "METHODS_AND_RESULTS.md",
       "source": "MANUSCRIPT.md",
@@ -262,7 +270,7 @@
     },
     {
       "kind": "local",
-      "line": 838,
+      "line": 941,
       "ok": true,
       "resolved": "PAPER_PLAN.md",
       "source": "MANUSCRIPT.md",
@@ -270,7 +278,7 @@
     },
     {
       "kind": "local",
-      "line": 840,
+      "line": 943,
       "ok": true,
       "resolved": "UPDATE_PROPOSAL_TAXONOMY_RELIABILITY.md",
       "source": "MANUSCRIPT.md",
@@ -278,7 +286,7 @@
     },
     {
       "kind": "local",
-      "line": 842,
+      "line": 945,
       "ok": true,
       "resolved": "CASE_STUDY_PROTOCOL.md",
       "source": "MANUSCRIPT.md",
@@ -286,7 +294,7 @@
     },
     {
       "kind": "local",
-      "line": 843,
+      "line": 946,
       "ok": true,
       "resolved": "CASE_STUDIES.md",
       "source": "MANUSCRIPT.md",
@@ -294,7 +302,7 @@
     },
     {
       "kind": "local",
-      "line": 845,
+      "line": 948,
       "ok": true,
       "resolved": "RELATED_WORK_TABLE.md",
       "source": "MANUSCRIPT.md",
@@ -302,7 +310,7 @@
     },
     {
       "kind": "local",
-      "line": 847,
+      "line": 950,
       "ok": true,
       "resolved": "PUBLIC_BENCHMARK_CONTEXT.md",
       "source": "MANUSCRIPT.md",
@@ -310,7 +318,7 @@
     },
     {
       "kind": "local",
-      "line": 849,
+      "line": 952,
       "ok": true,
       "resolved": "data/probe-adjudication.json",
       "source": "MANUSCRIPT.md",
@@ -318,7 +326,7 @@
     },
     {
       "kind": "local",
-      "line": 852,
+      "line": 955,
       "ok": true,
       "resolved": "ARTIFACT_ARCHIVE.md",
       "source": "MANUSCRIPT.md",

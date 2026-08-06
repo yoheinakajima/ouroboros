@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-08-06T17:34:05.196334+00:00",
+  "created_at": "2026-08-06T18:13:19.769205+00:00",
   "findings": [],
   "kind": "release-secret-pii-scan",
   "patterns": [
@@ -18,5 +18,5 @@
   "scanner_sha256": "a4ff24706d872ceecf25785b6b04c0d4be268a4135977c5b1fcd344f9ab53dff",
   "schema_version": 1,
   "status": "passed",
-  "text_files_scanned": 75
+  "text_files_scanned": 77
 }

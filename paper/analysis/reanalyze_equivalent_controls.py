@@ -11,7 +11,9 @@ exchangeability expectation for evolved results outside the six-control range.
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
+import random
 from collections import defaultdict
 from fractions import Fraction
 from pathlib import Path
@@ -26,6 +28,7 @@ EXCHANGEABILITY_OUTPUT = (
 
 APPROACH_ORDER = ("workspace_v1_2", "minimal_v2", "hybrid_packs")
 SUITE_ORDER = ("ouro_swe_50", "ouro_terminal_12", "ouro_activegraph_50")
+BOOTSTRAP_SAMPLES = 10_000
 
 
 def load_rows() -> list[dict[str, str]]:
@@ -50,6 +53,28 @@ def exchangeability_probability(values: list[float]) -> Fraction:
     if maximum != minimum:
         unique_extremes += int(values.count(maximum) == 1)
     return Fraction(unique_extremes, len(values))
+
+
+def percentile(values: list[float], fraction: float) -> float:
+    """Match the deterministic percentile convention in research/comparison.py."""
+
+    ordered = sorted(values)
+    index = min(len(ordered) - 1, max(0, int(fraction * (len(ordered) - 1))))
+    return ordered[index]
+
+
+def paired_bootstrap_interval(
+    task_deltas: list[float], *, seed_label: str
+) -> tuple[float, float]:
+    """Return a deterministic task-resampling percentile interval."""
+
+    rng_seed = int(hashlib.sha256(seed_label.encode()).hexdigest()[:16], 16)
+    rng = random.Random(rng_seed)
+    draws = [
+        fmean(rng.choice(task_deltas) for _ in task_deltas)
+        for _ in range(BOOTSTRAP_SAMPLES)
+    ]
+    return percentile(draws, 0.025), percentile(draws, 0.975)
 
 
 def main() -> None:
@@ -134,6 +159,22 @@ def main() -> None:
             matched_mean = fmean(float(row["matched_ablation"]) for row in task_rows)
             pooled_mean = fmean(float(row["pooled_controls"]) for row in task_rows)
             leave_out_mean = fmean(float(row["leave_matched_out"]) for row in task_rows)
+            pooled_task_deltas = [
+                float(row["evolved"]) - float(row["pooled_controls"])
+                for row in task_rows
+            ]
+            leave_out_task_deltas = [
+                float(row["evolved"]) - float(row["leave_matched_out"])
+                for row in task_rows
+            ]
+            pooled_interval = paired_bootstrap_interval(
+                pooled_task_deltas,
+                seed_label=f"{suite_id}/{approach_id}/pooled-six",
+            )
+            leave_out_interval = paired_bootstrap_interval(
+                leave_out_task_deltas,
+                seed_label=f"{suite_id}/{approach_id}/leave-matched-ablation-out",
+            )
             summaries.append(
                 {
                     "suite_id": suite_id,
@@ -144,8 +185,12 @@ def main() -> None:
                     "frozen_delta_vs_matched_ablation": evolved_mean - matched_mean,
                     "pooled_six_no_context_mean": pooled_mean,
                     "delta_vs_pooled_six_no_context": evolved_mean - pooled_mean,
+                    "pooled_six_bootstrap_95_lower": pooled_interval[0],
+                    "pooled_six_bootstrap_95_upper": pooled_interval[1],
                     "leave_matched_ablation_out_mean": leave_out_mean,
                     "delta_vs_leave_matched_ablation_out": evolved_mean - leave_out_mean,
+                    "leave_matched_out_bootstrap_95_lower": leave_out_interval[0],
+                    "leave_matched_out_bootstrap_95_upper": leave_out_interval[1],
                     "evolved_results_outside_six_control_range": sum(
                         bool(row["observed_outside"]) for row in task_rows
                     ),
@@ -162,11 +207,24 @@ def main() -> None:
         expected = sum(
             (case["conditional_expected_outside"] for case in cases), Fraction()
         )
+        variance = sum(
+            (
+                probability * (1 - probability)
+                for probability in (
+                    case["conditional_expected_outside"] for case in cases
+                )
+            ),
+            Fraction(),
+        )
         return {
             "cases": len(cases),
             "observed_outside": sum(bool(case["observed_outside"]) for case in cases),
             "conditional_expected_outside_fraction": f"{expected.numerator}/{expected.denominator}",
             "conditional_expected_outside": float(expected),
+            "conditional_variance_outside_fraction": (
+                f"{variance.numerator}/{variance.denominator}"
+            ),
+            "conditional_variance_outside": float(variance),
         }
 
     by_family = {
@@ -198,6 +256,21 @@ def main() -> None:
         "all_cases": aggregate(exchangeability_cases),
         "by_family": by_family,
         "by_control_task_class": by_control_task_class,
+        "nonzero_probability_cases": [
+            {
+                "suite_id": case["suite_id"],
+                "task_id": case["task_id"],
+                "approach_id": case["approach_id"],
+                "control_task_class": case["control_task_class"],
+                "observed_outside": case["observed_outside"],
+                "conditional_expected_outside_fraction": (
+                    f"{case['conditional_expected_outside'].numerator}/"
+                    f"{case['conditional_expected_outside'].denominator}"
+                ),
+            }
+            for case in exchangeability_cases
+            if case["conditional_expected_outside"]
+        ],
     }
     EXCHANGEABILITY_OUTPUT.write_text(
         json.dumps(exchangeability_payload, indent=2, sort_keys=True) + "\n",

@@ -71,10 +71,12 @@ evidence. Both original taxonomy-label files were frozen before adjudication.
 ## E. Cross-model coding agreement
 
 The table reports exact agreement, Cohen's kappa, and Gwet's AC1 for two
-separately executed, outcome-blind model-coding passes using different model
-families. Sol generated the 84 proposals it later coded; Terra supplied the
-other pass. The analysis is therefore a cross-model consistency check rather
-than independent human reliability. Kappa is undefined when both coders use one
+separately executed, outcome-blind model-coding passes using the recorded
+identifiers `gpt-5.6-sol` and `gpt-5.6-terra`. Sol generated the 84 proposals
+it later coded; Terra supplied the other pass. The package does not establish
+provider or pretraining independence between these identifiers. The analysis
+is therefore a cross-model consistency check rather than independent human
+reliability. Kappa is undefined when both coders use one
 category for every item because the marginals have zero variance. AC1 is a
 supplemental prevalence-robust coefficient computed with the full
 pre-specified category vocabulary. Its value of 1.000 for invariant fields is
@@ -123,15 +125,38 @@ committed compact score table. Across Workspace, Minimal, and Hybrid, the
 pooled-six deltas are +6.7, -3.3, and +6.7 points for SWE; +11.1, -22.2, and
 -5.6 for Terminal; and -9.9, +4.1, and -9.9 for ActiveGraph. The corresponding
 leave-one-out deltas are +8.0, -6.0, +6.0; +10.0, -20.0, -6.7; and -8.4,
-+3.2, -9.9 points. The frozen no-uplift decision is unchanged.
++3.2, -9.9 points.
+
+The nominal 95% deterministic task-resampling intervals use 10,000 draws and
+the same percentile convention as the frozen comparison. For Workspace,
+Minimal, and Hybrid respectively, pooled-six intervals are SWE [-8.3, +26.7],
+[-30.0, +18.3], [-3.3, +21.7]; Terminal [0.0, +27.8], [-50.0, 0.0],
+[-25.0, +8.3]; and ActiveGraph [-33.3, +3.7], [-6.3, +18.7], [-33.3, +3.7].
+Leave-one-out intervals are SWE [-10.0, +32.0], [-32.0, +16.0], [-4.0,
++20.0]; Terminal [0.0, +30.0], [-46.7, 0.0], [-30.0, +10.0]; and ActiveGraph
+[-29.6, +4.4], [-5.6, +15.2], [-32.0, +2.4]. No lower bound is above zero, so
+the sensitivity analyses do not produce the required positive pattern in two
+families. The written no-uplift decision is unchanged.
 
 A tie-aware conditional exchangeability calculation pools each evolved score
 with its six actor-visible-equivalent controls and uniformly relabels the focal
-score. Only a unique minimum or maximum is strictly outside the other six.
+score. Only a unique minimum or maximum is strictly outside the other six. Each
+case therefore contributes 0, 1/7, or 2/7 according to the number of unique
+extrema among its seven observed values. In these data, exactly 12 cases
+contribute 1/7 and the other 45 contribute zero. The contributors are:
+Workspace, Minimal, and Hybrid on SWE `pydata__xarray-3305`; Minimal and Hybrid
+on SWE `sympy__sympy-19040`; Minimal on SWE
+`scikit-learn__scikit-learn-13124`; Workspace and Hybrid on Terminal
+`bn-fit-modify`; Workspace, Minimal, and Hybrid on ActiveGraph
+`delegated_access_control`; and Minimal on ActiveGraph `quota_scheduler`.
+
 Across 57 configuration-task cases, the expected outside-range count is 12/7
 (1.71) and the observed count is one. The expected counts are 1/7 among 36
 cases on stable control tasks and 11/7 among 21 cases on variable control
-tasks. Machine-readable outputs are
+tasks. Under independent conditional relabelings across cases, the count
+variance is 72/49 (1.469). Cases share tasks and control observations, so that
+variance is a descriptive reference rather than a sampling-design claim.
+Machine-readable outputs are
 [`data/generated/equivalent-control-sensitivity.csv`](data/generated/equivalent-control-sensitivity.csv)
 and
 [`data/generated/outside-range-exchangeability.json`](data/generated/outside-range-exchangeability.json).

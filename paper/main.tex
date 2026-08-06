@@ -42,7 +42,8 @@
 \providecommand{\pandocbounded}[1]{\resizebox{\linewidth}{!}{#1}}
 
 \title{\vspace{-1.6em}\textbf{When Self-Modification Becomes Memory}\\
-\large An Audited Comparison of Three Self-Improving Agent Substrates}
+\large An Audited Comparison of Three Retention-Interface Configurations\\
+Under a Shared Reflection Layer}
 \author{Yohei Nakajima}
 \date{July 2026}
 
@@ -55,32 +56,42 @@
 Language-model agents can edit prompts, memories, tools, and code, but
 self-improvement bundles five evidentiary propositions: retention,
 expression, behavioral mediation, task improvement, and recursive
-improvement. This study instruments the first four; the fifth requires
-descendant-productivity evidence. We audit three
+improvement. This study measures retention, expression, and task
+improvement systematically. It audits behavioral mediation in three
+selected complete-chain traces; those cases show descriptive trajectory
+differences and do not identify a general causal mediation effect.
+Recursive improvement requires descendant-productivity evidence and is
+not measured here. We audit three
 substrate-proposal-acceptance-interface configurations built around a
 workspace, a procedure store, and an executable Pack. They share an
 outer agent, a 28-task development curriculum, and cold-restart
 evaluation on 19 held-out tasks. None of the three recorded lineages met
-the frozen uplift criterion. The shared interface expressed retained
-structure mainly as text; per-task item coverage ranged from 12\% to
-100\%, and the actor had no retained invocation handle. Six
-actor-visible-equivalent no-context arms issued byte-identical initial
-requests per task yet differed on 7 of 19 tasks. A code audit found that
-the nominal state-hidden ablation was not separable from cold at the
-actor-visible boundary, so we retain its contrast as the frozen decision
-rule and add pooled-six-control sensitivity; the null is unchanged.
-Across nine configuration-family cells, an opaque sham scored below the
-labeled ablation in five, above it in three, and tied once, so the
-design cannot isolate possible sham interference from outcome spread.
-Mechanism audits found policy-cap saturation, a common proposal-form
-bottleneck, and vocabulary-associated selection of failure-derived
-lessons. Two separately executed, outcome-blind model-coding passes
-agreed that all 84 proposals shared one nonexecutable textual genre; one
-coder also generated the proposals, and interpretive labels remain
-exploratory. We contribute an expression profile, an equivalent
-duplicates protocol, and a control ladder. In this harness, the
-interface and acceptance mechanism are measurable components of the
-self-improving system.
+the written uplift criterion. The shared interface expressed retained
+structure mainly as text. Per-task semantic-unit coverage was 21.2\% for
+Workspace, 100\% for Minimal, and 12\% for Hybrid; these
+within-configuration percentages do not compare quantities of useful
+information. The actor had no retained invocation handle. Six
+initial-request-equivalent no-context executions issued byte-identical
+first requests per task yet differed on 7 of 19 tasks. A code audit
+found that the nominal state-hidden ablation was
+actor-visible-equivalent to cold. We retain that labeled no-context draw
+as the written decision record and add pooled-six and leave-one-out
+task-resampling intervals. No sensitivity interval is above zero in two
+families, so the no-uplift decision is unchanged. Across nine
+configuration-family cells, an opaque sham scored below the labeled draw
+in five, above it in three, and tied once. The sham conjunct is
+unevaluable as a benefit control because token load differed for every
+configuration and Hybrid also had a byte mismatch. Mechanism audits
+recorded saturation under the implemented 64,000-byte source-size
+policy, a common proposal-form bottleneck, and vocabulary-associated
+selection of failure-derived lessons. Two separately executed,
+outcome-blind model-coding passes agreed that all 84 proposals shared
+one nonexecutable textual genre; one coder also generated the proposals,
+and interpretive labels remain exploratory. We contribute an expression
+profile, an equivalent duplicates protocol, and a control ladder. In
+this harness, the implemented interface and acceptance mechanism
+constrained which retained changes were admitted, expressed, and
+evaluated.
 
 \end{abstract}
 
@@ -104,16 +115,21 @@ produce useful future changes.
 We separate the statement that an agent improved itself into five
 constructs: (1) \textbf{retention}, meaning persistent state changed;
 (2) \textbf{expression}, meaning retained state reached the
-evaluation-time policy; (3) \textbf{behavioral mediation}, meaning the
-policy's trajectory or resource use changed; (4) \textbf{task
-improvement}, meaning externally graded held-out performance rose beyond
-matched controls and stochastic spread; and (5) \textbf{recursive
-improvement}. These are distinct evidentiary propositions, not ordinal
-performance levels. Retention and actor-visible expression can be
-established descriptively; behavioral mediation, task improvement, and
-recursive improvement generally require counterfactual or lineage
-contrasts. This study instruments the first four and frames descendant
-productivity as the required operationalization of the fifth.
+evaluation-time policy; (3) \textbf{behavioral mediation}, meaning
+retained state causally changed the policy's trajectory or resource use;
+(4) \textbf{task improvement}, meaning externally graded held-out
+performance rose beyond matched controls and stochastic spread; and (5)
+\textbf{recursive improvement}. These are distinct evidentiary
+propositions, not ordinal performance levels. Retention and
+actor-visible expression can be established descriptively; behavioral
+mediation, task improvement, and recursive improvement generally require
+counterfactual or lineage contrasts. This study systematically measures
+retention, expression, and task improvement. It records descriptive
+behavioral differences across all nine configuration-family cells and
+audits three selected complete-chain traces; those observations do not
+establish a general causal mediation effect. Descendant productivity is
+the required operationalization of recursive improvement and is not
+measured here.
 
 We study those links in a heavily instrumented comparison of three
 persistent self-modification substrates chosen for the breadth of their
@@ -126,10 +142,11 @@ arms, immutable receipts, hash-bound adjudication, and a frozen success
 criterion. It also had one development lineage per configuration, one
 model, and small task families. The orchestration and local ActiveGraph
 family were self-built; SWE and Terminal used external official graders,
-and every claim is scoped to the recorded harness. The frozen result is
-null: none of the three recorded lineages met the criterion. This paper
-explains why that null is informative and why several favorable and
-unfavorable results inside our data dissolve under audit.
+and every empirical finding is scoped to the recorded harness. The
+frozen result is null: none of the three recorded lineages met the
+criterion. This paper explains why that null is informative and why
+several favorable and unfavorable results inside our data dissolve under
+audit.
 
 The audit measures mechanisms that recur across agent systems. First,
 budgeted context is a common route from memory to later action. Under
@@ -156,15 +173,18 @@ limit.
 
 The shared reflection layer created a proposal-form bottleneck before
 configuration-specific acceptance and native mutation. Two separately
-executed outcome-blind model-coding passes using two model families over
-all 84 update proposals assigned every proposal to the same
-representational genre: natural-language, append-only, nonexecutable,
-operational guidance with no specified activation. Interpretive fields
-were less stable across coders and remain exploratory pending human
-coding. One coder, Sol, was also the model that generated the proposals;
-Terra supplied the different-family pass. The cross-model consistency
-finding concerns the proposal layer. Native Workspace edits and Pack
-source changes remained structurally real and heterogeneous.
+executed outcome-blind model-coding passes using the recorded model
+identifiers \texttt{gpt-5.6-sol} and \texttt{gpt-5.6-terra} over all 84
+update proposals assigned every proposal to the same representational
+genre: natural-language, append-only, nonexecutable, operational
+guidance with no specified activation. Interpretive fields were less
+stable across coders and remain exploratory pending human coding. One
+coder, Sol, was also the model that generated the proposals; Terra
+supplied the second pass. The compact package records distinct model
+identifiers and does not establish provider or pretraining independence
+between them. The cross-model consistency finding concerns the proposal
+layer. Native Workspace edits and Pack source changes remained
+structurally real and heterogeneous.
 
 The receipts cut in both directions. An apparent transfer success
 involved an evolved SymPy pass matched by a no-context run that produced
@@ -181,7 +201,7 @@ and unfavorable causal stories symmetrically is a minimum requirement
 for interpreting individual trajectories.
 
 Prior systems provide strong evidence for the forms of optimization they
-measure. Table 6 records which studies report held-out transfer,
+measure. Table 5 records which studies report held-out transfer,
 mechanism ablations, sham retained state, independent evolution runs,
 byte-identical initial-request duplicates, immutable receipts, and
 descendant productivity. We do not reinterpret their reported gains
@@ -189,7 +209,8 @@ through our experiment. Under our controls, our apparent gains
 dissolved. Applying the same instruments in independent systems is a
 concrete next test.
 
-This paper contributes six reusable instruments and observations:
+This paper contributes six instruments and observations specified for
+reuse:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -209,9 +230,9 @@ This paper contributes six reusable instruments and observations:
   a \textbf{control ladder} organizing eight control designs by the
   nuisance they address and the claims they license;
 \item
-  mechanism checks for \textbf{failure-memory stickiness}, capacity
-  saturation, and common-template reflection-proposal homogenization;
-  and
+  mechanism checks for \textbf{vocabulary-mediated retrieval
+  concentration}, source-policy saturation, and common-template
+  reflection-proposal homogenization; and
 \item
   a receipt-bound compact release with graders, requests, artifacts, and
   an adjudication ledger; complete trajectory traces remain in a
@@ -240,6 +261,24 @@ all auditable interfaces reduce expressivity.}
 \label{fig:1}
 \end{figure*}
 
+The contribution status is explicit:
+
+\begin{table*}[t]
+\caption*{\textbf{Contribution status.} Systematic measurement is separated from selected trace audits and proposed endpoints.}
+\centering\scriptsize
+\begin{tabularx}{\textwidth}{@{}p{0.13\textwidth}p{0.20\textwidth}X X@{}}
+\toprule
+\textbf{Proposition} & \textbf{Status} & \textbf{Recorded evidence} & \textbf{Boundary}\\
+\midrule
+Retention & Systematically exercised & Immutable state generations and receipts for all three lineages & Persistent change only\\
+Expression & Systematically measured & Frozen adapter emissions and held-out semantic-unit coverage & Actor-visible availability only\\
+Behavioral mediation & Descriptive summaries plus three selected trace audits & Model/tool/token summaries and complete-chain cases & No general causal mediation effect; complete traces gated\\
+Task improvement & Systematically measured & 57 configuration-task outcomes and nine family-level contrasts & One lineage per configuration; descriptive intervals\\
+Recursive improvement & Proposed external endpoint & Descendant productivity specified as the operationalization & Not measured\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
 \section{Measurement framework}\label{measurement-framework}
 
 Let \(R_i^t\) denote retained state for configuration \(i\) after
@@ -258,7 +297,8 @@ correspond to different comparisons:
 \item
   Expression: \(O_i^{t+1}(x) \ne O_i^t(x)\).
 \item
-  Behavioral mediation: the induced policy trajectory changes.
+  Behavioral mediation: retained state causally changes the induced
+  policy trajectory or resource use.
 \item
   Task improvement: expected external score increases beyond matched
   controls and relevant outcome spread.
@@ -275,6 +315,13 @@ mediation. An external score contrast supports task improvement.
 Recursive improvement is the construct; descendant productivity is its
 operationalization. It requires evidence that earlier changes improved
 later update production.
+
+The title's threshold is operational rather than metaphysical: a
+self-modification becomes memory in this study when it survives restart
+and is eligible to reach a later policy through the recorded adapter.
+That threshold combines retention with actor-visible expression. It does
+not establish behavioral mediation, task improvement, or recursive
+improvement.
 
 \subsection{Expression profile}\label{expression-profile}
 
@@ -376,6 +423,8 @@ differed in retained state:
 \item
   \textbf{Minimal v2} stored every scalar receipt and promoted only
   successful experiences as procedures or deterministic capabilities.
+  This recorded lineage produced 13 procedures and zero deterministic
+  capabilities, so the capability-execution path was never exercised.
 \item
   \textbf{Hybrid Packs} used a model-authored, tested, hash-pinned
   ActiveGraph Pack to store and retrieve lessons.
@@ -394,8 +443,8 @@ verifiers. The ActiveGraph family used normalized scores from 50 sealed
 checks. The local benchmark and the Hybrid Pack both use ActiveGraph
 technology, creating a structural author-built overlap. The sealed
 checks and the unfavorable Hybrid ActiveGraph result, -10.0 points
-versus its labeled ablation, mitigate simple directional bias but do not
-remove that conflict.
+versus its labeled no-context draw, mitigate simple directional bias but
+do not remove that conflict.
 
 For each configuration and held-out task, the study ran four arms:
 
@@ -424,11 +473,15 @@ no-context arms rather than a separable matched-lineage intervention. We
 keep that contrast as the frozen decision rule and report pooled-six and
 leave-the-matched-ablation-out sensitivities in Section 4.
 
-The frozen rule required benefit over ablation and sham, a nominal 95\%
-task-resampling interval above zero in at least two families including
-SWE or Terminal, valid cold reload, and no material development
-regression. This was an operational decision rule for the recorded probe
-rather than a claim of population-level interval coverage.
+The written frozen rule required benefit over the labeled cold-ablation
+draw and sham, a nominal 95\% task-resampling interval above zero in at
+least two families including SWE or Terminal, valid cold reload, and no
+material development regression. This was an operational decision rule
+for the recorded probe rather than a claim of population-level interval
+coverage. The later source audit makes the labeled ablation a no-context
+draw, and the observed sham token and byte mismatches make the
+sham-benefit conjunct unevaluable. These limitations cannot convert a
+failed written rule into evidence of uplift.
 
 The information boundary excluded hidden tests, expected outputs,
 private cases, grader logs, and oracle artifacts from lineage state.
@@ -461,7 +514,14 @@ task-resampling intervals use 10,000 deterministic percentile-bootstrap
 draws. Each draw resamples the paired per-task arm differences jointly
 with replacement. With one lineage and ten, six, and three held-out
 tasks, no frequentist coverage is asserted. The three-task ActiveGraph
-interval is especially discrete and unstable.
+interval is especially discrete and unstable and is not displayed in the
+headline outcome table.
+
+The compact package records the outer model identifier and the
+byte-identical initial requests. It does not record a provider guarantee
+of deterministic sampling, endpoint immutability, temperature, top-p, or
+context-window settings. The seed field is therefore a best-effort
+request parameter rather than a determinism guarantee.
 
 \section{Frozen outcome rule and pooled-control sensitivity}\label{frozen-outcome-rule-and-pooled-control-sensitivity}
 
@@ -472,13 +532,13 @@ on SWE and from 4/6 to 5/6 on Terminal despite byte-identical initial
 requests within each task.
 
 \begin{table*}[t]
-\caption{Frozen held-out outcomes. Intervals are nominal descriptive task-resampling intervals; [0, 0] intervals are degenerate observed contrasts, not population certainty.}
+\caption{Frozen held-out outcomes. Binary-family intervals are nominal descriptive task-resampling intervals; ActiveGraph has only three tasks, so its intervals are not displayed. The sham columns are descriptive because token load was unmatched and Hybrid also had a byte mismatch.}
 \label{tab:outcomes}
 \centering\tiny
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}llrrrrr@{}}
 \toprule
-\textbf{Family} & \textbf{Configuration} & \textbf{Evolved} & \textbf{Labeled ablation} & \textbf{Evolved--ablation [interval]} & \textbf{Sham} & \textbf{Evolved--sham}\\
+\textbf{Family} & \textbf{Configuration} & \textbf{Evolved} & \textbf{Labeled no-context draw} & \textbf{Evolved--draw [interval]} & \textbf{Sham} & \textbf{Evolved--sham}\\
 \midrule
 SWE (10) & Workspace & 8/10 & 8/10 & 0/10 [0, 0] pp & 6/10 & +2/10\\
  & Minimal & 7/10 & 6/10 & +1/10 [-20, +40] pp & 7/10 & 0/10\\
@@ -486,28 +546,46 @@ SWE (10) & Workspace & 8/10 & 8/10 & 0/10 [0, 0] pp & 6/10 & +2/10\\
 Terminal (6) & Workspace & 5/6 & 4/6 & +1/6 [0, +50] pp & 3/6 & +2/6\\
  & Minimal & 3/6 & 5/6 & -2/6 [-66.7, 0] pp & 4/6 & -1/6\\
  & Hybrid & 4/6 & 4/6 & 0/6 [0, 0] pp & 4/6 & 0/6\\
-ActiveGraph (3) & Workspace & 82.7\% & 100.0\% & -17.3 [-52, 0] pp & 96.0\% & -13.3 pp\\
- & Minimal & 96.7\% & 88.0\% & +8.7 [-10, +36] pp & 100.0\% & -3.3 pp\\
- & Hybrid & 82.7\% & 92.7\% & -10.0 [-40, +10] pp & 82.7\% & 0.0 pp\\
+ActiveGraph (3) & Workspace & 82.7\% & 100.0\% & -17.3; interval not shown & 96.0\% & -13.3 pp\\
+ & Minimal & 96.7\% & 88.0\% & +8.7; interval not shown & 100.0\% & -3.3 pp\\
+ & Hybrid & 82.7\% & 92.7\% & -10.0; interval not shown & 82.7\% & 0.0 pp\\
 \bottomrule
 \end{tabular}
 \end{table*}
 
 Intervals equal to {[}0, 0{]} are degenerate because every paired task
 difference was zero; they do not imply population-level certainty. The
-labeled ablation column preserves the frozen comparison even though
-source inspection later showed that it was one no-context draw rather
-than a separable lineage intervention.
+labeled no-context column preserves the frozen comparison even though
+source inspection later showed that it was one draw rather than a
+separable lineage intervention. The sham columns are descriptive only:
+sham first-call token load was 1.88 to 2.43 times the incremental
+evolved token load per byte, and Hybrid's sham was only 56\% to 58\% of
+mean evolved context bytes. The sham conjunct of the written rule is
+therefore unevaluable.
 
 The pooled-six sensitivity recomputes the descriptive mean contrast
 against all actor-visible-equivalent no-context labels. In Workspace,
 Minimal, and Hybrid order, the evolved-minus-pooled deltas are +6.7,
 -3.3, and +6.7 points for SWE; +11.1, -22.2, and -5.6 points for
 Terminal; and -9.9, +4.1, and -9.9 points for ActiveGraph. Leaving each
-configuration's labeled ablation out of its reference gives +8.0, -6.0,
-and +6.0; +10.0, -20.0, and -6.7; and -8.4, +3.2, and -9.9 points,
-respectively. None changes the frozen no-uplift decision. The exact
-nine-cell calculation is
+configuration's labeled draw out of its reference gives +8.0, -6.0, and
++6.0; +10.0, -20.0, and -6.7; and -8.4, +3.2, and -9.9 points,
+respectively.
+
+The corresponding nominal 95\% task-resampling intervals, again in
+Workspace, Minimal, and Hybrid order, are as follows. For SWE,
+pooled-six intervals are {[}-8.3, +26.7{]}, {[}-30.0, +18.3{]}, and
+{[}-3.3, +21.7{]} points; leave-one-out intervals are {[}-10.0,
++32.0{]}, {[}-32.0, +16.0{]}, and {[}-4.0, +20.0{]}. For Terminal,
+pooled-six intervals are {[}0.0, +27.8{]}, {[}-50.0, 0.0{]}, and
+{[}-25.0, +8.3{]}; leave-one-out intervals are {[}0.0, +30.0{]},
+{[}-46.7, 0.0{]}, and {[}-30.0, +10.0{]}. For ActiveGraph, pooled-six
+intervals are {[}-33.3, +3.7{]}, {[}-6.3, +18.7{]}, and {[}-33.3,
++3.7{]}; leave-one-out intervals are {[}-29.6, +4.4{]}, {[}-5.6,
++15.2{]}, and {[}-32.0, +2.4{]}. No interval has a lower bound above
+zero. The sensitivities therefore do not produce the required positive
+pattern in two families, and the no-uplift decision is unchanged. The
+exact nine-cell calculation is
 \path{data/generated/equivalent-control-sensitivity.csv}.
 
 The table and sensitivity establish persistent evaluation after
@@ -528,7 +606,7 @@ All three substrates created cold-loadable state:
 \toprule
  & \multicolumn{2}{c}{\textbf{Accepted after}} & \\
 \cmidrule(lr){2-3}
-\textbf{Substrate} & \textbf{Pass} & \textbf{Fail} & \textbf{Final retained product}\\
+\textbf{Substrate} & \textbf{Passed task} & \textbf{Failed task} & \textbf{Final retained product}\\
 \midrule
 Workspace & 13 & 12 & 429,731-byte workspace\\
 Minimal & 13 & 0 & 13 procedures, 0 capabilities, 28 receipts\\
@@ -556,14 +634,20 @@ Hybrid & 4.0\% mean & 17.1\% mean & 3/25 (12\%); 17/25 (68\%) & task-conditioned
 \end{tabularx}
 \end{table*}
 
-Minimal supplies the decisive counterexample to storage reach as a
-sufficient metric. Its database and provenance artifacts were large,
-giving 1.35\% storage reach, while the adapter exported all declared
-semantic units. Those 41 units comprised 13 procedures and 28 receipts.
-None was a deterministic capability. The byte numerators and
-denominators are Workspace 64,000/429,731 storage and 64,000/247,411
-eligible payload; Minimal 24,767/1,839,823 and 24,767/24,865; and Hybrid
-mean 10,677/266,265 and 10,677/62,319.
+Minimal supplies an observed counterexample, in this implementation, to
+storage reach as a sufficient metric. Its database and provenance
+artifacts were large, giving 1.35\% storage reach, while the adapter
+exported all declared semantic units. Those 41 units comprised 13
+procedures and 28 receipts. None was a deterministic capability. The
+byte numerators and denominators are Workspace 64,000/429,731 storage
+and 64,000/247,411 eligible payload; Minimal 24,767/1,839,823 and
+24,767/24,865; and Hybrid mean 10,677/266,265 and 10,677/62,319. For
+Minimal, the 98-byte difference is between the complete export file and
+the canonical serialization of its three admitted arrays; all 41
+semantic units were present. For Hybrid, the 62,319-byte eligible
+denominator sums the 25 lesson payloads and excludes the Pack source
+wrapper, explaining its difference from the 62,506-byte final source
+size.
 
 Workspace exposed 17 complete files and a bounded prefix of an
 eighteenth. Under the frozen semantic-unit rule, a file counts once when
@@ -636,14 +720,14 @@ The one-way random-effects ICC treats tasks as targets and the six named
 no-context labels as exchangeable single replicate executions on the
 observed score scale. It is a descriptive repeatability coefficient, and
 the three-target ActiveGraph value is especially unstable. The
-design-sizing diagnostic is \((1.96 + 0.842)\widehat{SE}\), using a
-two-sided nominal \(\alpha=0.05\), 80\% power, and the within-task
-variance across the six equivalent labels. It is a continuous normal
-approximation for a paired mean contrast. On the binary families it does
-not represent an attainable observed score increment. The three-task
-ActiveGraph value is illustrative only and must not be used to interpret
-the continuous-score spread as a stable power estimate. Neither planning
-quantity is a decision threshold.
+design-sizing diagnostic is \((1.96 + 0.842) \times \widehat{SE}\),
+using a two-sided nominal \(\alpha=0.05\), 80\% power, and the
+within-task variance across the six equivalent labels. It is a
+continuous normal approximation for a paired mean contrast. On the
+binary families it does not represent an attainable observed score
+increment. The three-task ActiveGraph value is illustrative only and
+must not be used to interpret the continuous-score spread as a stable
+power estimate. Neither planning quantity is a decision threshold.
 
 All discriminative variation in the no-context probe was concentrated in
 seven tasks that changed outcome under equivalent requests. Stable tasks
@@ -700,9 +784,20 @@ planning diagnostic is a decision threshold.}
 \label{fig:3}
 \end{figure*}
 
+Across all nine configuration-family cells, the recorded evolved
+execution also differed from the pooled no-context reference on at least
+one mean resource measure among model calls, tool calls, input tokens,
+output tokens, and cost. The complete descriptive summary is
+\path{data/generated/behavior-mediation.csv}. These systematic resource
+differences establish observed trajectory or resource divergence. They
+do not identify retained state as the causal mediator because the
+comparison is one lineage against overlapping execution labels and the
+later trajectories are stochastic. Section 8 therefore limits
+mechanism-level interpretation to three selected trace audits.
+
 \section{Mechanism audits}\label{mechanism-audits}
 
-\subsection{Failure-memory stickiness}\label{failure-memory-stickiness}
+\subsection{Vocabulary-mediated retrieval concentration}\label{vocabulary-mediated-retrieval-concentration}
 
 Hybrid retained 25 lessons, including 15 from passing development
 attempts and ten from failed attempts. Across 19 held-out tasks, the
@@ -743,13 +838,13 @@ not show that alternative retrieval improves downstream task scores.
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/pdf/figure-4-failure-memory-stickiness.pdf}
-\caption{\textbf{Failure-memory stickiness and lexical coverage.}
-Hybrid's retained corpus was 40\% failure-derived, while failures
-occupied 37/57 retrieval slots (64.9\%). Retrieval count increased with
-indexed vocabulary within both success and failure groups. Because
-failure status plausibly acts through indexed vocabulary breadth, the
-adjusted regression is a mechanism diagnostic rather than an attribution
-of signal away from failure. It does not establish an effect on held-out
+\caption{\textbf{Vocabulary-mediated retrieval concentration.} Hybrid's
+retained corpus was 40\% failure-derived, while failures occupied 37/57
+retrieval slots (64.9\%). Retrieval count increased with indexed
+vocabulary within both success and failure groups. Because failure
+status plausibly acts through indexed vocabulary breadth, the adjusted
+regression is a mechanism diagnostic rather than an attribution of
+signal away from failure. It does not establish an effect on held-out
 score.}
 \label{fig:4}
 \end{figure*}
@@ -764,11 +859,12 @@ Mean authoring requests rose from 1.0 over the first five generations to
 3.2 over the last five, and mean authoring cost rose from \$0.249 to
 \$2.114.
 
-The policy rejection and retained-state plateau directly establish
-policy-cap saturation under this append-oriented design. Task identity
-and difficulty are confounded with generation order, so the cost trend
-is descriptive. The result does not establish a general limitation of
-ActiveGraph or executable memory.
+The policy rejection and retained-state plateau record source-policy
+saturation under the implemented 64,000-byte cap and append-oriented
+design. The cap was not varied, so this is not evidence of an inherent
+append-only limitation. Task identity and difficulty are confounded with
+generation order, so the cost trend is descriptive. The result does not
+establish a general limitation of ActiveGraph or executable memory.
 
 \begin{figure*}[!t]
 \centering
@@ -789,10 +885,11 @@ and difficulty.}
 A frozen codebook was applied to all 84 generation-level reflection
 proposals. Each coder saw opaque shuffled excerpts without architecture,
 task, sequence, score, acceptance, cost, or later retrieval metadata.
-Sol and Terra completed separately executed, outcome-blind coding passes
-using different model families. Sol also generated the proposals it
-later coded; Terra did not. Original labels were hashed before
-comparison and no disagreement was adjudicated.
+\texttt{gpt-5.6-sol} and \texttt{gpt-5.6-terra} completed separately
+executed, outcome-blind coding passes. Sol also generated the proposals
+it later coded; Terra did not. The package records distinct identifiers
+and does not claim provider or pretraining independence. Original labels
+were hashed before comparison and no disagreement was adjudicated.
 
 Both coders labeled 84/84 proposals as natural-language, append-only,
 nonexecutable, operational guidance with no specified activation. They
@@ -850,8 +947,10 @@ the cause.
 
 \textbf{Capacity ceiling.} Hybrid generation 25 succeeded after a repair
 near the policy cap. Generations 26 through 28 produced four over-cap
-candidates each. This case establishes a direct mechanism from
-append-only accumulation to failed retention.
+candidates each. Under the frozen 64,000-byte source policy, the
+append-oriented source reached the cap and subsequent over-cap
+candidates were rejected. The case does not identify what would happen
+under another cap or a consolidation-enabled arm.
 
 Together, the cases show why receipts must be permitted to invalidate
 stories in both directions. They also show why score, mechanism, and
@@ -872,7 +971,7 @@ languages. Huxley-Gödel Machine explicitly measures descendant
 productivity through clade-metaproductivity.
 
 Our study complements these capability results by instrumenting
-retained-state attribution. Table 6 separates unevolved baselines,
+retained-state attribution. Table 5 separates unevolved baselines,
 mechanism interventions, independent complete evolution runs, versioned
 provenance, immutable exposure receipts, and recursive-improvement
 operationalization. No design reports every listed feature. This study
@@ -904,18 +1003,21 @@ and bind configuration-specific claims to receipts and actor-visible
 controls. The framework is a domain-specific evidentiary synthesis
 rather than a claim that each component is unprecedented.
 
-\textbf{Table 6: Related-work evidence features.} ``Yes'' means that the
-cited primary paper reports the feature. ``Partial'' identifies a nearby
-but weaker design. ``NR'' means not reported and does not imply that the
-authors could not implement it. Cells were re-audited against the linked
-primary paper versions on 2026-07-23. The strict receipt column requires
-immutable binding among retained state, evaluation exposure, trajectory,
-and outcome.
+\textbf{Table 5: Author-classified related-work evidence features.}
+``Yes'' means that the author classified the cited primary paper as
+reporting the feature. ``Partial'' identifies a nearby but weaker
+design. ``NR'' means not reported in the specific version read and does
+not imply that the authors could not implement it. The cells reflect an
+author review dated 2026-07-23; they were not independently verified for
+this package, and exact per-cell section pointers remain pending before
+external circulation. The strict receipt column requires immutable
+binding among retained state, evaluation exposure, trajectory, and
+outcome.
 
-\setcounter{table}{5}
+\setcounter{table}{4}
 \begin{landscape}
 \begin{table*}[p]
-\caption{Author-classified related-work evidence features based on primary papers read on 2026-07-23. NR means not reported and is not independently verified here.}
+\caption{Author-classified related-work evidence features based on specific paper versions read on 2026-07-23. Cells are not independently verified; NR means not reported in the version read.}
 \label{tab:related}
 \centering\scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -980,11 +1082,12 @@ Third, control labels can collapse or confound contrasts. Cold and the
 nominal state-hidden ablation preserved different provenance but
 delivered the same actor-visible intervention, so the frozen
 single-ablation comparison is one draw from the no-context distribution.
-Pooled-six and leave-one-ablation-out sensitivities preserve the null.
-The opaque sham matched evolved bytes for Workspace and Minimal but not
-Hybrid, and it differed in tokenization and semantic load. Equivalent
-duplicates varied despite identical first requests. A positive
-evolved-minus-sham contrast can therefore combine useful expression,
+Pooled-six and leave-one-ablation-out sensitivities retain intervals
+that include zero. The opaque sham matched evolved bytes for Workspace
+and Minimal but not Hybrid, and it differed in tokenization and semantic
+load. The frozen benefit-over-sham conjunct is therefore unevaluable.
+Equivalent duplicates varied despite identical first requests. A
+positive evolved-minus-sham contrast can combine useful expression,
 possible sham interference, and ordinary outcome spread. The control
 ladder makes these alternatives explicit and suggests the next
 diagnostic comparison.
@@ -995,7 +1098,7 @@ consolidation. This observation motivates consolidation, pruning, and
 replacement as first-class update operations. It does not establish
 which operation would improve held-out performance.
 
-The instruments are directly applicable in principle to persistent
+The instruments are specified so they can be applied to persistent
 agents whose retained-state inventory, eligibility rule, adapter
 emissions, and actor-visible actions can be frozen and inspected.
 Systems without byte-copy semantics should declare a computable proxy or
@@ -1030,6 +1133,11 @@ creates the expression bottleneck examined in the paper. A general
 auditability-expressivity relationship requires an intervention that
 varies the interface while holding retained state fixed.
 
+Minimal produced no deterministic capability in its recorded lineage.
+Its results therefore describe a procedure-and-receipt store with an
+unexercised capability path, rather than the ceiling of the broader
+design.
+
 The sham targeted byte matching rather than token or semantic matching,
 and Hybrid retained a substantial byte-size mismatch. It remains useful
 as an interference control and cannot identify equal-compute semantic
@@ -1047,6 +1155,20 @@ The retrieval analysis identifies lexical selection mechanics and does
 not establish causal harm to score. Offline re-ranking produced no new
 behavioral outcomes. No retrieval-harm experiment or consolidation
 intervention is part of this study.
+
+Systematic resource summaries establish descriptive trajectory
+divergence, while the three complete-chain cases provide selected
+mechanism audits. The gated trace archive prevents independent
+inspection of those cases from the compact package, and neither source
+identifies a general causal behavioral mediation effect.
+
+The package records \texttt{gpt-5.6-sol} and \texttt{gpt-5.6-terra} as
+distinct coder identifiers and does not establish provider or
+pretraining independence. The outer endpoint's sampling parameters and
+determinism guarantees are also not preserved in the compact package.
+Table 5 is an author classification of exact paper versions read on
+2026-07-23; its cells and introductory numeric claims still require
+independent primary-source verification before external circulation.
 
 The local ActiveGraph benchmark and the Hybrid Pack share author-built
 technology. Sealed checks and an observed result unfavorable to Hybrid
@@ -1067,10 +1189,11 @@ The central lesson is operational. Treat reflection templates,
 acceptance gates, retrievers, adapters, execution paths, and controls as
 components of the self-improving system. Measure each link with receipts
 and matched interventions. In the studied system, the interface and
-acceptance mechanism substantially determine which retained
-modifications can be admitted, expressed, and evaluated.
+acceptance mechanism constrained which retained modifications were
+admitted, expressed, and evaluated. This observed constraint does not
+quantify an effect magnitude or establish a universal interface law.
 
-\paragraph{Artifact availability.} The version-controlled release includes the paper, generated tables, frozen coding artifacts, figures, audit scripts, and a self-verifying manifest. Complete trace archive DOI pending its separate disclosure scan and deposit.
+\paragraph{Artifact availability.} The compact release can regenerate the manuscript, figures, tables, control sensitivities, audits, and manifest from included data. It supports inspection of the adjudication and frozen coding artifacts. Complete trajectories and trace-dependent case reproduction remain gated pending disclosure review and deposit; the DOI is pending. Unexercised control-ladder rungs and descendant productivity are proposed methods, not empirical outputs of this study.
 
 \clearpage
 \balance
@@ -1108,11 +1231,11 @@ Machine-readable table:
 
 \section{Timeout taxonomy}\label{b.-timeout-taxonomy}
 
-\begin{table*}[t]
+\begin{table}[!ht]
 \caption{Timeout and adjudication taxonomy.}
 \label{tab:timeouts}
-\centering\small
-\begin{tabularx}{\textwidth}{@{}l r X X@{}}
+\centering\tiny
+\begin{tabularx}{\columnwidth}{@{}p{0.18\columnwidth}r p{0.19\columnwidth}X@{}}
 \toprule
 \textbf{Category} & \textbf{Count} & \textbf{Treatment} & \textbf{Interpretation}\\
 \midrule
@@ -1121,7 +1244,7 @@ Terminal agent-budget timeout & 6 & Scored zero & Agent exhausted 1,800 seconds 
 ActiveGraph snapshot regrade & 1 & Hash-identical grader-only retry & Original grader contradicted a receipt-bound parsable submission; no model action was rerun.\\
 \bottomrule
 \end{tabularx}
-\end{table*}
+\end{table}
 
 Timeouts remain outcomes under the bounded-agent estimand. The taxonomy
 separates agent budget exhaustion, official evaluator limits, and
@@ -1162,20 +1285,22 @@ before adjudication.
 \section{Cross-model coding agreement}\label{e.-cross-model-coding-agreement}
 
 The table reports exact agreement, Cohen's kappa, and Gwet's AC1 for two
-separately executed, outcome-blind model-coding passes using different
-model families. Sol generated the 84 proposals it later coded; Terra
-supplied the other pass. The analysis is therefore a cross-model
-consistency check rather than independent human reliability. Kappa is
-undefined when both coders use one category for every item because the
-marginals have zero variance. AC1 is a supplemental prevalence-robust
-coefficient computed with the full pre-specified category vocabulary.
-Its value of 1.000 for invariant fields is mechanical and supplies no
-evidence beyond 84/84 exact agreement.
+separately executed, outcome-blind model-coding passes using the
+recorded identifiers \texttt{gpt-5.6-sol} and \texttt{gpt-5.6-terra}.
+Sol generated the 84 proposals it later coded; Terra supplied the other
+pass. The package does not establish provider or pretraining
+independence between these identifiers. The analysis is therefore a
+cross-model consistency check rather than independent human reliability.
+Kappa is undefined when both coders use one category for every item
+because the marginals have zero variance. AC1 is a supplemental
+prevalence-robust coefficient computed with the full pre-specified
+category vocabulary. Its value of 1.000 for invariant fields is
+mechanical and supplies no evidence beyond 84/84 exact agreement.
 
-\begin{table*}[t]
+\begin{table}[!ht]
 \caption{Cross-model coding consistency. Sol generated the proposals it coded; undefined kappa indicates zero marginal variance.}
 \label{tab:coding-agreement}
-\centering\scriptsize
+\centering\tiny
 \begin{tabular}{@{}lrrr@{}}
 \toprule
 \textbf{Field} & \textbf{Exact agreement} & \textbf{Cohen's kappa} & \textbf{Gwet's AC1}\\
@@ -1196,7 +1321,7 @@ Novelty relative to prior state & 84/84 (100\%) & undefined & 1.000\\
 Confidence & 63/84 (75.0\%) & 0.393 & 0.687\\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}
 
 For primary update target, Sol assigned 76 procedure and eight
 validation-asset labels, while Terra assigned all 84 to procedure. The
@@ -1224,16 +1349,42 @@ the committed compact score table. Across Workspace, Minimal, and
 Hybrid, the pooled-six deltas are +6.7, -3.3, and +6.7 points for SWE;
 +11.1, -22.2, and -5.6 for Terminal; and -9.9, +4.1, and -9.9 for
 ActiveGraph. The corresponding leave-one-out deltas are +8.0, -6.0,
-+6.0; +10.0, -20.0, -6.7; and -8.4, +3.2, -9.9 points. The frozen
-no-uplift decision is unchanged.
++6.0; +10.0, -20.0, -6.7; and -8.4, +3.2, -9.9 points.
+
+The nominal 95\% deterministic task-resampling intervals use 10,000
+draws and the same percentile convention as the frozen comparison. For
+Workspace, Minimal, and Hybrid respectively, pooled-six intervals are
+SWE {[}-8.3, +26.7{]}, {[}-30.0, +18.3{]}, {[}-3.3, +21.7{]}; Terminal
+{[}0.0, +27.8{]}, {[}-50.0, 0.0{]}, {[}-25.0, +8.3{]}; and ActiveGraph
+{[}-33.3, +3.7{]}, {[}-6.3, +18.7{]}, {[}-33.3, +3.7{]}. Leave-one-out
+intervals are SWE {[}-10.0, +32.0{]}, {[}-32.0, +16.0{]}, {[}-4.0,
++20.0{]}; Terminal {[}0.0, +30.0{]}, {[}-46.7, 0.0{]}, {[}-30.0,
++10.0{]}; and ActiveGraph {[}-29.6, +4.4{]}, {[}-5.6, +15.2{]},
+{[}-32.0, +2.4{]}. No lower bound is above zero, so the sensitivity
+analyses do not produce the required positive pattern in two families.
+The written no-uplift decision is unchanged.
 
 A tie-aware conditional exchangeability calculation pools each evolved
 score with its six actor-visible-equivalent controls and uniformly
 relabels the focal score. Only a unique minimum or maximum is strictly
-outside the other six. Across 57 configuration-task cases, the expected
-outside-range count is 12/7 (1.71) and the observed count is one. The
-expected counts are 1/7 among 36 cases on stable control tasks and 11/7
-among 21 cases on variable control tasks. Machine-readable outputs are
+outside the other six. Each case therefore contributes 0, 1/7, or 2/7
+according to the number of unique extrema among its seven observed
+values. In these data, exactly 12 cases contribute 1/7 and the other 45
+contribute zero. The contributors are: Workspace, Minimal, and Hybrid on
+SWE \texttt{pydata\_\_xarray-3305}; Minimal and Hybrid on SWE
+\texttt{sympy\_\_sympy-19040}; Minimal on SWE
+\texttt{scikit-learn\_\_scikit-learn-13124}; Workspace and Hybrid on
+Terminal \texttt{bn-fit-modify}; Workspace, Minimal, and Hybrid on
+ActiveGraph \texttt{delegated\_access\_control}; and Minimal on
+ActiveGraph \texttt{quota\_scheduler}.
+
+Across 57 configuration-task cases, the expected outside-range count is
+12/7 (1.71) and the observed count is one. The expected counts are 1/7
+among 36 cases on stable control tasks and 11/7 among 21 cases on
+variable control tasks. Under independent conditional relabelings across
+cases, the count variance is 72/49 (1.469). Cases share tasks and
+control observations, so that variance is a descriptive reference rather
+than a sampling-design claim. Machine-readable outputs are
 \path{data/generated/equivalent-control-sensitivity.csv} and
 \path{data/generated/outside-range-exchangeability.json}.
 

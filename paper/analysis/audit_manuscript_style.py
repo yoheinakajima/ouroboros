@@ -71,7 +71,7 @@ def main() -> None:
         "expression profile",
         "equivalent duplicates",
         "control ladder",
-        "failure-memory stickiness",
+        "vocabulary-mediated retrieval concentration",
         "update-proposal taxonomy",
     ):
         count = manuscript.lower().count(term)

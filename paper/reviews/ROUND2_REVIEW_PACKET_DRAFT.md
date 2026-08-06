@@ -1,6 +1,6 @@
 # Round 2 isolated-review packet draft
 
-Status: **prepared, not launched**
+Status: **launched as the exact isolated Round 2 packet; reviews complete**
 Canonical title: **When Self-Modification Becomes Memory**
 Canonical subtitle: **An Audited Comparison of Three Self-Improving Agent Substrates**
 Program frame: **empirical measurement and auditability of persistent agent self-modification**
@@ -8,8 +8,7 @@ Program frame: **empirical measurement and auditability of persistent agent self
 ## Exact candidate artifact
 
 - Candidate branch: `codex/ouro-round1-hardening`
-- Candidate commit: resolve and pin the exact draft-PR head immediately before
-  any Round 2 session is launched.
+- Candidate commit: `16031c97f54fec106abc1dab2d075aaacbac4145`
 - Readable manuscript SHA-256:
   `62a1111c39095ec9513c08ec79df308d3d55f301fa7a6fbd5deea4bc8b3acd35`
 - Canonical LaTeX SHA-256:
@@ -22,8 +21,9 @@ Program frame: **empirical measurement and auditability of persistent agent self
   `559843894578141dfbd39b7bae2246db76e57bde`, SHA-256
   `8313d21971452704893200d2022718feca985142ae32fe7d16932d34a0e0d581`.
 
-The exact draft-PR head is an unresolved launch-time pin. A hash or commit
-mismatch is a hard stop; do not silently substitute another manuscript.
+The manager verified the exact draft-PR head and artifact hashes immediately
+before launching the four isolated Round 2 sessions. A hash or commit mismatch
+remained a hard stop; no reviewer received a substituted manuscript.
 
 ## Paper-specific context
 

@@ -1,8 +1,8 @@
 {
   "all_passed": true,
-  "checks": 61,
-  "passed": 61,
-  "recorded_at": "2026-08-06T17:34:05.013364+00:00",
+  "checks": 67,
+  "passed": 67,
+  "recorded_at": "2026-08-06T18:07:11.091070+00:00",
   "rows": [
     {
       "claim": "held-out rows",
@@ -125,6 +125,18 @@
       "ok": true
     },
     {
+      "claim": "tie-aware outside-range variance",
+      "expected": "72/49",
+      "observed": "72/49",
+      "ok": true
+    },
+    {
+      "claim": "tie-aware nonzero-probability cases",
+      "expected": 12,
+      "observed": 12,
+      "ok": true
+    },
+    {
       "claim": "equivalent-control sensitivity cells",
       "expected": 9,
       "observed": 9,
@@ -146,6 +158,30 @@
       "claim": "Hybrid ActiveGraph pooled-six delta",
       "expected": -0.09888888888888892,
       "observed": -0.09888888888888892,
+      "ok": true
+    },
+    {
+      "claim": "no pooled-six interval lower bound is above zero",
+      "expected": true,
+      "observed": true,
+      "ok": true
+    },
+    {
+      "claim": "no leave-matched-out interval lower bound is above zero",
+      "expected": true,
+      "observed": true,
+      "ok": true
+    },
+    {
+      "claim": "Workspace Terminal pooled-six interval lower bound",
+      "expected": 0.0,
+      "observed": 0.0,
+      "ok": true
+    },
+    {
+      "claim": "Workspace Terminal leave-matched-out interval lower bound",
+      "expected": 0.0,
+      "observed": 0.0,
       "ok": true
     },
     {

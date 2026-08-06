@@ -92,6 +92,16 @@ def main() -> None:
         exchangeability["all_cases"]["observed_outside"],
         1,
     )
+    audit.check(
+        "tie-aware outside-range variance",
+        exchangeability["all_cases"]["conditional_variance_outside_fraction"],
+        "72/49",
+    )
+    audit.check(
+        "tie-aware nonzero-probability cases",
+        len(exchangeability["nonzero_probability_cases"]),
+        12,
+    )
     audit.check("equivalent-control sensitivity cells", len(control_sensitivity), 9)
     pooled_deltas = {
         (row["suite_id"], row["approach_id"]): float(
@@ -113,6 +123,36 @@ def main() -> None:
         "Hybrid ActiveGraph pooled-six delta",
         pooled_deltas[("ouro_activegraph_50", "hybrid_packs")],
         -0.09888888888888892,
+    )
+    audit.truth(
+        "no pooled-six interval lower bound is above zero",
+        all(
+            float(row["pooled_six_bootstrap_95_lower"]) <= 0
+            for row in control_sensitivity
+        ),
+    )
+    audit.truth(
+        "no leave-matched-out interval lower bound is above zero",
+        all(
+            float(row["leave_matched_out_bootstrap_95_lower"]) <= 0
+            for row in control_sensitivity
+        ),
+    )
+    workspace_terminal = next(
+        row
+        for row in control_sensitivity
+        if row["suite_id"] == "ouro_terminal_12"
+        and row["approach_id"] == "workspace_v1_2"
+    )
+    audit.check(
+        "Workspace Terminal pooled-six interval lower bound",
+        float(workspace_terminal["pooled_six_bootstrap_95_lower"]),
+        0.0,
+    )
+    audit.check(
+        "Workspace Terminal leave-matched-out interval lower bound",
+        float(workspace_terminal["leave_matched_out_bootstrap_95_lower"]),
+        0.0,
     )
 
     profiles = {row["approach_id"]: row for row in metrics["expression_profiles"]}
