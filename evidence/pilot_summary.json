@@ -5,10 +5,10 @@
   "primary_model": "gpt-5.6-sol",
   "claim_limit": "Capability acquisition and restart transfer only; no recursive uplift established.",
   "runs": [
-    {"id": "hybrid-normalizer-gpt56-v2", "approach": "hybrid_packs", "task": "nested_record_normalizer", "public": "4/4", "private": "4/4", "transfer": "3/3", "cost_usd": 0.154250},
-    {"id": "minimal-normalizer-gpt56-v1", "approach": "minimal_v2", "task": "nested_record_normalizer", "public": "4/4", "private": "4/4", "transfer": "3/3", "cost_usd": 0.046500},
-    {"id": "hybrid-usage-gpt56-v4", "approach": "hybrid_packs", "task": "stateful_usage_tracker", "public": "3/3", "private": "4/4", "transfer": "3/3", "cost_usd": 0.160610},
-    {"id": "hybrid-dependencies-gpt56-v1", "approach": "hybrid_packs", "task": "dependency_release_planner", "public": "5/5", "private": "5/5", "transfer": "4/4", "cost_usd": 0.187285},
+    {"id": "hybrid-normalizer-gpt56-v2", "approach": "hybrid_packs", "task": "nested_record_normalizer", "public": "4/4", "private": "4/4", "transfer": "3/3", "cost_usd": 0.154250, "source_result_sha256": "sha256:db0e5d7beb8941ce09f225dc7b262bcc853711e14a21152f7669fcf0179496aa"},
+    {"id": "minimal-normalizer-gpt56-v1", "approach": "minimal_v2", "task": "nested_record_normalizer", "public": "4/4", "private": "4/4", "transfer": "3/3", "cost_usd": 0.046500, "source_result_sha256": "sha256:24a2120365ac21fed0c8e190efed8c16baf57dbfb45568964a98e6b334c83ed9"},
+    {"id": "hybrid-usage-gpt56-v4", "approach": "hybrid_packs", "task": "stateful_usage_tracker", "public": "3/3", "private": "4/4", "transfer": "3/3", "cost_usd": 0.160610, "source_result_sha256": "sha256:bcb2cd379cda2c4ddd8bdc532cc56caa64b06c4bb16b15cd10f515a564ffcc57"},
+    {"id": "hybrid-dependencies-gpt56-v1", "approach": "hybrid_packs", "task": "dependency_release_planner", "public": "5/5", "private": "5/5", "transfer": "4/4", "cost_usd": 0.187285, "source_result_sha256": "sha256:90714c7fd1aaef2fdf022865491c5462512c0c4d681305ac64aea3668d2dfd0f"},
     {"id": "workspace-todo-gpt56-20260716", "approach": "workspace_v1_lineage", "task": "robust_todo_cli", "public": "6/6", "private": "5/5", "transfer": null, "cost_usd": 1.413895},
     {"id": "workspace-chatbot-gpt56-20260716", "approach": "workspace_v1_lineage", "task": "vague_chatbot", "public": "6/6", "private": "5/5", "transfer": null, "cost_usd": 0.663070},
     {"id": "workspace-coding-agent-gpt56-20260716", "approach": "workspace_v1_lineage", "task": "vague_coding_agent", "public": "5/5", "private": "2/5", "transfer": null, "cost_usd": 1.529720}
