@@ -2,7 +2,7 @@
   "all_passed": true,
   "checks": 67,
   "passed": 67,
-  "recorded_at": "2026-08-06T18:07:11.091070+00:00",
+  "recorded_at": "2026-08-08T04:20:47.978853+00:00",
   "rows": [
     {
       "claim": "held-out rows",

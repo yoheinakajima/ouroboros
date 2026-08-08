@@ -11,53 +11,45 @@
 Language-model agents can edit prompts, memories, tools, and code, but
 self-improvement bundles five evidentiary propositions: retention, expression,
 behavioral mediation, task improvement, and recursive improvement. This study
-measures retention, expression, and task improvement systematically. It audits
-behavioral mediation in three selected complete-chain traces; those cases show
-descriptive trajectory differences and do not identify a general causal
-mediation effect. Recursive improvement requires descendant-productivity
-evidence and is not measured here. We audit three
-substrate-proposal-acceptance-interface configurations built around a
-workspace, a procedure store, and an executable Pack. They share an outer
-agent, a 28-task development curriculum, and cold-restart evaluation on 19
-held-out tasks. None of the three recorded lineages met the written uplift
-criterion. The shared interface expressed retained structure mainly as text.
-Per-task semantic-unit coverage was 21.2% for Workspace, 100% for Minimal, and
-12% for Hybrid; these within-configuration percentages do not compare
-quantities of useful information. The actor had no retained invocation handle.
-Six initial-request-equivalent no-context executions issued byte-identical
-first requests per task yet differed on 7 of 19 tasks. A code audit found that
-the nominal state-hidden ablation was actor-visible-equivalent to cold. We
-retain that labeled no-context draw as the written decision record and add
-pooled-six and leave-one-out task-resampling intervals. No sensitivity interval
-is above zero in two families, so the no-uplift decision is unchanged. Across
-nine configuration-family cells, an opaque sham scored below the labeled draw
-in five, above it in three, and tied once. The sham conjunct is unevaluable as
-a benefit control because token load differed for every configuration and
-Hybrid also had a byte mismatch. Mechanism audits recorded saturation under
-the implemented 64,000-byte source-size policy, a common proposal-form
-bottleneck, and vocabulary-associated selection of failure-derived lessons.
-Two separately executed, outcome-blind model-coding passes agreed that all 84
-proposals shared one nonexecutable textual genre; one coder also generated the
-proposals, and interpretive labels remain exploratory. We contribute an
-expression profile, an equivalent duplicates protocol, and a control ladder.
-In this harness, the implemented interface and acceptance mechanism constrained
-which retained changes were admitted, expressed, and evaluated.
+measures retention, expression, and task improvement systematically and audits
+behavioral mediation in three selected, trace-dependent cases. Recursive
+improvement requires descendant-productivity evidence and is not measured. We
+study one development lineage for each of three
+substrate-proposal-acceptance-interface configurations under a shared outer
+agent, 28-task curriculum, and 19-task cold-restart evaluation. The nominal
+state-hidden ablation was actor-visible-equivalent to cold, so the frozen
+primary comparison is one evolved lineage against one labeled draw from the
+no-context distribution, not a matched-lineage intervention. None of the three
+lineages met the written uplift rule, and the design cannot estimate a
+population null. Continuous-approximation planning differences were 30.7,
+45.1, and 28.7 percentage points for SWE, Terminal, and ActiveGraph; effects
+smaller than these coarse values could not be reliably detected by this
+design. Six byte-identical initial-request no-context executions differed on 7
+of 19 tasks. The sham-benefit conjunct is unevaluable because token load
+differed for every configuration and Hybrid also had a byte mismatch. The
+shared interface expressed retained structure mainly as text and exposed no
+retained invocation handle. Mechanism audits recorded policy-cap saturation,
+a common proposal-form bottleneck, and vocabulary-associated selection of
+failure-derived lessons. Two outcome-blind model-coding passes agreed that all
+84 proposals shared one nonexecutable textual genre; one coder also generated
+the proposals, invariant-field kappa is undefined, and interpretive labels
+remain exploratory. We contribute an expression profile, an equivalent
+duplicates protocol, and a control ladder. The findings are descriptive and
+specific to this harness.
 
 ## 1. Introduction
 
 Language-model agents now edit their own prompts, memories, tools, and source
-code, and the reported results are striking. [STOP](https://arxiv.org/abs/2310.02304)
-recursively improves its own improver. [SICA](https://arxiv.org/abs/2504.15228)
-raises its score on a SWE-bench Verified subset from 17% to 53%. The
-[Darwin Gödel Machine](https://arxiv.org/abs/2505.22954) more than doubles
-SWE-bench performance across a branching archive of self-modified descendants,
-and the [Huxley-Gödel Machine](https://arxiv.org/abs/2510.21614) scores
-lineages by the productivity of their descendants. These systems make
-self-modification easy to observe. Self-improvement is a different empirical
-claim. A visible edit establishes that the system changed itself. It does not
-establish that the change was expressed at evaluation time, altered behavior,
-caused better externally graded outcomes, or improved the system's capacity to
-produce useful future changes.
+code. Prior systems study recursive improvers, runtime self-modification,
+coding-agent source changes, branching archives, and descendant-oriented
+search. These systems make self-modification easy to observe. Self-improvement
+is a different empirical claim. A visible edit establishes that the system
+changed itself. It does not establish that the change was expressed at
+evaluation time, altered behavior, caused better externally graded outcomes,
+or improved the system's capacity to produce useful future changes. Section 9
+uses this literature only as conceptual context; comparative feature and
+performance claims require an independent primary-source audit before external
+circulation.
 
 We separate the statement that an agent improved itself into five constructs:
 (1) **retention**, meaning persistent state changed; (2) **expression**,
@@ -135,17 +127,15 @@ range was a regression in which retained context accompanied a larger invalid
 intervention and the ablation produced the smaller correct fix. A tie-aware
 conditional exchangeability calculation expected 12/7 (1.71) outside-range
 results and observed one, so the case is a mechanistic trace rather than a
-population or chance detection. A case audit
-that can reject favorable and unfavorable causal stories symmetrically is a
-minimum requirement for interpreting individual trajectories.
+population or chance detection. A case audit that can show when favorable and
+unfavorable causal stories are unsupported is a minimum requirement for
+interpreting individual trajectories.
 
-Prior systems provide strong evidence for the forms of optimization they
-measure. Table 5 records which studies report held-out transfer, mechanism
-ablations, sham retained state, independent evolution runs, byte-identical
-initial-request duplicates, immutable receipts, and descendant productivity. We do not
-reinterpret their reported gains through our experiment. Under our controls,
-our apparent gains dissolved. Applying the same instruments in independent
-systems is a concrete next test.
+Prior systems motivate several distinct optimization and memory questions.
+This review round did not independently audit their feature coverage or
+reported performance, so the manuscript does not use a comparative matrix or
+quantitative prior-system claims as novelty evidence. Applying the present
+instruments in independently audited systems is a concrete next test.
 
 This paper contributes six instruments and observations specified for reuse:
 
@@ -385,11 +375,18 @@ than a determinism guarantee.
 
 ## 4. Frozen outcome rule and pooled-control sensitivity
 
-None of the three recorded lineages met the frozen uplift criterion.
-Table 1 reports the binary families as fractions and percentages. For context,
-the six equivalent no-context labels ranged from 6/10 to 8/10 on SWE and from
-4/6 to 5/6 on Terminal despite byte-identical initial requests within each
-task.
+None of the three recorded lineages met the frozen uplift criterion. This is a
+descriptive result from one development lineage per configuration. The labeled
+comparator is one draw from the actor-visible-equivalent no-context
+distribution, not a separable matched-lineage intervention, and the study
+cannot estimate a population null. Table 1 reports the binary families as
+fractions and percentages. For context, the six equivalent no-context labels
+ranged from 6/10 to 8/10 on SWE and from 4/6 to 5/6 on Terminal despite
+byte-identical initial requests within each task. The continuous-approximation
+planning differences were 30.7 percentage points for SWE, 45.1 for Terminal,
+and 28.7 for ActiveGraph. Effects smaller than these coarse, descriptive values
+could not be reliably detected by this design; the values are not decision
+thresholds.
 
 | Family | Configuration | Evolved | Labeled no-context draw | Evolved minus labeled draw; nominal 95% descriptive task-resampling interval | Sham | Evolved minus sham |
 |---|---|---:|---:|---:|---:|---:|
@@ -410,7 +407,8 @@ showed that it was one draw rather than a separable lineage intervention. The
 sham columns are descriptive only: sham first-call token load was 1.88 to 2.43
 times the incremental evolved token load per byte, and Hybrid's sham was only
 56% to 58% of mean evolved context bytes. The sham conjunct of the written rule
-is therefore unevaluable.
+is therefore formally unevaluable and supplies no benefit-control decision in
+this probe.
 
 The pooled-six sensitivity recomputes the descriptive mean contrast against
 all actor-visible-equivalent no-context labels. In Workspace, Minimal, and
@@ -712,13 +710,14 @@ equivalent duplicates.
 **Apparent success.** Workspace passed a held-out SymPy task. Its retained
 SymPy lesson concerned a different mechanism, and a no-context run generated
 essentially the same fix. Equivalent outcomes on the task ranged from failure
-to pass. The receipts establish a pass and reject the learned-transfer story.
+to pass. The receipts establish a pass but do not support the learned-transfer
+story.
 
 **Apparent failure.** Hybrid scored 0.48 on quota scheduler after retrieving
 mechanistically skewed lessons. Six equivalent no-context runs on the same
 task ranged from 0.48 to 1.00. The evolved score equaled the observed minimum.
-The receipts establish retrieval skew and reject attribution of this outcome
-to that skew.
+The receipts establish retrieval skew but do not identify that skew as the
+cause of the outcome.
 
 **Outside-range regression.** Minimal failed a scikit-learn task that all six
 equivalent no-context runs passed. The retained-context trajectory changed an
@@ -741,73 +740,46 @@ should be reported separately.
 
 ## 9. Related work
 
-Self-improving agent systems measure different portions of the five-construct
-chain. STOP reports repeated recursive improver optimization and held-out task
-utilities. [Gödel Agent](https://arxiv.org/abs/2410.04444) evaluates runtime
-self-referential modification with tool and policy ablations. SICA optimizes a
-coding-agent source tree through a reported primary lineage. Darwin Gödel
-Machine uses a branching archive and reports transfer across benchmarks,
-models, and languages. Huxley-Gödel Machine explicitly measures descendant
-productivity through
-clade-metaproductivity.
+Self-improving agent work spans recursive improvers, runtime
+self-modification, persistent coding-agent changes, branching search, and
+language-based memory. Examples include
+[STOP](https://arxiv.org/abs/2310.02304), [Gödel
+Agent](https://arxiv.org/abs/2410.04444),
+[SICA](https://arxiv.org/abs/2504.15228), the [Darwin Gödel
+Machine](https://arxiv.org/abs/2505.22954), the [Huxley-Gödel
+Machine](https://arxiv.org/abs/2510.21614), and
+[Reflexion](https://arxiv.org/abs/2303.11366). Adjacent evaluation and memory
+work motivates attention to costs, holdouts, attribution, execution
+variability, acceptance noise, and consolidation.
 
-Our study complements these capability results by instrumenting retained-state
-attribution. Table 5 separates unevolved baselines, mechanism interventions,
-independent complete evolution runs, versioned provenance, immutable exposure
-receipts, and recursive-improvement operationalization. No design reports
-every listed feature. This study lacks independent evolution-lineage
-replication and does not identify descendant productivity. It adds sham state,
-initial-request duplicates, and immutable exposure receipts to a persistent
-post-curriculum comparison.
-
-[Reflexion](https://arxiv.org/abs/2303.11366) shows that episodic linguistic
-feedback can alter later trials; [AI Agents That
-Matter](https://arxiv.org/abs/2407.01502) motivates cost, holdout, and
-attribution controls. [Stochasticity in Agentic
-Evaluations](https://arxiv.org/abs/2512.06710) motivates consistency analysis;
-[PACE](https://arxiv.org/abs/2606.08106) studies noisy acceptance. [Useful
-Memories Become Faulty When Continuously Updated by
-LLMs](https://arxiv.org/abs/2605.12978) contrasts episodes with consolidation;
-[DeltaMem](https://arxiv.org/abs/2606.03083) studies residual-tree memory.
-Together they motivate measurement of retained-state mechanisms.
-
-The closest conceptual precedents come from three adjacent traditions. Memory
+The closest conceptual precedents come from three traditions. Memory
 evaluation distinguishes stored, retrieved, selected, and utilized material;
 causal mediation separates intervention, mediator, trajectory, and outcome;
-systems provenance and observability bind events without by themselves
-identifying causal effects. Our residual contribution is to unify these
-distinctions for persistent self-modification, keep descendant productivity as
-a separate recursive endpoint, profile expression across heterogeneous
-retained substrates, and bind configuration-specific claims to receipts and
-actor-visible controls. The framework is a domain-specific evidentiary
-synthesis rather than a claim that each component is unprecedented.
+systems provenance binds events without by itself identifying causal effects.
+This paper combines those distinctions for persistent self-modification,
+profiles expression across heterogeneous retained substrates, keeps descendant
+productivity as a separate recursive endpoint, and binds within-study claims
+to receipts and actor-visible controls. It does not claim that the individual
+components are unprecedented.
 
-**Table 5: Author-classified related-work evidence features.** “Yes” means that
-the author classified the cited primary paper as reporting the feature.
-“Partial” identifies a nearby but weaker design. “NR” means not reported in the
-specific version read and does not imply that the authors could not implement
-it. The cells reflect an author review dated 2026-07-23; they were not
-independently verified for this package, and exact per-cell section pointers
-remain pending before external circulation. The strict receipt column requires
-immutable binding among retained state, evaluation exposure, trajectory, and
-outcome.
-
-| System | Retained mutation surface | Held-out transfer after evolution | Unevolved or initial baseline | Mechanism intervention | Sham retained-state control | Independent complete evolution runs | Byte-identical initial-request duplicates | Versioned lineage or provenance | Immutable exposure and trajectory receipts | Descendant productivity |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| [STOP](https://arxiv.org/abs/2310.02304) | Python improver or scaffold | Yes: independent LPN instances and five new task utilities | Yes: seed improver | Yes: nonrecursive and alternative improver baselines | NR | Yes: five GPT-4 and 25 smaller-model runs in key experiments | NR | NR | NR | NR |
-| [Gödel Agent](https://arxiv.org/abs/2410.04444) | Self-referential runtime logic and actions | Partial: held-out task splits rather than a persistent post-curriculum substrate test | Yes: initial policy and hand-designed baselines | Yes: initial-tool ablations | NR | Yes: six independent self-improvement cycles per task | NR | NR | NR | NR |
-| [SICA](https://arxiv.org/abs/2504.15228) | General coding-agent source tree | NR: benchmark utility reused throughout the primary 15-iteration run | Yes: initial agent | NR | NR | NR: one reported primary lineage | NR | Yes: archive of prior agents and benchmark results | NR | NR |
-| [Darwin Gödel Machine](https://arxiv.org/abs/2505.22954) | Coding-agent codebase in a branching archive | Yes: cross-benchmark, cross-model, and cross-language transfer | Yes: initial agent and handcrafted baselines | Yes: without self-improving agents and without open-ended exploration | NR | Yes: three complete DGM runs in the reported stability analysis | NR | Yes: traceable archive tree and modification lineage | NR | NR |
-| [Huxley-Gödel Machine](https://arxiv.org/abs/2510.21614) | Coding-agent codebase in a search tree | Yes: SWE-Verified to SWE-Lite and model transfer | Yes: shared initial agent | Yes: matched SICA and DGM selection policies | NR | NR for repeated complete searches | NR | Yes: retained search tree of modified agents | NR | Yes: clade-metaproductivity explicitly aggregates descendant performance |
-| This study | Workspace tree; procedures and receipts; ActiveGraph Pack | Yes: 19 disjoint tasks after cold restart | Yes: cold floor and initial model-harness baseline | Partial: state hash preserved, but actor-visible ablation collapses with cold | Yes: opaque sham with reported byte and token mismatch | No: one development lineage per configuration | Yes: six labels with byte-identical initial requests per task | Yes: immutable state generations and hashes | Yes: state, exposure, request, trajectory, grader, and adjudication bindings | No: not causally identified |
+This Round 3 revision removes the author-classified feature matrix and does not
+use quantitative prior-system performance claims. Those materials have not
+received an independent primary-source audit. Before external circulation, a
+separate literature-verification gate must confirm the exact cited versions,
+the conceptual descriptions above, and any stronger comparison that might
+later be proposed. No such audit is part of the present study or revision.
 
 ## 10. Discussion
 
-The frozen null does not establish that persistent
-self-modification cannot improve agents. It establishes that three retained
-configurations, under one common interface and one lineage each, did not meet the
-specified uplift criterion. The mechanism audit explains why a score-only
-summary would discard the most informative evidence.
+The frozen result does not establish that persistent self-modification cannot
+improve agents. It establishes that three retained configurations, under one
+common interface and one recorded lineage each, did not meet the specified
+uplift criterion when each was compared with one labeled draw from an
+actor-visible-equivalent no-context distribution. This is not a population
+null. The coarse planning differences of 30.7, 45.1, and 28.7 percentage
+points also show that smaller SWE, Terminal, and ActiveGraph effects could not
+be reliably detected by this design. The mechanism audit explains why a
+score-only summary would discard the most informative evidence.
 
 First, native update breadth and evaluation-time expression are separate
 design dimensions. Workspace retained arbitrary files, Minimal retained
@@ -860,8 +832,10 @@ The study completed one development lineage per configuration. The six
 equivalent labels expose outcome variability and do not replace independent
 evolution replications. All configurations shared one model and outer agent,
 which may dominate configuration differences. The held-out families contained ten,
-six, and three tasks. ActiveGraph uncertainty estimates are especially
-unstable.
+six, and three tasks. The three-task ActiveGraph family can demonstrate the
+instrument mechanics and report task-specific observations, but it cannot
+support a stable family-level effect estimate. Its uncertainty and planning
+diagnostics are especially unstable.
 
 Cold and cold ablation were actor-visible-equivalent. Although cold ablation
 validated a lineage state hash, it provided no lineage-derived input, tool,
@@ -890,8 +864,10 @@ The update-proposal taxonomy used two language-model coders, one of which also
 generated the proposals it coded. Exact agreement on representational form is
 a cross-model consistency check and does not substitute for independent human
 coding. Interpretive labels showed lower exact agreement and remain
-exploratory. Configuration masking may be incomplete because proposal form can
-reveal substrate.
+exploratory. Cohen's kappa is undefined for invariant fields because both
+coders have zero marginal variance; high exact agreement must not be read as a
+stable chance-corrected estimate. Configuration masking may be incomplete
+because proposal form can reveal substrate.
 
 The retrieval analysis identifies lexical selection mechanics and does not
 establish causal harm to score. Offline re-ranking produced no new behavioral
@@ -901,16 +877,16 @@ of this study.
 Systematic resource summaries establish descriptive trajectory divergence,
 while the three complete-chain cases provide selected mechanism audits. The
 gated trace archive prevents independent inspection of those cases from the
-compact package, and neither source identifies a general causal behavioral
-mediation effect.
+compact package. The cases are therefore illustrative, trace-dependent audits,
+and neither source identifies a general causal behavioral mediation effect.
 
 The package records `gpt-5.6-sol` and `gpt-5.6-terra` as distinct coder
 identifiers and does not establish provider or pretraining independence. The
 outer endpoint's sampling parameters and determinism guarantees are also not
-preserved in the compact package. Table 5 is an author classification of exact
-paper versions read on 2026-07-23; its cells and introductory numeric claims
-still require independent primary-source verification before external
-circulation.
+preserved in the compact package. The removed author-classified related-work
+matrix and all stronger comparative literature claims remain outside the
+paper's evidence. The retained conceptual descriptions require independent
+primary-source verification before external circulation.
 
 The local ActiveGraph benchmark and the Hybrid Pack share author-built
 technology. Sealed checks and an observed result unfavorable to Hybrid reduce
@@ -918,12 +894,15 @@ a simple directional-bias concern but do not remove the structural conflict.
 
 ## 12. Conclusion
 
-All three recorded configurations retained persistent changes. Their evaluation interface
-expressed those changes mainly as text, their controls exhibited substantial
-outcome spread and left interference uncontrolled, and none met the
-frozen uplift criterion. The resulting null separates five claims that
-are often compressed into one: retention, expression, behavioral mediation,
-task improvement, and recursive improvement.
+All three recorded configurations retained persistent changes. Their
+evaluation interface expressed those changes mainly as text, their controls
+exhibited substantial outcome spread and left interference uncontrolled, and
+none met the frozen uplift criterion. This is a descriptive result from one
+lineage per configuration against one labeled no-context draw, not a population
+null. Effects below the coarse family planning differences could not be
+reliably detected. The result separates five claims that are often compressed
+into one: retention, expression, behavioral mediation, task improvement, and
+recursive improvement.
 
 The central lesson is operational. Treat reflection templates, acceptance
 gates, retrievers, adapters, execution paths, and controls as components of the
@@ -944,8 +923,6 @@ establish a universal interface law.
 - Case-study protocol and traces:
   [`CASE_STUDY_PROTOCOL.md`](CASE_STUDY_PROTOCOL.md) and
   [`CASE_STUDIES.md`](CASE_STUDIES.md)
-- Related-work comparison grid:
-  [`RELATED_WORK_TABLE.md`](RELATED_WORK_TABLE.md)
 - Public benchmark context:
   [`PUBLIC_BENCHMARK_CONTEXT.md`](PUBLIC_BENCHMARK_CONTEXT.md)
 - Hash-bound adjudication:

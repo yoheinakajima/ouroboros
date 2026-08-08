@@ -127,45 +127,6 @@ ActiveGraph & 3 & 2 & 0.31, unstable & 21.3 pp & 28.7 pp\\
 \end{table*}
 ]],
 [[
-\setcounter{table}{4}
-\begin{landscape}
-\begin{table*}[p]
-\caption{Author-classified related-work evidence features based on specific paper versions read on 2026-07-23. Cells are not independently verified; NR means not reported in the version read.}
-\label{tab:related}
-\centering\scriptsize
-\setlength{\tabcolsep}{3pt}
-\textbf{Panel A: substrate, transfer, and interventions}\\[2pt]
-\begin{tabularx}{\linewidth}{@{}lX X X X X@{}}
-\toprule
-\textbf{System} & \textbf{Retained surface} & \textbf{Held-out transfer} & \textbf{Initial baseline} & \textbf{Mechanism intervention} & \textbf{Sham state}\\
-\midrule
-STOP \cite{zelikman2023stop} & Python improver/scaffold & Yes: independent LPN and five new utilities & Seed improver & Nonrecursive and alternative improvers & NR\\
-G{\"o}del Agent \cite{yin2024godel} & Runtime logic/actions & Partial: held-out splits & Initial policy and manual baselines & Initial-tool ablations & NR\\
-SICA \cite{robeyns2025sica} & Coding-agent source tree & NR: utility reused in primary run & Initial agent & NR & NR\\
-DGM \cite{zhang2025dgm} & Coding-agent branching archive & Cross-benchmark, model, language & Initial agent and manual baselines & Without self-improvement/open exploration & NR\\
-HGM \cite{wang2025hgm} & Coding-agent search tree & Benchmark and model transfer & Shared initial agent & Matched SICA/DGM selection & NR\\
-This study & Workspace; procedures/receipts; Pack & 19 disjoint post-curriculum tasks & Cold floor and initial harness & Partial: state hash preserved; actor-visible ablation collapses with cold & Opaque sham; mismatch reported\\
-\bottomrule
-\end{tabularx}
-\vspace{8pt}
-
-\textbf{Panel B: replication, provenance, and recursive-improvement evidence}\\[2pt]
-\begin{tabularx}{\linewidth}{@{}lX X X X X@{}}
-\toprule
-\textbf{System} & \textbf{Complete evolution runs} & \textbf{Identical initial-request duplicates} & \textbf{Versioned lineage/provenance} & \textbf{Immutable exposure/trajectory receipts} & \textbf{Descendant productivity}\\
-\midrule
-STOP & Five GPT-4; 25 smaller-model in key experiments & NR & NR & NR & NR\\
-G{\"o}del Agent & Six cycles per task & NR & NR & NR & NR\\
-SICA & NR: one primary lineage & NR & Yes: archive of agents/results & NR & NR\\
-DGM & Three complete runs in stability analysis & NR & Traceable archive tree & NR & NR\\
-HGM & NR for repeated complete searches & NR & Retained search tree & NR & Yes: clade-metaproductivity\\
-This study & No: one lineage per configuration & Six labels per task & Immutable generations/hashes & State, exposure, request, trajectory, grader, adjudication & No: not identified\\
-\bottomrule
-\end{tabularx}
-\end{table*}
-\end{landscape}
-]],
-[[
 \begin{table}[!ht]
 \caption{Timeout and adjudication taxonomy.}
 \label{tab:timeouts}

@@ -4,7 +4,7 @@
     "host": "Zenodo planned; GitHub release fallback",
     "note": "Do not replace with a DOI until the external deposit exists."
   },
-  "created_at": "2026-08-06T18:13:25.293637+00:00",
+  "created_at": "2026-08-08T04:20:55.574317+00:00",
   "excluded_from_manifest": [
     "provenance-manifest.json",
     "tmp/**"
@@ -66,9 +66,9 @@
       "sha256": "9b545ca2908133a4ecad9ee3d4f6feb7f6e00ca7f73f11948c0ac81aa9d79a3c"
     },
     {
-      "bytes": 61511,
+      "bytes": 58014,
       "path": "MANUSCRIPT.md",
-      "sha256": "aa18529a8a07e9f26f317b636d4a1d97573ff88e8de65c2fa9efd5028f2cce52"
+      "sha256": "1fd5926597133b6d52e2fa575c2f60c7d1a97a48fbb9a89a7afb5efe7a79aadd"
     },
     {
       "bytes": 17624,
@@ -121,9 +121,9 @@
       "sha256": "938af8ffe00ab72694105d3bd7509be5a33fa85ded459c67754cd62b5cbfa419"
     },
     {
-      "bytes": 1921,
+      "bytes": 1917,
       "path": "abstract.txt",
-      "sha256": "3f3deda44cfcb3d4a416cdbf0ce488560c8140eae7ffb526e9d872da41fea343"
+      "sha256": "33bdff8df666e5dcd394ace6ddec1d7e26b9344a405bb3635f43f5043e104b3c"
     },
     {
       "bytes": 3826,
@@ -238,7 +238,7 @@
     {
       "bytes": 9202,
       "path": "data/generated/paper-claim-audit.json",
-      "sha256": "f0e2895d68fcad5f8cb860fa7cf52496a71daaf5f34278fed3dcce59693b497c"
+      "sha256": "dcdda69d7e743450f9b8bcf94f9d9d2db345e967c244c54e4ecf774d96ba905a"
     },
     {
       "bytes": 13871,
@@ -366,19 +366,19 @@
       "sha256": "27f4666f1be6d32d35ba20402b01206161147fc20ef99f1f5fed84658bf65f84"
     },
     {
-      "bytes": 16559,
+      "bytes": 13881,
       "path": "latex_filter.lua",
-      "sha256": "c48b7620bb82ae680a92b67c12488940a459eddb90f82325669ee9bcc98916a6"
+      "sha256": "2de0e99868072a8ced5f2651c7f02a496cd85f783c946d120d9264022c960322"
     },
     {
-      "bytes": 74200,
+      "bytes": 70909,
       "path": "main.tex",
-      "sha256": "cc860d2c003be1f06268a1637ac989133546621c27e80d721ae97d2453b0b6ba"
+      "sha256": "adbe0c3fa34093c6565f8ee49f886ff7e1a2172b79f908b407992a0b310e69d4"
     },
     {
-      "bytes": 328203,
+      "bytes": 321224,
       "path": "output/pdf/when-self-modification-becomes-memory.pdf",
-      "sha256": "7fa244555082958b43043a93facc24a30814abfc132b30a1fc071d410fc05ca8"
+      "sha256": "120e9ec1528e0ab42c0b29772cc7266efb907398873d26a1cfc8b601ccda3591"
     },
     {
       "bytes": 4811,
@@ -421,6 +421,16 @@
       "sha256": "4b5fa30bb2403d01996e95fbe2e2b779d2c3f7506ee97c44683b4ded201434c6"
     },
     {
+      "bytes": 12335,
+      "path": "reviews/ROUND3_2026-08-07_DISPOSITION.md",
+      "sha256": "336a8b6f1bdd288f42f625371e70e2489fbce544dc6625cddb41ee214b3e972f"
+    },
+    {
+      "bytes": 2299,
+      "path": "reviews/ROUND3_2026-08-07_PROVENANCE.json",
+      "sha256": "e4b4408eda5ff09e6c0a2195803bdbae18016f584cd38cbeee99b532f89d2e69"
+    },
+    {
       "bytes": 3237,
       "path": "reviews/STATISTICAL_REVIEW.md",
       "sha256": "919e042dd01578dec72fa25ad2b18ede8ee5a0c53b4966cd48421eda0cc26cb8"
@@ -433,7 +443,7 @@
     {
       "bytes": 534,
       "path": "scan-report.json",
-      "sha256": "8b0281e4f7c668c6b9f161d751cc8f9018b2b252ec8973d84577847b7cd6740e"
+      "sha256": "9a1ec86088eb438a15cd28dde69190efd8246a509a591ef1cd3d385bf4ac02a1"
     },
     {
       "bytes": 3241,
@@ -485,7 +495,7 @@
     "findings": 0,
     "path": "scan-report.json",
     "status": "passed",
-    "text_files_scanned": 77
+    "text_files_scanned": 79
   },
   "unlisted_files_allowed": false
 }
