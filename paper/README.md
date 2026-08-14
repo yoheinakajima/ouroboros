@@ -3,7 +3,7 @@
 This directory is the version-controlled release package for:
 
 > **When Self-Modification Becomes Memory: An Audited Comparison of Three
-> Self-Improving Agent Substrates**
+> Retention-Interface Configurations Under a Shared Reflection Layer**
 
 It contains the paper sources, appendix, figures, generated analysis tables,
 masked update-proposal coding artifacts, adjudication ledger, analysis code,
@@ -34,6 +34,7 @@ from the included compact artifacts:
 
 ```bash
 python paper/analysis/make_figures.py
+python paper/analysis/reanalyze_equivalent_controls.py
 python paper/analysis/audit_manuscript_style.py
 python paper/analysis/audit_paper_links.py
 python paper/analysis/audit_paper_claims.py

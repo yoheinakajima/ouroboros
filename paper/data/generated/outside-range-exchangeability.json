@@ -1,0 +1,155 @@
+{
+  "all_cases": {
+    "cases": 57,
+    "conditional_expected_outside": 1.7142857142857142,
+    "conditional_expected_outside_fraction": "12/7",
+    "conditional_variance_outside": 1.469387755102041,
+    "conditional_variance_outside_fraction": "72/49",
+    "observed_outside": 1
+  },
+  "by_control_task_class": {
+    "stable": {
+      "cases": 36,
+      "conditional_expected_outside": 0.14285714285714285,
+      "conditional_expected_outside_fraction": "1/7",
+      "conditional_variance_outside": 0.12244897959183673,
+      "conditional_variance_outside_fraction": "6/49",
+      "observed_outside": 1
+    },
+    "variable": {
+      "cases": 21,
+      "conditional_expected_outside": 1.5714285714285714,
+      "conditional_expected_outside_fraction": "11/7",
+      "conditional_variance_outside": 1.346938775510204,
+      "conditional_variance_outside_fraction": "66/49",
+      "observed_outside": 0
+    }
+  },
+  "by_family": {
+    "ouro_activegraph_50": {
+      "cases": 9,
+      "conditional_expected_outside": 0.5714285714285714,
+      "conditional_expected_outside_fraction": "4/7",
+      "conditional_variance_outside": 0.4897959183673469,
+      "conditional_variance_outside_fraction": "24/49",
+      "observed_outside": 0
+    },
+    "ouro_swe_50": {
+      "cases": 30,
+      "conditional_expected_outside": 0.8571428571428571,
+      "conditional_expected_outside_fraction": "6/7",
+      "conditional_variance_outside": 0.7346938775510204,
+      "conditional_variance_outside_fraction": "36/49",
+      "observed_outside": 1
+    },
+    "ouro_terminal_12": {
+      "cases": 18,
+      "conditional_expected_outside": 0.2857142857142857,
+      "conditional_expected_outside_fraction": "2/7",
+      "conditional_variance_outside": 0.24489795918367346,
+      "conditional_variance_outside_fraction": "12/49",
+      "observed_outside": 0
+    }
+  },
+  "input": "data/generated/task-level-noise-and-evolved.csv",
+  "method": "For each configuration-task case, condition on the observed six actor-visible-equivalent no-context scores plus the evolved score. Uniformly relabel which of the seven scores is focal. A focal score is strictly outside the range of the other six only when it is a unique minimum or unique maximum; tied extrema contribute zero probability.",
+  "nonzero_probability_cases": [
+    {
+      "approach_id": "workspace_v1_2",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_swe_50",
+      "task_id": "pydata__xarray-3305"
+    },
+    {
+      "approach_id": "minimal_v2",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_swe_50",
+      "task_id": "pydata__xarray-3305"
+    },
+    {
+      "approach_id": "minimal_v2",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "stable",
+      "observed_outside": true,
+      "suite_id": "ouro_swe_50",
+      "task_id": "scikit-learn__scikit-learn-13124"
+    },
+    {
+      "approach_id": "minimal_v2",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_swe_50",
+      "task_id": "sympy__sympy-19040"
+    },
+    {
+      "approach_id": "hybrid_packs",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_swe_50",
+      "task_id": "pydata__xarray-3305"
+    },
+    {
+      "approach_id": "hybrid_packs",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_swe_50",
+      "task_id": "sympy__sympy-19040"
+    },
+    {
+      "approach_id": "workspace_v1_2",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_terminal_12",
+      "task_id": "bn-fit-modify"
+    },
+    {
+      "approach_id": "hybrid_packs",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_terminal_12",
+      "task_id": "bn-fit-modify"
+    },
+    {
+      "approach_id": "workspace_v1_2",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_activegraph_50",
+      "task_id": "delegated_access_control"
+    },
+    {
+      "approach_id": "minimal_v2",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_activegraph_50",
+      "task_id": "delegated_access_control"
+    },
+    {
+      "approach_id": "minimal_v2",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_activegraph_50",
+      "task_id": "quota_scheduler"
+    },
+    {
+      "approach_id": "hybrid_packs",
+      "conditional_expected_outside_fraction": "1/7",
+      "control_task_class": "variable",
+      "observed_outside": false,
+      "suite_id": "ouro_activegraph_50",
+      "task_id": "delegated_access_control"
+    }
+  ],
+  "schema_version": 1
+}

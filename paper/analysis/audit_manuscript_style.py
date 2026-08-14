@@ -60,8 +60,8 @@ def main() -> None:
     pointed_count = normalized_manuscript.count(POINTED_SENTENCE)
     checks.append(
         (
-            "pointed sentence exactly once in manuscript",
-            pointed_count == 1,
+            "external-effects insinuation absent",
+            pointed_count == 0,
             f"count={pointed_count}",
         )
     )
@@ -71,7 +71,7 @@ def main() -> None:
         "expression profile",
         "equivalent duplicates",
         "control ladder",
-        "failure-memory stickiness",
+        "vocabulary-mediated retrieval concentration",
         "update-proposal taxonomy",
     ):
         count = manuscript.lower().count(term)

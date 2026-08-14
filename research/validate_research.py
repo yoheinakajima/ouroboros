@@ -6,10 +6,19 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 
 from research.hybrid_author import load_task
+
+_CURATED_APPROACH_ALIASES = {
+    "hybrid_docs_grounded_pack": "hybrid_packs",
+    "minimal_v2_pure_capability": "minimal_v2",
+}
+_SCORE_PATTERN = re.compile(r"(0|[1-9][0-9]*)/([1-9][0-9]*)\Z")
+_SOURCE_HASH_PATTERN = re.compile(r"sha256:[0-9a-f]{64}\Z")
 
 
 def _canonical(value: Any) -> str:
@@ -22,6 +31,10 @@ def _sha256_text(value: str) -> str:
 
 def _sha256_json(value: Any) -> str:
     return _sha256_text(_canonical(value))
+
+
+def _sha256_file(path: Path) -> str:
+    return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _read_json(path: Path) -> Any:
@@ -127,6 +140,105 @@ def _validate_minimal_run(result_path: Path) -> dict[str, Any]:
     }
 
 
+def _validate_score(value: Any, *, run_id: str, field: str) -> str:
+    if not isinstance(value, str):
+        raise ValueError(f"curated run {run_id} has invalid {field} score: {value!r}")
+    match = _SCORE_PATTERN.fullmatch(value)
+    if match is None or int(match.group(1)) > int(match.group(2)):
+        raise ValueError(f"curated run {run_id} has invalid {field} score: {value!r}")
+    return value
+
+
+def _validate_cost(value: Any, *, run_id: str) -> Decimal:
+    if isinstance(value, bool) or not isinstance(value, (int, float, str)):
+        raise ValueError(f"curated run {run_id} has invalid cost_usd: {value!r}")
+    try:
+        cost = Decimal(str(value))
+    except InvalidOperation as exc:
+        raise ValueError(f"curated run {run_id} has invalid cost_usd: {value!r}") from exc
+    if not cost.is_finite() or cost < 0:
+        raise ValueError(f"curated run {run_id} has invalid cost_usd: {value!r}")
+    return cost
+
+
+def _validate_curated_run(
+    index_row: dict[str, Any],
+    curated_row: dict[str, Any] | None,
+    primary_model: Any,
+    *,
+    raw_row: dict[str, Any] | None = None,
+    raw_result_path: Path | None = None,
+) -> dict[str, Any]:
+    """Validate and normalize one public summary row, reconciling raw evidence when present."""
+
+    run_id = index_row["id"]
+    if curated_row is None:
+        raise ValueError(f"valid indexed run is absent from curated evidence: {run_id}")
+    if curated_row.get("id") != run_id:
+        raise ValueError(f"run-index/curated id mismatch for {run_id}")
+    if not isinstance(index_row.get("result"), str) or not index_row["result"]:
+        raise ValueError(f"valid indexed run has no result path: {run_id}")
+
+    expected_approach = _CURATED_APPROACH_ALIASES.get(index_row.get("approach"))
+    if expected_approach is None or curated_row.get("approach") != expected_approach:
+        raise ValueError(f"run-index/curated approach mismatch for {run_id}")
+    if curated_row.get("task") != index_row.get("task"):
+        raise ValueError(f"run-index/curated task mismatch for {run_id}")
+    if not isinstance(primary_model, str) or not primary_model.strip():
+        raise ValueError("curated evidence primary_model must be a non-empty string")
+
+    public = _validate_score(curated_row.get("public"), run_id=run_id, field="public")
+    private = _validate_score(curated_row.get("private"), run_id=run_id, field="private")
+    transfer = _validate_score(curated_row.get("transfer"), run_id=run_id, field="transfer")
+    cost = _validate_cost(curated_row.get("cost_usd"), run_id=run_id)
+    source_hash = curated_row.get("source_result_sha256")
+    if not isinstance(source_hash, str) or _SOURCE_HASH_PATTERN.fullmatch(source_hash) is None:
+        raise ValueError(f"curated run {run_id} has invalid source_result_sha256: {source_hash!r}")
+
+    normalized = {
+        "approach": index_row["approach"],
+        "task_id": index_row["task"],
+        "public": public,
+        "private": private,
+        "transfer": transfer,
+        "cost_usd": curated_row["cost_usd"],
+        "model": primary_model,
+        "source_result_sha256": source_hash,
+    }
+    if raw_row is None:
+        if raw_result_path is not None:
+            raise ValueError(f"internal raw-evidence reconciliation error for {run_id}")
+        return normalized
+    if raw_result_path is None:
+        raise ValueError(f"internal raw-evidence reconciliation error for {run_id}")
+
+    actual_hash = _sha256_file(raw_result_path)
+    if actual_hash != source_hash:
+        raise ValueError(
+            f"raw-result hash mismatch for {run_id}: expected {source_hash}, got {actual_hash}"
+        )
+    comparisons = {
+        "approach": (raw_row.get("approach"), normalized["approach"]),
+        "task_id": (raw_row.get("task_id"), normalized["task_id"]),
+        "public": (raw_row.get("public"), normalized["public"]),
+        "private": (raw_row.get("private"), normalized["private"]),
+        "transfer": (raw_row.get("transfer"), normalized["transfer"]),
+        "model": (raw_row.get("model"), normalized["model"]),
+    }
+    for field, (actual, expected) in comparisons.items():
+        if actual != expected:
+            raise ValueError(
+                f"raw-result/curated {field} mismatch for {run_id}: expected {expected!r}, got {actual!r}"
+            )
+    raw_cost = _validate_cost(raw_row.get("cost_usd"), run_id=run_id)
+    if raw_cost != cost:
+        raise ValueError(
+            f"raw-result/curated cost_usd mismatch for {run_id}: "
+            f"expected {curated_row['cost_usd']!r}, got {raw_row.get('cost_usd')!r}"
+        )
+    return normalized
+
+
 def validate_repository(root: str | Path) -> dict[str, Any]:
     repository = Path(root).resolve()
     benchmark = _read_json(repository / "research" / "benchmark.json")
@@ -150,9 +262,12 @@ def validate_repository(root: str | Path) -> dict[str, Any]:
     curated = _read_json(curated_path) if curated_path else {}
     if curated.get("status") != "pilot_mechanism_evidence":
         raise ValueError("curated evidence must identify itself as pilot mechanism evidence")
+    if curated.get("primary_model") != benchmark.get("primary_model"):
+        raise ValueError("benchmark/curated primary_model mismatch")
     curated_ids = [item["id"] for item in curated.get("runs", [])]
     if len(curated_ids) != len(set(curated_ids)):
         raise ValueError("curated evidence run ids must be unique")
+    curated_by_id = {item["id"]: item for item in curated.get("runs", [])}
     run_ids = [item["id"] for item in run_index["runs"]]
     if len(run_ids) != len(set(run_ids)):
         raise ValueError("run index ids must be unique")
@@ -168,17 +283,41 @@ def validate_repository(root: str | Path) -> dict[str, Any]:
         _require_path(repository, item.get("evidence"), f"run {item['id']} evidence")
         if item["validity"] == "valid_graph_audited_pilot":
             if result_path is None:
-                raise ValueError(f"graph-audited run lacks result: {item['id']}")
-            hybrid_rows.append(_validate_hybrid_run(result_path))
+                hybrid_rows.append(
+                    _validate_curated_run(item, curated_by_id.get(item["id"]), curated.get("primary_model"))
+                )
+            else:
+                raw_row = _validate_hybrid_run(result_path)
+                hybrid_rows.append(
+                    _validate_curated_run(
+                        item,
+                        curated_by_id.get(item["id"]),
+                        curated.get("primary_model"),
+                        raw_row=raw_row,
+                        raw_result_path=result_path,
+                    )
+                )
         elif item["validity"] == "valid_portable_pilot":
             if result_path is None:
-                raise ValueError(f"portable run lacks result: {item['id']}")
-            if item["approach"] == "hybrid_docs_grounded_pack":
-                portable_rows.append(_validate_hybrid_run(result_path))
-            elif item["approach"] == "minimal_v2_pure_capability":
-                portable_rows.append(_validate_minimal_run(result_path))
+                portable_rows.append(
+                    _validate_curated_run(item, curated_by_id.get(item["id"]), curated.get("primary_model"))
+                )
             else:
-                raise ValueError(f"unknown portable approach: {item['approach']}")
+                if item["approach"] == "hybrid_docs_grounded_pack":
+                    raw_row = _validate_hybrid_run(result_path)
+                elif item["approach"] == "minimal_v2_pure_capability":
+                    raw_row = _validate_minimal_run(result_path)
+                else:
+                    raise ValueError(f"unknown portable approach: {item['approach']}")
+                portable_rows.append(
+                    _validate_curated_run(
+                        item,
+                        curated_by_id.get(item["id"]),
+                        curated.get("primary_model"),
+                        raw_row=raw_row,
+                        raw_result_path=result_path,
+                    )
+                )
 
     return {
         "benchmark_tasks": len(task_ids),

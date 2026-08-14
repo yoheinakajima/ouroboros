@@ -3,11 +3,11 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import math
 from datetime import datetime, timezone
 from pathlib import Path
-
 
 ROOT = Path(__file__).resolve().parents[1]
 PAPER = ROOT
@@ -36,12 +36,19 @@ def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def read_csv(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="", encoding="utf-8") as handle:
+        return list(csv.DictReader(handle))
+
+
 def main() -> None:
     audit = Audit()
     primary = read_json(ROOT / "data" / "report-probe-adjudicated.json")
     metrics = read_json(GENERATED / "posthoc-metrics.json")
     taxonomy = read_json(ROOT / "data" / "taxonomy" / "taxonomy-summary.json")
     citations = read_json(GENERATED / "citation-link-audit.json")
+    exchangeability = read_json(GENERATED / "outside-range-exchangeability.json")
+    control_sensitivity = read_csv(GENERATED / "equivalent-control-sensitivity.csv")
 
     audit.check("held-out rows", primary["attempts"], 228)
     audit.check("final valid rows", primary["valid_attempts"], 228)
@@ -75,6 +82,78 @@ def main() -> None:
     )
     audit.check("outside-range evolved score", outside["score"], 0.0)
     audit.check("outside-range equivalent minimum", outside["equivalent_minimum"], 1.0)
+    audit.check(
+        "tie-aware expected outside-range count",
+        exchangeability["all_cases"]["conditional_expected_outside_fraction"],
+        "12/7",
+    )
+    audit.check(
+        "tie-aware observed outside-range count",
+        exchangeability["all_cases"]["observed_outside"],
+        1,
+    )
+    audit.check(
+        "tie-aware outside-range variance",
+        exchangeability["all_cases"]["conditional_variance_outside_fraction"],
+        "72/49",
+    )
+    audit.check(
+        "tie-aware nonzero-probability cases",
+        len(exchangeability["nonzero_probability_cases"]),
+        12,
+    )
+    audit.check("equivalent-control sensitivity cells", len(control_sensitivity), 9)
+    pooled_deltas = {
+        (row["suite_id"], row["approach_id"]): float(
+            row["delta_vs_pooled_six_no_context"]
+        )
+        for row in control_sensitivity
+    }
+    audit.check(
+        "Workspace SWE pooled-six delta",
+        pooled_deltas[("ouro_swe_50", "workspace_v1_2")],
+        1 / 15,
+    )
+    audit.check(
+        "Minimal Terminal pooled-six delta",
+        pooled_deltas[("ouro_terminal_12", "minimal_v2")],
+        -2 / 9,
+    )
+    audit.check(
+        "Hybrid ActiveGraph pooled-six delta",
+        pooled_deltas[("ouro_activegraph_50", "hybrid_packs")],
+        -0.09888888888888892,
+    )
+    audit.truth(
+        "no pooled-six interval lower bound is above zero",
+        all(
+            float(row["pooled_six_bootstrap_95_lower"]) <= 0
+            for row in control_sensitivity
+        ),
+    )
+    audit.truth(
+        "no leave-matched-out interval lower bound is above zero",
+        all(
+            float(row["leave_matched_out_bootstrap_95_lower"]) <= 0
+            for row in control_sensitivity
+        ),
+    )
+    workspace_terminal = next(
+        row
+        for row in control_sensitivity
+        if row["suite_id"] == "ouro_terminal_12"
+        and row["approach_id"] == "workspace_v1_2"
+    )
+    audit.check(
+        "Workspace Terminal pooled-six interval lower bound",
+        float(workspace_terminal["pooled_six_bootstrap_95_lower"]),
+        0.0,
+    )
+    audit.check(
+        "Workspace Terminal leave-matched-out interval lower bound",
+        float(workspace_terminal["leave_matched_out_bootstrap_95_lower"]),
+        0.0,
+    )
 
     profiles = {row["approach_id"]: row for row in metrics["expression_profiles"]}
     audit.check("Workspace per-task reach", profiles["workspace_v1_2"]["semantic_unit_reach_per_task"], 18 / 85)
@@ -122,6 +201,14 @@ def main() -> None:
         "empirical pairwise values not called assumption-free null",
         "is an assumption-free null" in paper_text.lower(),
         False,
+    )
+    audit.truth(
+        "actor-visible control collapse disclosed",
+        "cold and cold ablation therefore collapse" in paper_text.lower(),
+    )
+    audit.truth(
+        "model self-coding disclosed",
+        "generated the proposals it later coded" in paper_text.lower(),
     )
 
     payload = {

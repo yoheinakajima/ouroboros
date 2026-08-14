@@ -1,0 +1,66 @@
+{
+  "canonical_paper_title": "When Self-Modification Becomes Memory",
+  "frozen_commit": "39d20194fc4c976fceaa4ca2116bc22a0ec573bf",
+  "frozen_pdf_sha256": "7fa244555082958b43043a93facc24a30814abfc132b30a1fc071d410fc05ca8",
+  "packet_sha256": "2ba2fb626efd3eddd4818eb9afa195c1e599a1f5dc424aae193567154bc5145f",
+  "stop_rule": {
+    "ready_or_minor_required": 3,
+    "reviewer_count": 4,
+    "unresolved_critical_correctness_novelty_or_evidence_required": 0,
+    "repository_validation_required": true,
+    "owner_review_before_explore_science": true,
+    "maximum_round": 3
+  },
+  "qualifying_reviews": {
+    "chatgpt": {
+      "model": "ChatGPT Medium",
+      "session_reference": "https://chatgpt.com/c/6a74fce0-e7a4-83e8-8c4c-6739f0e38e4a",
+      "verdict": "minor revision",
+      "artifact_status": "complete persisted review"
+    },
+    "claude": {
+      "model": "Claude Opus 5 High",
+      "session_reference": "https://claude.ai/chat/090d2205-cf70-4f31-9492-eaa0ea8975fc",
+      "verdict": "major revision",
+      "artifact_status": "complete persisted review"
+    },
+    "gemini": {
+      "model": "Gemini Pro Temporary",
+      "session_reference": "temporary session no longer recoverable",
+      "verdict": "ready",
+      "artifact_status": "manager-certified completion summary only",
+      "scores": {
+        "novelty": 4,
+        "significance": 5,
+        "correctness": 5,
+        "evidence": 4,
+        "clarity": 4,
+        "reproducibility": 4,
+        "venue_fit": 5
+      }
+    },
+    "grok": {
+      "model": "xAI grok-4.3",
+      "session_reference": "manager-held attachment-free API receipt",
+      "verdict": "minor revision",
+      "review_sha256": "86a7ca9fabe93c9dc4330ec9c26278e2b01d8a421e4d960b25383ba113f901b6",
+      "artifact_status": "complete review with nonempty notes for all 18 pages"
+    }
+  },
+  "excluded_reviews": [
+    {
+      "model": "Grok Expert private",
+      "reason": "attachment ingestion left pages 12-18 uninspected"
+    },
+    {
+      "model": "Grok Expert private replacement",
+      "reason": "attachment ingestion left pages 12-18 uninspected"
+    }
+  ],
+  "pre_revision_result": {
+    "ready_or_minor_count": 3,
+    "numerical_threshold_met": true,
+    "zero_critical_threshold_met": false,
+    "gemini_replacement_required": false
+  }
+}

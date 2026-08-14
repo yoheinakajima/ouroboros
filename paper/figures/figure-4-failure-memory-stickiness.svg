@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1040" viewBox="0 0 1600 1040" role="img" aria-labelledby="title desc">
-<title id="title">Figure 4. Failure-memory stickiness is a vocabulary-coverage mechanism</title>
+<title id="title">Figure 4. Vocabulary-mediated retrieval concentration</title>
 <desc id="desc">Corpus and retrieval composition, per-lesson vocabulary versus retrieval counts, and offline ranker diagnostics.</desc>
 <defs>
 <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#62666A"/></marker>
 </defs>
 <style>text{font-family:Arial,Helvetica,sans-serif;fill:#202124}.title{font-size:30px;font-weight:700}.subtitle{font-size:17px;fill:#62666A}.panel{font-size:21px;font-weight:700}.label{font-size:16px}.small{font-size:13px;fill:#62666A}.tiny{font-size:11px;fill:#62666A}.value{font-size:15px;font-weight:700}.axis{stroke:#62666A;stroke-width:1}.grid{stroke:#D8DADD;stroke-width:1}</style>
 <rect width="1600" height="1040" fill="#FFFFFF"/>
-<text x="60.0" y="55.0" class="title" text-anchor="start">Figure 4. Failure-memory stickiness is a vocabulary-coverage mechanism</text>
+<text x="60.0" y="55.0" class="title" text-anchor="start">Figure 4. Vocabulary-mediated retrieval concentration</text>
 <text x="60.0" y="84.0" class="subtitle" text-anchor="start">Failures are 40% of memory but 64.9% of retrievals; vocabulary predicts selection within both outcome groups.</text>
 <text x="60.0" y="145.0" class="panel" text-anchor="start">A  Composition shift</text>
 <text x="180.0" y="190.0" class="label" text-anchor="start">Retained corpus</text>
