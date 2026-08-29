@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "external-review-provenance",
+  "review_date": "2026-08-29",
+  "reviewer": "Explore Science",
+  "reviewer_type": "external-ai-pre-submission-review",
+  "report": {
+    "pages": 13,
+    "sha256": "b8945f974a9e2fd48eec05320ffaf74df924643397fed797e457746eb82e13d2",
+    "public_repository_copy": false,
+    "reported_score": 100,
+    "reported_score_max": 100,
+    "reported_issues": 13,
+    "reported_major_issues": 0
+  },
+  "reviewed_artifact": {
+    "repository": "yoheinakajima/ouroboros",
+    "commit": "0c0893e0cc784f274148df3d48fb878645043a7f",
+    "pdf_pages": 16,
+    "pdf_sha256": "120e9ec1528e0ab42c0b29772cc7266efb907398873d26a1cfc8b601ccda3591"
+  },
+  "authority": {
+    "report_role": "review input",
+    "manuscript_authority": "repository source and accepted owner merge",
+    "raw_report_retention": "private manager record",
+    "raw_report_committed": false
+  },
+  "disposition_path": "reviews/EXPLORE_SCIENCE_2026-08-29_DISPOSITION.md"
+}

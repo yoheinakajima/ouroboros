@@ -147,9 +147,10 @@ ActiveGraph snapshot regrade & 1 & Hash-identical grader-only retry & Original g
 \caption{Cross-model coding consistency. Sol generated the proposals it coded; undefined kappa indicates zero marginal variance.}
 \label{tab:coding-agreement}
 \centering\tiny
-\begin{tabular}{@{}lrrr@{}}
+\setlength{\tabcolsep}{2pt}
+\begin{tabularx}{\columnwidth}{@{}Xrrr@{}}
 \toprule
-\textbf{Field} & \textbf{Exact agreement} & \textbf{Cohen's kappa} & \textbf{Gwet's AC1}\\
+\textbf{Field} & \shortstack{\textbf{Exact}\\\textbf{agreement}} & \shortstack{\textbf{Cohen's}\\\textbf{kappa}} & \shortstack{\textbf{Gwet's}\\\textbf{AC1}}\\
 \midrule
 Primary update target & 76/84 (90.5\%) & 0.000 & 0.904\\
 Secondary update target & 47/84 (56.0\%) & -0.081 & 0.543\\
@@ -166,7 +167,7 @@ Counterfactual actionability & 84/84 (100\%) & undefined & 1.000\\
 Novelty relative to prior state & 84/84 (100\%) & undefined & 1.000\\
 Confidence & 63/84 (75.0\%) & 0.393 & 0.687\\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 ]]
 }

@@ -302,9 +302,12 @@ SWE-bench Verified issues, six Terminal-Bench 2 tasks, and three
 Ouro-ActiveGraph-50 systems. SWE and Terminal used official binary verifiers.
 The ActiveGraph family used normalized scores from 50 sealed checks. The local
 benchmark and the Hybrid Pack both use ActiveGraph technology, creating a
-structural author-built overlap. The sealed checks and the unfavorable Hybrid
-ActiveGraph result, -10.0 points versus its labeled no-context draw, mitigate simple
-directional bias but do not remove that conflict.
+structural author-built overlap. The unfavorable Hybrid ActiveGraph result,
+-10.0 points versus its labeled no-context draw, shows that the shared
+implementation did not uniformly favor Hybrid. It is insufficient to rule out
+directional bias, because a shared failure mode could suppress Pack-derived
+improvements and degrade grader reliability on the same execution path. The
+structural conflict remains unresolved.
 
 For each configuration and held-out task, the study ran four arms:
 
@@ -347,8 +350,11 @@ committed with frozen status at study commit
 \texttt{55984389\allowbreak{}4578141d\allowbreak{}fbd39b7b\allowbreak{}ae2246db\allowbreak{}76e57bde} on 2026-07-17T18:30:38-07:00.
 The compact release does not preserve an independently witnessed timestamp for
 the first development call, so we call this a frozen study specification and
-decision rule rather than an externally registered preregistration. The
-manuscript package reviewed in Round 1 was commit
+decision rule rather than an externally registered preregistration. The freeze
+supports reproducibility and decision discipline, but it does not provide the
+same protection against post-hoc amendment as independent registration; the
+null determination should be weighted accordingly. The manuscript package
+reviewed in Round 1 was commit
 \texttt{8bdff502\allowbreak{}cc08be96\allowbreak{}8b21bbe5\allowbreak{}ebf177d4\allowbreak{}9879a0fb}.
 
 The study completed 84 development attempts and 228 held-out attempts. Failed
@@ -523,8 +529,13 @@ comparator are overlapping rather than independent samples.
 The one-way random-effects ICC treats tasks as targets and the six named
 no-context labels as exchangeable single replicate executions on the observed
 score scale. It is a descriptive repeatability coefficient, and the
-three-target ActiveGraph value is especially unstable. The design-sizing
-diagnostic is \((1.96 + 0.842) \times \widehat{SE}\), using a two-sided nominal
+three-target ActiveGraph value is especially unstable. Because SWE and Terminal
+outcomes are binary, the continuous, Gaussian, and homoscedastic assumptions of
+the ANOVA-based ICC are violated; those two coefficients are approximate
+descriptive summaries. The directly observed variable-task counts and
+family-level score ranges are the primary repeatability evidence. The
+design-sizing diagnostic is \((1.96 + 0.842) \times \widehat{SE}\), using a
+two-sided nominal
 \(\alpha=0.05\), 80% power, and the within-task variance across the six
 equivalent labels. It is a continuous normal approximation for a paired mean
 contrast. On the binary families it does not represent an attainable observed
@@ -586,11 +597,14 @@ decision threshold.
 
 Across all nine configuration-family cells, the recorded evolved execution
 also differed from the pooled no-context reference on at least one mean
-resource measure among model calls, tool calls, input tokens, output tokens,
-and cost. The complete descriptive summary is
+non-input resource measure among model calls, tool calls, output tokens, and
+cost. Input-token differences are mechanically entailed whenever retained
+context is delivered and therefore do not by themselves show behavioral
+influence. The complete descriptive summary is
 [`data/generated/behavior-mediation.csv`](data/generated/behavior-mediation.csv).
-These systematic resource differences establish observed trajectory or
-resource divergence. They do not identify retained state as the causal
+Every cell has at least one non-input resource difference, establishing observed
+resource or trajectory divergence on a non-trivial measure. These differences do
+not identify retained state as the causal
 mediator because the comparison is one lineage against overlapping execution
 labels and the later trajectories are stochastic. Section 8 therefore limits
 mechanism-level interpretation to three selected trace audits.
@@ -733,6 +747,15 @@ policy cap. Generations 26 through 28 produced four over-cap candidates each.
 Under the frozen 64,000-byte source policy, the append-oriented source reached
 the cap and subsequent over-cap candidates were rejected. The case does not
 identify what would happen under another cap or a consolidation-enabled arm.
+
+The compact package partially corroborates these cases with task-level scores in
+[`data/generated/equivalent-control-tasks.csv`](data/generated/equivalent-control-tasks.csv),
+Hybrid lesson selections in
+[`data/generated/hybrid-retrieval-slots.csv`](data/generated/hybrid-retrieval-slots.csv),
+and the selected patch and trace interpretations in
+[`CASE_STUDIES.md`](CASE_STUDIES.md). It does not expose the underlying execution
+logs, so the narrative mechanism judgments remain non-independently verifiable
+from the compact package.
 
 Together, the cases show why receipts must be permitted to invalidate stories
 in both directions. They also show why score, mechanism, and attribution
@@ -889,8 +912,11 @@ paper's evidence. The retained conceptual descriptions require independent
 primary-source verification before external circulation.
 
 The local ActiveGraph benchmark and the Hybrid Pack share author-built
-technology. Sealed checks and an observed result unfavorable to Hybrid reduce
-a simple directional-bias concern but do not remove the structural conflict.
+technology. The observed result unfavorable to Hybrid shows that the shared
+implementation did not uniformly favor that configuration. It cannot provide a
+bias-free test: a shared failure mode could suppress Pack benefit and degrade
+grader reliability on the same execution path. The directional-bias concern and
+structural conflict remain unresolved.
 
 ## 12. Conclusion
 
