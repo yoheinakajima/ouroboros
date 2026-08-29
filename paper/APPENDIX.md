@@ -15,12 +15,22 @@ from -26.0 points under raw-invalid-as-zero to -10.0 points after the
 hash-identical quota-scheduler regrade. It remains negative and the
 frozen conclusion is unchanged. A raw complete-case analysis gives
 +7.3 points for this cell because it drops the evolved invalid row.
-Complete-case contrasts are reported only as sensitivity analyses because
-dropping bounded failures changes the estimand and can favor arms with more
-invalid outcomes.
+That value is an unpaired mean difference on two evolved tasks versus three draw
+tasks, not a sensitivity of the frozen paired design. It must not be read as
+corroborating the null determination, which for this cell rests on the
+adjudicated paired contrast of -10.0 points. Complete-case contrasts are
+reported only as sensitivity analyses because dropping bounded failures changes
+the estimand and can favor arms with more invalid outcomes.
 
 The study's single adjudication judgment moved a score in the evolved arm's
-favor, and the frozen conclusion remained null.
+favor, and the frozen conclusion remained null. The frozen specification
+permitted fixes to documented infrastructure defects but did not enumerate this
+snapshot-contradiction category, define its distinguishing criterion, or specify
+a retry maximum. The sealed grader-only regrade was therefore a post-hoc
+adjudication: it was allowed because the original grader contradicted a
+receipt-bound parsable submission, it reused the hash-identical artifact, and no
+model action or raw row was rerun. One grader retry was performed; one was not a
+pre-specified maximum.
 
 Machine-readable table:
 [`data/generated/adjudication-sensitivity.csv`](data/generated/adjudication-sensitivity.csv)

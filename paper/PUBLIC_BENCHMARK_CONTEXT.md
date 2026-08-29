@@ -37,7 +37,7 @@ The defensible context sentence is:
 The official Terminal-Bench 2.0 leaderboard reports, among many systems, 82.2%
 for Codex CLI with GPT-5.5, 75.1% for Simple Codex with GPT-5.3-Codex, 69.4%
 for Ante with Gemini 3 Pro, and 64.7% for Terminus 2 with GPT-5.3-Codex
-([official 2.0 leaderboard](https://www.tbench.ai/leaderboard/terminal-bench/2.0?verified=true)).
+([official 2.0 leaderboard](https://www.tbench.ai/?verified=true&version=2.0)).
 
 Our evolved arms scored 50.0%, 66.7%, and 83.3% on a frozen **six-task subset**.
 Again, these are not leaderboard estimates: one task moves the rate by 16.7
@@ -76,4 +76,3 @@ Unsafe:
 - combining SWE, Terminal, and ActiveGraph into one intelligence number;
 - treating public systems' different models, prompts, tools, rollouts, and
   budgets as architecture controls.
-

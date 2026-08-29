@@ -675,6 +675,9 @@ def figure_4() -> None:
         px = x + width * index / 27
         bar_height = 60 * cost / max(costs)
         svg.rect(px - 3, plot_y + height - bar_height, 6, bar_height, fill=COLORS["highlight"], opacity=0.65)
+        if index in (0, len(costs) - 1):
+            anchor = "start" if index == 0 else "end"
+            svg.text(px, plot_y + height - bar_height - 9, f"${cost:.2f}", css="small", anchor=anchor)
     svg.text(x + 15, plot_y + 18, "blue line: artifact KB", css="small")
     svg.text(x + 220, plot_y + 18, "pink bars: author cost (scaled)", css="small")
     svg.text(x + width - 5, plot_y + 45, f"{sizes[-1]:.1f} KB", css="value", anchor="end")
@@ -718,7 +721,19 @@ def figure_4() -> None:
         px = x + width * index / 27
         py = plot_y + height - height * pack_sizes[index] / 70
         svg.text(px, py - 18 - (generation % 2) * 15, f"g{generation}", css="small", anchor="middle")
-    svg.text(x + 15, plot_y + 18, "circle size: author requests; red ×: rejected update", css="small")
+    svg.text(x + 15, plot_y + 18, "circles: accepted updates; red ×: rejected update", css="small")
+    legend_y = plot_y + 43
+    svg.text(x + 15, legend_y + 4, "author requests:", css="small")
+    for legend_x, requests in ((x + 125, 1), (x + 185, 2), (x + 245, 4)):
+        svg.circle(
+            legend_x,
+            legend_y,
+            5 + requests,
+            fill=COLORS["hybrid_packs"],
+            stroke=COLORS["white"],
+            stroke_width=1,
+        )
+        svg.text(legend_x + 12, legend_y + 4, str(requests), css="small")
     svg.text(x + width - 5, plot_y + 45, "62.5 KB retained after g25; g26–g28 rejected", css="value", anchor="end")
     svg.save(OUTPUT / "figure-5-accumulation-saturation.svg")
 

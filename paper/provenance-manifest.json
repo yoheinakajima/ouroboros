@@ -4,7 +4,7 @@
     "host": "Zenodo planned; GitHub release fallback",
     "note": "Do not replace with a DOI until the external deposit exists."
   },
-  "created_at": "2026-08-08T04:20:55.574317+00:00",
+  "created_at": "2026-08-29T17:24:19.050727+00:00",
   "excluded_from_manifest": [
     "provenance-manifest.json",
     "tmp/**"
@@ -16,9 +16,9 @@
       "sha256": "5161ecb0c93527e3e1c0d077ffdc924a4ce0bd03a903f402006dc961f90e984d"
     },
     {
-      "bytes": 9381,
+      "bytes": 10171,
       "path": "APPENDIX.md",
-      "sha256": "29cdb214fa01b757fcb0dd1c30f7f480edda2fb332aac15a82aa4509d93defd9"
+      "sha256": "4346ef29d2fa2a29773b49e4a6b0acd9851953939492c33ad2ea23361834976c"
     },
     {
       "bytes": 104,
@@ -31,9 +31,9 @@
       "sha256": "f771cdd3fd76283ca092ab9b2b8d4e503829001f2daf9c8d1852b51a44b57200"
     },
     {
-      "bytes": 1006,
+      "bytes": 1029,
       "path": "ARXIV_METADATA.md",
-      "sha256": "b0ab627b34758ba9bf0a695e3c9dc1e8b329a16036f4f7d98ba61712fce28010"
+      "sha256": "f6d2ae063e0a28cdf3886dde33f5467793bdf6ae44f5be099d34562bdcdbf575"
     },
     {
       "bytes": 9757,
@@ -66,9 +66,9 @@
       "sha256": "9b545ca2908133a4ecad9ee3d4f6feb7f6e00ca7f73f11948c0ac81aa9d79a3c"
     },
     {
-      "bytes": 58014,
+      "bytes": 59687,
       "path": "MANUSCRIPT.md",
-      "sha256": "1fd5926597133b6d52e2fa575c2f60c7d1a97a48fbb9a89a7afb5efe7a79aadd"
+      "sha256": "f9284dd38e051dce3626f5813ffdb61d5b70d8190bf7a1221da3c210dc2cd719"
     },
     {
       "bytes": 17624,
@@ -86,9 +86,9 @@
       "sha256": "25ba5bfc85ba0ae26c9b1c1fc0bc9a45cb86a762c971ec6541e042bc0ec0e1bd"
     },
     {
-      "bytes": 3467,
+      "bytes": 3448,
       "path": "PUBLIC_BENCHMARK_CONTEXT.md",
-      "sha256": "5945b1af3fdf02503cdf8b013dc155448ade1a54217dea1976b0aa33bb2330e2"
+      "sha256": "ea6a2f9f567445ae866cf48de843f7119e40dd18283dbb491a6c9955d47c8964"
     },
     {
       "bytes": 3057,
@@ -156,9 +156,9 @@
       "sha256": "bdde4758fc6f8bbd7000646f78e72ffb8560d1e79ddf4267d6f278b5e080e0cf"
     },
     {
-      "bytes": 37746,
+      "bytes": 38389,
       "path": "analysis/make_figures.py",
-      "sha256": "b05e8ed018a47b283880183c1a1ca01d28bf7018fae0258e65df862f589fc142"
+      "sha256": "b702880166e8916d0199cdf43584c5f0923131a498ca358c9d779d9b440efece"
     },
     {
       "bytes": 58878,
@@ -191,9 +191,9 @@
       "sha256": "e5b554c9f99ceffa4c164885da125a79954f3bee0b02b4174b7ec42d59ad6ba4"
     },
     {
-      "bytes": 15570,
+      "bytes": 13668,
       "path": "data/generated/citation-link-audit.json",
-      "sha256": "e05d0856ac9914bc2050936582159977e72c43415e0a6ccfe43929038b1a388d"
+      "sha256": "a9e94552080e1eb208b5556e421de10c12b7c43b31180bc6091b5ee18872bdd6"
     },
     {
       "bytes": 9006,
@@ -238,7 +238,7 @@
     {
       "bytes": 9202,
       "path": "data/generated/paper-claim-audit.json",
-      "sha256": "dcdda69d7e743450f9b8bcf94f9d9d2db345e967c244c54e4ecf774d96ba905a"
+      "sha256": "7cf55c322b4e0c2b7cae0701342af4e5c7ee313e29266f693363379fd1b7fb30"
     },
     {
       "bytes": 13871,
@@ -331,9 +331,9 @@
       "sha256": "45f5bc32dec6b16bb1d47bbb373f222a8f1bb5e99b2313fd91e19ebf6914a1ca"
     },
     {
-      "bytes": 14673,
+      "bytes": 15415,
       "path": "figures/figure-5-accumulation-saturation.svg",
-      "sha256": "72388ff0807afb6f441fe6e2b8cc4c4792d6d24e16dcd9f1fb6a280b8323be09"
+      "sha256": "6671ca9f5f4b30e386dc826a1b51683807a16a3966eb818e9bbeb24d5f34243b"
     },
     {
       "bytes": 673,
@@ -361,24 +361,24 @@
       "sha256": "196f04977f9c15dd92f0365e6fe562de1d32d989477d170c8cd2e89c7024a903"
     },
     {
-      "bytes": 38453,
+      "bytes": 38780,
       "path": "figures/pdf/figure-5-accumulation-saturation.pdf",
-      "sha256": "27f4666f1be6d32d35ba20402b01206161147fc20ef99f1f5fed84658bf65f84"
+      "sha256": "195ae1cd148946fe53c108c686b11ee4d07642cc3502a26720699ae8ea1e80b4"
     },
     {
-      "bytes": 13881,
+      "bytes": 13994,
       "path": "latex_filter.lua",
-      "sha256": "2de0e99868072a8ced5f2651c7f02a496cd85f783c946d120d9264022c960322"
+      "sha256": "2ebda51b765b616aecd3424d1d701f75e3d646af99ddedbb3fb107731486ebeb"
     },
     {
-      "bytes": 70909,
+      "bytes": 73389,
       "path": "main.tex",
-      "sha256": "adbe0c3fa34093c6565f8ee49f886ff7e1a2172b79f908b407992a0b310e69d4"
+      "sha256": "a8fb7ff6303d615f3ee48ebf33350f69203c4f367200ea3d428e5dab4c324d9a"
     },
     {
-      "bytes": 321224,
+      "bytes": 324277,
       "path": "output/pdf/when-self-modification-becomes-memory.pdf",
-      "sha256": "120e9ec1528e0ab42c0b29772cc7266efb907398873d26a1cfc8b601ccda3591"
+      "sha256": "b1182935ddfc05bff351063fb6a68ed46a19cfdde7f178cacfbbfce61af9e222"
     },
     {
       "bytes": 4811,
@@ -389,6 +389,16 @@
       "bytes": 31,
       "path": "requirements.txt",
       "sha256": "ec3dc54fdf220ea84025bf79c97390d8d616601ed41b5916f5643f78e496c56e"
+    },
+    {
+      "bytes": 3815,
+      "path": "reviews/EXPLORE_SCIENCE_2026-08-29_DISPOSITION.md",
+      "sha256": "9a4ac2c7bc8a3669d682856b6daccf7e7d2bd3f4026503a6a7ffeb119e056441"
+    },
+    {
+      "bytes": 990,
+      "path": "reviews/EXPLORE_SCIENCE_2026-08-29_PROVENANCE.json",
+      "sha256": "0c02560dcdfb8d0163e3f8a9d3211619b321f5463224bcca44dc50df12a1b91e"
     },
     {
       "bytes": 3540,
@@ -443,7 +453,7 @@
     {
       "bytes": 534,
       "path": "scan-report.json",
-      "sha256": "9a1ec86088eb438a15cd28dde69190efd8246a509a591ef1cd3d385bf4ac02a1"
+      "sha256": "508cdbb6ab411192f4677c231fa576125fbcca9bcb5f9ade031b68e7812d76da"
     },
     {
       "bytes": 3241,
@@ -495,7 +505,7 @@
     "findings": 0,
     "path": "scan-report.json",
     "status": "passed",
-    "text_files_scanned": 79
+    "text_files_scanned": 81
   },
   "unlisted_files_allowed": false
 }
